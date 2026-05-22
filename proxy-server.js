@@ -65,24 +65,15 @@ if (!API_KEY || API_KEY.indexOf('sk-ant-') !== 0) {
 }
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
-app.use(cors({
-  origin: function(origin, callback) {
-    if (ALLOWED_ORIGINS[0] === '*') return callback(null, true);
-    if (!origin) return callback(null, true); // allow non-browser tools
-    var allowed = ALLOWED_ORIGINS.some(function(o) {
-      return origin === o || origin.endsWith(o.replace(/^https?:\/\//, ''));
-    });
-    if (allowed) return callback(null, true);
-    callback(new Error('Origin not allowed: ' + origin));
-  },
-  methods: ['POST', 'OPTIONS'],
+var corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'anthropic-version', 'anthropic-dangerous-direct-browser-access', 'x-api-key']
-}));
+};
 
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '1mb' }));
-
-// ─── Explicit OPTIONS preflight ──────────────────────────────────────────────
-app.options('*', cors());
 
 // ─── Simple in-memory rate limiter ───────────────────────────────────────────
 var ipHits = {};
