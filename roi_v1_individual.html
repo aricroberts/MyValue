@@ -386,6 +386,13 @@ button:hover{background:var(--surface2)}
 </div>
 
 <script>
+
+/* ═══════════════════════════════════════════════════════════════
+   API PROXY CONFIG — change this one line to point to your proxy
+   Deploy proxy-server.js to Railway/Render, then paste the URL here
+   e.g. 'https://myvalue-production.up.railway.app/api/messages'
+   ═══════════════════════════════════════════════════════════════ */
+var API_URL = 'https://aricroberts.github.io/MyValue/';
 var INDD={
   tech:{rpe:450000,salBase:{engineering:145000,sales:120000,product:140000,marketing:105000,ops:100000,finance_dept:110000,hr:95000,cs:105000}},
   finance:{rpe:600000,salBase:{engineering:135000,sales:140000,product:125000,marketing:100000,ops:100000,finance_dept:130000,hr:95000,cs:100000}},
@@ -492,7 +499,7 @@ async function callClaude(msgs,sys,maxTok,search){
     var body={model:'claude-sonnet-4-20250514',max_tokens:maxTok||400,messages:msgs};
     if(sys)body.system=sys;
     if(search)body.tools=[{type:'web_search_20250305',name:'web_search'}];
-    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify(body)});
+    var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error('http');
     var d=await r.json();if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
