@@ -81,6 +81,9 @@ app.use(cors({
 
 app.use(express.json({ limit: '1mb' }));
 
+// ─── Explicit OPTIONS preflight ──────────────────────────────────────────────
+app.options('*', cors());
+
 // ─── Simple in-memory rate limiter ───────────────────────────────────────────
 var ipHits = {};
 setInterval(function() { ipHits = {}; }, 60000); // reset every minute
@@ -93,11 +96,6 @@ function rateLimit(req, res, next) {
   }
   next();
 }
-
-// ─── Explicit OPTIONS preflight handler ─────────────────────────────────────
-app.options('/api/messages', function(req, res) {
-  res.sendStatus(200);
-});
 
 // ─── Health check ────────────────────────────────────────────────────────────
 app.get('/', function(req, res) {
