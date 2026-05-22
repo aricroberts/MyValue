@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>[FIXED] ROI Engine v3 — Nonprofit</title>
+<title>[FIXED-V3] ROI Engine v3 — Nonprofit</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
@@ -613,9 +613,6 @@ button:hover{background:var(--surface2)}
 </div><!-- end .app -->
 
 <script>
-var ROI_ENGINE_VERSION = 'V3-FIXED-2026-05-22';
-/* ── PROXY URL: update this to your Railway/Render URL, must end in /api/messages ── */
-var API_URL = 'https://myvalue.onrender.com/api/messages';
 /* ── Impact stream type definitions (programs + expansion) ── */
 var ITYPES={
   economic:{label:'Economic value created',cls:'td',icon:'ti-trending-up',desc:'Jobs created, wages increased, local spending, or economic multiplier effects.',qs:[
@@ -884,7 +881,7 @@ async function fetchFunding(){
   var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 6–8 specific, real funding opportunities that match this organization. For each, provide:\n- Funder name and grant program name\n- Typical award amount or range\n- Eligibility and mission fit explanation\n- Application deadline or cycle (current or upcoming)\n- Official URL or grants.gov link\n- A 1-sentence reason this org should apply\n\nPrioritize opportunities that are currently open or open on a recurring annual basis. Include a mix of federal, foundation, and other sources where available. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium","rationale":"one sentence why this fits","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
 
   try{
-    var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
     if(!r.ok)throw new Error('http');
     var d=await r.json();if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
@@ -1080,7 +1077,7 @@ async function runExpAnalysis(){
   var prompt='You are an experienced nonprofit strategy advisor. Analyze this proposed expansion and give a direct go/no-go recommendation.\n\nOrganization: '+gv('org-name')+' | Mission: '+gv('org-mission')+'\nCurrent budget: '+fmt(gn('org-budget'))+'\n\nProposed expansion: '+ES.name+'\nType: '+ES.type+'\nDescription: '+ES.desc+'\n\nFINANCIAL MODEL ('+ES.years+' years):\n• Startup cost: '+fmt(ES.startup)+'\n• Annual operating: '+fmt(ES.totalAnnual)+' (incl. '+fmt(ES.staffCost)+' staff)\n• Ramp-up period: '+ES.ramp+' months\n• Total investment: '+fmt(ES.totalCost)+'\n• Funding secured: '+fmt(ES.secured)+'\n• Funding gap: '+fmt(Math.max(0,ES.gap))+'\n\nPROJECTED IMPACT:\n• Annual impact at capacity: '+fmt(ES.annualImpact)+'\n• '+ES.years+'-year total impact: '+fmt(ES.totalImpact)+'\n• Mission leverage ratio: '+ES.lev.toFixed(2)+'×\n• Break-even: '+(ES.beMonth>0?'Month '+ES.beMonth:'Beyond 3 years')+'\n\nIMPACT STREAMS:\n'+ES.streams.map(function(s){return'• '+s.label+': '+s.gdesc+' — '+fmt(s.val)+'/yr';}).join('\n')+'\n\nProvide:\n1. GO / CONDITIONAL GO / NO-GO recommendation with one clear rationale sentence\n2. The strongest argument FOR proceeding\n3. The biggest risk or reason to pause\n4. One specific condition or milestone that would make this a stronger investment\n5. Suggested funding sources to close the gap (2–3 specific grant types or funder categories)\n\nBe direct and honest. Do not hedge everything. Format with clear headers.';
 
   try{
-    var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,messages:[{role:'user',content:prompt}]})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:700,messages:[{role:'user',content:prompt}]})});
     if(!r.ok)throw new Error('http');
     var d=await r.json();if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
@@ -1166,7 +1163,7 @@ async function startCoach(mode){
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
   var ok=false;
   try{
-    var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
@@ -1185,7 +1182,7 @@ async function sendCoach(){
   cHist.push({role:'user',content:input});
   var ok=false;
   try{
-    var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:CSYS[cMode],messages:cHist})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:CSYS[cMode],messages:cHist})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
