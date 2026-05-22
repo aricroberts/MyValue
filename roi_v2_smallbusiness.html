@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ROI Engine v2 — Small Business</title>
+<title>[FIXED] ROI Engine v2 — Small Business</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -121,10 +121,6 @@ button:hover{background:var(--surface2)}
 .spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.uc-grid{grid-template-columns:1fr}.ai-compare{grid-template-columns:1fr}}
-
-.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
-.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
-.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -331,7 +327,6 @@ button:hover{background:var(--surface2)}
       <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate &amp; generate documents</span>
     </label>
     <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates results, generates all export documents, and opens Results tab.</p>
-    <div class="back-nav"><label for="t1"><i class="ti ti-arrow-left" style="font-size:11px"></i> Setup</label></div>
   </div>
 
   <!-- PANEL 3: RESULTS -->
@@ -379,7 +374,6 @@ button:hover{background:var(--surface2)}
         <label for="t5" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
         <label for="t4" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Manager coach →</span></label>
       </div>
-      <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:11px"></i> Value streams</label></div>
     </div>
   </div>
 
@@ -412,7 +406,6 @@ button:hover{background:var(--surface2)}
           <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>
         </div>
       </div>
-    <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:11px"></i> Results</label></div>
     </div>
   </div>
 
@@ -448,7 +441,6 @@ button:hover{background:var(--surface2)}
         <div class="dpre" id="doc-ai">—</div>
         <div class="brow"><button onclick="cpDoc('doc-ai')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('ai')">Refine ↗</button></div>
       </div>
-      <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:11px"></i> Results</label></div>
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
@@ -459,13 +451,9 @@ button:hover{background:var(--surface2)}
 </div>
 
 <script>
-
-/* ═══════════════════════════════════════════════════════════════
-   API PROXY CONFIG — change this one line to point to your proxy
-   Deploy proxy-server.js to Railway/Render, then paste the URL here
-   e.g. 'https://myvalue-production.up.railway.app/api/messages'
-   ═══════════════════════════════════════════════════════════════ */
-var API_URL = 'https://aricroberts.github.io/MyValue/';
+var ROI_ENGINE_VERSION = 'V2-FIXED-2026-05-22';
+/* ── PROXY URL: update this to your Railway/Render URL, must end in /api/messages ── */
+var API_URL = 'https://myvalue-production.up.railway.app/api/messages';
 var VTYPES={
   revenue:{label:'Revenue generated',cls:'tr',icon:'ti-trending-up',qs:[
     {id:'gdesc',t:'text',lbl:'Describe this revenue stream',ph:'e.g. New clients acquired',hint:'What revenue did this role or project drive?'},
@@ -558,12 +546,12 @@ function calcVI(id){
   else if(type==='risk')raw=p('exposure')*(p('prob')||35)/100*(p('credit')||60)/100*((p('conf')||55)/100);
   else if(type==='strategic')raw=p('val')*(p('credit')||50)/100*((p('conf')||50)/100);
   var pill=document.getElementById('vi-roi-'+id);
-  if(pill){pill.textContent=raw>0?fmt(raw):'—';pill.className='vi-roi '+(raw>0?'vi-roi-live':'vi-roi-zero');}
+  if(pill){pill.textContent=raw>0?fmt(raw):'—';pill.className='vi-roi '+(raw>0?'vi-roi-live':'vi-roi-zero');pill.dataset.roi=raw;}
   updateRunning();return raw;
 }
 
 function updateRunning(){
-  var items=getItems(),roi=items.reduce(function(s,i){return s+i.roi;},0);
+  var roi=0;document.querySelectorAll('.val-item').forEach(function(vi){var id=parseInt(vi.id.replace('vi-',''));var pill=document.getElementById('vi-roi-'+id);if(pill&&pill.dataset.roi)roi+=parseFloat(pill.dataset.roi)||0;});
   var tc=getTC(),net=roi-tc;
   var rc=document.getElementById('running-card');if(rc)rc.style.display=roi>0?'block':'none';
   se('run-roi',fmt(roi));se('run-cost',fmt(tc));
@@ -598,13 +586,15 @@ function getItems(){
     var id=parseInt(vi.id.replace('vi-',''));var type=gv('vtype-'+id);if(!type)return;
     var title=gv('vi-t-'+id)||(VTYPES[type]?VTYPES[type].label:'Stream '+id);
     var gdesc=gv('vq-'+id+'-gdesc')||title;
-    items.push({id:id,title:title,type:type,label:VTYPES[type]?VTYPES[type].label:type,gdesc:gdesc,roi:calcVI(id)});
+    var _pill=document.getElementById('vi-roi-'+id);var _roi=_pill&&_pill.dataset.roi?parseFloat(_pill.dataset.roi)||0:0;
+    items.push({id:id,title:title,type:type,label:VTYPES[type]?VTYPES[type].label:type,gdesc:gdesc,roi:_roi});
   });
   return items;
 }
 
 function calcResults(){
-  var __t=document.getElementById('t3');if(__t)__t.checked=true;
+  document.getElementById('t3').checked=true;
+  document.querySelectorAll('.val-item').forEach(function(vi){var id=parseInt(vi.id.replace('vi-',''));calcVI(id);});
   var uc=gv('use-case');
   var items=getItems();
   var roi=items.reduce(function(s,i){return s+i.roi;},0);
