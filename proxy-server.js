@@ -76,7 +76,7 @@ app.use(cors({
     callback(new Error('Origin not allowed: ' + origin));
   },
   methods: ['POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type', 'anthropic-version', 'anthropic-dangerous-direct-browser-access', 'x-api-key']
 }));
 
 app.use(express.json({ limit: '1mb' }));
@@ -93,6 +93,11 @@ function rateLimit(req, res, next) {
   }
   next();
 }
+
+// ─── Explicit OPTIONS preflight handler ─────────────────────────────────────
+app.options('/api/messages', function(req, res) {
+  res.sendStatus(200);
+});
 
 // ─── Health check ────────────────────────────────────────────────────────────
 app.get('/', function(req, res) {
