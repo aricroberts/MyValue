@@ -712,7 +712,7 @@ async function startCoach(mode){
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
   var ok=false;
   try{
-    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
@@ -731,8 +731,19 @@ async function sendCoach(){
   cHist.push({role:'user',content:input});
   var ok=false;
   try{
-    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:CSYS[cMode],messages:cHist})});
-    if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
+    var _cbody={model:'claude-sonnet-4-6',max_tokens:600,system:CSYS[cMode],messages:cHist};
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
+    if(!r.ok)throw new Error('http');
+    var d=await r.json();
+    if(d.error&&d.error.type==='rate_limit_error'){
+      var _msgs=document.getElementById('coach-msgs');
+      if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Rate limit — retrying in 20s…</div>';
+      await new Promise(function(res){setTimeout(res,20000);});
+      var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
+      if(!r2.ok)throw new Error('http');
+      d=await r2.json();
+    }
+    if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
     cHist.push({role:'assistant',content:txt});

@@ -490,7 +490,9 @@ async function callClaude(msgs,sys,maxTok,search){
     if(search)body.tools=[{type:'web_search_20250305',name:'web_search'}];
     var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error('http');
-    var d=await r.json();if(d.error)throw new Error('api');
+    var d=await r.json();
+    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,20000);});var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r2.ok)throw new Error('http');d=await r2.json();}
+    if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
     return txt;
@@ -733,7 +735,7 @@ async function startCoach(mode){
   document.getElementById('coach-result').style.display='none';
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
   var ok=false;
-  try{var txt=await callClaude([{role:'user',content:'Begin the coaching session.'}],CSYS[mode],400);cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];sh('coach-msgs','<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>');ok=true;}
+  try{var txt=await callClaude([{role:'user',content:'Begin the coaching session.'}],CSYS[mode],150);cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];sh('coach-msgs','<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>');ok=true;}
   catch(e){ok=false;}
   if(!ok){sh('coach-msgs','<div class="cmsg cmai">'+COPENERS[mode]+'</div>');cHist=[{role:'assistant',content:COPENERS[mode]}];}
 }
