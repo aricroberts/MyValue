@@ -102,7 +102,7 @@ app.get('/', function(req, res) {
   res.json({
     status: 'ok',
     service: 'ROI Engine API Proxy',
-    version: '1.0.0',
+    version: '1.1.0',
     endpoints: { messages: 'POST /api/messages' }
   });
 });
