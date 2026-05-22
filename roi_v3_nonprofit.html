@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ROI Engine v3 — Nonprofit</title>
+<title>[FIXED] ROI Engine v3 — Nonprofit</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
@@ -189,10 +189,6 @@ button:hover{background:var(--surface2)}
 .yr-pos{color:var(--green)}.yr-neg{color:var(--red)}.yr-warn{color:var(--gold)}
 
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
-
-.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
-.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
-.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -309,7 +305,6 @@ button:hover{background:var(--surface2)}
     </div>
     <div class="card"><p class="sl">Benchmark comparison</p><div id="mm-bench" style="font-size:13px;color:var(--text2);line-height:1.8"></div></div>
     <label for="t3" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Next: log your programs →</span></label>
-    <div class="back-nav"><label for="t1"><i class="ti ti-arrow-left" style="font-size:11px"></i> Organization</label></div>
   </div>
 
   <!-- ═══ PANEL 3: PROGRAMS ═══ -->
@@ -348,7 +343,6 @@ button:hover{background:var(--surface2)}
       <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate impact ledger</span>
     </label>
     <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates ledger, generates all export documents, and opens Results tab.</p>
-    <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:11px"></i> Mission math</label></div>
   </div>
 
   <!-- ═══ PANEL 4: IMPACT LEDGER ═══ -->
@@ -619,13 +613,9 @@ button:hover{background:var(--surface2)}
 </div><!-- end .app -->
 
 <script>
-
-/* ═══════════════════════════════════════════════════════════════
-   API PROXY CONFIG — change this one line to point to your proxy
-   Deploy proxy-server.js to Railway/Render, then paste the URL here
-   e.g. 'https://myvalue-production.up.railway.app/api/messages'
-   ═══════════════════════════════════════════════════════════════ */
-var API_URL = 'https://aricroberts.github.io/MyValue/';
+var ROI_ENGINE_VERSION = 'V3-FIXED-2026-05-22';
+/* ── PROXY URL: update this to your Railway/Render URL, must end in /api/messages ── */
+var API_URL = 'https://aricroberts.github.io/MyValue/.up.railway.app/api/messages';
 /* ── Impact stream type definitions (programs + expansion) ── */
 var ITYPES={
   economic:{label:'Economic value created',cls:'td',icon:'ti-trending-up',desc:'Jobs created, wages increased, local spending, or economic multiplier effects.',qs:[
@@ -755,14 +745,14 @@ function calcStreamVal(pid,sid){
 function updateStreamVal(pid,sid){
   var val=calcStreamVal(pid,sid);
   var pill=document.getElementById('srpill-'+pid+'-'+sid);
-  if(pill){pill.textContent=val>0?fmt(val):'—';pill.className='srpill '+(val>0?'srpill-live':'srpill-zero');}
+  if(pill){pill.textContent=val>0?fmt(val):'—';pill.className='srpill '+(val>0?'srpill-live':'srpill-zero');pill.dataset.val=val;}
   updateProgTotal(pid);
 }
 
 function updateProgTotal(pid){
   var total=0;
   var el=document.getElementById('stream-list-'+pid);
-  if(el){var streams=el.querySelectorAll('[data-sid]');for(var i=0;i<streams.length;i++){var sid=parseInt(streams[i].getAttribute('data-sid'));total+=calcStreamVal(pid,sid);}}
+  if(el){var streams=el.querySelectorAll('[data-sid]');for(var i=0;i<streams.length;i++){var sid=parseInt(streams[i].getAttribute('data-sid'));var _sp=document.getElementById('srpill-'+pid+'-'+sid);total+=_sp&&_sp.dataset.val?parseFloat(_sp.dataset.val)||0:0;}}
   var pill=document.getElementById('impill-'+pid);
   if(pill){pill.textContent=total>0?fmt(total):'No streams yet';pill.className='impill '+(total>0?'impill-live':'impill-zero');}
   updateRunning();
@@ -817,7 +807,7 @@ function getAllProgData(){
     var progBudget=gn('prog-budget-'+pid)||0;
     var streams=[];
     var sl=document.getElementById('stream-list-'+pid);
-    if(sl){var sn=sl.querySelectorAll('[data-sid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-sid'));var type=gv('stype-'+pid+'-'+sid);if(!type)continue;var val=calcStreamVal(pid,sid);var gdesc=gv('sq-'+pid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:ITYPES[type]?ITYPES[type].label:type,gdesc:gdesc,val:val});}}
+    if(sl){var sn=sl.querySelectorAll('[data-sid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-sid'));var type=gv('stype-'+pid+'-'+sid);if(!type)continue;var _spr=document.getElementById('srpill-'+pid+'-'+sid);var val=_spr&&_spr.dataset.val?parseFloat(_spr.dataset.val)||0:0;var gdesc=gv('sq-'+pid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:ITYPES[type]?ITYPES[type].label:type,gdesc:gdesc,val:val});}}
     var totalVal=streams.reduce(function(s,st){return s+st.val;},0);
     progs.push({pid:pid,title:title,desc:desc,progBudget:progBudget,streams:streams,totalVal:totalVal});
   });
@@ -826,7 +816,7 @@ function getAllProgData(){
 
 /* ── Impact ledger ── */
 function calcLedger(){
-  var __t=document.getElementById('t4');if(__t)__t.checked=true;
+  document.getElementById('t4').checked=true;
   var budget=gn('org-budget'),direct=gn('org-direct'),indirect=gn('org-indirect');
   var progs=getAllProgData(),totalImpact=progs.reduce(function(s,p){return s+p.totalVal;},0);
   var lev=budget>0?totalImpact/budget:0;
