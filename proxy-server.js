@@ -112,7 +112,7 @@ app.post('/api/messages', rateLimit, function(req, res) {
   }
 
   // Enforce model — always use Sonnet 4
-  body.model = 'claude-sonnet-4-20250514';
+  body.model = 'claude-sonnet-4-6';
 
   // Enforce token cap
   if (!body.max_tokens || body.max_tokens > MAX_TOKENS_CAP) {
