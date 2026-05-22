@@ -30,7 +30,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .privacy-pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sage);background:var(--sage-dim);border:1px solid var(--sage-b);border-radius:99px;padding:3px 10px}
 .destroy-btn{font-size:11px;color:var(--red);background:var(--red-dim);border:1px solid var(--red-b);border-radius:var(--radius-sm);padding:4px 10px;cursor:pointer}
 
-/* CSS-only tabs — 8 tabs */
+/* CSS-only tabs */
 .tab-radio{display:none}
 .tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
 .tab-nav label{padding:6px 13px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2);user-select:none;transition:all .15s}
@@ -40,18 +40,14 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 #t3:checked~.tab-nav label[for=t3],
 #t4:checked~.tab-nav label[for=t4],
 #t5:checked~.tab-nav label[for=t5],
-#t6:checked~.tab-nav label[for=t6],
-#t7:checked~.tab-nav label[for=t7],
-#t8:checked~.tab-nav label[for=t8]{background:var(--green);color:#08100F;border-color:var(--green);font-weight:600}
+#t6:checked~.tab-nav label[for=t6]{background:var(--green);color:#08100F;border-color:var(--green);font-weight:600}
 .tab-panel{display:none}
 #t1:checked~.panels #p1,
 #t2:checked~.panels #p2,
 #t3:checked~.panels #p3,
 #t4:checked~.panels #p4,
 #t5:checked~.panels #p5,
-#t6:checked~.panels #p6,
-#t7:checked~.panels #p7,
-#t8:checked~.panels #p8{display:block}
+#t6:checked~.panels #p6{display:block}
 
 /* cards */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
@@ -62,11 +58,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .card-warn{background:var(--gold-dim);border-color:var(--gold-b)}
 .card-err{background:var(--red-dim);border-color:var(--red-b)}
 .card-ai{background:var(--purple-dim);border-color:var(--purple-b)}
-.card-teal{background:var(--teal-dim);border-color:var(--teal-b)}
 
 .sl{font-size:12px;font-weight:600;color:var(--text2);margin:0 0 10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
-.sl-mission{color:var(--green)}.sl-donor{color:var(--gold)}.sl-grant{color:var(--sage)}
-.sl-ok{color:var(--green)}.sl-ai{color:var(--purple)}.sl-warn{color:var(--gold)}.sl-teal{color:var(--teal)}
+.sl-mission{color:var(--green)}.sl-donor{color:var(--gold)}.sl-grant{color:var(--sage)}.sl-ok{color:var(--green)}.sl-ai{color:var(--purple)}.sl-warn{color:var(--gold)}
 
 /* form layout */
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
@@ -129,23 +123,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .addbtn{width:100%;border:1px dashed var(--border);background:transparent;color:var(--text2);border-radius:var(--radius);padding:10px;font-size:13px;cursor:pointer;margin-bottom:.875rem}
 .addbtn:hover{background:var(--surface2)}
 
-/* grant cards */
-.grant-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1.125rem;margin-bottom:.625rem;transition:border-color .15s}
-.grant-card:hover{border-color:var(--sage-b)}
-.grant-title{font-size:13px;font-weight:600;color:var(--text);margin:0 0 3px;display:flex;align-items:flex-start;gap:8px;justify-content:space-between;flex-wrap:wrap}
-.grant-funder{font-size:12px;color:var(--text2);margin:0 0 5px}
-.grant-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.grant-pill{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500}
-.gpamt{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
-.gpfit{background:var(--sage-dim);color:var(--sage);border:1px solid var(--sage-b)}
-.gpdeadline{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-b)}
-.grant-rationale{font-size:12px;color:var(--text2);line-height:1.6;margin:0 0 6px}
-.grant-link{font-size:12px;color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
-.grant-link:hover{opacity:.8}
-
-/* expansion scenario streams */
-.exp-stream{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.75rem;margin-bottom:.5rem}
-
 /* coach */
 .cmsg{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.7;color:var(--text);margin-bottom:6px;border:1px solid var(--border)}
 .cmai{background:var(--green-dim);border-color:var(--green-b);color:#A0E8C8}
@@ -158,7 +135,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .brow{display:flex;gap:7px;flex-wrap:wrap}
 .step-banner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;margin-bottom:.875rem}
 
-/* vbadge */
+/* vbadge for api status */
 .vbadge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 9px;border-radius:99px;margin-top:3px;font-weight:500}
 .vbo{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
 .vbw{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-b)}
@@ -169,8 +146,6 @@ button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(
 button:hover{background:var(--surface2)}
 .btn-primary{background:var(--green);border-color:var(--green);color:#08100F;font-weight:600}
 .btn-primary:hover{opacity:.88}
-.btn-teal{background:var(--teal);border-color:var(--teal);color:#08100F;font-weight:600}
-.btn-teal:hover{opacity:.88}
 .btn-danger{color:var(--red);border-color:var(--red-b);background:var(--red-dim)}
 
 /* spinner */
@@ -180,15 +155,12 @@ button:hover{background:var(--surface2)}
 /* running total */
 .running-card{background:var(--green-dim);border:1px solid var(--green-b);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem;display:none}
 
-/* expansion year table */
-.yr-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
-.yr-table th{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;text-align:left;border-bottom:1px solid var(--border)}
-.yr-table td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text2);font-family:'DM Mono',monospace}
-.yr-table td:first-child{font-family:'DM Sans',system-ui,sans-serif;color:var(--text)}
-.yr-table tr:last-child td{border-bottom:none}
-.yr-pos{color:var(--green)}.yr-neg{color:var(--red)}.yr-warn{color:var(--gold)}
-
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+
+/* Back nav */
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2);transition:background .15s}
+.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -211,18 +183,14 @@ button:hover{background:var(--surface2)}
   <input type="radio" class="tab-radio" id="t4" name="tabs"/>
   <input type="radio" class="tab-radio" id="t5" name="tabs"/>
   <input type="radio" class="tab-radio" id="t6" name="tabs"/>
-  <input type="radio" class="tab-radio" id="t7" name="tabs"/>
-  <input type="radio" class="tab-radio" id="t8" name="tabs"/>
 
   <div class="tab-nav">
     <label for="t1">1. Organization</label>
     <label for="t2">2. Mission math</label>
     <label for="t3">3. Programs</label>
     <label for="t4">4. Impact ledger</label>
-    <label for="t5">5. Funding</label>
-    <label for="t6">6. Expansion</label>
-    <label for="t7">7. Coach</label>
-    <label for="t8">8. Exports</label>
+    <label for="t5">5. Coach</label>
+    <label for="t6">6. Exports</label>
   </div>
 
   <div class="panels">
@@ -231,17 +199,18 @@ button:hover{background:var(--surface2)}
   <div class="tab-panel" id="p1">
     <div class="card card-mission">
       <p class="sl sl-mission"><i class="ti ti-leaf"></i> What this tool does</p>
-      <p style="font-size:13px;color:#A0E8C8;line-height:1.6;margin:0">ROI Engine v3 reframes return on investment around <strong>mission impact</strong>. Quantify your programs, surface relevant funding opportunities, model expansions, and generate grant reports and stewardship letters — all from self-reported estimates and public data.</p>
+      <p style="font-size:13px;color:#A0E8C8;line-height:1.6;margin:0">ROI Engine v3 reframes return on investment around <strong>mission impact</strong>. Quantify your programs, document value for donors and funders, and generate grant reports and stewardship letters — all from self-reported estimates and public data.</p>
     </div>
+
     <div class="card">
       <p class="sl"><i class="ti ti-building-community"></i> Your organization</p>
       <div class="fr3">
         <div class="fg"><label>Organization name</label><input id="org-name" placeholder="e.g. Watershed Commons"/></div>
         <div class="fg"><label>Mission focus area</label><input id="org-mission" placeholder="e.g. watershed restoration"/><span class="hint">One phrase. Used throughout documents.</span></div>
-        <div class="fg"><label>Primary contact / author</label><input id="org-contact" placeholder="e.g. Jordan Lee"/></div>
+        <div class="fg"><label>Primary contact / author</label><input id="org-contact" placeholder="e.g. Jordan Lee"/><span class="hint">For document headers.</span></div>
       </div>
       <div class="fr">
-        <div class="fg"><label>Location / service area</label><input id="org-loc" placeholder="e.g. San Diego County, CA"/><span class="hint">Used for location-matched grant searches.</span></div>
+        <div class="fg"><label>Location</label><input id="org-loc" placeholder="e.g. San Diego County, CA"/></div>
         <div class="fg"><label>Year founded</label><input type="number" id="org-founded" placeholder="2010"/></div>
       </div>
       <div class="fr">
@@ -255,14 +224,14 @@ button:hover{background:var(--surface2)}
           </select>
         </div>
       </div>
-      <div class="fg" style="margin-top:6px"><label>Keywords for grant search (optional)</label><input id="org-keywords" placeholder="e.g. water quality, riparian habitat, youth education, environmental justice"/><span class="hint">Additional terms to refine funding opportunity searches on tab 5.</span></div>
     </div>
+
     <div class="card">
       <p class="sl"><i class="ti ti-chart-pie"></i> Financials &amp; capacity</p>
       <div class="fr3">
-        <div class="fg"><label>Annual operating budget ($)</label><input type="number" id="org-budget" placeholder="500000" oninput="liveM()"/></div>
+        <div class="fg"><label>Annual operating budget ($)</label><input type="number" id="org-budget" placeholder="500000" oninput="liveM()"/><span class="hint">Total annual revenue/expenses.</span></div>
         <div class="fg"><label>Total staff (FTEs)</label><input type="number" id="org-staff" value="8" oninput="liveM()"/></div>
-        <div class="fg"><label>Active volunteers</label><input type="number" id="org-vols" value="40" oninput="liveM()"/></div>
+        <div class="fg"><label>Active volunteers</label><input type="number" id="org-vols" value="40" oninput="liveM()"/><span class="hint">Regular contributors (annual).</span></div>
       </div>
       <div class="fr3">
         <div class="fg"><label>Program expenses ($)</label><input type="number" id="org-prog-exp" placeholder="350000" oninput="liveM()"/><span class="hint">Direct program costs.</span></div>
@@ -270,14 +239,17 @@ button:hover{background:var(--surface2)}
         <div class="fg"><label>Fundraising costs ($)</label><input type="number" id="org-fund-cost" placeholder="50000" oninput="liveM()"/></div>
       </div>
     </div>
+
     <div class="card">
       <p class="sl"><i class="ti ti-users"></i> Beneficiaries served</p>
       <div class="fr3">
-        <div class="fg"><label>Direct beneficiaries / yr</label><input type="number" id="org-direct" placeholder="1200" oninput="liveM()"/></div>
-        <div class="fg"><label>Indirect beneficiaries / yr</label><input type="number" id="org-indirect" placeholder="8000" oninput="liveM()"/></div>
-        <div class="fg"><label>Avg cost per beneficiary ($)</label><input type="number" id="org-cpb" placeholder="0" oninput="liveM()"/><span class="hint">Leave 0 to auto-calculate.</span></div>
+        <div class="fg"><label>Direct beneficiaries / yr</label><input type="number" id="org-direct" placeholder="1200" oninput="liveM()"/><span class="hint">People directly served by programs.</span></div>
+        <div class="fg"><label>Indirect beneficiaries / yr</label><input type="number" id="org-indirect" placeholder="8000" oninput="liveM()"/><span class="hint">Community members who benefit indirectly.</span></div>
+        <div class="fg"><label>Avg cost per direct beneficiary ($)</label><input type="number" id="org-cpb" placeholder="0" oninput="liveM()"/><span class="hint">Leave 0 to auto-calculate.</span></div>
       </div>
     </div>
+
+    <div id="org-preview" style="display:none;margin-bottom:.875rem"></div>
     <label for="t2" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Next: mission math →</span></label>
   </div>
 
@@ -285,7 +257,7 @@ button:hover{background:var(--surface2)}
   <div class="tab-panel" id="p2">
     <div class="card card-donor">
       <p class="sl sl-donor"><i class="ti ti-info-circle"></i> What is mission math?</p>
-      <p style="font-size:13px;color:#F5D79E;line-height:1.6">Mission math translates your work into three numbers donors and funders care about: <strong>cost efficiency</strong> (spend per outcome), <strong>leverage ratio</strong> (value your budget generates), and <strong>donor impact</strong> (what a gift of any size actually does).</p>
+      <p style="font-size:13px;color:#F5D79E;line-height:1.6">Mission math translates your nonprofit's work into three numbers donors and funders care about most: <strong>cost efficiency</strong> (what you spend per outcome), <strong>leverage ratio</strong> (how much value your budget generates), and <strong>donor impact</strong> (what a gift of any size actually does).</p>
     </div>
     <div class="g4">
       <div class="mc"><p class="lb">Annual budget</p><p class="vl warnc" id="mm-budget">—</p></div>
@@ -296,9 +268,10 @@ button:hover{background:var(--surface2)}
     <div class="card"><p class="sl">Budget breakdown</p><div id="mm-breakdown"></div></div>
     <div class="card">
       <p class="sl">Donor impact calculator</p>
+      <p style="font-size:12px;color:var(--text2);margin:0 0 10px">What does a gift at any dollar amount accomplish?</p>
       <div class="fr3">
         <div class="fg"><label>Gift amount ($)</label><input type="number" id="gift-amt" placeholder="500" oninput="calcGift()"/></div>
-        <div class="fg"><label>Allocation to programs (%)</label><input type="number" id="gift-prog" value="70" oninput="calcGift()"/></div>
+        <div class="fg"><label>Allocation to programs (%)</label><input type="number" id="gift-prog" value="70" oninput="calcGift()"/><span class="hint">What % goes to direct programs?</span></div>
         <div class="fg"><label></label></div>
       </div>
       <div id="gift-result"></div>
@@ -311,7 +284,7 @@ button:hover{background:var(--surface2)}
   <div class="tab-panel" id="p3">
     <div class="card card-mission">
       <p class="sl sl-mission"><i class="ti ti-seedling"></i> Program impact streams</p>
-      <p style="font-size:13px;color:#A0E8C8;line-height:1.6">Each program can have <strong>multiple impact streams</strong> — economic, social, environmental, health, or other. Streams roll up to program totals, which roll up to your impact ledger.</p>
+      <p style="font-size:13px;color:#A0E8C8;line-height:1.6">Each program can have <strong>multiple impact streams</strong> — economic, social, environmental, health, or other. Streams roll up to program totals, which roll up to your impact ledger. Fill in the guided questions then click <strong>Calculate impact ledger</strong>.</p>
     </div>
     <div class="fg" style="margin-bottom:.875rem">
       <label>Reporting period</label>
@@ -339,10 +312,11 @@ button:hover{background:var(--surface2)}
         <div class="mc"><p class="lb">Leverage so far</p><p class="vl ic" id="run-lev">—</p></div>
       </div>
     </div>
-    <label for="t4" style="display:block">
-      <span onclick="calcLedger()" class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate impact ledger</span>
+    <label for="t4" style="display:block" onclick="calcLedger()">
+      <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate impact ledger</span>
     </label>
     <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates ledger, generates all export documents, and opens Results tab.</p>
+    <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:12px"></i> Mission math</label></div>
   </div>
 
   <!-- ═══ PANEL 4: IMPACT LEDGER ═══ -->
@@ -351,8 +325,9 @@ button:hover{background:var(--surface2)}
     <div id="ledger-block" style="display:none">
       <div class="step-banner" style="background:var(--green-dim);border-color:var(--green-b)">
         <i class="ti ti-check" style="font-size:16px;flex-shrink:0;color:var(--green)"></i>
-        <span style="color:#A0E8C8">Ledger ready. Find funding opportunities on tab 5, model expansions on tab 6, exports on tab 8.</span>
+        <span style="color:#A0E8C8">Ledger ready. Export documents are on tab 6. The mission coach is on tab 5.</span>
       </div>
+
       <div id="impact-band" class="beband" style="border-color:var(--green-b);background:var(--green-dim)">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
           <div><p style="font-size:11px;font-weight:500;margin:0 0 2px;opacity:.8" id="ib-lbl">—</p><p style="font-size:24px;font-weight:600;margin:0;font-family:'DM Mono',monospace" id="ib-ratio">—</p></div>
@@ -361,184 +336,32 @@ button:hover{background:var(--surface2)}
         <div class="meter" style="margin-top:10px"><div class="mfill" id="ib-bar" style="width:0%;background:var(--green)"></div></div>
         <div style="display:flex;justify-content:space-between;font-size:11px;opacity:.7;margin-top:2px"><span>$0</span><span>Break-even (1×)</span><span id="ib-bar-max">—</span></div>
       </div>
+
       <div class="g4">
         <div class="mc"><p class="lb">Total investment</p><p class="vl warnc" id="l-budget">—</p></div>
         <div class="mc"><p class="lb">Total impact value</p><p class="vl pos" id="l-impact">—</p></div>
         <div class="mc"><p class="lb">Leverage ratio</p><p class="vl ic" id="l-lev">—</p></div>
         <div class="mc"><p class="lb">Cost per beneficiary</p><p class="vl gc" id="l-cpb">—</p></div>
       </div>
+
       <div class="card"><p class="sl">Program impact breakdown</p><div id="ledger-rows"></div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;padding:7px 0 0;border-top:1px solid var(--border);margin-top:3px"><span>Total impact value</span><span id="l-total" class="pos" style="font-family:'DM Mono',monospace">—</span></div></div>
       <div class="card"><p class="sl">Impact analysis</p><div id="impact-analysis" style="font-size:13px;color:var(--text2);line-height:1.8"></div></div>
+
       <div class="card card-donor">
         <p class="sl sl-donor"><i class="ti ti-heart"></i> Donor value story</p>
         <div id="donor-story" style="font-size:13px;color:#F5D79E;line-height:1.8"></div>
       </div>
-      <div class="g3" style="margin-top:.5rem">
-        <label for="t5" style="display:block"><span class="btn-teal" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Find funding →</span></label>
-        <label for="t6" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Model expansion →</span></label>
-        <label for="t8" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Exports →</span></label>
+
+      <div class="g2" style="margin-top:.5rem">
+        <label for="t6" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
+        <label for="t5" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Mission coach →</span></label>
       </div>
+      <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:12px"></i> Programs</label></div>
     </div>
   </div>
 
-  <!-- ═══ PANEL 5: FUNDING OPPORTUNITIES ═══ -->
+  <!-- ═══ PANEL 5: COACH ═══ -->
   <div class="tab-panel" id="p5">
-    <div class="card card-teal">
-      <p class="sl sl-teal"><i class="ti ti-search"></i> Funding opportunity finder</p>
-      <p style="font-size:13px;color:#A0E8E0;line-height:1.6;margin:0">Uses live web search to find grants, federal programs, foundation funding, and corporate giving opportunities matched to your mission, location, and budget size. Results include direct links to apply or learn more.</p>
-    </div>
-    <div class="card">
-      <p class="sl"><i class="ti ti-adjustments"></i> Search parameters</p>
-      <div class="fr3">
-        <div class="fg"><label>Funding type</label>
-          <select id="fund-type">
-            <option value="all">All types</option>
-            <option value="federal">Federal grants (grants.gov)</option>
-            <option value="foundation">Private foundations</option>
-            <option value="corporate">Corporate / CSR giving</option>
-            <option value="state">State &amp; local grants</option>
-            <option value="capacity">Capacity building</option>
-          </select>
-        </div>
-        <div class="fg"><label>Grant size range</label>
-          <select id="fund-size">
-            <option value="any">Any size</option>
-            <option value="small">Under $25k (small/seed)</option>
-            <option value="mid">$25k–$100k (mid-range)</option>
-            <option value="large">$100k–$500k (large)</option>
-            <option value="major">$500k+ (major/capital)</option>
-          </select>
-        </div>
-        <div class="fg"><label>Search focus</label>
-          <select id="fund-focus">
-            <option value="current">Current / open opportunities</option>
-            <option value="recurring">Recurring annual grants</option>
-            <option value="both">Both</option>
-          </select>
-        </div>
-      </div>
-      <div class="fg" style="margin-bottom:10px"><label>Additional search context (optional)</label><input id="fund-extra" placeholder="e.g. we serve rural communities, bilingual staff, working with tribes"/><span class="hint">Any detail that strengthens match quality.</span></div>
-      <button class="btn-teal" onclick="fetchFunding()" id="fund-btn" style="width:100%;padding:10px"><i class="ti ti-search" style="font-size:13px;vertical-align:-1px"></i> Search for funding opportunities</button>
-      <p style="font-size:11px;color:var(--text3);margin:6px 0 0;text-align:center">Searches live web sources — takes 10–20 seconds. Requires org info on tab 1.</p>
-    </div>
-    <div id="fund-status" style="margin-bottom:.875rem"></div>
-    <div id="fund-results" style="display:none">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
-        <p class="sl" style="margin:0"><i class="ti ti-trophy"></i> <span id="fund-count">0</span> opportunities found</p>
-        <button onclick="cpFunding()" style="font-size:11px;padding:4px 10px"><i class="ti ti-copy" style="font-size:11px;vertical-align:-1px"></i> Copy all</button>
-      </div>
-      <div id="fund-list"></div>
-      <div class="card" style="margin-top:.5rem">
-        <p class="sl sl-warn"><i class="ti ti-info-circle"></i> Important notes</p>
-        <p style="font-size:12px;color:#F5D79E;line-height:1.6;margin:0">Grant deadlines and amounts change frequently. Always verify details directly with the funder before applying. Results are based on your organization profile and live web data — eligibility is not guaranteed. Links open the funder's official site or grants.gov listing.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ PANEL 6: EXPANSION MODEL ═══ -->
-  <div class="tab-panel" id="p6">
-    <div class="card card-ai">
-      <p class="sl sl-ai"><i class="ti ti-rocket"></i> Project &amp; expansion model</p>
-      <p style="font-size:13px;color:#D0C0FF;line-height:1.6;margin:0">Model a proposed new program, geographic expansion, or scaling of an existing effort before committing. Define the investment, project the impact streams, and get a 3-year cost/impact forecast with break-even timeline and a go/no-go recommendation.</p>
-    </div>
-
-    <!-- Scenario setup -->
-    <div class="card">
-      <p class="sl"><i class="ti ti-settings"></i> Scenario setup</p>
-      <div class="fr">
-        <div class="fg"><label>Scenario name</label><input id="exp-name" placeholder="e.g. Youth STEM expansion — East County"/></div>
-        <div class="fg"><label>Scenario type</label>
-          <select id="exp-type">
-            <option value="new">New program</option>
-            <option value="scale">Scale existing program</option>
-            <option value="geo">Geographic expansion</option>
-            <option value="partner">Partnership / collaboration</option>
-            <option value="capital">Capital project</option>
-          </select>
-        </div>
-      </div>
-      <div class="fg" style="margin-bottom:10px"><label>Description</label><input type="text" id="exp-desc" placeholder="e.g. Replicate our workforce readiness program in two new zip codes serving 300 additional youth per year"/></div>
-    </div>
-
-    <!-- Investment costs -->
-    <div class="card">
-      <p class="sl"><i class="ti ti-currency-dollar"></i> Investment &amp; costs</p>
-      <div class="fr3">
-        <div class="fg"><label>One-time startup cost ($)</label><input type="number" id="exp-startup" placeholder="50000" oninput="calcExpansion()"/><span class="hint">Equipment, renovation, onboarding, etc.</span></div>
-        <div class="fg"><label>Annual operating cost ($)</label><input type="number" id="exp-annual" placeholder="120000" oninput="calcExpansion()"/><span class="hint">Ongoing staff, overhead, program delivery.</span></div>
-        <div class="fg"><label>Funding already secured ($)</label><input type="number" id="exp-secured" placeholder="0" oninput="calcExpansion()"/><span class="hint">Committed grants or donations for this project.</span></div>
-      </div>
-      <div class="fr3">
-        <div class="fg"><label>New FTEs required</label><input type="number" id="exp-ftes" value="1" min="0" step="0.5" oninput="calcExpansion()"/></div>
-        <div class="fg"><label>Avg new staff salary ($)</label><input type="number" id="exp-sal" placeholder="55000" oninput="calcExpansion()"/></div>
-        <div class="fg"><label>Benefits rate (%)</label><input type="number" id="exp-benefits" value="30" min="0" max="60" oninput="calcExpansion()"/></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label>Ramp-up period (months)</label><input type="number" id="exp-ramp" value="6" min="1" max="24" oninput="calcExpansion()"/><span class="hint">Months before full capacity is reached.</span></div>
-        <div class="fg"><label>Model horizon (years)</label>
-          <select id="exp-years" onchange="calcExpansion()">
-            <option value="3" selected>3 years</option>
-            <option value="5">5 years</option>
-            <option value="10">10 years</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <!-- Projected impact -->
-    <div class="card">
-      <p class="sl"><i class="ti ti-chart-arrows-vertical"></i> Projected impact streams</p>
-      <p style="font-size:12px;color:var(--text2);margin:0 0 10px">When at full capacity, what impact will this expansion generate? Add one stream per outcome type.</p>
-      <div id="exp-stream-list"></div>
-      <button class="add-stream-btn" onclick="addExpStream()" style="margin-bottom:0"><i class="ti ti-plus" style="font-size:12px;vertical-align:-2px"></i> Add projected impact stream</button>
-    </div>
-
-    <!-- Funding gap -->
-    <div class="card">
-      <p class="sl"><i class="ti ti-coin"></i> Funding strategy</p>
-      <div class="fr3">
-        <div class="fg"><label>Fundraising goal ($)</label><input type="number" id="exp-goal" placeholder="0" oninput="calcExpansion()"/><span class="hint">How much you need to raise for this project.</span></div>
-        <div class="fg"><label>Expected grant funding ($)</label><input type="number" id="exp-grants" placeholder="0" oninput="calcExpansion()"/></div>
-        <div class="fg"><label>Individual donor target ($)</label><input type="number" id="exp-donors" placeholder="0" oninput="calcExpansion()"/></div>
-      </div>
-    </div>
-
-    <button class="btn-teal" onclick="calcExpansion();runExpAnalysis()" style="width:100%;padding:10px;margin-bottom:.5rem"><i class="ti ti-calculator" style="font-size:13px;vertical-align:-1px"></i> Calculate &amp; get AI analysis</button>
-    <p style="font-size:11px;color:var(--text3);text-align:center;margin:0 0 .875rem">Calculates 3-year model and asks Claude for a go/no-go recommendation.</p>
-
-    <!-- Results -->
-    <div id="exp-results" style="display:none">
-      <div id="exp-summary-band" class="beband" style="border-color:var(--purple-b);background:var(--purple-dim)">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-          <div><p style="font-size:11px;font-weight:500;margin:0 0 2px;opacity:.8" id="exp-band-lbl">—</p><p style="font-size:24px;font-weight:600;margin:0;font-family:'DM Mono',monospace;color:var(--purple)" id="exp-band-val">—</p></div>
-          <div style="text-align:right"><p style="font-size:11px;margin:0 0 1px;opacity:.7">Total 3-yr investment</p><p style="font-size:16px;font-weight:600;margin:0;font-family:'DM Mono',monospace" id="exp-band-cost">—</p></div>
-        </div>
-      </div>
-      <div class="g4" style="margin-bottom:.875rem">
-        <div class="mc"><p class="lb">Funding gap</p><p class="vl" id="exp-gap">—</p></div>
-        <div class="mc"><p class="lb">3-yr projected impact</p><p class="vl pos" id="exp-total-impact">—</p></div>
-        <div class="mc"><p class="lb">Impact leverage</p><p class="vl ic" id="exp-lev">—</p></div>
-        <div class="mc"><p class="lb">Break-even month</p><p class="vl gc" id="exp-be-month">—</p></div>
-      </div>
-      <div class="card">
-        <p class="sl">Year-by-year model</p>
-        <div id="exp-yr-table"></div>
-      </div>
-      <div class="card" id="exp-ai-card">
-        <p class="sl sl-ai"><i class="ti ti-brain"></i> AI go/no-go analysis</p>
-        <div id="exp-ai-out" style="font-size:13px;color:var(--text2);line-height:1.8"><span class="spin"></span> Analyzing…</div>
-      </div>
-      <div class="ecard" style="margin-top:.875rem">
-        <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--purple)"></i> Expansion proposal brief</h3>
-        <p>Ready-to-share one-pager for board approval or funder conversations.</p>
-        <div class="dpre" id="doc-expansion">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-expansion')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ PANEL 7: COACH ═══ -->
-  <div class="tab-panel" id="p7">
     <div class="card card-mission">
       <p class="sl sl-mission"><i class="ti ti-brain"></i> Mission coach</p>
       <p style="font-size:13px;color:#A0E8C8;line-height:1.6">Four coaching modes for nonprofit leaders. If the API is unavailable, the coach hands off to Claude with a prompt you can paste into claude.ai.</p>
@@ -567,10 +390,11 @@ button:hover{background:var(--surface2)}
         </div>
       </div>
     </div>
+    <div class="back-nav"><label for="t4"><i class="ti ti-arrow-left" style="font-size:12px"></i> Impact ledger</label></div>
   </div>
 
-  <!-- ═══ PANEL 8: EXPORTS ═══ -->
-  <div class="tab-panel" id="p8">
+  <!-- ═══ PANEL 6: EXPORTS ═══ -->
+  <div class="tab-panel" id="p6">
     <div id="no-exp" style="text-align:center;padding:2rem;color:var(--text2);font-size:13px">Complete your impact ledger on tab 4 first — export documents appear here automatically.</div>
     <div id="exp-block" style="display:none">
       <div class="card card-ok" style="margin-bottom:.875rem">
@@ -585,27 +409,22 @@ button:hover{background:var(--surface2)}
       </div>
       <div class="ecard">
         <h3><i class="ti ti-heart" style="font-size:14px;color:var(--gold)"></i> Donor stewardship letter</h3>
-        <p>Personalized thank-you + impact evidence letter. Data-grounded but warm.</p>
+        <p>Personalized thank-you + impact evidence letter. Data-grounded but warm. Safe to customize and send.</p>
         <div class="dpre" id="doc-donor">—</div>
         <div class="brow"><button onclick="cpDoc('doc-donor')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('donor')">Refine ↗</button></div>
       </div>
       <div class="ecard">
         <h3><i class="ti ti-file-certificate" style="font-size:14px;color:var(--sage)"></i> Grant outcomes narrative</h3>
-        <p>Program-by-program outcomes with methodology and funder-facing language.</p>
+        <p>Program-by-program outcomes with methodology and funder-facing language. Drop directly into most grant reports.</p>
         <div class="dpre" id="doc-grant">—</div>
         <div class="brow"><button onclick="cpDoc('doc-grant')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('grant')">Refine ↗</button></div>
-      </div>
-      <div class="ecard" id="exp-export-card" style="display:none">
-        <h3><i class="ti ti-rocket" style="font-size:14px;color:var(--purple)"></i> Expansion proposal brief</h3>
-        <p>Board-ready one-pager for the expansion scenario modeled on tab 6.</p>
-        <div class="dpre" id="doc-expansion-copy">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-expansion-copy')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button></div>
       </div>
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportJSON()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download backup (JSON)</button>
         <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
       <p style="font-size:11px;color:var(--text3);margin:.5rem 0 0">JSON backup contains only self-reported estimates and publicly available data. No confidential information included.</p>
+      <div class="back-nav"><label for="t4"><i class="ti ti-arrow-left" style="font-size:12px"></i> Impact ledger</label></div>
     </div>
   </div>
 
@@ -613,61 +432,61 @@ button:hover{background:var(--surface2)}
 </div><!-- end .app -->
 
 <script>
-/* ── Impact stream type definitions (programs + expansion) ── */
+/* ─── Impact stream type definitions ─── */
 var ITYPES={
-  economic:{label:'Economic value created',cls:'td',icon:'ti-trending-up',desc:'Jobs created, wages increased, local spending, or economic multiplier effects.',qs:[
-    {id:'gdesc',t:'text',lbl:'Describe this economic impact',ph:'e.g. Participants gained employment',hint:'What economic activity did this program generate?'},
+  economic:{label:'Economic value created',cls:'td',icon:'ti-trending-up',desc:'Jobs created, wages increased, local spending enabled, or economic multiplier effects.',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe this economic impact',ph:'e.g. Participants gained employment',hint:'What economic activity did this program generate or enable?'},
     {id:'jobs',lbl:'Jobs created or retained',ph:'12',hint:'Full or part-time positions directly created.'},
     {id:'avg_wage',lbl:'Average annual wage ($)',ph:'42000',hint:'Median wage for these positions.'},
-    {id:'years',lbl:'Expected duration (years)',ph:'1',hint:'How long this employment is expected to last.'},
-    {id:'credit',lbl:'Program attribution (%)',ph:'60',hint:'How much is attributable to this program?'},
+    {id:'years',lbl:'Expected duration (years)',ph:'1',hint:'How many years this employment is expected to last.'},
+    {id:'credit',lbl:'Program attribution (%)',ph:'60',hint:'How much of the employment is attributable to this program?'},
     {id:'conf',lbl:'Confidence (%)',ph:'65',hint:'60–75% is honest for employment outcomes.'}
   ]},
   health:{label:'Health outcomes',cls:'tm',icon:'ti-heart-plus',desc:'Reduced healthcare costs, improved health metrics, or prevented illness.',qs:[
     {id:'gdesc',t:'text',lbl:'Describe this health outcome',ph:'e.g. Reduced ER visits for uninsured',hint:'What health benefit did this program produce?'},
     {id:'people',lbl:'Number of people',ph:'200',hint:'Direct beneficiaries of this health outcome.'},
-    {id:'value_pp',lbl:'Estimated value per person ($)',ph:'800',hint:'Healthcare cost avoided or quality-adjusted benefit. SROI: $500–$5,000/person.'},
+    {id:'value_pp',lbl:'Estimated value per person ($)',ph:'800',hint:'Avg healthcare cost avoided or quality-adjusted benefit. SROI studies: $500–$5,000/person depending on intervention.'},
     {id:'credit',lbl:'Program attribution (%)',ph:'55',hint:'What % is attributable to this program?'},
-    {id:'conf',lbl:'Confidence (%)',ph:'55',hint:'50–65% is honest for health outcomes.'}
+    {id:'conf',lbl:'Confidence (%)',ph:'55',hint:'Health outcomes are difficult to attribute. 50–65% is honest.'}
   ]},
   education:{label:'Education &amp; skills',cls:'tg',icon:'ti-school',desc:'Knowledge gained, credentials earned, or skills developed.',qs:[
     {id:'gdesc',t:'text',lbl:'Describe this education outcome',ph:'e.g. GED completions',hint:'What did participants learn or achieve?'},
     {id:'people',lbl:'Number of people',ph:'50',hint:'Participants who completed the learning outcome.'},
-    {id:'value_pp',lbl:'Estimated lifetime earnings increase ($)',ph:'15000',hint:'GED: ~$10k–$25k. Vocational cert: ~$20k–$50k.'},
-    {id:'credit',lbl:'Program attribution (%)',ph:'50',hint:'What % of the gain is attributable to this program?'},
+    {id:'value_pp',lbl:'Estimated lifetime earnings increase ($)',ph:'15000',hint:'Discounted lifetime earnings gain from credential or skill. GED: ~$10k–$25k. Vocational cert: ~$20k–$50k.'},
+    {id:'credit',lbl:'Program attribution (%)',ph:'50',hint:'What % of the earnings gain is attributable to this program?'},
     {id:'conf',lbl:'Confidence (%)',ph:'60',hint:'60–70% is reasonable for direct completions.'}
   ]},
   environment:{label:'Environmental value',cls:'tc',icon:'ti-leaf',desc:'Ecosystem services, carbon sequestration, pollution prevented, or habitat restored.',qs:[
     {id:'gdesc',t:'text',lbl:'Describe this environmental outcome',ph:'e.g. Acres of wetland restored',hint:'What environmental benefit did this program create?'},
     {id:'units',lbl:'Units of measurement',ph:'50',hint:'Acres, tons of CO2, kg of pollutant, etc.'},
     {id:'unit_label',t:'text',lbl:'Unit type',ph:'acres',hint:'acres, metric tons CO2e, kg, etc.'},
-    {id:'value_pu',lbl:'Estimated value per unit ($)',ph:'8000',hint:'Wetland acre: ~$3k–$25k. CO2 ton: ~$50–$200. See EPA BCA tables.'},
-    {id:'credit',lbl:'Program attribution (%)',ph:'70',hint:'What % is attributable to this program?'},
-    {id:'conf',lbl:'Confidence (%)',ph:'60',hint:'55–70% is honest for ecosystem valuation.'}
+    {id:'value_pu',lbl:'Estimated value per unit ($)',ph:'8000',hint:'Wetland acre: ~$3k–$25k. CO2 ton: ~$50–$200. Consult EPA BCA or USDA RCPP tables.'},
+    {id:'credit',lbl:'Program attribution (%)',ph:'70',hint:'What % of the environmental outcome is attributable to this program?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'60',hint:'Ecosystem valuation has moderate uncertainty. 55–70% is honest.'}
   ]},
   social:{label:'Social &amp; community value',cls:'tp',icon:'ti-users',desc:'Reduced isolation, community cohesion, safety improvements, or civic participation.',qs:[
     {id:'gdesc',t:'text',lbl:'Describe this social outcome',ph:'e.g. Reduced social isolation in seniors',hint:'What social change did this program contribute to?'},
     {id:'people',lbl:'Number of people',ph:'150',hint:'People who experienced this social outcome.'},
-    {id:'value_pp',lbl:'Estimated value per person ($)',ph:'1200',hint:'Reduced isolation: $800–$3k/person. Crime reduction: $2k–$15k/incident.'},
+    {id:'value_pp',lbl:'Estimated value per person ($)',ph:'1200',hint:'Use SROI benchmarks. Reduced isolation: $800–$3k/person. Crime reduction: $2k–$15k/incident. Civic engagement: $500–$2k/person.'},
     {id:'credit',lbl:'Program attribution (%)',ph:'45',hint:'Social outcomes are diffuse. 30–60% is honest.'},
     {id:'conf',lbl:'Confidence (%)',ph:'50',hint:'40–55% for social outcomes.'}
   ]},
-  cost_avoided:{label:'Cost avoided (government/system)',cls:'to',icon:'ti-shield-dollar',desc:'Reduced burden on public systems: criminal justice, foster care, emergency services.',qs:[
+  cost_avoided:{label:'Cost avoided (government/system)',cls:'to',icon:'ti-shield-dollar',desc:'Reduced burden on public systems: criminal justice, foster care, emergency services, public health.',qs:[
     {id:'gdesc',t:'text',lbl:'Describe the avoided cost',ph:'e.g. Reduced incarceration',hint:'What public system cost did this program prevent?'},
-    {id:'incidents',lbl:'Incidents or cases avoided',ph:'8',hint:'Hospitalizations, incarcerations, ER visits, etc.'},
-    {id:'cost_each',lbl:'Cost per incident to public system ($)',ph:'35000',hint:'Incarceration: ~$40k/yr. Hospitalization: ~$15k–$50k. ER: ~$2k–$5k.'},
-    {id:'credit',lbl:'Program attribution (%)',ph:'50',hint:'What % is attributable to this program?'},
+    {id:'incidents',lbl:'Incidents or cases avoided',ph:'8',hint:'Number of avoided hospitalizations, incarcerations, ER visits, etc.'},
+    {id:'cost_each',lbl:'Cost per incident to public system ($)',ph:'35000',hint:'Incarceration: ~$40k/yr. Hospitalization: ~$15k–$50k. ER visit: ~$2k–$5k. Foster care: ~$25k/yr.'},
+    {id:'credit',lbl:'Program attribution (%)',ph:'50',hint:'What % of the avoidance is attributable to this program?'},
     {id:'conf',lbl:'Confidence (%)',ph:'55',hint:'50–65% is honest.'}
   ]},
-  other:{label:'Other mission value',cls:'to',icon:'ti-star',desc:'Cultural, spiritual, historical, or advocacy value.',qs:[
+  other:{label:'Other mission value',cls:'to',icon:'ti-star',desc:'Cultural, spiritual, historical, or advocacy value that defies easy categorization.',qs:[
     {id:'gdesc',t:'text',lbl:'Describe this value',ph:'e.g. Cultural heritage preserved',hint:'What mission value did this program create?'},
     {id:'val',lbl:'Best estimate of annual value ($)',ph:'30000',hint:'Anchor on a comparable or replacement cost.'},
     {id:'credit',lbl:'Program attribution (%)',ph:'50',hint:'What % is due to this specific program?'},
-    {id:'conf',lbl:'Confidence (%)',ph:'45',hint:'40–55% is honest.'}
+    {id:'conf',lbl:'Confidence (%)',ph:'45',hint:'40–55% is honest for hard-to-quantify value.'}
   ]}
 };
 
-var progN=0,streamN=0,expStreamN=0,S={},ES={},cMode=null,cHist=[];
+var progN=0,streamN=0,S={},cMode=null,cHist=[];
 
 function gv(id){var e=document.getElementById(id);return e?e.value||'':'';}
 function gn(id){return parseFloat(gv(id))||0;}
@@ -675,12 +494,13 @@ function fmt(n){if(!isFinite(n)||isNaN(n))return'—';var s=n<0?'-':'';var a=Mat
 function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
 function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
 
-/* ── Mission math live update ── */
 function liveM(){
-  var budget=gn('org-budget'),prog=gn('org-prog-exp'),admin=gn('org-admin');
+  var budget=gn('org-budget'),staff=gn('org-staff'),vols=gn('org-vols');
+  var prog=gn('org-prog-exp'),admin=gn('org-admin'),fund=gn('org-fund-cost');
   var direct=gn('org-direct'),indirect=gn('org-indirect');
   if(!budget)return;
-  var cpb=gn('org-cpb')>0?gn('org-cpb'):(direct>0?budget/direct:0);
+  var cpbManual=gn('org-cpb');
+  var cpb=cpbManual>0?cpbManual:(direct>0?budget/direct:0);
   var eff=budget>0?prog/budget*100:0;
   var lev=budget>0?(direct+indirect*0.2)/budget*1000:0;
   se('mm-budget',fmt(budget));
@@ -690,14 +510,16 @@ function liveM(){
   var breakdown='';
   if(prog>0)breakdown+='<div class="irow"><span>Program / direct services</span><strong>'+fmt(prog)+' ('+Math.round(prog/budget*100)+'%)</strong></div>';
   if(admin>0)breakdown+='<div class="irow"><span>Administration / overhead</span><strong>'+fmt(admin)+' ('+Math.round(admin/budget*100)+'%)</strong></div>';
-  var fc=gn('org-fund-cost');if(fc>0)breakdown+='<div class="irow"><span>Fundraising</span><strong>'+fmt(fc)+' ('+Math.round(fc/budget*100)+'%)</strong></div>';
+  if(fund>0)breakdown+='<div class="irow"><span>Fundraising</span><strong>'+fmt(fund)+' ('+Math.round(fund/budget*100)+'%)</strong></div>';
   if(direct>0)breakdown+='<div class="irow"><span>Direct beneficiaries</span><strong>'+direct.toLocaleString()+'</strong></div>';
   if(indirect>0)breakdown+='<div class="irow"><span>Indirect beneficiaries</span><strong>'+indirect.toLocaleString()+'</strong></div>';
   if(cpb>0)breakdown+='<div class="irow"><span>Cost per direct beneficiary</span><strong>'+fmt(cpb)+'</strong></div>';
-  sh('mm-breakdown',breakdown||'<p style="font-size:13px;color:var(--text2)">Fill in financials on tab 1.</p>');
-  var bench='Program efficiency benchmark: Charity Navigator considers 75%+ program spending to be good. ';
-  bench+=(eff>=75?'<strong style="color:var(--green)">You are at '+eff.toFixed(0)+'% — above this threshold.</strong>':'<strong style="color:var(--gold)">You are at '+eff.toFixed(0)+'% — below the 75% benchmark.</strong>')+'<br>';
-  if(cpb>0)bench+='Cost per direct beneficiary: $'+Math.round(cpb).toLocaleString()+'.';
+  sh('mm-breakdown',breakdown||'<p style="font-size:13px;color:var(--text2)">Fill in financials on tab 1 to see breakdown.</p>');
+  var bench='';
+  var charity_prog_avg=75;var us_cpb_avg=800;
+  bench+='Program efficiency benchmark: Charity Navigator considers 75%+ program spending to be good. ';
+  bench+=(eff>=75?'<strong style="color:var(--green)">You are at '+eff.toFixed(0)+'% — above this threshold.</strong>':'<strong style="color:var(--gold)">You are at '+eff.toFixed(0)+'% — below the 75% benchmark. Consider whether overhead can be reduced.</strong>')+'<br>';
+  if(cpb>0)bench+='Cost per direct beneficiary: $'+Math.round(cpb).toLocaleString()+'. ';
   sh('mm-bench',bench);
   calcGift();
 }
@@ -715,15 +537,13 @@ function calcGift(){
   h+=(ppl>=1?'<div class="mc"><p class="lb">Beneficiaries served</p><p class="vl ic">~'+Math.round(ppl)+'</p></div>':'<div class="mc"><p class="lb">Beneficiaries served</p><p class="vl ic">Partial</p></div>');
   h+='<div class="mc"><p class="lb">Admin / fundraising</p><p class="vl">'+fmt(amt*(1-progPct))+'</p></div>';
   h+='</div>';
-  if(cpb>0)h+='<p style="font-size:12px;color:#A0E8C8;margin:6px 0 0">At '+fmt(cpb)+' per beneficiary, this gift funds approximately '+(ppl>=1?'<strong>'+Math.round(ppl)+'</strong> beneficiaries':'<strong>a fraction</strong> of one beneficiary')+' for one year.</p>';
+  if(cpb>0&&direct>0)h+='<p style="font-size:12px;color:#A0E8C8;margin:6px 0 0">At your current cost-per-beneficiary of '+fmt(cpb)+', this gift funds approximately '+(ppl>=1?'<strong>'+Math.round(ppl)+'</strong> beneficiaries':'<strong>a fraction</strong> of one beneficiary')+' for one year.</p>';
   el.innerHTML=h;
 }
 
-/* ── Period ── */
 function periodChg(){var s=gv('prog-period');var c=document.getElementById('prog-custom');if(c)c.style.display=s==='custom'?'inline-block':'none';}
 function getPM(){var s=gv('prog-period');if(s==='custom')return gn('prog-custom')||12;return parseInt(s)||12;}
 
-/* ── Program stream calculations ── */
 function calcStreamVal(pid,sid){
   var type=gv('stype-'+pid+'-'+sid);if(!type)return 0;
   var p=function(k){return gn('sq-'+pid+'-'+sid+'-'+k);};
@@ -811,14 +631,14 @@ function getAllProgData(){
   return progs;
 }
 
-/* ── Impact ledger ── */
 function calcLedger(){
+  var _r4=document.getElementById('t4');if(_r4)_r4.checked=true;
   var budget=gn('org-budget'),direct=gn('org-direct'),indirect=gn('org-indirect');
   var progs=getAllProgData(),totalImpact=progs.reduce(function(s,p){return s+p.totalVal;},0);
   var lev=budget>0?totalImpact/budget:0;
   var cpb=gn('org-cpb')>0?gn('org-cpb'):(direct>0?budget/direct:0);
-  var months=getPM();
-  S={budget:budget,direct:direct,indirect:indirect,progs:progs,totalImpact:totalImpact,lev:lev,cpb:cpb,months:months};
+  var months=getPM(),periodFrac=months/12;
+  S={budget:budget,direct:direct,indirect:indirect,progs:progs,totalImpact:totalImpact,lev:lev,cpb:cpb,months:months,periodFrac:periodFrac};
 
   document.getElementById('no-ledger').style.display='none';
   document.getElementById('ledger-block').style.display='block';
@@ -829,7 +649,8 @@ function calcLedger(){
   se('ib-lbl',lev>=3?'High-leverage mission: '+(lev.toFixed(1)+'× return on investment'):lev>=1?'Positive mission leverage: '+(lev.toFixed(1)+'× return on investment'):'Below 1× — document more impact streams to tell the full story');
   se('ib-ratio',lev>=1?lev.toFixed(2)+'×':'<1×');
   se('ib-budget',fmt(budget));
-  var bar=document.getElementById('ib-bar');bar.style.width=Math.round(Math.min((lev/4)*100,100))+'%';bar.style.background=lev>=2?'var(--green)':lev>=1?'var(--teal)':'var(--gold)';
+  var bpct=Math.min((lev/4)*100,100);
+  var bar=document.getElementById('ib-bar');bar.style.width=Math.round(bpct)+'%';bar.style.background=lev>=2?'var(--green)':lev>=1?'var(--teal)':'var(--gold)';
   se('ib-bar-max',fmt(budget*4));
   se('l-budget',fmt(budget));se('l-impact',fmt(totalImpact));
   var ll=document.getElementById('l-lev');if(ll){ll.textContent=lev>=1?lev.toFixed(2)+'×':'<1×';ll.className='vl '+(lev>=1?'ic':'warnc');}
@@ -839,7 +660,7 @@ function calcLedger(){
   for(var pi=0;pi<progs.length;pi++){
     var p=progs[pi];
     rows+='<div class="irow" style="flex-direction:column;align-items:flex-start;gap:3px"><div style="display:flex;justify-content:space-between;width:100%"><strong>'+p.title+'</strong><strong style="font-family:\'DM Mono\',monospace">'+fmt(p.totalVal)+'</strong></div>';
-    if(p.progBudget>0)rows+='<div style="font-size:11px;color:var(--text3);padding-left:10px">Budget: '+fmt(p.progBudget)+' | Leverage: '+(p.totalVal>0?(p.totalVal/p.progBudget).toFixed(2)+'×':'—')+'</div>';
+    if(p.progBudget>0)rows+='<div style="font-size:11px;color:var(--text3);padding-left:10px">Budget: '+fmt(p.progBudget)+' | Program leverage: '+(p.progBudget>0&&p.totalVal>0?(p.totalVal/p.progBudget).toFixed(2)+'×':'—')+'</div>';
     for(var si=0;si<p.streams.length;si++){var st=p.streams[si];rows+='<div style="font-size:11px;color:var(--text2);display:flex;justify-content:space-between;width:100%;padding-left:10px"><span><span class="tbadge '+(ITYPES[st.type]?ITYPES[st.type].cls:'')+'" style="font-size:10px">'+st.label+'</span> '+st.gdesc+'</span><span style="font-family:\'DM Mono\',monospace">'+fmt(st.val)+'</span></div>';}
     rows+='</div>';
   }
@@ -848,7 +669,7 @@ function calcLedger(){
 
   var analysis='';
   if(lev>=3)analysis='Your programs generate approximately <strong>'+fmt(totalImpact)+'</strong> in mission value against a <strong>'+fmt(budget)+'</strong> investment — a leverage ratio of <strong>'+lev.toFixed(2)+'×</strong>. This is a compelling story for major donors and foundation funders.';
-  else if(lev>=1)analysis='Your programs generate <strong>'+lev.toFixed(2)+'×</strong> return on investment. To strengthen the case: add more programs, document additional impact streams, or use the Mission Coach (tab 7) to identify under-quantified value.';
+  else if(lev>=1)analysis='Your programs generate <strong>'+lev.toFixed(2)+'×</strong> return on investment. To strengthen the case: add more programs, document additional impact streams, or use the Mission Coach (tab 5) to identify under-quantified value.';
   else analysis='Your documented impact is below your investment. This usually means impact is being undercounted — not that programs are failing. Use the Mission Coach to surface hidden value streams.';
   if(cpb>0)analysis+=' At <strong>'+fmt(cpb)+'</strong> per direct beneficiary, every $1,000 donated funds approximately <strong>'+Math.round(1000/cpb)+'</strong> beneficiaries.';
   sh('impact-analysis',analysis);
@@ -864,243 +685,10 @@ function calcLedger(){
   document.getElementById('no-exp').style.display='none';
 }
 
-/* ── Funding opportunity search ── */
-async function fetchFunding(){
-  var org=gv('org-name')||'nonprofit',mission=gv('org-mission')||'community services';
-  var loc=gv('org-loc')||'United States',budget=gn('org-budget');
-  var keywords=gv('org-keywords'),fundType=gv('fund-type'),fundSize=gv('fund-size'),fundFocus=gv('fund-focus'),extra=gv('fund-extra');
-  var status501=gv('org-501');
-
-  var btn=document.getElementById('fund-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Searching…';
-  sh('fund-status','<div class="card card-teal"><p class="sl sl-teal"><i class="ti ti-search"></i> Searching for funding opportunities…</p><p style="font-size:12px;color:#A0E8E0;margin:0">Looking for grants, foundations, and programs matched to your mission. This takes 15–25 seconds.</p></div>');
-  document.getElementById('fund-results').style.display='none';
-
-  var sizeLabel={'any':'any size','small':'under $25k','mid':'$25k–$100k','large':'$100k–$500k','major':'$500k+'}[fundSize]||'any size';
-  var typeLabel={'all':'all types','federal':'federal grants','foundation':'private foundations','corporate':'corporate giving','state':'state and local grants','capacity':'capacity building grants'}[fundType]||'all types';
-  var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 6–8 specific, real funding opportunities that match this organization. For each, provide:\n- Funder name and grant program name\n- Typical award amount or range\n- Eligibility and mission fit explanation\n- Application deadline or cycle (current or upcoming)\n- Official URL or grants.gov link\n- A 1-sentence reason this org should apply\n\nPrioritize opportunities that are currently open or open on a recurring annual basis. Include a mix of federal, foundation, and other sources where available. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium","rationale":"one sentence why this fits","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
-
-  try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
-    if(!r.ok)throw new Error('http');
-    var d=await r.json();if(d.error)throw new Error('api');
-    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
-    if(!txt||txt.length<20)throw new Error('empty');
-
-    var clean=txt.replace(/```json|```/g,'').trim();
-    var m=clean.match(/\[[\s\S]*\]/);
-    var grants=m?JSON.parse(m[0]):[];
-    if(!grants||!grants.length)throw new Error('no results');
-
-    renderFunding(grants);
-  }catch(e){
-    sh('fund-status','<div class="card card-warn"><p class="sl sl-warn"><i class="ti ti-alert-triangle"></i> Search failed or returned no results</p><p style="font-size:12px;color:#F5D79E;margin:0">This can happen if the API is unavailable or the search returned no parseable results. Try again, or adjust your mission/keyword fields on tab 1.</p></div>');
-  }
-  btn.disabled=false;btn.innerHTML='<i class="ti ti-refresh" style="font-size:13px;vertical-align:-1px"></i> Search again';
-}
-
-function renderFunding(grants){
-  sh('fund-status','');
-  se('fund-count',grants.length);
-  var typeColors={'federal':'tg','foundation':'td','corporate':'tp','state':'tc','other':'to'};
-  var html='';
-  for(var i=0;i<grants.length;i++){
-    var g=grants[i];
-    var tc=typeColors[g.type]||'to';
-    var fitCls=g.fit==='High'?'gpfit':g.fit==='Medium'?'gpdeadline':'to';
-    html+='<div class="grant-card">';
-    html+='<div class="grant-title"><span>'+g.program+'</span><span class="tbadge '+tc+'" style="font-size:10px;flex-shrink:0">'+(g.type||'other')+'</span></div>';
-    html+='<div class="grant-funder"><i class="ti ti-building" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>'+g.funder+'</div>';
-    html+='<div class="grant-meta">';
-    if(g.amount)html+='<span class="grant-pill gpamt"><i class="ti ti-coin" style="font-size:10px;vertical-align:-1px"></i> '+g.amount+'</span>';
-    if(g.fit)html+='<span class="grant-pill '+fitCls+'">'+g.fit+' fit</span>';
-    if(g.deadline)html+='<span class="grant-pill gpdeadline"><i class="ti ti-calendar" style="font-size:10px;vertical-align:-1px"></i> '+g.deadline+'</span>';
-    html+='</div>';
-    if(g.rationale)html+='<div class="grant-rationale">'+g.rationale+'</div>';
-    if(g.url&&g.url.indexOf('http')===0)html+='<a class="grant-link" href="'+g.url+'" target="_blank" rel="noopener"><i class="ti ti-external-link" style="font-size:11px"></i> Visit funder website</a>';
-    html+='</div>';
-  }
-  sh('fund-list',html);
-  document.getElementById('fund-results').style.display='block';
-}
-
-function cpFunding(){
-  var el=document.getElementById('fund-list');if(!el)return;
-  var cards=el.querySelectorAll('.grant-card');
-  var txt='FUNDING OPPORTUNITIES — '+gv('org-name')+'\n\n';
-  cards.forEach(function(c,i){
-    txt+=(i+1)+'. '+(c.querySelector('.grant-title span')||{textContent:''}).textContent+'\n';
-    var funder=c.querySelector('.grant-funder');if(funder)txt+='   Funder: '+funder.textContent.trim()+'\n';
-    var rationale=c.querySelector('.grant-rationale');if(rationale)txt+='   '+rationale.textContent.trim()+'\n';
-    var link=c.querySelector('.grant-link');if(link)txt+='   URL: '+link.href+'\n';
-    txt+='\n';
-  });
-  navigator.clipboard.writeText(txt).catch(function(){});
-  var btn=event.target;btn.textContent='Copied!';setTimeout(function(){btn.innerHTML='<i class="ti ti-copy" style="font-size:11px;vertical-align:-1px"></i> Copy all';},1500);
-}
-
-/* ── Expansion model ── */
-function calcExpStreamVal(sid){
-  var type=gv('estype-'+sid);if(!type)return 0;
-  var p=function(k){return gn('esq-'+sid+'-'+k);};
-  var raw=0;
-  if(type==='economic'){raw=p('jobs')*(p('avg_wage')||42000)*Math.min(p('years')||1,3)*(p('credit')||60)/100*((p('conf')||65)/100);}
-  else if(type==='health'){raw=p('people')*(p('value_pp')||800)*(p('credit')||55)/100*((p('conf')||55)/100);}
-  else if(type==='education'){raw=p('people')*(p('value_pp')||15000)*(p('credit')||50)/100*((p('conf')||60)/100);}
-  else if(type==='environment'){raw=p('units')*(p('value_pu')||8000)*(p('credit')||70)/100*((p('conf')||60)/100);}
-  else if(type==='social'){raw=p('people')*(p('value_pp')||1200)*(p('credit')||45)/100*((p('conf')||50)/100);}
-  else if(type==='cost_avoided'){raw=p('incidents')*(p('cost_each')||35000)*(p('credit')||50)/100*((p('conf')||55)/100);}
-  else if(type==='other'){raw=p('val')*(p('credit')||50)/100*((p('conf')||45)/100);}
-  return raw;
-}
-
-function updateExpStream(sid){
-  var val=calcExpStreamVal(sid);
-  var pill=document.getElementById('espill-'+sid);
-  if(pill){pill.textContent=val>0?fmt(val)+'/yr':'—';pill.className='srpill '+(val>0?'srpill-live':'srpill-zero');}
-}
-
-function renderExpStreamQs(sid){
-  var type=gv('estype-'+sid);var qc=document.getElementById('esqs-'+sid);if(!qc)return;
-  if(!type){qc.innerHTML='';updateExpStream(sid);return;}
-  var def=ITYPES[type];
-  var h='<div style="margin-bottom:7px"><span class="tbadge '+def.cls+'"><i class="ti '+def.icon+'" style="font-size:11px;vertical-align:-1px"></i> '+def.label+'</span></div>';
-  for(var i=0;i<def.qs.length;i++){
-    var q=def.qs[i];
-    h+='<div class="qb" style="background:var(--surface2)"><label>'+q.lbl+'</label><span class="qh">'+q.hint+'</span>';
-    if(q.t==='text')h+='<input type="text" id="esq-'+sid+'-'+q.id+'" placeholder="'+q.ph+'" oninput="updateExpStream('+sid+');calcExpansion()" />';
-    else h+='<input type="number" id="esq-'+sid+'-'+q.id+'" placeholder="'+q.ph+'" oninput="updateExpStream('+sid+');calcExpansion()" />';
-    h+='</div>';
-  }
-  qc.innerHTML=h;updateExpStream(sid);
-}
-
-function addExpStream(){
-  expStreamN++;var sid=expStreamN;
-  var container=document.getElementById('exp-stream-list');if(!container)return;
-  var count=container.querySelectorAll('[data-esid]').length+1;
-  var d=document.createElement('div');d.className='exp-stream';d.setAttribute('data-esid',sid);
-  d.innerHTML='<div class="shdr"><span style="font-size:12px;font-weight:500;color:var(--text2);flex:1">Projected stream '+count+'</span><span class="srpill srpill-zero" id="espill-'+sid+'">—</span><button class="delbtn" onclick="this.closest(\'[data-esid]\').remove();calcExpansion()" aria-label="Remove"><i class="ti ti-x"></i></button></div><div class="fg" style="margin-bottom:8px"><label>Impact type</label><select id="estype-'+sid+'" onchange="renderExpStreamQs('+sid+')"><option value="">— choose impact type —</option><option value="economic">Economic value created</option><option value="health">Health outcomes</option><option value="education">Education &amp; skills</option><option value="environment">Environmental value</option><option value="social">Social &amp; community value</option><option value="cost_avoided">Cost avoided (government/system)</option><option value="other">Other mission value</option></select></div><div id="esqs-'+sid+'"></div>';
-  container.appendChild(d);
-}
-
-function getExpStreams(){
-  var streams=[];
-  document.querySelectorAll('[data-esid]').forEach(function(el){
-    var sid=parseInt(el.getAttribute('data-esid'));
-    var type=gv('estype-'+sid);if(!type)return;
-    var val=calcExpStreamVal(sid);
-    var gdesc=gv('esq-'+sid+'-gdesc')||'Impact stream';
-    streams.push({sid:sid,type:type,label:ITYPES[type]?ITYPES[type].label:type,gdesc:gdesc,val:val});
-  });
-  return streams;
-}
-
-function calcExpansion(){
-  var startup=gn('exp-startup'),annual=gn('exp-annual');
-  var ftes=gn('exp-ftes'),sal=gn('exp-sal'),benefits=(gn('exp-benefits')||30)/100;
-  var staffCost=ftes*sal*(1+benefits);
-  var totalAnnual=annual+staffCost;
-  var ramp=gn('exp-ramp')||6,years=parseInt(gv('exp-years'))||3;
-  var secured=gn('exp-secured');
-  var goal=gn('exp-goal'),grants=gn('exp-grants'),donors=gn('exp-donors');
-
-  var streams=getExpStreams();
-  var annualImpact=streams.reduce(function(s,st){return s+st.val;},0);
-  var rampFrac=1-ramp/24;
-  var yr1Impact=annualImpact*rampFrac;
-
-  var yr1Cost=startup+totalAnnual;
-  var yr2Cost=totalAnnual;
-  var yr3Cost=totalAnnual;
-
-  var totalCost=yr1Cost+yr2Cost+(years>=3?yr3Cost:0);
-  var totalImpact=yr1Impact+(annualImpact*(years-1));
-  var lev=totalCost>0?totalImpact/totalCost:0;
-
-  var fundingNeeded=Math.max(0,totalCost-secured);
-  var gap=fundingNeeded-(grants+donors);
-
-  var beMonth=0;
-  var cumCost=startup,cumImpact=0;
-  for(var m=1;m<=36;m++){
-    cumCost+=totalAnnual/12;
-    var fracThisMonth=m<=ramp?(m/ramp):1;
-    cumImpact+=annualImpact*fracThisMonth/12;
-    if(!beMonth&&cumImpact>=cumCost)beMonth=m;
-  }
-
-  ES={startup:startup,totalAnnual:totalAnnual,staffCost:staffCost,ramp:ramp,years:years,secured:secured,
-      annualImpact:annualImpact,yr1Impact:yr1Impact,yr1Cost:yr1Cost,yr2Cost:yr2Cost,yr3Cost:yr3Cost,
-      totalCost:totalCost,totalImpact:totalImpact,lev:lev,gap:gap,fundingNeeded:fundingNeeded,beMonth:beMonth,
-      streams:streams,name:gv('exp-name'),desc:gv('exp-desc'),type:gv('exp-type')};
-
-  if(!gn('exp-startup')&&!gn('exp-annual')&&!gn('exp-sal'))return;
-
-  document.getElementById('exp-results').style.display='block';
-
-  var bandEl=document.getElementById('exp-summary-band');
-  bandEl.style.background=lev>=2?'var(--green-dim)':lev>=1?'var(--teal-dim)':'var(--purple-dim)';
-  bandEl.style.borderColor=lev>=2?'var(--green-b)':lev>=1?'var(--teal-b)':'var(--purple-b)';
-  se('exp-band-lbl',years+'-year projected mission leverage');
-  var bv=document.getElementById('exp-band-val');if(bv){bv.textContent=lev>=1?lev.toFixed(2)+'×':'<1×';bv.style.color=lev>=2?'var(--green)':lev>=1?'var(--teal)':'var(--gold)';}
-  se('exp-band-cost',fmt(totalCost));
-
-  var gapEl=document.getElementById('exp-gap');if(gapEl){gapEl.textContent=gap>0?fmt(gap):'Funded';gapEl.className='vl '+(gap>0?'neg':'pos');}
-  se('exp-total-impact',fmt(totalImpact));
-  var levEl=document.getElementById('exp-lev');if(levEl){levEl.textContent=lev>=1?lev.toFixed(2)+'×':'<1×';levEl.className='vl '+(lev>=1?'ic':'warnc');}
-  se('exp-be-month',beMonth>0?'Month '+beMonth:'Beyond 3 yrs');
-
-  var tbl='<table class="yr-table"><thead><tr><th>Year</th><th>Operating cost</th><th>Projected impact</th><th>Net</th><th>Status</th></tr></thead><tbody>';
-  var cumC=startup,cumI=0;
-  for(var y=1;y<=years;y++){
-    var yc=y===1?yr1Cost:totalAnnual;
-    var yi=y===1?yr1Impact:annualImpact;
-    cumC+=y===1?0:0;var net=yi-yc;
-    var cls=net>=0?'yr-pos':yi/yc>=0.6?'yr-warn':'yr-neg';
-    var status=net>=0?'✓ Impact exceeds cost':yi/yc>=0.6?'Approaching break-even':'Building toward impact';
-    tbl+='<tr><td>Year '+y+(y===1&&ramp>0?' ('+ramp+'-mo ramp)':''+'')+'</td><td>'+fmt(yc)+'</td><td>'+fmt(yi)+'</td><td class="'+cls+'">'+fmt(net)+'</td><td style="font-size:11px;color:var(--text2)">'+status+'</td></tr>';
-  }
-  tbl+='<tr style="font-weight:500"><td>'+years+'-year total</td><td>'+fmt(totalCost)+'</td><td class="pos">'+fmt(totalImpact)+'</td><td class="'+(totalImpact>=totalCost?'yr-pos':'yr-neg')+'">'+fmt(totalImpact-totalCost)+'</td><td></td></tr>';
-  tbl+='</tbody></table>';
-  sh('exp-yr-table',tbl);
-
-  genExpDoc();
-  var expExport=document.getElementById('exp-export-card');if(expExport)expExport.style.display='block';
-}
-
-async function runExpAnalysis(){
-  if(!ES.totalCost)return;
-  sh('exp-ai-out','<span class="spin"></span> Asking Claude for a go/no-go analysis…');
-  document.getElementById('exp-ai-card').style.display='block';
-
-  var prompt='You are an experienced nonprofit strategy advisor. Analyze this proposed expansion and give a direct go/no-go recommendation.\n\nOrganization: '+gv('org-name')+' | Mission: '+gv('org-mission')+'\nCurrent budget: '+fmt(gn('org-budget'))+'\n\nProposed expansion: '+ES.name+'\nType: '+ES.type+'\nDescription: '+ES.desc+'\n\nFINANCIAL MODEL ('+ES.years+' years):\n• Startup cost: '+fmt(ES.startup)+'\n• Annual operating: '+fmt(ES.totalAnnual)+' (incl. '+fmt(ES.staffCost)+' staff)\n• Ramp-up period: '+ES.ramp+' months\n• Total investment: '+fmt(ES.totalCost)+'\n• Funding secured: '+fmt(ES.secured)+'\n• Funding gap: '+fmt(Math.max(0,ES.gap))+'\n\nPROJECTED IMPACT:\n• Annual impact at capacity: '+fmt(ES.annualImpact)+'\n• '+ES.years+'-year total impact: '+fmt(ES.totalImpact)+'\n• Mission leverage ratio: '+ES.lev.toFixed(2)+'×\n• Break-even: '+(ES.beMonth>0?'Month '+ES.beMonth:'Beyond 3 years')+'\n\nIMPACT STREAMS:\n'+ES.streams.map(function(s){return'• '+s.label+': '+s.gdesc+' — '+fmt(s.val)+'/yr';}).join('\n')+'\n\nProvide:\n1. GO / CONDITIONAL GO / NO-GO recommendation with one clear rationale sentence\n2. The strongest argument FOR proceeding\n3. The biggest risk or reason to pause\n4. One specific condition or milestone that would make this a stronger investment\n5. Suggested funding sources to close the gap (2–3 specific grant types or funder categories)\n\nBe direct and honest. Do not hedge everything. Format with clear headers.';
-
-  try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,messages:[{role:'user',content:prompt}]})});
-    if(!r.ok)throw new Error('http');
-    var d=await r.json();if(d.error)throw new Error('api');
-    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
-    if(!txt||txt.length<20)throw new Error('empty');
-    sh('exp-ai-out',txt.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>'));
-  }catch(e){
-    sh('exp-ai-out','<p style="color:var(--gold)">AI analysis unavailable. Copy the expansion brief and paste into Claude.ai for a detailed go/no-go assessment.</p>');
-  }
-}
-
-function genExpDoc(){
-  if(!ES.totalCost)return;
-  var org=gv('org-name')||'[Organization]',contact=gv('org-contact')||'[Contact]';
-  var dt=new Date().toLocaleDateString();
-  var doc=dt+'\n\nEXPANSION PROPOSAL BRIEF\n'+org+' | Prepared by: '+contact+'\n'+'─'.repeat(54)+'\n\nPROJECT: '+ES.name+'\nType: '+ES.type+'\n\n'+ES.desc+'\n\nINVESTMENT SUMMARY\n• One-time startup: '+fmt(ES.startup)+'\n• Annual operating cost: '+fmt(ES.totalAnnual)+'\n• Staff additions: '+gn('exp-ftes')+' FTE @ avg '+fmt(gn('exp-sal'))+'/yr\n• Ramp-up period: '+ES.ramp+' months to full capacity\n• Total '+ES.years+'-year investment: '+fmt(ES.totalCost)+'\n• Funding secured: '+fmt(ES.secured)+'\n• Funding gap: '+fmt(Math.max(0,ES.gap))+'\n\nPROJECTED IMPACT\n• Annual impact at full capacity: '+fmt(ES.annualImpact)+'\n• '+ES.years+'-year cumulative impact: '+fmt(ES.totalImpact)+'\n• Mission leverage ratio: '+ES.lev.toFixed(2)+'×\n• Estimated break-even: '+(ES.beMonth>0?'Month '+ES.beMonth+' of operation':'Beyond '+ES.years+' years')+'\n\nIMPACT STREAMS\n'+ES.streams.map(function(s){return'• '+s.label+': '+s.gdesc+' — '+fmt(s.val)+'/yr';}).join('\n')+'\n\nYEAR-BY-YEAR MODEL\nYear 1: Cost '+fmt(ES.yr1Cost)+' | Impact '+fmt(ES.yr1Impact)+' | Net '+fmt(ES.yr1Impact-ES.yr1Cost)+'\nYear 2: Cost '+fmt(ES.yr2Cost)+' | Impact '+fmt(ES.annualImpact)+' | Net '+fmt(ES.annualImpact-ES.yr2Cost)+'\nYear 3: Cost '+fmt(ES.yr3Cost)+' | Impact '+fmt(ES.annualImpact)+' | Net '+fmt(ES.annualImpact-ES.yr3Cost)+'\n\nNote: All impact values are confidence-weighted estimates using SROI methodology. Not financial returns.';
-  var de=document.getElementById('doc-expansion');if(de)de.textContent=doc;
-  var dc=document.getElementById('doc-expansion-copy');if(dc)dc.textContent=doc;
-}
-
-/* ── Main export doc generation ── */
 function genDocs(){
   var org=gv('org-name')||'[Organization]',contact=gv('org-contact')||'[Contact]',loc=gv('org-loc')||'[Location]';
   var mission=gv('org-mission')||'[mission]',ein=gv('org-ein');
-  var statusLabel={'yes':'501(c)(3)','pending':'Pending 501(c)(3)','fiscal':'Fiscally sponsored','no':'Other nonprofit'}[gv('org-501')]||'Nonprofit';
+  var status501=gv('org-501');var statusLabel={'yes':'501(c)(3)','pending':'Pending 501(c)(3)','fiscal':'Fiscally sponsored','no':'Other nonprofit'}[status501]||'Nonprofit';
   var budget=S.budget||0,totalImpact=S.totalImpact||0,lev=S.lev||0,cpb=S.cpb||0;
   var direct=S.direct||0,indirect=S.indirect||0,months=S.months||12,progs=S.progs||[];
   var dt=new Date().toLocaleDateString();
@@ -1112,7 +700,7 @@ function genDocs(){
     var p=progs[i];
     pLines+=(i+1)+'. '+p.title+'\n   '+p.desc+'\n';
     for(var si=0;si<p.streams.length;si++){var st=p.streams[si];pLines+='   Impact: '+st.label+' — '+st.gdesc+' — '+fmt(st.val)+'\n';}
-    pLines+='   Program impact total: '+fmt(p.totalVal)+(p.progBudget>0?'\n   Program budget: '+fmt(p.progBudget)+' | Leverage: '+(p.totalVal>0?(p.totalVal/p.progBudget).toFixed(2)+'×':'—'):'')+'\n\n';
+    pLines+='   Program impact total: '+fmt(p.totalVal)+(p.progBudget>0?'\n   Program budget: '+fmt(p.progBudget)+' | Leverage: '+(p.progBudget>0?(p.totalVal/p.progBudget).toFixed(2)+'×':'—'):'')+'\n\n';
   }
   var pShort='';for(var i2=0;i2<progs.length;i2++)pShort+='• '+progs[i2].title+' — '+fmt(progs[i2].totalVal)+'\n';
 
@@ -1120,7 +708,7 @@ function genDocs(){
 
   var donorDoc=dt+'\n\nDONOR STEWARDSHIP LETTER\n\nDear [Donor Name],\n\nOn behalf of everyone at '+org+', I want to share what your investment in '+mission+' has made possible during '+pStr+'.\n\nTHE NUMBERS BEHIND YOUR GIFT\nYour support is part of a total investment of '+fmt(budget)+' this year. Here is what that investment produced:\n\n'+pShort+'\nCombined, these programs generated approximately '+fmt(totalImpact)+' in documented mission value — a leverage ratio of '+(lev>=1?lev.toFixed(2)+'×':'"less than 1×" by our conservative estimate, though our impact extends well beyond what any model can capture')+'.'+(direct>0?' We directly served '+direct.toLocaleString()+' people this year'+(cpb>0?' at a cost of just '+fmt(cpb)+' per person':'')+'.':'')+'\n\nWHAT THIS MEANS FOR '+mission.toUpperCase()+'\n'+progs.slice(0,2).map(function(p){return'• '+p.title+': '+p.desc;}).join('\n')+'\n\nYour generosity makes this work possible. We are honored by your trust and committed to using every dollar with care, efficiency, and purpose.\n\nWith gratitude,\n'+contact+'\n'+org+'\n\nNote: All figures are confidence-weighted estimates from self-reported program data.';
 
-  var grantDoc=dt+'\n\nGRANT OUTCOMES NARRATIVE\n'+org+' | Reporting period: '+pStr+'\n'+'─'.repeat(48)+'\n\nSECTION: PROGRAM OUTCOMES AND IMPACT\n\nDuring '+pStr+', '+org+' implemented '+(progs.length>0?progs.length+' core program'+(progs.length>1?'s':'')+' in support of its mission to advance '+mission+'.':'the following programs:')+'\n\n'+pLines+'AGGREGATE IMPACT\nTotal documented mission value: '+fmt(totalImpact)+'\nMission leverage ratio: '+(lev>=1?lev.toFixed(2)+'×':'<1× documented')+'\nDirect beneficiaries: '+(direct>0?direct.toLocaleString():'Not reported')+(indirect>0?'\nIndirect community reach: '+indirect.toLocaleString():'')+'\n\nMETHODOLOGY\nImpact values are estimated using SROI (Social Return on Investment) methodology. Each figure is confidence-weighted based on strength of causal evidence. Valuations draw from EPA Benefit-Cost Analysis guidelines, BLS wage data, and published SROI benchmarks for comparable interventions.\n\nOrganization: '+org+(ein?'\nEIN: '+ein:'')+'\nStatus: '+statusLabel+'\nLocation: '+loc+'\nContact: '+contact;
+  var grantDoc=dt+'\n\nGRANT OUTCOMES NARRATIVE\n'+org+' | Reporting period: '+pStr+'\n'+'─'.repeat(48)+'\n\nSECTION: PROGRAM OUTCOMES AND IMPACT\n\nDuring '+pStr+', '+org+' implemented '+(progs.length>0?progs.length+' core program'+(progs.length>1?'s':'')+' in support of its mission to advance '+mission+'.':'the following programs:')+'\n\n'+pLines+'AGGREGATE IMPACT\nTotal documented mission value: '+fmt(totalImpact)+'\nMission leverage ratio: '+(lev>=1?lev.toFixed(2)+'×':'<1× documented')+'\nDirect beneficiaries: '+(direct>0?direct.toLocaleString():'Not reported')+(indirect>0?'\nIndirect community reach: '+indirect.toLocaleString():'')+'\n\nMETHODOLOGY\nImpact values are estimated using SROI (Social Return on Investment) methodology. Each figure is confidence-weighted based on strength of causal evidence ('+progs.map(function(p){return p.title+': documented outcomes'}).join('; ')+'). Valuations draw from EPA Benefit-Cost Analysis guidelines, BLS wage data, and published SROI benchmarks for comparable interventions.\n\nOrganization: '+org+(ein?'\nEIN: '+ein:'')+'\nStatus: '+statusLabel+'\nLocation: '+loc+'\nContact: '+contact;
 
   var di=document.getElementById('doc-impact');if(di)di.textContent=impactDoc;
   var dd=document.getElementById('doc-donor');if(dd)dd.textContent=donorDoc;
@@ -1129,18 +717,15 @@ function genDocs(){
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
 function refine(type){
-  var map={impact:'doc-impact',donor:'doc-donor',grant:'doc-grant',expansion:'doc-expansion'};
-  var el=map[type]?document.getElementById(map[type]):null;
+  var ids={impact:'doc-impact',donor:'doc-donor',grant:'doc-grant'};
   var prompts={
-    impact:'Here is my nonprofit impact report:\n\n'+(el?el.textContent:'')+'\n\nPlease strengthen the language, make the leverage ratio and cost-per-beneficiary more compelling, and suggest any missing impact areas.',
-    donor:'Here is my donor stewardship letter:\n\n'+(el?el.textContent:'')+'\n\nPlease refine — warm but data-confident. Improve the emotional resonance while keeping all the numbers accurate.',
-    grant:'Here is my grant outcomes narrative:\n\n'+(el?el.textContent:'')+'\n\nPlease improve the funder-facing language, strengthen the methodology section, and suggest how to frame the outcomes for a foundation audience.',
-    expansion:'Here is my expansion proposal brief:\n\n'+(el?el.textContent:'')+'\n\nPlease sharpen the investment case, improve the board-facing language, and suggest how to make this more compelling for a major funder conversation.'
+    impact:'Here is my nonprofit impact report:\n\n'+document.getElementById('doc-impact').textContent+'\n\nPlease strengthen the language, make the leverage ratio and cost-per-beneficiary more compelling, and suggest any missing impact areas.',
+    donor:'Here is my donor stewardship letter:\n\n'+document.getElementById('doc-donor').textContent+'\n\nPlease refine — warm but data-confident. Improve the emotional resonance while keeping all the numbers accurate.',
+    grant:'Here is my grant outcomes narrative:\n\n'+document.getElementById('doc-grant').textContent+'\n\nPlease improve the funder-facing language, strengthen the methodology section, and suggest how to frame the outcomes for a foundation audience.'
   };
   alert('Copy this prompt and paste it into Claude.ai:\n\n'+(prompts[type]||'Please help me improve this document.'));
 }
 
-/* ── Coach ── */
 var CSYS={
   donor:'You are a nonprofit fundraising coach helping leaders make compelling donor impact cases. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-sentence donor impact statement grounded in the data, (2) the single most powerful number to lead with, and (3) a suggested opening for a major donor conversation.',
   grant:'You are a grants writer coach helping nonprofit staff write compelling outcomes sections. Ask ONE question at a time. After 4–5 exchanges produce COACH OUTPUT: with: (1) a ready-to-paste outcomes paragraph for a grant report, (2) the SMART metrics to emphasize, and (3) the most likely funder objection and how to address it.',
@@ -1162,7 +747,7 @@ async function startCoach(mode){
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
   var ok=false;
   try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
@@ -1181,7 +766,7 @@ async function sendCoach(){
   cHist.push({role:'user',content:input});
   var ok=false;
   try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:CSYS[cMode],messages:cHist})});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:CSYS[cMode],messages:cHist})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
@@ -1203,39 +788,34 @@ async function sendCoach(){
 function endCoach(){document.getElementById('coach-session').style.display='none';document.getElementById('coach-idle').style.display='block';cMode=null;cHist=[];}
 function cpCoach(){var t=document.getElementById('coach-out');if(!t)return;navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline='';},1400);}
 
-/* ── JSON export / destroy ── */
 function exportJSON(){
   try{
-    var payload={version:'roi-v3-nonprofit',exported:new Date().toISOString(),disclaimer:'Self-reported estimates and publicly available data only. No confidential information.',org:{name:gv('org-name'),mission:gv('org-mission'),contact:gv('org-contact'),loc:gv('org-loc'),ein:gv('org-ein'),status501:gv('org-501'),budget:gv('org-budget'),staff:gv('org-staff'),vols:gv('org-vols'),direct:gv('org-direct'),indirect:gv('org-indirect'),keywords:gv('org-keywords')},ledger:S,expansion:ES};
+    var payload={version:'roi-v3-nonprofit',exported:new Date().toISOString(),disclaimer:'Self-reported estimates and publicly available data only. No confidential information.',org:{name:gv('org-name'),mission:gv('org-mission'),contact:gv('org-contact'),loc:gv('org-loc'),ein:gv('org-ein'),status501:gv('org-501'),budget:gv('org-budget'),staff:gv('org-staff'),vols:gv('org-vols'),direct:gv('org-direct'),indirect:gv('org-indirect')},ledger:S};
     var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
     var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='roi-v3-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
   }catch(e){alert('Download not supported in this browser. Your data is still in memory.');}
 }
 
 function destroyAll(){
-  S={};ES={};progN=0;streamN=0;expStreamN=0;cMode=null;cHist=[];
+  S={};progN=0;streamN=0;cMode=null;cHist=[];
   document.getElementById('prog-list').innerHTML='';
-  document.getElementById('exp-stream-list').innerHTML='';
   document.getElementById('coach-msgs').innerHTML='';
   document.getElementById('coach-session').style.display='none';
   document.getElementById('coach-idle').style.display='block';
   document.getElementById('coach-result').style.display='none';
   document.getElementById('running-card').style.display='none';
-  document.getElementById('fund-results').style.display='none';
-  document.getElementById('exp-results').style.display='none';
   document.querySelectorAll('input,textarea').forEach(function(e){if(e.type!=='hidden')e.value='';});
   document.querySelectorAll('select').forEach(function(e){e.selectedIndex=0;});
-  ['doc-impact','doc-donor','doc-grant','doc-expansion','doc-expansion-copy'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  ['doc-impact','doc-donor','doc-grant'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
   ['mm-budget','mm-cpb','mm-eff','mm-lev','l-budget','l-impact','l-lev','l-cpb','l-total','ib-ratio','ib-budget','ib-bar-max','run-impact','run-budget','run-lev'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
-  ['mm-breakdown','mm-bench','gift-result','ledger-rows','impact-analysis','donor-story','fund-status','fund-list','exp-yr-table','exp-ai-out'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='';});
+  ['mm-breakdown','mm-bench','gift-result','ledger-rows','impact-analysis','donor-story','coach-msgs'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='';});
   document.getElementById('ib-bar').style.width='0%';
   document.getElementById('ledger-block').style.display='none';
   document.getElementById('no-ledger').style.display='block';
   document.getElementById('exp-block').style.display='none';
   document.getElementById('no-exp').style.display='block';
-  var eec=document.getElementById('exp-export-card');if(eec)eec.style.display='none';
-  var fb=document.getElementById('fund-btn');if(fb){fb.disabled=false;fb.innerHTML='<i class="ti ti-search" style="font-size:13px;vertical-align:-1px"></i> Search for funding opportunities';}
   document.getElementById('t1').checked=true;
+  var op=document.getElementById('org-preview');if(op){op.innerHTML='';op.style.display='none';}
 }
 
 liveM();

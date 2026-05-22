@@ -121,6 +121,11 @@ button:hover{background:var(--surface2)}
 .spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.uc-grid{grid-template-columns:1fr}.ai-compare{grid-template-columns:1fr}}
+
+/* Back nav */
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2);transition:background .15s}
+.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -323,8 +328,8 @@ button:hover{background:var(--surface2)}
         <div class="mc"><p class="lb">Net so far</p><p class="vl" id="run-net">—</p></div>
       </div>
     </div>
-    <label for="t3" style="display:block">
-      <span onclick="calcResults()" class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate &amp; generate documents</span>
+    <label for="t3" style="display:block" onclick="calcResults()">
+      <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate &amp; generate documents</span>
     </label>
     <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates results, generates all export documents, and opens Results tab.</p>
   </div>
@@ -374,6 +379,7 @@ button:hover{background:var(--surface2)}
         <label for="t5" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
         <label for="t4" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Manager coach →</span></label>
       </div>
+      <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:12px"></i> Value streams</label></div>
     </div>
   </div>
 
@@ -406,6 +412,7 @@ button:hover{background:var(--surface2)}
           <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>
         </div>
       </div>
+    <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:12px"></i> Results</label></div>
     </div>
   </div>
 
@@ -444,6 +451,7 @@ button:hover{background:var(--surface2)}
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
+      <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:12px"></i> Results</label></div>
     </div>
   </div>
 
@@ -589,6 +597,7 @@ function getItems(){
 }
 
 function calcResults(){
+  var _r3=document.getElementById('t3');if(_r3)_r3.checked=true;
   var uc=gv('use-case');
   var items=getItems();
   var roi=items.reduce(function(s,i){return s+i.roi;},0);
@@ -709,7 +718,7 @@ async function startCoach(mode){
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
   var ok=false;
   try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
@@ -728,7 +737,7 @@ async function sendCoach(){
   cHist.push({role:'user',content:input});
   var ok=false;
   try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:CSYS[cMode],messages:cHist})});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:CSYS[cMode],messages:cHist})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
