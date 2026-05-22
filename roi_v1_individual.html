@@ -129,6 +129,10 @@ button:hover{background:var(--surface2)}
 .adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--text3)}
 .alive{background:var(--green)!important}.aload{background:var(--amber)!important}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}}
+
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
+.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -646,6 +650,7 @@ function getAllAchData(){
 }
 
 function calcLedger(){
+  var __t=document.getElementById('t4');if(__t)__t.checked=true;
   var r=getBE();var tc=r.tc,rpe=r.rpe,beTarget=r.beTarget,I=r.I;
   var months=getPM(),obligation=beTarget*(months/12);
   var achs=getAllAchData(),totalRoi=achs.reduce(function(s,a){return s+a.totalRoi;},0),net=totalRoi-obligation;

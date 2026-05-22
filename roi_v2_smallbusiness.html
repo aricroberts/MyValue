@@ -122,9 +122,8 @@ button:hover{background:var(--surface2)}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.uc-grid{grid-template-columns:1fr}.ai-compare{grid-template-columns:1fr}}
 
-/* Back nav */
 .back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
-.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2);transition:background .15s}
+.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
 .back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
@@ -332,6 +331,7 @@ button:hover{background:var(--surface2)}
       <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate &amp; generate documents</span>
     </label>
     <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates results, generates all export documents, and opens Results tab.</p>
+    <div class="back-nav"><label for="t1"><i class="ti ti-arrow-left" style="font-size:11px"></i> Setup</label></div>
   </div>
 
   <!-- PANEL 3: RESULTS -->
@@ -379,7 +379,7 @@ button:hover{background:var(--surface2)}
         <label for="t5" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
         <label for="t4" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Manager coach →</span></label>
       </div>
-      <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:12px"></i> Value streams</label></div>
+      <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:11px"></i> Value streams</label></div>
     </div>
   </div>
 
@@ -412,7 +412,7 @@ button:hover{background:var(--surface2)}
           <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>
         </div>
       </div>
-    <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:12px"></i> Results</label></div>
+    <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:11px"></i> Results</label></div>
     </div>
   </div>
 
@@ -448,10 +448,10 @@ button:hover{background:var(--surface2)}
         <div class="dpre" id="doc-ai">—</div>
         <div class="brow"><button onclick="cpDoc('doc-ai')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('ai')">Refine ↗</button></div>
       </div>
+      <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:11px"></i> Results</label></div>
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
-      <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:12px"></i> Results</label></div>
     </div>
   </div>
 
@@ -597,7 +597,7 @@ function getItems(){
 }
 
 function calcResults(){
-  var _r3=document.getElementById('t3');if(_r3)_r3.checked=true;
+  var __t=document.getElementById('t3');if(__t)__t.checked=true;
   var uc=gv('use-case');
   var items=getItems();
   var roi=items.reduce(function(s,i){return s+i.roi;},0);
