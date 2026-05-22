@@ -878,12 +878,20 @@ async function fetchFunding(){
 
   var sizeLabel={'any':'any size','small':'under $25k','mid':'$25k–$100k','large':'$100k–$500k','major':'$500k+'}[fundSize]||'any size';
   var typeLabel={'all':'all types','federal':'federal grants','foundation':'private foundations','corporate':'corporate giving','state':'state and local grants','capacity':'capacity building grants'}[fundType]||'all types';
-  var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 6–8 specific, real funding opportunities that match this organization. For each, provide:\n- Funder name and grant program name\n- Typical award amount or range\n- Eligibility and mission fit explanation\n- Application deadline or cycle (current or upcoming)\n- Official URL or grants.gov link\n- A 1-sentence reason this org should apply\n\nPrioritize opportunities that are currently open or open on a recurring annual basis. Include a mix of federal, foundation, and other sources where available. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium","rationale":"one sentence why this fits","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
+  var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 4–5 specific, real funding opportunities that match this organization. For each: funder name, grant program, award amount, deadline, fit, rationale, url, type. Prioritize currently open opportunities. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium","rationale":"one sentence why this fits","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
 
   try{
-    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
     if(!r.ok)throw new Error('http');
-    var d=await r.json();if(d.error)throw new Error('api');
+    var d=await r.json();
+    if(d.error&&d.error.type==='rate_limit_error'){
+      sh('fund-status','<div class="card card-teal"><p class="sl sl-teal"><i class="ti ti-clock"></i> Rate limit reached — retrying in 15 seconds…</p></div>');
+      await new Promise(function(res){setTimeout(res,15000);});
+      var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
+      if(!r2.ok)throw new Error('http');
+      d=await r2.json();
+    }
+    if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<20)throw new Error('empty');
 
