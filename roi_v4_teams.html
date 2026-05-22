@@ -158,6 +158,10 @@ button:hover{background:var(--surface2)}
 .recog-val{font-size:13px;font-family:'DM Mono',monospace}
 
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}.recog-grid{grid-template-columns:1fr}}
+
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
+.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -267,6 +271,7 @@ button:hover{background:var(--surface2)}
       <span>No individual salary data? No problem — add names and roles, and use the total team cost on tab 1. The ledger still works with aggregate numbers.</span>
     </div>
     <label for="t3" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Next: log contributions →</span></label>
+    <div class="back-nav"><label for="t1"><i class="ti ti-arrow-left" style="font-size:11px"></i> Team setup</label></div>
   </div>
 
   <!-- ═══ PANEL 3: CONTRIBUTIONS ═══ -->
@@ -287,8 +292,8 @@ button:hover{background:var(--surface2)}
       </div>
     </div>
 
-    <label for="t4" style="display:block">
-      <span onclick="calcLedger()" class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate team ledger</span>
+    <label for="t4" style="display:block" onclick="calcLedger()">
+      <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate team ledger</span>
     </label>
     <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates ledger, surfaces recognition insights, and generates all export documents.</p>
   </div>
@@ -541,14 +546,14 @@ function calcContribStreamVal(cid,sid){
 function updateContribStream(cid,sid){
   var val=calcContribStreamVal(cid,sid);
   var pill=document.getElementById('cspill-'+cid+'-'+sid);
-  if(pill){pill.textContent=val>0?fmt(val):'—';pill.className='cspill '+(val>0?'cspill-live':'cspill-zero');}
+  if(pill){pill.textContent=val>0?fmt(val):'—';pill.className='cspill '+(val>0?'cspill-live':'cspill-zero');pill.dataset.val=val;}
   updateContribTotal(cid);
 }
 
 function updateContribTotal(cid){
   var total=0;
   var sl=document.getElementById('cs-list-'+cid);
-  if(sl){var sn=sl.querySelectorAll('[data-csid]');for(var i=0;i<sn.length;i++){var sid=parseInt(sn[i].getAttribute('data-csid'));total+=calcContribStreamVal(cid,sid);}}
+  if(sl){var sn=sl.querySelectorAll('[data-csid]');for(var i=0;i<sn.length;i++){var sid=parseInt(sn[i].getAttribute('data-csid'));var _sp=document.getElementById('cspill-'+cid+'-'+sid);total+=_sp&&_sp.dataset.val?parseFloat(_sp.dataset.val)||0:0;}}
   var pill=document.getElementById('cpill-'+cid);
   if(pill){pill.textContent=total>0?fmt(total):'No streams yet';pill.className='mroi-pill '+(total>0?'mroi-live':'mroi-zero');}
   updateRunning();
@@ -611,7 +616,7 @@ function getAllContribs(){
     var attribution=gv('cmember-'+cid)||'team';
     var streams=[];
     var sl=document.getElementById('cs-list-'+cid);
-    if(sl){var sn=sl.querySelectorAll('[data-csid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-csid'));var type=gv('cstype-'+cid+'-'+sid);if(!type)continue;var val=calcContribStreamVal(cid,sid);var gdesc=gv('csq-'+cid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:CTYPES[type]?CTYPES[type].label:type,gdesc:gdesc,val:val});}}
+    if(sl){var sn=sl.querySelectorAll('[data-csid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-csid'));var type=gv('cstype-'+cid+'-'+sid);if(!type)continue;var _spr=document.getElementById('cspill-'+cid+'-'+sid);var val=_spr&&_spr.dataset.val?parseFloat(_spr.dataset.val)||0:0;var gdesc=gv('csq-'+cid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:CTYPES[type]?CTYPES[type].label:type,gdesc:gdesc,val:val});}}
     var totalVal=streams.reduce(function(s,st){return s+st.val;},0);
     contribs.push({cid:cid,title:title,desc:desc,attribution:attribution,streams:streams,totalVal:totalVal});
   });
@@ -634,6 +639,7 @@ function buildMemberMap(contribs){
 
 /* ── Ledger ── */
 function calcLedger(){
+  document.getElementById('t4').checked=true;
   var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
   var totalCost=sal*(1+ben)+ext;
   var months=parseInt(gv('team-period'))||12;
@@ -807,7 +813,7 @@ async function startCoach(mode){
   var sys=CSYS[mode]+'\n\nCurrent team context:\n'+teamContext();
   var ok=false;
   try{
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
@@ -827,7 +833,7 @@ async function sendCoach(){
   var ok=false;
   try{
     var sys=CSYS[cMode]+'\n\nCurrent team context:\n'+teamContext();
-    var r=await fetch('http://myvalue-production.up.railway.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:cHist})});
+    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:cHist})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
