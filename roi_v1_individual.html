@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ROI Engine v1 — Individual</title>
+<title>[FIXED] ROI Engine v1 — Individual</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -129,10 +129,6 @@ button:hover{background:var(--surface2)}
 .adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--text3)}
 .alive{background:var(--green)!important}.aload{background:var(--amber)!important}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}}
-
-.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
-.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
-.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -386,13 +382,9 @@ button:hover{background:var(--surface2)}
 </div>
 
 <script>
-
-/* ═══════════════════════════════════════════════════════════════
-   API PROXY CONFIG — change this one line to point to your proxy
-   Deploy proxy-server.js to Railway/Render, then paste the URL here
-   e.g. 'https://myvalue-production.up.railway.app/api/messages'
-   ═══════════════════════════════════════════════════════════════ */
-var API_URL = 'https://aricroberts.github.io/MyValue/';
+var ROI_ENGINE_VERSION = 'V1-FIXED-2026-05-22';
+/* ── PROXY URL: update this to your Railway/Render URL, must end in /api/messages ── */
+var API_URL = 'https://aricroberts.github.io/MyValue/.up.railway.app/api/messages';
 var INDD={
   tech:{rpe:450000,salBase:{engineering:145000,sales:120000,product:140000,marketing:105000,ops:100000,finance_dept:110000,hr:95000,cs:105000}},
   finance:{rpe:600000,salBase:{engineering:135000,sales:140000,product:125000,marketing:100000,ops:100000,finance_dept:130000,hr:95000,cs:100000}},
@@ -595,14 +587,14 @@ function calcStreamRoi(aid,sid){
 function updateStreamRoi(aid,sid){
   var roi=calcStreamRoi(aid,sid);
   var pill=document.getElementById('srpill-'+aid+'-'+sid);
-  if(pill){pill.textContent=roi>0?fmt(roi):'—';pill.className='srpill '+(roi>0?'srpill-live':'srpill-zero');}
+  if(pill){pill.textContent=roi>0?fmt(roi):'—';pill.className='srpill '+(roi>0?'srpill-live':'srpill-zero');pill.dataset.roi=roi;}
   updateAchTotal(aid);
 }
 
 function updateAchTotal(aid){
   var total=0;
   var el=document.getElementById('stream-list-'+aid);
-  if(el){var streams=el.querySelectorAll('[data-sid]');for(var i=0;i<streams.length;i++){var sid=parseInt(streams[i].getAttribute('data-sid'));total+=calcStreamRoi(aid,sid);}}
+  if(el){var streams=el.querySelectorAll('[data-sid]');for(var i=0;i<streams.length;i++){var sid=parseInt(streams[i].getAttribute('data-sid'));var _sp=document.getElementById('srpill-'+aid+'-'+sid);total+=_sp&&_sp.dataset.roi?parseFloat(_sp.dataset.roi)||0:0;}}
   var pill=document.getElementById('atpill-'+aid);
   if(pill){pill.textContent=total>0?fmt(total):'No streams yet';pill.className='atpill '+(total>0?'atpill-live':'atpill-zero');}
 }
@@ -649,7 +641,7 @@ function getAllAchData(){
     var desc=gv('ach-desc-'+aid)||title;
     var streams=[];
     var sl=document.getElementById('stream-list-'+aid);
-    if(sl){var sn=sl.querySelectorAll('[data-sid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-sid'));var type=gv('stype-'+aid+'-'+sid);if(!type)continue;var roi=calcStreamRoi(aid,sid);var gdesc=gv('sq-'+aid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:STYPES[type]?STYPES[type].label:type,gdesc:gdesc,roi:roi});}}
+    if(sl){var sn=sl.querySelectorAll('[data-sid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-sid'));var type=gv('stype-'+aid+'-'+sid);if(!type)continue;var _spr=document.getElementById('srpill-'+aid+'-'+sid);var roi=_spr&&_spr.dataset.roi?parseFloat(_spr.dataset.roi)||0:0;var gdesc=gv('sq-'+aid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:STYPES[type]?STYPES[type].label:type,gdesc:gdesc,roi:roi});}}
     var totalRoi=streams.reduce(function(s,st){return s+st.roi;},0);
     achs.push({aid:aid,title:title,desc:desc,streams:streams,totalRoi:totalRoi});
   });
@@ -657,7 +649,6 @@ function getAllAchData(){
 }
 
 function calcLedger(){
-  var __t=document.getElementById('t4');if(__t)__t.checked=true;
   var r=getBE();var tc=r.tc,rpe=r.rpe,beTarget=r.beTarget,I=r.I;
   var months=getPM(),obligation=beTarget*(months/12);
   var achs=getAllAchData(),totalRoi=achs.reduce(function(s,a){return s+a.totalRoi;},0),net=totalRoi-obligation;
