@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ROI Engine v2 — Small Business</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0F1A;--surface:#131929;--surface2:#1B2338;--border:#243050;
+  --text:#E4E8F4;--text2:#7A82A0;--text3:#4A5270;
+  --green:#29C27A;--green-dim:#0D2A1C;--green-b:#29C27A44;
+  --blue:#3D96FF;--blue-dim:#0E2040;--blue-b:#3D96FF44;
+  --amber:#F0A020;--amber-dim:#281A05;--amber-b:#F0A02044;
+  --red:#F04848;--red-dim:#280A0A;--red-b:#F0484844;
+  --purple:#9B8BF8;--purple-dim:#1A1240;--purple-b:#9B8BF844;
+  --teal:#22D4C8;--teal-dim:#062520;--teal-b:#22D4C844;
+  --radius:10px;--radius-sm:6px;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+body{background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:860px;margin:0 auto;padding:1.25rem}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.875rem;border-bottom:1px solid var(--border)}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.version-badge{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--teal-dim);color:var(--teal);font-weight:500;border:1px solid var(--teal-b)}
+.privacy-pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-b);border-radius:99px;padding:3px 10px}
+.destroy-btn{font-size:11px;color:var(--red);background:var(--red-dim);border:1px solid var(--red-b);border-radius:var(--radius-sm);padding:4px 10px;cursor:pointer}
+
+.tab-radio{display:none}
+.tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
+.tab-nav label{padding:6px 13px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2);user-select:none;transition:all .15s}
+.tab-nav label:hover{background:var(--surface2);color:var(--text)}
+#t1:checked~.tab-nav label[for=t1],
+#t2:checked~.tab-nav label[for=t2],
+#t3:checked~.tab-nav label[for=t3],
+#t4:checked~.tab-nav label[for=t4],
+#t5:checked~.tab-nav label[for=t5]{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tab-panel{display:none}
+#t1:checked~.panels #p1,
+#t2:checked~.panels #p2,
+#t3:checked~.panels #p3,
+#t4:checked~.panels #p4,
+#t5:checked~.panels #p5{display:block}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
+.card-info{background:var(--blue-dim);border-color:var(--blue-b)}
+.card-warn{background:var(--amber-dim);border-color:var(--amber-b)}
+.card-ok{background:var(--green-dim);border-color:var(--green-b)}
+.card-ai{background:var(--purple-dim);border-color:var(--purple-b)}
+.sl{font-size:12px;font-weight:600;color:var(--text2);margin:0 0 10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
+.sl-info{color:var(--blue)}.sl-warn{color:var(--amber)}.sl-ok{color:var(--green)}.sl-ai{color:var(--purple)}.sl-teal{color:var(--teal)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fg label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit;transition:border-color .15s}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--teal)}
+.hint{font-size:11px;color:var(--text3);line-height:1.4;margin-top:2px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:.875rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.875rem}
+.mc{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px}
+.mc .lb{font-size:11px;color:var(--text3);margin:0 0 3px;text-transform:uppercase;letter-spacing:.04em}
+.mc .vl{font-size:20px;font-weight:600;margin:0;font-family:'DM Mono',monospace}
+.pos{color:var(--green)!important}.neg{color:var(--red)!important}.warnc{color:var(--amber)!important}.ic{color:var(--blue)!important}.pc{color:var(--purple)!important}.tc2{color:var(--teal)!important}
+.irow{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border)}
+.irow:last-child{border-bottom:none}
+.irow strong{color:var(--text);font-weight:500;font-family:'DM Mono',monospace}
+.beband{border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem;border:1px solid}
+.meter{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:6px 0}
+.mfill{height:100%;border-radius:99px;transition:width .4s}
+.tbadge{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap}
+.te{background:var(--green-dim);color:var(--green)}.tr{background:var(--blue-dim);color:var(--blue)}
+.tc{background:var(--amber-dim);color:var(--amber)}.tp2{background:var(--purple-dim);color:var(--purple)}
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.uc-btn{padding:14px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:5px;height:auto;cursor:pointer;border-radius:var(--radius);text-align:left;border:1px solid var(--border);background:var(--surface);transition:all .15s}
+.uc-btn:hover{background:var(--surface2)}
+.uc-btn.sel{border:2px solid var(--teal);background:var(--teal-dim)}
+.uc-title{font-size:13px;font-weight:500;color:var(--text)}
+.uc-desc{font-size:11px;color:var(--text2);line-height:1.4}
+.uch{font-size:11px;padding:2px 7px;border-radius:99px;font-weight:500;margin-top:3px}
+.val-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.75rem;margin-bottom:.5rem}
+.vi-hdr{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.vi-num{width:20px;height:20px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal-b);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--teal);flex-shrink:0}
+.vi-roi{font-size:11px;font-weight:500;padding:2px 7px;border-radius:99px}
+.vi-roi-live{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
+.vi-roi-zero{background:var(--surface);color:var(--text3);border:1px solid var(--border)}
+.delbtn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 4px;border-radius:var(--radius-sm)}
+.delbtn:hover{color:var(--red);background:var(--red-dim)}
+.qb{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:5px}
+.qb label{font-size:11px;font-weight:500;color:var(--text2);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.qh{font-size:11px;color:var(--text3);line-height:1.4;margin-bottom:5px;display:block}
+.qb input,.qb select{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 9px;color:var(--text);font-family:inherit}
+.qb input:focus,.qb select:focus{outline:none;border-color:var(--teal)}
+.addbtn{width:100%;border:1px dashed var(--border);background:transparent;color:var(--text2);border-radius:var(--radius-sm);padding:8px;font-size:12px;cursor:pointer;margin-bottom:.5rem}
+.addbtn:hover{background:var(--surface2)}
+.cmsg{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.7;color:var(--text);margin-bottom:6px}
+.cmai{background:var(--blue-dim);border-color:var(--blue-b);color:#C0D4FF}
+.ecard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1.125rem;margin-bottom:.625rem}
+.ecard h3{font-size:13px;font-weight:600;margin:0 0 4px;display:flex;align-items:center;gap:7px}
+.ecard p{font-size:12px;color:var(--text2);margin:0 0 6px}
+.dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:180px;overflow-y:auto;margin-bottom:7px;color:var(--text)}
+.brow{display:flex;gap:6px;flex-wrap:wrap}
+.step-banner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;margin-bottom:.875rem}
+.ai-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:.875rem}
+.ai-col{border-radius:var(--radius);padding:1rem;border:1px solid}
+.ai-col.human{background:var(--blue-dim);border-color:var(--blue-b)}
+.ai-col.aiside{background:var(--purple-dim);border-color:var(--purple-b)}
+.ai-col h4{font-size:13px;font-weight:600;margin:0 0 8px}
+.ai-col.human h4{color:var(--blue)}
+.ai-col.aiside h4{color:var(--purple)}
+button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+button:hover{background:var(--surface2)}
+.btn-primary{background:var(--teal);border-color:var(--teal);color:#0A0F1A;font-weight:500}
+.btn-primary:hover{opacity:.88}
+.btn-danger{color:var(--red);border-color:var(--red-b);background:var(--red-dim)}
+.sec-pnl{display:none}
+.running-card{background:var(--green-dim);border:1px solid var(--green-b);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem;display:none}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.uc-grid{grid-template-columns:1fr}.ai-compare{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo">
+      <i class="ti ti-building" style="font-size:16px;color:var(--teal)"></i>
+      ROI Engine
+      <span class="version-badge">v2 · Small Business</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span>
+      <button class="destroy-btn" onclick="destroyAll()"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all</button>
+    </div>
+  </div>
+
+  <input type="radio" class="tab-radio" id="t1" name="tabs" checked/>
+  <input type="radio" class="tab-radio" id="t2" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t3" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t4" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t5" name="tabs"/>
+
+  <div class="tab-nav">
+    <label for="t1">1. Setup</label>
+    <label for="t2">2. Value streams</label>
+    <label for="t3">3. Results</label>
+    <label for="t4">4. Coach</label>
+    <label for="t5">5. Exports</label>
+  </div>
+
+  <div class="panels">
+
+  <!-- PANEL 1: SETUP -->
+  <div class="tab-panel" id="p1">
+    <div class="card card-info">
+      <p class="sl sl-info"><i class="ti ti-building"></i> What are you assessing?</p>
+      <p style="font-size:13px;color:#C0D4FF;margin:0 0 12px;line-height:1.6">Choose your use case. The same ROI math runs underneath — only the questions, framing, and documents change.</p>
+      <div class="uc-grid">
+        <button class="uc-btn sel" id="uc-role" onclick="selectUC('role')">
+          <i class="ti ti-user-check" style="font-size:20px;color:var(--blue)"></i>
+          <span class="uc-title">Role assessment</span>
+          <span class="uc-desc">Is this position generating enough ROI? Hire, restructure, or eliminate?</span>
+          <span class="uch" style="background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-b)">Org design</span>
+        </button>
+        <button class="uc-btn" id="uc-retention" onclick="selectUC('retention')">
+          <i class="ti ti-heart-handshake" style="font-size:20px;color:var(--green)"></i>
+          <span class="uc-title">Person retention</span>
+          <span class="uc-desc">My best person got an outside offer. What would I lose, and what to counter with?</span>
+          <span class="uch" style="background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)">Retention</span>
+        </button>
+        <button class="uc-btn" id="uc-project" onclick="selectUC('project')">
+          <i class="ti ti-rocket" style="font-size:20px;color:var(--amber)"></i>
+          <span class="uc-title">Project / initiative ROI</span>
+          <span class="uc-desc">Did this investment pay off? Continue, scale, or cut?</span>
+          <span class="uch" style="background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-b)">Investment</span>
+        </button>
+        <button class="uc-btn" id="uc-ai" onclick="selectUC('ai')">
+          <i class="ti ti-robot" style="font-size:20px;color:var(--purple)"></i>
+          <span class="uc-title">AI vs. human ROI</span>
+          <span class="uc-desc">Human hire or AI implementation — which generates better ROI for this function?</span>
+          <span class="uch" style="background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-b)">AI strategy</span>
+        </button>
+      </div>
+      <input type="hidden" id="use-case" value="role"/>
+    </div>
+
+    <div class="card">
+      <p class="sl"><i class="ti ti-building"></i> Your business</p>
+      <div class="fr3">
+        <div class="fg"><label>Your name (optional)</label><input id="mgr-name" placeholder="e.g. Jordan"/><span class="hint">Used in documents.</span></div>
+        <div class="fg"><label>Business name</label><input id="biz-name" placeholder="e.g. Acme Co"/></div>
+        <div class="fg"><label>Industry</label><input id="biz-industry" placeholder="e.g. SaaS, retail, agency"/></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Annual revenue ($)</label><input type="number" id="biz-rev" placeholder="2000000"/><span class="hint">Used to benchmark revenue per employee.</span></div>
+        <div class="fg"><label>Total employees</label><input type="number" id="biz-emp" value="10"/></div>
+      </div>
+    </div>
+
+    <div id="sec-role">
+      <div class="card">
+        <p class="sl"><i class="ti ti-user-check"></i> Role details</p>
+        <div class="fr">
+          <div class="fg"><label>Role / job title</label><input id="role-title" placeholder="e.g. Marketing Manager"/></div>
+          <div class="fg"><label>Status</label>
+            <select id="role-status">
+              <option value="existing">Existing — assessing current value</option>
+              <option value="backfill">Open — deciding whether to backfill</option>
+              <option value="new">New — building the case to hire</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr3">
+          <div class="fg"><label>Annual salary ($)</label><input type="number" id="role-salary" placeholder="75000"/></div>
+          <div class="fg"><label>Benefits</label>
+            <select id="role-benef"><option value="0.20">20%</option><option value="0.30" selected>30%</option><option value="0.40">40%</option></select>
+          </div>
+          <div class="fg"><label>Other costs / yr ($)</label><input type="number" id="role-other" value="3000"/><span class="hint">Equipment, tools, overhead.</span></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>Years of experience</label><input type="number" id="role-exp" value="2" min="0"/></div>
+          <div class="fg"><label>Ramp time if replaced (months)</label><input type="number" id="role-ramp" value="3" min="1" max="18"/></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-retention" style="display:none">
+      <div class="card">
+        <p class="sl"><i class="ti ti-heart-handshake"></i> Person details</p>
+        <div class="fr">
+          <div class="fg"><label>Person's name or role</label><input id="ret-name" placeholder="e.g. Sarah or Senior Developer"/></div>
+          <div class="fg"><label>Current salary ($)</label><input type="number" id="ret-salary" placeholder="95000"/></div>
+        </div>
+        <div class="fr3">
+          <div class="fg"><label>Benefits</label><select id="ret-benef"><option value="0.20">20%</option><option value="0.30" selected>30%</option><option value="0.40">40%</option></select></div>
+          <div class="fg"><label>Outside offer ($)</label><input type="number" id="ret-offer" placeholder="110000"/><span class="hint">What they've been offered elsewhere.</span></div>
+          <div class="fg"><label>Years with company</label><input type="number" id="ret-tenure" value="3" min="0"/></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>Ramp time for replacement (months)</label><input type="number" id="ret-ramp" value="4" min="1"/></div>
+          <div class="fg"><label>Knowledge transfer risk (1–10)</label><input type="number" id="ret-kt" value="7" min="1" max="10"/><span class="hint">10 = irreplaceable. 1 = fully documented.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-project" style="display:none">
+      <div class="card">
+        <p class="sl"><i class="ti ti-rocket"></i> Project details</p>
+        <div class="fr">
+          <div class="fg"><label>Project name</label><input id="proj-name" placeholder="e.g. New CRM implementation"/></div>
+          <div class="fg"><label>Status</label>
+            <select id="proj-status">
+              <option value="complete">Complete — what did it return?</option>
+              <option value="ongoing">Ongoing — should we continue?</option>
+              <option value="proposed">Proposed — should we start it?</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr3">
+          <div class="fg"><label>Total investment ($)</label><input type="number" id="proj-cost" placeholder="50000"/><span class="hint">All costs — staff time, vendors, tools.</span></div>
+          <div class="fg"><label>Period (months)</label><input type="number" id="proj-months" value="12" min="1"/></div>
+          <div class="fg"><label>Ongoing monthly cost ($)</label><input type="number" id="proj-monthly" value="0"/></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-ai" style="display:none">
+      <div class="card">
+        <p class="sl sl-ai"><i class="ti ti-robot"></i> Function being assessed</p>
+        <div class="fr">
+          <div class="fg"><label>Function description</label><input id="ai-fn" placeholder="e.g. Customer support, content writing"/></div>
+          <div class="fg"><label>Hours per week required</label><input type="number" id="ai-hpw" placeholder="20" oninput="calcAI()"/></div>
+        </div>
+        <div class="card card-info" style="margin-bottom:0">
+          <p class="sl sl-info"><i class="ti ti-user"></i> Human hire scenario</p>
+          <div class="fr3">
+            <div class="fg"><label>Annual salary ($)</label><input type="number" id="ai-hsal" placeholder="65000" oninput="calcAI()"/></div>
+            <div class="fg"><label>Benefits</label><select id="ai-hben" onchange="calcAI()"><option value="0.20">20%</option><option value="0.30" selected>30%</option><option value="0.40">40%</option></select></div>
+            <div class="fg"><label>Overhead / yr ($)</label><input type="number" id="ai-hovhd" value="3000" oninput="calcAI()"/></div>
+          </div>
+          <div class="fr">
+            <div class="fg"><label>Time on this function (%)</label><input type="number" id="ai-hprod" value="80" min="10" max="100" oninput="calcAI()"/></div>
+            <div class="fg"><label>Ramp time (months)</label><input type="number" id="ai-hramp" value="2" min="0" oninput="calcAI()"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-ai">
+        <p class="sl sl-ai"><i class="ti ti-robot"></i> AI implementation scenario</p>
+        <div class="fr3">
+          <div class="fg"><label>Setup cost ($)</label><input type="number" id="ai-asetup" placeholder="5000" oninput="calcAI()"/></div>
+          <div class="fg"><label>Monthly subscription ($)</label><input type="number" id="ai-amon" placeholder="200" oninput="calcAI()"/></div>
+          <div class="fg"><label>Oversight hrs / week</label><input type="number" id="ai-aovhrs" value="3" oninput="calcAI()"/><span class="hint">Weekly hours a human still needs to spend managing the AI.</span></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>Oversight hourly rate ($)</label><input type="number" id="ai-arate" value="50" oninput="calcAI()"/></div>
+          <div class="fg"><label>AI task coverage (%)</label><input type="number" id="ai-acov" value="70" min="10" max="100" oninput="calcAI()"/><span class="hint">% of function AI handles without human intervention.</span></div>
+        </div>
+        <div id="ai-preview" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <label for="t2" style="display:block;margin-top:.5rem">
+      <span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Next: add value streams →</span>
+    </label>
+  </div>
+
+  <!-- PANEL 2: VALUE STREAMS -->
+  <div class="tab-panel" id="p2">
+    <div class="step-banner">
+      <i class="ti ti-list-check" style="font-size:16px;flex-shrink:0"></i>
+      <span id="assess-hint">Add each way this role, person, or project generates value. Fill in the guided questions, then click <strong>Calculate &amp; generate documents</strong> below.</span>
+    </div>
+    <div id="val-list"></div>
+    <button class="addbtn" onclick="addValItem()"><i class="ti ti-plus" style="font-size:13px;vertical-align:-2px"></i> Add a value stream</button>
+    <div class="running-card" id="running-card">
+      <p class="sl sl-ok"><i class="ti ti-calculator"></i> Running total</p>
+      <div class="g3">
+        <div class="mc"><p class="lb">ROI so far</p><p class="vl pos" id="run-roi">—</p></div>
+        <div class="mc"><p class="lb">Total cost</p><p class="vl warnc" id="run-cost">—</p></div>
+        <div class="mc"><p class="lb">Net so far</p><p class="vl" id="run-net">—</p></div>
+      </div>
+    </div>
+    <label for="t3" style="display:block">
+      <span onclick="calcResults()" class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate &amp; generate documents</span>
+    </label>
+    <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates results, generates all export documents, and opens Results tab.</p>
+  </div>
+
+  <!-- PANEL 3: RESULTS -->
+  <div class="tab-panel" id="p3">
+    <div id="no-results" style="text-align:center;padding:2rem;color:var(--text2);font-size:13px">Add value streams on tab 2 and click "Calculate &amp; generate documents" first.</div>
+    <div id="results-block" style="display:none">
+      <div class="step-banner" style="background:var(--green-dim);border-color:var(--green-b)">
+        <i class="ti ti-check" style="font-size:16px;flex-shrink:0;color:var(--green)"></i>
+        <span style="color:#A0E8C8">Results ready. Export documents are on tab 5. The manager coach is on tab 4.</span>
+      </div>
+
+      <div id="res-standard">
+        <div id="be-band" class="beband" style="border-color:var(--amber-b);background:var(--amber-dim)">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div><p style="font-size:11px;font-weight:500;margin:0 0 2px;opacity:.8" id="be-lbl">—</p><p style="font-size:24px;font-weight:600;margin:0;font-family:'DM Mono',monospace" id="be-surplus">—</p></div>
+            <div style="text-align:right"><p style="font-size:11px;margin:0 0 1px;opacity:.7" id="be-cost-lbl">Total cost</p><p style="font-size:16px;font-weight:600;margin:0;font-family:'DM Mono',monospace" id="r-cost-hdr">—</p></div>
+          </div>
+          <div class="meter" style="margin-top:10px"><div class="mfill" id="res-bar" style="width:0%;background:var(--green)"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;opacity:.7;margin-top:2px"><span>$0</span><span>Break-even</span><span id="res-bar-max">—</span></div>
+        </div>
+        <div class="g3">
+          <div class="mc"><p class="lb">Total cost</p><p class="vl warnc" id="r-cost">—</p></div>
+          <div class="mc"><p class="lb">Total ROI generated</p><p class="vl pos" id="r-roi">—</p></div>
+          <div class="mc"><p class="lb">Net position</p><p class="vl" id="r-net">—</p></div>
+        </div>
+        <div class="card"><p class="sl">Value stream breakdown</p><div id="r-streams"></div></div>
+        <div class="card"><p class="sl" id="r-vlbl">Verdict</p><div id="r-verdict" style="font-size:13px;color:var(--text2);line-height:1.8"></div></div>
+        <div class="card" id="r-ret-card" style="display:none">
+          <p class="sl sl-ok"><i class="ti ti-heart-handshake"></i> Retention financial case</p>
+          <div id="r-ret-detail"></div>
+        </div>
+      </div>
+
+      <div id="res-ai" style="display:none">
+        <div class="ai-compare">
+          <div class="ai-col human"><h4><i class="ti ti-user" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Human hire</h4><div id="ai-h-sum"></div></div>
+          <div class="ai-col aiside"><h4><i class="ti ti-robot" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>AI implementation</h4><div id="ai-a-sum"></div></div>
+        </div>
+        <div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-flag"></i> Crossover point</p><div id="ai-cross" style="font-size:13px;color:#A0E8C8;line-height:1.8"></div></div>
+        <div class="card"><p class="sl">Year-by-year comparison</p><div id="ai-yearly"></div></div>
+        <div class="card"><p class="sl">Recommendation</p><div id="ai-rec" style="font-size:13px;color:var(--text2);line-height:1.8"></div></div>
+      </div>
+
+      <div class="g2" style="margin-top:.5rem">
+        <label for="t5" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
+        <label for="t4" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Manager coach →</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: COACH -->
+  <div class="tab-panel" id="p4">
+    <div class="card card-info">
+      <p class="sl sl-info"><i class="ti ti-brain"></i> Manager coach</p>
+      <p style="font-size:13px;color:#C0D4FF;line-height:1.6;margin:0">Four coaching modes for the hardest decisions. If the AI API is unavailable, the coach hands off to Claude with a prompt you can paste into claude.ai.</p>
+    </div>
+    <div class="g2" style="margin-bottom:.5rem">
+      <button onclick="startCoach('retain')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-heart-handshake" style="font-size:18px;color:var(--green)"></i><span style="font-weight:500">Retention conversation</span><span style="color:var(--text2);font-size:11px;text-align:center">"How do I tell them they're valued?"</span></button>
+      <button onclick="startCoach('hire')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-user-plus" style="font-size:18px;color:var(--blue)"></i><span style="font-weight:500">Build the hiring case</span><span style="color:var(--text2);font-size:11px;text-align:center">"How do I justify headcount?"</span></button>
+    </div>
+    <div class="g2" style="margin-bottom:1rem">
+      <button onclick="startCoach('ai')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-robot" style="font-size:18px;color:var(--purple)"></i><span style="font-weight:500">AI strategy</span><span style="color:var(--text2);font-size:11px;text-align:center">"What should I automate first?"</span></button>
+      <button onclick="startCoach('board')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-presentation" style="font-size:18px;color:var(--amber)"></i><span style="font-weight:500">Board / investor framing</span><span style="color:var(--text2);font-size:11px;text-align:center">"How do I present this ROI?"</span></button>
+    </div>
+    <div id="coach-idle" style="text-align:center;padding:1.5rem;color:var(--text2);font-size:13px">Choose a coaching mode above to begin.</div>
+    <div id="coach-session" style="display:none">
+      <div id="coach-msgs" style="margin-bottom:8px"></div>
+      <div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here…" style="min-height:60px"></textarea></div>
+      <div style="display:flex;gap:7px">
+        <button onclick="sendCoach()" style="flex:1;background:var(--teal);border-color:var(--teal);color:#0A0F1A;font-weight:500">Send ↗</button>
+        <button onclick="endCoach()">End session</button>
+      </div>
+      <div id="coach-result" style="display:none;margin-top:.875rem">
+        <div class="card card-ok">
+          <p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p>
+          <div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>
+          <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 5: EXPORTS -->
+  <div class="tab-panel" id="p5">
+    <div id="no-exp" style="text-align:center;padding:2rem;color:var(--text2);font-size:13px">Add value streams on tab 2 and click "Calculate &amp; generate documents" — exports appear here automatically.</div>
+    <div id="exp-block" style="display:none">
+      <div class="card card-ok" style="margin-bottom:.875rem">
+        <p class="sl sl-ok"><i class="ti ti-check"></i> All documents generated</p>
+        <p style="font-size:12px;color:#A0E8C8;margin:0">Copy any document below or click "Refine" to get improvement suggestions.</p>
+      </div>
+      <div class="ecard">
+        <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--blue)"></i> ROI assessment report</h3>
+        <p>Full analysis with value streams, break-even, and recommendation.</p>
+        <div class="dpre" id="doc-report">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-report')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('report')">Refine ↗</button></div>
+      </div>
+      <div class="ecard" id="exp-ret" style="display:none">
+        <h3><i class="ti ti-heart-handshake" style="font-size:14px;color:var(--green)"></i> Retention conversation brief</h3>
+        <p>What to say, what to offer, and what it costs if they leave.</p>
+        <div class="dpre" id="doc-ret">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-ret')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('ret')">Refine ↗</button></div>
+      </div>
+      <div class="ecard" id="exp-hire" style="display:none">
+        <h3><i class="ti ti-user-plus" style="font-size:14px;color:var(--amber)"></i> Hiring justification memo</h3>
+        <p>Cost, expected ROI, break-even timeline, and strategic rationale.</p>
+        <div class="dpre" id="doc-hire">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-hire')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('hire')">Refine ↗</button></div>
+      </div>
+      <div class="ecard" id="exp-ai" style="display:none">
+        <h3><i class="ti ti-robot" style="font-size:14px;color:var(--purple)"></i> AI vs. human decision brief</h3>
+        <p>Year-by-year cost comparison, crossover point, and recommendation.</p>
+        <div class="dpre" id="doc-ai">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-ai')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('ai')">Refine ↗</button></div>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
+        <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<script>
+var VTYPES={
+  revenue:{label:'Revenue generated',cls:'tr',icon:'ti-trending-up',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe this revenue stream',ph:'e.g. New clients acquired',hint:'What revenue did this role or project drive?'},
+    {id:'amount',lbl:'Annual revenue ($)',ph:'300000',hint:'Total revenue generated or directly influenced.'},
+    {id:'credit',lbl:'Attribution (%)',ph:'40',hint:'What % is attributable here? Be conservative.'},
+    {id:'conf',lbl:'Confidence (%)',ph:'70',hint:'Higher for closed deals, lower for influenced pipeline.'}
+  ]},
+  efficiency:{label:'Efficiency / time saved',cls:'te',icon:'ti-settings',qs:[
+    {id:'gdesc',t:'text',lbl:'What was made more efficient?',ph:'e.g. Reduced onboarding time',hint:'What process is faster because of this?'},
+    {id:'hrs_pw',lbl:'Hours saved per week (total)',ph:'10',hint:'Per-person hours × number of people affected.'},
+    {id:'avg_rate',lbl:'Average hourly rate ($)',ph:'50',hint:'Annual salary ÷ 2,000.'},
+    {id:'months',lbl:'Months per year this applies',ph:'12',hint:'12 for permanent improvements.'},
+    {id:'conf',lbl:'Confidence (%)',ph:'70',hint:'60–80% is honest.'}
+  ]},
+  cost:{label:'Cost savings',cls:'tc',icon:'ti-coin',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe the cost area',ph:'e.g. Vendor contract, tool consolidation',hint:'What spend was reduced or avoided?'},
+    {id:'saved',lbl:'Annual savings ($)',ph:'40000',hint:'Ongoing yearly saving.'},
+    {id:'credit',lbl:'Attribution (%)',ph:'60',hint:'What % is due to this role or project?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'75',hint:'Higher for signed contracts.'}
+  ]},
+  risk:{label:'Risk averted',cls:'te',icon:'ti-shield-check',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe the risk',ph:'e.g. Compliance exposure, client churn',hint:'What potential loss was prevented?'},
+    {id:'exposure',lbl:'Potential exposure ($)',ph:'100000',hint:'What could it have cost if this risk materialised?'},
+    {id:'prob',lbl:'Probability without intervention (%)',ph:'35',hint:'How likely was the loss to occur?'},
+    {id:'credit',lbl:'Attribution (%)',ph:'60',hint:'What % of the prevention was due to this?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'55',hint:'50–65% is honest.'}
+  ]},
+  strategic:{label:'Strategic / other',cls:'tp2',icon:'ti-star',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe this value',ph:'e.g. Brand equity, team morale',hint:'What intangible value did this create?'},
+    {id:'val',lbl:'Best estimate of annual value ($)',ph:'25000',hint:'Anchor on something concrete.'},
+    {id:'credit',lbl:'Attribution (%)',ph:'50',hint:'What % is due to this role or project?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'50',hint:'40–60% is honest.'}
+  ]}
+};
+
+var valN=0,S={},cMode=null,cHist=[];
+function gv(id){var e=document.getElementById(id);return e?e.value||'':'';}
+function gn(id){return parseFloat(gv(id))||0;}
+function fmt(n){if(!isFinite(n)||isNaN(n))return'—';var s=n<0?'-':'';var a=Math.abs(n);if(a>=1e9)return s+'$'+(a/1e9).toFixed(2)+'B';if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a);}
+function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+
+function selectUC(uc){
+  document.getElementById('use-case').value=uc;
+  ['role','retention','project','ai'].forEach(function(u){
+    var b=document.getElementById('uc-'+u);var s=document.getElementById('sec-'+u);
+    if(b)b.className=u===uc?'uc-btn sel':'uc-btn';
+    if(s)s.style.display=u===uc?'block':'none';
+  });
+  var hints={
+    role:'Add each way this role generates value for your business. Fill in the questions, then click Calculate.',
+    retention:'Add each way this person generates value. Be honest and conservative — this builds the case for what you\'d lose.',
+    project:'Add each type of return this project generated or is expected to generate.',
+    ai:'For the AI use case, costs are computed from your setup inputs. Click Calculate when ready.'
+  };
+  var hel=document.getElementById('assess-hint');if(hel)hel.innerHTML=hints[uc]||hints.role;
+}
+
+function getTC(){
+  var uc=gv('use-case');
+  if(uc==='role')return gn('role-salary')*(1+(parseFloat(gv('role-benef'))||0.30))+gn('role-other');
+  if(uc==='retention')return gn('ret-salary')*(1+(parseFloat(gv('ret-benef'))||0.30));
+  if(uc==='project')return gn('proj-cost')+(gn('proj-monthly')*gn('proj-months'));
+  return 0;
+}
+
+function calcAI(){
+  var hSal=gn('ai-hsal');if(!hSal)return;
+  var hB=parseFloat(gv('ai-hben'))||0.30,hOv=gn('ai-hovhd')||3000;
+  var hProd=(gn('ai-hprod')||80)/100,hRamp=gn('ai-hramp')||2;
+  var aSetup=gn('ai-asetup'),aMon=gn('ai-amon'),aOvHrs=gn('ai-aovhrs')||3;
+  var aRate=gn('ai-arate')||50,aCov=(gn('ai-acov')||70)/100;
+  var hYr=hSal*(1+hB)*hProd+hOv,hRampCost=hYr/12*hRamp;
+  var aOvYr=aOvHrs*52*aRate,aSubYr=aMon*12;
+  var aYr1=aSetup+aSubYr+aOvYr,aYr2=aSubYr+aOvYr;
+  var cross=0,hCum=hRampCost,aCum=aSetup;
+  for(var m=1;m<=36;m++){hCum+=hYr/12;aCum+=aYr2/12;if(!cross&&aCum<hCum)cross=m;}
+  S.ai={hYr:hYr,hRamp:hRampCost,aYr1:aYr1,aYr2:aYr2,cross:cross,cov:aCov};
+  var prev=document.getElementById('ai-preview');
+  if(prev&&hSal)prev.innerHTML='<div class="g2"><div class="mc"><p class="lb">Human yr 1</p><p class="vl ic">'+fmt(hYr+hRampCost)+'</p></div><div class="mc"><p class="lb">AI yr 1</p><p class="vl pc">'+fmt(aYr1)+'</p></div></div>'+(cross?'<p style="font-size:12px;color:var(--green);margin:4px 0 0">AI breaks even vs. human at month '+cross+'</p>':'');
+}
+
+function calcVI(id){
+  var type=gv('vtype-'+id);if(!type)return 0;
+  var p=function(k){return gn('vq-'+id+'-'+k);};
+  var raw=0;
+  if(type==='revenue')raw=p('amount')*(p('credit')||40)/100*((p('conf')||70)/100);
+  else if(type==='efficiency')raw=p('hrs_pw')*(p('avg_rate')||50)*((p('months')||12)*4.33)*((p('conf')||70)/100);
+  else if(type==='cost')raw=p('saved')*(p('credit')||60)/100*((p('conf')||75)/100);
+  else if(type==='risk')raw=p('exposure')*(p('prob')||35)/100*(p('credit')||60)/100*((p('conf')||55)/100);
+  else if(type==='strategic')raw=p('val')*(p('credit')||50)/100*((p('conf')||50)/100);
+  var pill=document.getElementById('vi-roi-'+id);
+  if(pill){pill.textContent=raw>0?fmt(raw):'—';pill.className='vi-roi '+(raw>0?'vi-roi-live':'vi-roi-zero');}
+  updateRunning();return raw;
+}
+
+function updateRunning(){
+  var items=getItems(),roi=items.reduce(function(s,i){return s+i.roi;},0);
+  var tc=getTC(),net=roi-tc;
+  var rc=document.getElementById('running-card');if(rc)rc.style.display=roi>0?'block':'none';
+  se('run-roi',fmt(roi));se('run-cost',fmt(tc));
+  var rn=document.getElementById('run-net');if(rn){rn.textContent=fmt(net);rn.className='vl '+(net>=0?'pos':'neg');}
+}
+
+function renderVQs(id){
+  var type=gv('vtype-'+id);var qc=document.getElementById('vqs-'+id);if(!qc)return;
+  if(!type){qc.innerHTML='';calcVI(id);return;}
+  var def=VTYPES[type];
+  var h='<div style="margin-bottom:7px"><span class="tbadge '+def.cls+'"><i class="ti '+def.icon+'" style="font-size:11px;vertical-align:-1px"></i> '+def.label+'</span></div>';
+  for(var i=0;i<def.qs.length;i++){
+    var q=def.qs[i];
+    h+='<div class="qb"><label>'+q.lbl+'</label><span class="qh">'+q.hint+'</span>';
+    if(q.t==='text')h+='<input type="text" id="vq-'+id+'-'+q.id+'" placeholder="'+q.ph+'" oninput="calcVI('+id+')" />';
+    else h+='<input type="number" id="vq-'+id+'-'+q.id+'" placeholder="'+q.ph+'" oninput="calcVI('+id+')" />';
+    h+='</div>';
+  }
+  qc.innerHTML=h;calcVI(id);
+}
+
+function addValItem(){
+  valN++;var id=valN;
+  var d=document.createElement('div');d.className='val-item';d.id='vi-'+id;
+  d.innerHTML='<div class="vi-hdr"><div class="vi-num">'+id+'</div><input style="flex:1;font-size:12px;font-weight:500;border:none;background:transparent;padding:2px 0;border-bottom:1px solid var(--border);border-radius:0;color:var(--text);width:100%" id="vi-t-'+id+'" placeholder="Name this value stream…" /><span class="vi-roi vi-roi-zero" id="vi-roi-'+id+'">—</span><button class="delbtn" onclick="document.getElementById(\'vi-'+id+'\').remove();updateRunning()" aria-label="Remove"><i class="ti ti-x"></i></button></div><div class="fg" style="margin-bottom:8px"><label>Value type</label><select id="vtype-'+id+'" onchange="renderVQs('+id+')"><option value="">— choose type —</option><option value="revenue">Revenue generated</option><option value="efficiency">Efficiency / time saved</option><option value="cost">Cost savings</option><option value="risk">Risk averted</option><option value="strategic">Strategic / other value</option></select></div><div id="vqs-'+id+'"></div>';
+  document.getElementById('val-list').appendChild(d);
+}
+
+function getItems(){
+  var items=[];
+  document.querySelectorAll('.val-item').forEach(function(vi){
+    var id=parseInt(vi.id.replace('vi-',''));var type=gv('vtype-'+id);if(!type)return;
+    var title=gv('vi-t-'+id)||(VTYPES[type]?VTYPES[type].label:'Stream '+id);
+    var gdesc=gv('vq-'+id+'-gdesc')||title;
+    items.push({id:id,title:title,type:type,label:VTYPES[type]?VTYPES[type].label:type,gdesc:gdesc,roi:calcVI(id)});
+  });
+  return items;
+}
+
+function calcResults(){
+  var uc=gv('use-case');
+  var items=getItems();
+  var roi=items.reduce(function(s,i){return s+i.roi;},0);
+  var tc=getTC(),net=roi-tc,pct=tc>0?(roi/tc)*100:0;
+  S={uc:uc,tc:tc,roi:roi,net:net,pct:pct,items:items};
+
+  document.getElementById('no-results').style.display='none';
+  document.getElementById('results-block').style.display='block';
+  document.getElementById('res-standard').style.display=uc==='ai'?'none':'block';
+  document.getElementById('res-ai').style.display=uc==='ai'?'block':'none';
+
+  if(uc==='ai'){
+    calcAI();var d=S.ai||{};
+    sh('ai-h-sum','<div class="irow"><span>Year 1 (incl. ramp)</span><strong>'+fmt((d.hYr||0)+(d.hRamp||0))+'</strong></div><div class="irow"><span>Ongoing / yr</span><strong>'+fmt(d.hYr||0)+'</strong></div><div class="irow"><span>3-year total</span><strong>'+fmt((d.hYr||0)*3+(d.hRamp||0))+'</strong></div>');
+    sh('ai-a-sum','<div class="irow"><span>Year 1 (incl. setup)</span><strong>'+fmt(d.aYr1||0)+'</strong></div><div class="irow"><span>Ongoing / yr</span><strong>'+fmt(d.aYr2||0)+'</strong></div><div class="irow"><span>3-year total</span><strong>'+fmt((d.aYr1||0)+((d.aYr2||0)*2))+'</strong></div>');
+    var cross=d.cross||0,cov=Math.round((d.cov||0.7)*100);
+    sh('ai-cross',cross>0?'AI becomes cheaper than a human hire at <strong>month '+cross+'</strong>. After that, AI saves approximately <strong>'+fmt(((d.hYr||0)-(d.aYr2||0))/12)+'/month</strong>.':'No crossover within 3 years at current inputs. Human hire or hybrid is currently more cost-effective.');
+    var y1c=((d.aYr1||0)<(d.hYr||0)+(d.hRamp||0))?'AI':'Human';var y2c=((d.hYr||0)>(d.aYr2||0))?'AI':'Human';
+    sh('ai-yearly','<div class="irow"><span>Year 1</span><span>Human: <strong>'+fmt((d.hYr||0)+(d.hRamp||0))+'</strong> · AI: <strong>'+fmt(d.aYr1||0)+'</strong> · '+y1c+' cheaper</span></div><div class="irow"><span>Year 2</span><span>Human: <strong>'+fmt(d.hYr||0)+'</strong> · AI: <strong>'+fmt(d.aYr2||0)+'</strong> · '+y2c+' cheaper</span></div><div class="irow"><span>Year 3</span><span>Human: <strong>'+fmt(d.hYr||0)+'</strong> · AI: <strong>'+fmt(d.aYr2||0)+'</strong> · '+y2c+' cheaper</span></div>');
+    sh('ai-rec',cov>=80&&cross>0&&cross<=12?'Strong case for AI: high coverage ('+cov+'%) and crossover within year one. Recommend AI with part-time oversight rather than a full hire.':cov>=60&&cross>0&&cross<=24?'Moderate case for AI: reasonable coverage ('+cov+'%) and crossover within 2 years. Hybrid approach recommended.':'Human hire or hybrid currently more cost-effective. AI coverage of '+cov+'% may leave gaps that are costly to manage.');
+    document.getElementById('exp-ai').style.display='block';
+  } else {
+    var band=document.getElementById('be-band');
+    band.style.background=net>0?'var(--green-dim)':net<0?'var(--red-dim)':'var(--amber-dim)';
+    band.style.borderColor=net>0?'var(--green-b)':net<0?'var(--red-b)':'var(--amber-b)';
+    se('be-lbl',net>0?'ROI surplus — generates more than it costs':net<0?'ROI deficit — cost exceeds documented ROI':'Exactly at break-even');
+    se('be-surplus',(net>=0?'+':'')+fmt(net));
+    var clbls={role:'Annual fully-loaded cost',retention:'Annual fully-loaded cost',project:'Total project investment'};
+    se('be-cost-lbl',clbls[uc]||'Total cost');
+    se('r-cost-hdr',fmt(tc));se('r-cost',fmt(tc));
+    var rn=document.getElementById('r-net');if(rn){rn.textContent=fmt(net);rn.className='vl '+(net>=0?'pos':'neg');}
+    se('r-roi',fmt(roi));
+    var bpct=Math.min(pct/2,100);
+    var bel=document.getElementById('res-bar');bel.style.width=Math.round(bpct)+'%';bel.style.background=net>=0?'var(--green)':pct>=60?'var(--amber)':'var(--red)';
+    se('res-bar-max',fmt(tc*2));
+    var rows='';for(var i=0;i<items.length;i++){var it=items[i];rows+='<div class="irow"><span><span class="tbadge '+(VTYPES[it.type]?VTYPES[it.type].cls:'')+'" style="font-size:10px">'+it.label+'</span> '+it.gdesc+'</span><strong>'+fmt(it.roi)+'</strong></div>';}
+    sh('r-streams',rows||'<p style="font-size:13px;color:var(--text2)">No value streams with calculated ROI.</p>');
+    var vlbls={role:'Role assessment verdict',retention:'Retention analysis',project:'Project ROI verdict'};
+    se('r-vlbl',vlbls[uc]||'Verdict');
+    var mult=tc>0?roi/tc:0;
+    var retCard=document.getElementById('r-ret-card');var expRet=document.getElementById('exp-ret');var expHire=document.getElementById('exp-hire');
+    if(retCard)retCard.style.display=uc==='retention'?'block':'none';
+    if(expRet)expRet.style.display=uc==='retention'?'block':'none';
+    if(expHire)expHire.style.display=uc==='role'?'block':'none';
+    if(uc==='role'){
+      var ramp=gn('role-ramp')||3,repCost=tc*0.5+tc/12*ramp;
+      sh('r-verdict',mult>=2?'Strong ROI: '+mult.toFixed(1)+'× its cost. Replacement would cost approximately '+fmt(repCost)+' before full productivity.':mult>=1?'Positive ROI: '+mult.toFixed(1)+'×. Consider whether restructuring toward higher-ROI activities could improve the ratio.':'Below break-even ('+fmt(roi)+' vs. '+fmt(tc)+'). Examine whether higher-value activities can be shifted in, or whether AI could handle lower-value tasks.');
+    } else if(uc==='retention'){
+      var offer=gn('ret-offer'),cur=gn('ret-salary'),gap=offer-cur;
+      var ramp2=gn('ret-ramp')||4,lostROI=roi/12*ramp2,repCost2=cur*0.5+cur/12*ramp2,totalLoss=repCost2+lostROI;
+      var kt=gn('ret-kt')||7;
+      sh('r-ret-detail','<div class="irow"><span>Current salary</span><strong>'+fmt(cur)+'</strong></div><div class="irow"><span>Outside offer</span><strong>'+fmt(offer)+'</strong></div><div class="irow"><span>Gap to match offer</span><strong>'+fmt(gap)+'</strong></div><div class="irow"><span>Replacement cost (search + ramp)</span><strong>'+fmt(repCost2)+'</strong></div><div class="irow"><span>Lost ROI during ramp ('+ramp2+' months)</span><strong>'+fmt(lostROI)+'</strong></div><div class="irow"><span>Total cost if they leave</span><strong style="color:var(--red)">'+fmt(totalLoss)+'</strong></div><p style="font-size:12px;color:var(--text2);margin-top:8px">Knowledge transfer risk: '+kt+'/10. Matching the offer ('+fmt(gap)+') costs far less than losing them ('+fmt(totalLoss)+').</p>');
+      sh('r-verdict',net>=0?'This person generates '+mult.toFixed(1)+'× their cost. Matching the outside offer ('+fmt(gap)+'/yr) costs a fraction of losing them ('+fmt(totalLoss)+'). Retention is the clear financial choice.':'Documented ROI is below cost. Use this as an opportunity to align on role scope before committing to matching the offer.');
+      S.retData={gap:gap,repCost:repCost2,lostROI:lostROI,totalLoss:totalLoss,offer:offer,cur:cur,mult:mult,kt:kt};
+    } else if(uc==='project'){
+      var pname=gv('proj-name')||'this project',pstatus=gv('proj-status');
+      sh('r-verdict',mult>=2?pname+' delivered a strong '+mult.toFixed(1)+'× return. '+(pstatus==='ongoing'?'Continue.':'Investment validated.'):mult>=1?pname+' is delivering positive returns ('+mult.toFixed(1)+'×) but modestly. '+(pstatus==='ongoing'?'Consider optimisations.':'Marginal positive — review before repeating at scale.'):'ROI below investment. '+(pstatus==='ongoing'?'Review scope and resourcing before continuing.':'Identify what to do differently next time.'));
+    }
+  }
+  genDocs();
+  document.getElementById('exp-block').style.display='block';
+  document.getElementById('no-exp').style.display='none';
+}
+
+function genDocs(){
+  var uc=gv('use-case'),mgr=gv('mgr-name')||'[Your name]',biz=gv('biz-name')||'[Business]',dt=new Date().toLocaleDateString();
+  var tc=S.tc||0,roi=S.roi||0,net=S.net||0,items=S.items||[];
+  var mult=tc>0?(roi/tc).toFixed(2)+'×':'—';
+  var sLines=items.map(function(it,i){return(i+1)+'. '+it.gdesc+' ('+it.label+'): '+fmt(it.roi);}).join('\n');
+  var report=dt+'\n\nROI ASSESSMENT REPORT — '+biz+'\nPrepared by: '+mgr+'\n'+'─'.repeat(48)+'\n\nUSE CASE: '+(uc==='role'?'Role — '+(gv('role-title')||'[Role]'):uc==='retention'?'Retention — '+(gv('ret-name')||'[Person]'):uc==='project'?'Project — '+(gv('proj-name')||'[Project]'):'AI vs. human — '+(gv('ai-fn')||'[Function]'))+'\n\nFINANCIAL SUMMARY\n• Total cost: '+fmt(tc)+'\n• Total ROI: '+fmt(roi)+'\n• Net: '+(net>=0?'surplus '+fmt(net):'deficit '+fmt(Math.abs(net)))+'\n• ROI multiplier: '+mult+'\n\nVALUE STREAMS\n'+sLines+'\n\nNote: All figures are confidence-weighted estimates.';
+  var dr=document.getElementById('doc-report');if(dr)dr.textContent=report;
+  if(uc==='retention'&&S.retData){
+    var rd=S.retData;
+    var retDoc=dt+'\n\nRETENTION BRIEF — CONFIDENTIAL\n'+biz+' | '+mgr+'\n'+'─'.repeat(42)+'\n\nPERSON: '+(gv('ret-name')||'[Person]')+'\nCurrent: '+fmt(rd.cur)+' | Offer: '+fmt(rd.offer)+' | Gap: '+fmt(rd.gap)+'\nKT risk: '+rd.kt+'/10\n\nFINANCIAL CASE\n• Cost to match: '+fmt(rd.gap)+'/yr\n• Cost if they leave: '+fmt(rd.totalLoss)+'\n• Net saving from retaining: '+fmt(rd.totalLoss-rd.gap)+'\n• Their ROI multiplier: '+rd.mult.toFixed(2)+'×\n\nCONVERSATION APPROACH\n1. Lead with specific appreciation\n2. Acknowledge the market reality\n3. State your counter clearly — lead with the number\n4. Discuss growth and non-monetary factors\n5. Give them space — don\'t pressure on the spot\n\nSUGGESTED OPENING\n"I want to be direct. I\'ve done the math on what it would cost us to lose you vs. keep you, and I\'d like to offer [amount]. I\'d also like to talk about what else matters to you here."';
+    var dret=document.getElementById('doc-ret');if(dret)dret.textContent=retDoc;
+  }
+  if(uc==='role'){
+    var ramp3=gn('role-ramp')||3,repC=tc*0.5+tc/12*ramp3;
+    var hireDoc=dt+'\n\nHIRING JUSTIFICATION MEMO\n'+biz+' | '+mgr+'\n'+'─'.repeat(42)+'\n\nROLE: '+(gv('role-title')||'[Role]')+' | STATUS: '+gv('role-status')+'\n\nBUSINESS CASE\n• Annual cost: '+fmt(tc)+'\n• Projected ROI: '+fmt(roi)+'\n• Net value: '+fmt(net)+'\n• ROI multiplier: '+mult+'\n• Replacement cost if unfilled: ~'+fmt(repC)+'\n\nVALUE STREAMS\n'+sLines+'\n\nRECOMMENDATION\n'+(net>=0?'Positive ROI case. Expected returns exceed cost from year one.':'Document additional value streams or set 90-day milestones before committing.');
+    var dh=document.getElementById('doc-hire');if(dh)dh.textContent=hireDoc;
+  }
+  if(uc==='ai'&&S.ai){
+    var d=S.ai,fn=gv('ai-fn')||'[Function]';
+    var cov2=Math.round((d.cov||0.7)*100);
+    var aiDoc=dt+'\n\nAI VS. HUMAN DECISION BRIEF\n'+biz+' | Function: '+fn+'\n'+'─'.repeat(42)+'\n\nHUMAN HIRE\n• Year 1: '+fmt((d.hYr||0)+(d.hRamp||0))+' | Ongoing: '+fmt(d.hYr||0)+' | 3yr: '+fmt((d.hYr||0)*3+(d.hRamp||0))+'\n\nAI IMPLEMENTATION\n• Year 1: '+fmt(d.aYr1||0)+' | Ongoing: '+fmt(d.aYr2||0)+' | 3yr: '+fmt((d.aYr1||0)+((d.aYr2||0)*2))+'\n• Coverage: '+cov2+'%\n\nCROSSOVER: '+(d.cross?'Month '+d.cross+' (~'+(d.cross/12).toFixed(1)+' years)':'No crossover within 3 years')+'\n\n3-YEAR SAVING IF AI: '+fmt(((d.hYr||0)*3+(d.hRamp||0))-((d.aYr1||0)+((d.aYr2||0)*2)))+'\n\nCAVEAT: AI coverage of '+cov2+'% means '+(100-cov2)+'% still requires human judgment.';
+    var dai=document.getElementById('doc-ai');if(dai)dai.textContent=aiDoc;
+  }
+}
+
+function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
+function refine(type){
+  var ctx='Business: '+(gv('biz-name')||'[Business]')+'. Use case: '+gv('use-case')+'. Total cost: '+fmt(S.tc||0)+'. Total ROI: '+fmt(S.roi||0)+'. Net: '+fmt(S.net||0)+'.';
+  var ids={report:'doc-report',ret:'doc-ret',hire:'doc-hire',ai:'doc-ai'};
+  var prompt='';
+  if(ids[type]){var el=document.getElementById(ids[type]);if(el&&el.textContent!=='—')prompt='Here is my ROI document:\n\n'+el.textContent+'\n\nPlease improve the language, strengthen the key argument, and suggest any missing sections.';}
+  if(!prompt)prompt=ctx+' Please coach me on the most important next step and what to track over the next 90 days.';
+  alert('Copy this prompt and paste it into Claude.ai:\n\n'+prompt);
+}
+
+var CSYS={
+  retain:'You are a management coach helping a small business owner navigate a retention conversation. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) structured conversation brief, (2) suggested opening language, (3) fallback plan if they still leave.',
+  hire:'You are a management coach helping build the case for a new hire. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) ROI-based justification, (2) how to frame it for investors, (3) key metric to track.',
+  ai:'You are an AI strategy coach for small businesses. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) top 3 functions to automate, (2) recommended tools for each, (3) biggest mistake small businesses make implementing AI.',
+  board:'You are a coach helping a founder frame ROI for a board audience. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) 3-sentence executive summary, (2) key metric to lead with, (3) how to handle the most likely board challenge.'
+};
+var COPENERS={
+  retain:"Let's work through this. Tell me about the person — what do they do, and how long have they been with you?",
+  hire:"Let's build the case. What's the role, and what's the primary business problem it would solve?",
+  ai:"Let's find where AI helps most. What are the most time-consuming or repetitive tasks in your business right now?",
+  board:"Let's frame your story. Tell me about your audience — how financially sophisticated are they, and what are they most focused on?"
+};
+
+async function startCoach(mode){
+  cMode=mode;cHist=[];
+  document.getElementById('coach-idle').style.display='none';
+  document.getElementById('coach-session').style.display='block';
+  document.getElementById('coach-result').style.display='none';
+  sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
+  var ok=false;
+  try{
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
+    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
+    if(!txt||txt.length<10)throw new Error('empty');
+    cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
+    sh('coach-msgs','<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>');ok=true;
+  }catch(e){ok=false;}
+  if(!ok){sh('coach-msgs','<div class="cmsg cmai">'+COPENERS[mode]+'</div>');cHist=[{role:'assistant',content:COPENERS[mode]}];}
+}
+
+async function sendCoach(){
+  var input=document.getElementById('coach-input').value.trim();if(!input)return;
+  document.getElementById('coach-input').value='';
+  var msgs=document.getElementById('coach-msgs');
+  msgs.innerHTML+='<div class="cmsg">'+input.replace(/\n/g,'<br>')+'</div>';
+  msgs.innerHTML+='<div class="cmsg cmai" id="ctyping"><span class="spin"></span> Thinking…</div>';
+  cHist.push({role:'user',content:input});
+  var ok=false;
+  try{
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:CSYS[cMode],messages:cHist})});
+    if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
+    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
+    if(!txt||txt.length<5)throw new Error('empty');
+    cHist.push({role:'assistant',content:txt});
+    var ct=document.getElementById('ctyping');if(ct)ct.remove();
+    msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
+    if(txt.indexOf('COACH OUTPUT:')>=0){var out=txt.split('COACH OUTPUT:')[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
+    ok=true;
+  }catch(e){ok=false;}
+  if(!ok){
+    var ct2=document.getElementById('ctyping');if(ct2)ct2.remove();
+    var hist=cHist.map(function(m){return(m.role==='user'?'You: ':'Coach: ')+m.content;}).join('\n\n');
+    var names={retain:'retention conversation',hire:'hiring justification',ai:'AI strategy',board:'board/investor framing'};
+    alert('API unavailable. Copy this prompt and paste it into Claude.ai to continue:\n\nI am in a '+names[cMode]+' coaching session. Conversation so far:\n\n'+hist+'\n\nPlease continue as the coach.');
+    msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E">API unavailable — copy the prompt from the alert and continue in Claude.ai.</div>';
+  }
+}
+
+function endCoach(){document.getElementById('coach-session').style.display='none';document.getElementById('coach-idle').style.display='block';cMode=null;cHist=[];}
+function cpCoach(){var t=document.getElementById('coach-out');if(!t)return;navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline='';},1400);}
+
+function destroyAll(){
+  S={};valN=0;cMode=null;cHist=[];
+  document.getElementById('val-list').innerHTML='';
+  document.getElementById('coach-msgs').innerHTML='';
+  document.getElementById('coach-session').style.display='none';
+  document.getElementById('coach-idle').style.display='block';
+  document.getElementById('coach-result').style.display='none';
+  document.getElementById('running-card').style.display='none';
+  document.querySelectorAll('input,textarea').forEach(function(e){if(e.type!=='hidden')e.value='';});
+  document.querySelectorAll('select').forEach(function(e){e.selectedIndex=0;});
+  ['doc-report','doc-ret','doc-hire','doc-ai'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  ['be-lbl','be-surplus','r-cost-hdr','r-cost','r-roi','r-net','run-roi','run-cost','run-net'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  ['r-streams','r-verdict','r-ret-detail','ai-h-sum','ai-a-sum','ai-cross','ai-yearly','ai-rec','ai-preview'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='';});
+  document.getElementById('res-bar').style.width='0%';
+  document.getElementById('results-block').style.display='none';
+  document.getElementById('no-results').style.display='block';
+  document.getElementById('exp-block').style.display='none';
+  document.getElementById('no-exp').style.display='block';
+  ['r-ret-card','exp-ret','exp-hire','exp-ai'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('use-case').value='role';selectUC('role');
+  document.getElementById('t1').checked=true;
+}
+
+selectUC('role');
+</script>
+</body>
+</html>

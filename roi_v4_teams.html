@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ROI Engine v4 — Teams</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0C0F1C;--surface:#13172A;--surface2:#1A1F38;--border:#252D50;
+  --text:#E8EAF8;--text2:#7880A8;--text3:#454D70;
+  --purple:#9B6EF8;--purple-dim:#1A1240;--purple-b:#9B6EF844;
+  --blue:#4A9EFF;--blue-dim:#0E2040;--blue-b:#4A9EFF44;
+  --green:#34C98A;--green-dim:#0A2B20;--green-b:#34C98A44;
+  --amber:#F0A020;--amber-dim:#281A05;--amber-b:#F0A02044;
+  --red:#F04848;--red-dim:#280A0A;--red-b:#F0484844;
+  --teal:#22D4C8;--teal-dim:#062520;--teal-b:#22D4C844;
+  --radius:10px;--radius-sm:6px;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:900px;margin:0 auto;padding:1.25rem}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.875rem;border-bottom:1px solid var(--border)}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.version-badge{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--purple-dim);color:var(--purple);font-weight:500;border:1px solid var(--purple-b)}
+.privacy-pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-b);border-radius:99px;padding:3px 10px}
+.destroy-btn{font-size:11px;color:var(--red);background:var(--red-dim);border:1px solid var(--red-b);border-radius:var(--radius-sm);padding:4px 10px;cursor:pointer}
+
+/* CSS-only tabs */
+.tab-radio{display:none}
+.tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
+.tab-nav label{padding:6px 13px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2);user-select:none;transition:all .15s}
+.tab-nav label:hover{background:var(--surface2);color:var(--text)}
+#t1:checked~.tab-nav label[for=t1],
+#t2:checked~.tab-nav label[for=t2],
+#t3:checked~.tab-nav label[for=t3],
+#t4:checked~.tab-nav label[for=t4],
+#t5:checked~.tab-nav label[for=t5],
+#t6:checked~.tab-nav label[for=t6]{background:var(--purple);color:#fff;border-color:var(--purple);font-weight:600}
+.tab-panel{display:none}
+#t1:checked~.panels #p1,
+#t2:checked~.panels #p2,
+#t3:checked~.panels #p3,
+#t4:checked~.panels #p4,
+#t5:checked~.panels #p5,
+#t6:checked~.panels #p6{display:block}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
+.card-purple{background:var(--purple-dim);border-color:var(--purple-b)}
+.card-blue{background:var(--blue-dim);border-color:var(--blue-b)}
+.card-ok{background:var(--green-dim);border-color:var(--green-b)}
+.card-warn{background:var(--amber-dim);border-color:var(--amber-b)}
+.card-err{background:var(--red-dim);border-color:var(--red-b)}
+.card-teal{background:var(--teal-dim);border-color:var(--teal-b)}
+
+.sl{font-size:12px;font-weight:600;color:var(--text2);margin:0 0 10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
+.sl-purple{color:var(--purple)}.sl-blue{color:var(--blue)}.sl-ok{color:var(--green)}.sl-warn{color:var(--amber)}.sl-teal{color:var(--teal)}
+
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fg label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit;transition:border-color .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--purple)}
+.hint{font-size:11px;color:var(--text3);line-height:1.4;margin-top:2px}
+
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:.875rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.875rem}
+.mc{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px}
+.mc .lb{font-size:11px;color:var(--text3);margin:0 0 3px;text-transform:uppercase;letter-spacing:.04em}
+.mc .vl{font-size:20px;font-weight:600;margin:0;font-family:'DM Mono',monospace}
+.pos{color:var(--green)!important}.neg{color:var(--red)!important}.warnc{color:var(--amber)!important}.ic{color:var(--blue)!important}.pc{color:var(--purple)!important}.tc{color:var(--teal)!important}
+
+.irow{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border)}
+.irow:last-child{border-bottom:none}
+.irow strong{color:var(--text);font-weight:500;font-family:'DM Mono',monospace}
+
+.beband{border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem;border:1px solid}
+.meter{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:6px 0}
+.mfill{height:100%;border-radius:99px;transition:width .4s}
+
+.tbadge{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap}
+.tp{background:var(--purple-dim);color:var(--purple)}.tb{background:var(--blue-dim);color:var(--blue)}
+.tg{background:var(--green-dim);color:var(--green)}.ta{background:var(--amber-dim);color:var(--amber)}
+.tt{background:var(--teal-dim);color:var(--teal)}.to{background:var(--surface2);color:var(--text2)}
+
+/* member cards */
+.member-outer{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.875rem;overflow:hidden;transition:border-color .15s}
+.member-outer.highlight{border-color:var(--purple-b)}
+.member-head{display:flex;align-items:center;gap:8px;padding:.75rem 1rem;background:var(--surface2);border-bottom:1px solid var(--border)}
+.member-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:#fff}
+.member-name-input{flex:1;font-size:13px;font-weight:500;border:none;background:transparent;color:var(--text);padding:2px 0}
+.member-name-input::placeholder{color:var(--text3)}
+.mroi-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.mroi-live{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
+.mroi-zero{background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.delbtn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:2px 5px;border-radius:var(--radius-sm);flex-shrink:0}
+.delbtn:hover{color:var(--red);background:var(--red-dim)}
+
+/* contribution stream */
+.cstream{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.75rem;margin-bottom:.5rem}
+.cshdr{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.cspill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px}
+.cspill-live{background:var(--green-dim);color:var(--green)}
+.cspill-zero{background:var(--surface);color:var(--text3)}
+.qb{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;margin-bottom:5px}
+.qb label{font-size:11px;font-weight:500;color:var(--text2);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.qh{font-size:11px;color:var(--text3);line-height:1.4;margin-bottom:5px;display:block}
+.qb input,.qb select{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 9px;color:var(--text);font-family:inherit}
+.qb input:focus,.qb select:focus{outline:none;border-color:var(--purple)}
+.add-stream-btn{width:100%;border:1px dashed var(--border);background:transparent;color:var(--text3);border-radius:var(--radius-sm);padding:7px;font-size:12px;cursor:pointer;margin-bottom:.25rem}
+.add-stream-btn:hover{background:var(--surface2);color:var(--text2)}
+.addbtn{width:100%;border:1px dashed var(--border);background:transparent;color:var(--text2);border-radius:var(--radius);padding:10px;font-size:13px;cursor:pointer;margin-bottom:.875rem}
+.addbtn:hover{background:var(--surface2)}
+
+/* spotlight / underrecognized */
+.spotlight-card{background:var(--surface);border:2px solid var(--purple-b);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.625rem;position:relative}
+.spotlight-badge{position:absolute;top:-1px;right:1rem;font-size:10px;font-weight:700;padding:2px 8px;border-radius:0 0 6px 6px;letter-spacing:.05em}
+
+/* coach */
+.cmsg{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.7;color:var(--text);margin-bottom:6px}
+.cmai{background:var(--purple-dim);border-color:var(--purple-b);color:#D0BAFF}
+
+/* exports */
+.ecard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1.125rem;margin-bottom:.625rem}
+.ecard h3{font-size:13px;font-weight:600;margin:0 0 4px;display:flex;align-items:center;gap:7px;color:var(--text)}
+.ecard p{font-size:12px;color:var(--text2);margin:0 0 7px}
+.dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:180px;overflow-y:auto;margin-bottom:7px;color:var(--text)}
+.brow{display:flex;gap:7px;flex-wrap:wrap}
+.step-banner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;margin-bottom:.875rem}
+
+button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+button:hover{background:var(--surface2)}
+.btn-primary{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600}
+.btn-primary:hover{opacity:.88}
+.btn-danger{color:var(--red);border-color:var(--red-b);background:var(--red-dim)}
+
+.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* leaderboard / contribution bar chart */
+.contrib-bar-wrap{margin-bottom:6px}
+.contrib-bar-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;color:var(--text2)}
+.contrib-bar-label strong{color:var(--text);font-family:'DM Mono',monospace}
+.contrib-bar-track{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.contrib-bar-fill{height:100%;border-radius:99px;transition:width .5s ease}
+
+/* recognition lens */
+.recog-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.875rem}
+.recog-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.875rem}
+.recog-title{font-size:12px;font-weight:600;margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.recog-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px}
+.recog-val{font-size:13px;font-family:'DM Mono',monospace}
+
+@media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}.recog-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo">
+      <i class="ti ti-users-group" style="font-size:16px;color:var(--purple)"></i>
+      ROI Engine
+      <span class="version-badge">v4 · Teams</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span>
+      <button class="destroy-btn" onclick="destroyAll()"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all</button>
+    </div>
+  </div>
+
+  <input type="radio" class="tab-radio" id="t1" name="tabs" checked/>
+  <input type="radio" class="tab-radio" id="t2" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t3" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t4" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t5" name="tabs"/>
+  <input type="radio" class="tab-radio" id="t6" name="tabs"/>
+
+  <div class="tab-nav">
+    <label for="t1">1. Team setup</label>
+    <label for="t2">2. Members</label>
+    <label for="t3">3. Contributions</label>
+    <label for="t4">4. Team ledger</label>
+    <label for="t5">5. Coach</label>
+    <label for="t6">6. Exports</label>
+  </div>
+
+  <div class="panels">
+
+  <!-- ═══ PANEL 1: TEAM SETUP ═══ -->
+  <div class="tab-panel" id="p1">
+    <div class="card card-purple">
+      <p class="sl sl-purple"><i class="ti ti-users-group"></i> What this tool does</p>
+      <p style="font-size:13px;color:#D0BAFF;line-height:1.6;margin:0">ROI Engine v4 aggregates the contributions of everyone on a team into a <strong>collective impact ledger</strong>. Surface unrecognized contributors, frame total team ROI for leadership, and generate reports that defend headcount, justify investment, and make the whole team's value undeniable.</p>
+    </div>
+
+    <div class="card">
+      <p class="sl"><i class="ti ti-building"></i> Team &amp; organization context</p>
+      <div class="fr3">
+        <div class="fg"><label>Team / department name</label><input id="team-name" placeholder="e.g. Customer Success Team"/></div>
+        <div class="fg"><label>Organization / company</label><input id="team-org" placeholder="e.g. Acme Corp"/></div>
+        <div class="fg"><label>Report prepared by</label><input id="team-author" placeholder="e.g. Jordan Lee, Director"/></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Team's primary function</label><input id="team-function" placeholder="e.g. Customer retention, revenue growth, technical delivery"/><span class="hint">One sentence. Used throughout reports.</span></div>
+        <div class="fg"><label>Audience for this report</label>
+          <select id="team-audience">
+            <option value="vp">VP / Director level</option>
+            <option value="ceo">CEO / C-suite</option>
+            <option value="board">Board of directors</option>
+            <option value="hr">HR / People team</option>
+            <option value="investors">Investors / stakeholders</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="sl"><i class="ti ti-chart-bar"></i> Team financials</p>
+      <div class="fr3">
+        <div class="fg"><label>Total team salary cost ($)</label><input type="number" id="team-salary-total" placeholder="650000" oninput="liveTeam()"/><span class="hint">Sum of all base salaries on the team.</span></div>
+        <div class="fg"><label>Benefits &amp; overhead rate</label>
+          <select id="team-benefits" onchange="liveTeam()">
+            <option value="0.20">20% — lean</option>
+            <option value="0.30" selected>30% — typical</option>
+            <option value="0.40">40% — generous</option>
+          </select>
+        </div>
+        <div class="fg"><label>Additional team costs ($)</label><input type="number" id="team-extras" placeholder="25000" oninput="liveTeam()"/><span class="hint">Tools, training, team overhead.</span></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Industry / sector</label><input id="team-industry" placeholder="e.g. SaaS, healthcare, retail"/><span class="hint">Used for revenue-per-employee benchmarks.</span></div>
+        <div class="fg"><label>Reporting period</label>
+          <select id="team-period" onchange="liveTeam()">
+            <option value="3">Last quarter (Q)</option>
+            <option value="6">Last 6 months</option>
+            <option value="12" selected>This year (annual)</option>
+            <option value="24">Last 2 years</option>
+          </select>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="mc"><p class="lb">Total team cost</p><p class="vl warnc" id="tc-total">—</p></div>
+        <div class="mc"><p class="lb">Period obligation</p><p class="vl warnc" id="tc-period">—</p></div>
+        <div class="mc"><p class="lb">Team size</p><p class="vl pc" id="tc-size">—</p></div>
+      </div>
+    </div>
+
+    <label for="t2" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Next: add team members →</span></label>
+  </div>
+
+  <!-- ═══ PANEL 2: MEMBERS ═══ -->
+  <div class="tab-panel" id="p2">
+    <div class="card card-blue">
+      <p class="sl sl-blue"><i class="ti ti-user-plus"></i> Add your team members</p>
+      <p style="font-size:13px;color:#C0D4FF;line-height:1.6;margin:0">Add each person on the team. You only need their name and role — individual salary data is optional and used only to calculate per-person costs. All data stays in your browser.</p>
+    </div>
+    <div id="member-list"></div>
+    <button class="addbtn" onclick="addMember()"><i class="ti ti-user-plus" style="font-size:14px;vertical-align:-2px"></i> Add a team member</button>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);margin-bottom:.875rem;display:flex;align-items:flex-start;gap:8px">
+      <i class="ti ti-info-circle" style="font-size:14px;flex-shrink:0;color:var(--text3)"></i>
+      <span>No individual salary data? No problem — add names and roles, and use the total team cost on tab 1. The ledger still works with aggregate numbers.</span>
+    </div>
+    <label for="t3" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Next: log contributions →</span></label>
+  </div>
+
+  <!-- ═══ PANEL 3: CONTRIBUTIONS ═══ -->
+  <div class="tab-panel" id="p3">
+    <div class="card card-purple">
+      <p class="sl sl-purple"><i class="ti ti-list-check"></i> Team contribution ledger</p>
+      <p style="font-size:13px;color:#D0BAFF;line-height:1.6;margin:0">Log every significant contribution the team made — shared wins, individual standouts, process improvements, revenue impact, risk averted. Each contribution can be attributed to one person, a sub-group, or the whole team. Streams roll up to the collective ledger.</p>
+    </div>
+    <div id="contrib-list"></div>
+    <button class="addbtn" onclick="addContrib()"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px"></i> Add a team contribution</button>
+
+    <div style="background:var(--green-dim);border:1px solid var(--green-b);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem;display:none" id="running-card">
+      <p class="sl sl-ok"><i class="ti ti-calculator"></i> Running total</p>
+      <div class="g3">
+        <div class="mc"><p class="lb">Total ROI so far</p><p class="vl pos" id="run-roi">—</p></div>
+        <div class="mc"><p class="lb">Team cost</p><p class="vl warnc" id="run-cost">—</p></div>
+        <div class="mc"><p class="lb">Net position</p><p class="vl" id="run-net">—</p></div>
+      </div>
+    </div>
+
+    <label for="t4" style="display:block">
+      <span onclick="calcLedger()" class="btn-primary" style="display:block;text-align:center;padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate team ledger</span>
+    </label>
+    <p style="font-size:11px;color:var(--text3);text-align:center;margin:4px 0 0">Calculates ledger, surfaces recognition insights, and generates all export documents.</p>
+  </div>
+
+  <!-- ═══ PANEL 4: TEAM LEDGER ═══ -->
+  <div class="tab-panel" id="p4">
+    <div id="no-ledger" style="text-align:center;padding:2rem;color:var(--text2);font-size:13px">Add contributions on tab 3 then click "Calculate team ledger".</div>
+    <div id="ledger-block" style="display:none">
+
+      <div class="step-banner" style="background:var(--green-dim);border-color:var(--green-b)">
+        <i class="ti ti-check" style="font-size:16px;flex-shrink:0;color:var(--green)"></i>
+        <span style="color:#A0E8C8">Ledger ready. Export documents are on tab 6. The team coach is on tab 5.</span>
+      </div>
+
+      <!-- band -->
+      <div id="ledger-band" class="beband" style="border-color:var(--green-b);background:var(--green-dim)">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div><p style="font-size:11px;font-weight:500;margin:0 0 2px;opacity:.8" id="lb-lbl">—</p><p style="font-size:24px;font-weight:600;margin:0;font-family:'DM Mono',monospace" id="lb-surplus">—</p></div>
+          <div style="text-align:right"><p style="font-size:11px;margin:0 0 1px;opacity:.7" id="lb-cost-lbl">Period cost</p><p style="font-size:16px;font-weight:600;margin:0;font-family:'DM Mono',monospace" id="lb-cost">—</p></div>
+        </div>
+        <div class="meter" style="margin-top:10px"><div class="mfill" id="lb-bar" style="width:0%;background:var(--green)"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;opacity:.7;margin-top:2px"><span>$0</span><span>Break-even</span><span id="lb-bar-max">—</span></div>
+      </div>
+
+      <div class="g4">
+        <div class="mc"><p class="lb">Total team cost</p><p class="vl warnc" id="l-cost">—</p></div>
+        <div class="mc"><p class="lb">Total ROI generated</p><p class="vl pos" id="l-roi">—</p></div>
+        <div class="mc"><p class="lb">ROI multiplier</p><p class="vl pc" id="l-mult">—</p></div>
+        <div class="mc"><p class="lb">Avg ROI per member</p><p class="vl ic" id="l-avg">—</p></div>
+      </div>
+
+      <!-- Contribution breakdown -->
+      <div class="card"><p class="sl">Contribution breakdown</p><div id="ledger-rows"></div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;padding:7px 0 0;border-top:1px solid var(--border);margin-top:3px"><span>Total ROI</span><span id="l-total" class="pos" style="font-family:'DM Mono',monospace">—</span></div></div>
+
+      <!-- Per-member ROI bars -->
+      <div class="card" id="member-roi-card" style="display:none">
+        <p class="sl sl-purple"><i class="ti ti-chart-bar"></i> Member contribution breakdown</p>
+        <div id="member-roi-bars"></div>
+      </div>
+
+      <!-- Recognition lens -->
+      <div class="card" id="recog-card" style="display:none">
+        <p class="sl sl-teal"><i class="ti ti-sparkles"></i> Recognition lens</p>
+        <p style="font-size:12px;color:var(--text2);margin:0 0 12px">Who is generating outsized value relative to their role or visibility?</p>
+        <div class="recog-grid" id="recog-grid"></div>
+        <div id="recog-analysis" style="font-size:13px;color:var(--text2);line-height:1.8;margin-top:8px"></div>
+      </div>
+
+      <!-- Verdict -->
+      <div class="card"><p class="sl">Team assessment</p><div id="team-verdict" style="font-size:13px;color:var(--text2);line-height:1.8"></div></div>
+
+      <div class="g2" style="margin-top:.5rem">
+        <label for="t6" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
+        <label for="t5" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Team coach →</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 5: COACH ═══ -->
+  <div class="tab-panel" id="p5">
+    <div class="card card-purple">
+      <p class="sl sl-purple"><i class="ti ti-brain"></i> Team coach</p>
+      <p style="font-size:13px;color:#D0BAFF;line-height:1.6;margin:0">Four coaching modes for people managers and team leads. The coach knows your team's data — it will reference your actual numbers. If the API is unavailable, it hands off to Claude with a prompt you can paste into claude.ai.</p>
+    </div>
+    <div class="g2" style="margin-bottom:.5rem">
+      <button onclick="startCoach('headcount')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-user-shield" style="font-size:18px;color:var(--purple)"></i><span style="font-weight:500">Defend headcount</span><span style="color:var(--text2);font-size:11px;text-align:center">"How do I justify keeping this team?"</span></button>
+      <button onclick="startCoach('recognition')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-award" style="font-size:18px;color:var(--teal)"></i><span style="font-weight:500">Recognition strategy</span><span style="color:var(--text2);font-size:11px;text-align:center">"Who deserves more and how do I make the case?"</span></button>
+    </div>
+    <div class="g2" style="margin-bottom:1rem">
+      <button onclick="startCoach('investment')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-trending-up" style="font-size:18px;color:var(--green)"></i><span style="font-weight:500">Make the investment case</span><span style="color:var(--text2);font-size:11px;text-align:center">"How do I pitch budget for this team?"</span></button>
+      <button onclick="startCoach('performance')" style="padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer"><i class="ti ti-clipboard-check" style="font-size:18px;color:var(--amber)"></i><span style="font-weight:500">Performance narrative</span><span style="color:var(--text2);font-size:11px;text-align:center">"How do I frame this for my boss?"</span></button>
+    </div>
+    <div id="coach-idle" style="text-align:center;padding:1.5rem;color:var(--text2);font-size:13px">Choose a coaching mode above to begin.</div>
+    <div id="coach-session" style="display:none">
+      <div id="coach-msgs" style="margin-bottom:8px"></div>
+      <div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here…" style="min-height:60px"></textarea></div>
+      <div style="display:flex;gap:7px">
+        <button onclick="sendCoach()" style="flex:1;background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600">Send ↗</button>
+        <button onclick="endCoach()">End session</button>
+      </div>
+      <div id="coach-result" style="display:none;margin-top:.875rem">
+        <div class="card card-ok">
+          <p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p>
+          <div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>
+          <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 6: EXPORTS ═══ -->
+  <div class="tab-panel" id="p6">
+    <div id="no-exp" style="text-align:center;padding:2rem;color:var(--text2);font-size:13px">Complete your team ledger on tab 4 first — export documents appear here automatically.</div>
+    <div id="exp-block" style="display:none">
+      <div class="card card-ok" style="margin-bottom:.875rem">
+        <p class="sl sl-ok"><i class="ti ti-check"></i> All documents generated</p>
+        <p style="font-size:12px;color:#A0E8C8;margin:0">Copy any document below or click "Refine" to improve with Claude.</p>
+      </div>
+      <div class="ecard">
+        <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--purple)"></i> Team ROI report</h3>
+        <p>Full team ledger with collective ROI, per-member breakdown, and leadership-facing analysis.</p>
+        <div class="dpre" id="doc-report">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-report')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('report')">Refine ↗</button></div>
+      </div>
+      <div class="ecard">
+        <h3><i class="ti ti-sparkles" style="font-size:14px;color:var(--teal)"></i> Recognition &amp; spotlight memo</h3>
+        <p>Surfaces underrecognized contributors with data-grounded cases for raises, promotions, or public recognition.</p>
+        <div class="dpre" id="doc-recognition">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-recognition')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('recognition')">Refine ↗</button></div>
+      </div>
+      <div class="ecard">
+        <h3><i class="ti ti-mail" style="font-size:14px;color:var(--blue)"></i> Leadership briefing</h3>
+        <p>Executive-facing summary framed for the selected audience. ROI, headcount defense, and investment case.</p>
+        <div class="dpre" id="doc-brief">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-brief')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('brief')">Refine ↗</button></div>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
+        <button onclick="exportJSON()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download backup (JSON)</button>
+        <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
+      </div>
+      <p style="font-size:11px;color:var(--text3);margin:.5rem 0 0">JSON backup contains only self-reported estimates. No confidential HR or salary data is transmitted.</p>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<script>
+/* ── Contribution stream type definitions ── */
+var CTYPES={
+  revenue:{label:'Revenue generated',cls:'tb',icon:'ti-trending-up',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe this revenue contribution',ph:'e.g. Enterprise renewals closed',hint:'What revenue did this person or group drive?'},
+    {id:'amount',lbl:'Revenue amount ($)',ph:'500000',hint:'Total revenue generated or influenced.'},
+    {id:'credit',lbl:'Attribution to this team (%)',ph:'60',hint:'What % is attributable to this team or person?'},
+    {id:'recur',t:'select',opts:['annual','one-time'],lbl:'Recurring or one-time?',ph:'',hint:'One-time is discounted to one-third.'},
+    {id:'conf',lbl:'Confidence (%)',ph:'75',hint:'Higher for closed/signed revenue.'}
+  ]},
+  efficiency:{label:'Efficiency / time saved',cls:'tg',icon:'ti-settings',qs:[
+    {id:'gdesc',t:'text',lbl:'What was made more efficient?',ph:'e.g. Onboarding cut from 6 weeks to 3',hint:'What process improved? Who benefited?'},
+    {id:'hrs_pw',lbl:'Hours saved per person per week',ph:'5',hint:'Per individual in the affected group.'},
+    {id:'n_people',lbl:'People in the affected group',ph:'10',hint:'How many people benefit from this improvement?'},
+    {id:'avg_rate',lbl:'Average hourly rate ($)',ph:'55',hint:'Annual salary ÷ 2,000.'},
+    {id:'months',lbl:'Months per year this applies',ph:'12',hint:'12 for permanent improvements.'},
+    {id:'conf',lbl:'Confidence (%)',ph:'70',hint:'60–80% is honest.'}
+  ]},
+  cost:{label:'Cost savings',cls:'ta',icon:'ti-coin',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe the cost area',ph:'e.g. Vendor consolidation, tool elimination',hint:'What spend was reduced or avoided?'},
+    {id:'saved',lbl:'Annual savings ($)',ph:'80000',hint:'Ongoing yearly saving.'},
+    {id:'credit',lbl:'Attribution (%)',ph:'70',hint:'What % is due to this team\'s work?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'75',hint:'Higher for signed contracts or confirmed spend.'}
+  ]},
+  risk:{label:'Risk averted',cls:'tp',icon:'ti-shield-check',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe the risk',ph:'e.g. Compliance gap closed, client churn prevented',hint:'What potential loss was prevented?'},
+    {id:'exposure',lbl:'Potential exposure ($)',ph:'250000',hint:'What could it have cost if this risk materialized?'},
+    {id:'prob',lbl:'Probability without intervention (%)',ph:'40',hint:'How likely was the loss to occur?'},
+    {id:'credit',lbl:'Attribution (%)',ph:'70',hint:'What % of the prevention was due to this team?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'55',hint:'50–65% is honest.'}
+  ]},
+  retention:{label:'Talent retained',cls:'tt',icon:'ti-heart-handshake',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe the retention outcome',ph:'e.g. Retained 3 senior engineers at risk of leaving',hint:'What talent was kept and why does it matter?'},
+    {id:'n_people',lbl:'People retained',ph:'3',hint:'Number of people who stayed who might have left.'},
+    {id:'avg_sal',lbl:'Average annual salary ($)',ph:'120000',hint:'Used to estimate replacement cost.'},
+    {id:'ramp_months',lbl:'Estimated ramp time if replaced (months)',ph:'4',hint:'Time to full productivity for a replacement.'},
+    {id:'conf',lbl:'Confidence (%)',ph:'65',hint:'How confident are you they were genuinely at risk?'}
+  ]},
+  strategic:{label:'Strategic / other value',cls:'to',icon:'ti-star',qs:[
+    {id:'gdesc',t:'text',lbl:'Describe this contribution',ph:'e.g. Built the partnership that unlocked new market',hint:'What strategic value did this team or person create?'},
+    {id:'val',lbl:'Best estimate of value ($)',ph:'100000',hint:'Anchor on something concrete.'},
+    {id:'credit',lbl:'Attribution (%)',ph:'50',hint:'What % is due to this team or person?'},
+    {id:'conf',lbl:'Confidence (%)',ph:'50',hint:'40–65% is appropriate.'}
+  ]}
+};
+
+/* ── Avatar colors cycling ── */
+var AVATAR_COLORS=['#7B4FD8','#2C7ABF','#1F8C5F','#C48A08','#B84040','#2C8C8C','#8C4FC4','#4F8C2C'];
+
+var memberN=0,contribN=0,streamN=0,S={},cMode=null,cHist=[];
+var members={}; // {id: {name, role, salary}}
+
+function gv(id){var e=document.getElementById(id);return e?e.value||'':'';}
+function gn(id){return parseFloat(gv(id))||0;}
+function fmt(n){if(!isFinite(n)||isNaN(n))return'—';var s=n<0?'-':'';var a=Math.abs(n);if(a>=1e9)return s+'$'+(a/1e9).toFixed(2)+'B';if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a);}
+function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+
+function liveTeam(){
+  var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
+  var total=sal*(1+ben)+ext;
+  var months=parseInt(gv('team-period'))||12;
+  var period=total*(months/12);
+  var size=document.querySelectorAll('.member-outer').length;
+  se('tc-total',fmt(total));se('tc-period',fmt(period));se('tc-size',size>0?size:getMemberCount());
+}
+function getMemberCount(){return Object.keys(members).length;}
+
+/* ── Members ── */
+function addMember(){
+  memberN++;var mid=memberN;
+  var color=AVATAR_COLORS[(mid-1)%AVATAR_COLORS.length];
+  members[mid]={name:'',role:'',salary:0};
+  var d=document.createElement('div');d.className='member-outer';d.id='mo-'+mid;
+  d.innerHTML='<div class="member-head"><div class="member-avatar" id="mav-'+mid+'" style="background:'+color+'">'+mid+'</div><input class="member-name-input" id="mname-'+mid+'" placeholder="Member name…" oninput="updateMember('+mid+')" /><div style="display:flex;align-items:center;gap:8px;flex-shrink:0"><input style="width:130px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 8px;color:var(--text2)" id="mrole-'+mid+'" placeholder="Role / title" oninput="updateMember('+mid+')" /></div><span class="mroi-pill mroi-zero" id="mroi-'+mid+'">No contributions</span><button class="delbtn" onclick="deleteMember('+mid+')" aria-label="Remove"><i class="ti ti-trash"></i></button></div><div style="padding:.75rem 1rem"><div class="fg"><label>Annual salary (optional, $)</label><input type="number" id="msal-'+mid+'" placeholder="0 — uses team total if blank" oninput="updateMember('+mid+')" /></div><p class="hint" style="margin-top:4px">Leave blank if you prefer to keep individual salaries private — team totals still work.</p></div>';
+  document.getElementById('member-list').appendChild(d);
+  liveTeam();
+}
+
+function updateMember(mid){
+  var name=gv('mname-'+mid),role=gv('mrole-'+mid),sal=gn('msal-'+mid);
+  members[mid]={name:name||'Member '+mid,role:role,salary:sal};
+  var av=document.getElementById('mav-'+mid);
+  if(av)av.textContent=name?(name.charAt(0).toUpperCase()):'?';
+  rebuildMemberDropdowns();
+}
+
+function deleteMember(mid){
+  var el=document.getElementById('mo-'+mid);if(el)el.remove();
+  delete members[mid];
+  rebuildMemberDropdowns();
+  liveTeam();
+}
+
+function rebuildMemberDropdowns(){
+  var selects=document.querySelectorAll('.member-select');
+  var opts='<option value="team">Whole team</option>';
+  for(var mid in members){opts+='<option value="'+mid+'">'+members[mid].name+'</option>';}
+  selects.forEach(function(s){var cur=s.value;s.innerHTML=opts;if(cur)s.value=cur;});
+}
+
+function getMemberList(){
+  var list=[];
+  for(var mid in members)list.push({id:parseInt(mid),name:members[mid].name,role:members[mid].role,salary:members[mid].salary});
+  return list;
+}
+
+/* ── Contributions ── */
+function calcContribStreamVal(cid,sid){
+  var type=gv('cstype-'+cid+'-'+sid);if(!type)return 0;
+  var p=function(k){return gn('csq-'+cid+'-'+sid+'-'+k);};
+  var pv=function(k){return gv('csq-'+cid+'-'+sid+'-'+k);};
+  var raw=0;
+  if(type==='revenue'){raw=p('amount')*(p('credit')||60)/100*(pv('recur')==='one-time'?0.33:1)*((p('conf')||75)/100);}
+  else if(type==='efficiency'){raw=p('hrs_pw')*(p('n_people')||1)*(p('avg_rate')||50)*((p('months')||12)*4.33)*((p('conf')||70)/100);}
+  else if(type==='cost'){raw=p('saved')*(p('credit')||70)/100*((p('conf')||75)/100);}
+  else if(type==='risk'){raw=p('exposure')*(p('prob')||40)/100*(p('credit')||70)/100*((p('conf')||55)/100);}
+  else if(type==='retention'){var replCost=p('avg_sal')*0.5+(p('avg_sal')/12*p('ramp_months')||4);raw=p('n_people')*replCost*((p('conf')||65)/100);}
+  else if(type==='strategic'){raw=p('val')*(p('credit')||50)/100*((p('conf')||50)/100);}
+  return raw;
+}
+
+function updateContribStream(cid,sid){
+  var val=calcContribStreamVal(cid,sid);
+  var pill=document.getElementById('cspill-'+cid+'-'+sid);
+  if(pill){pill.textContent=val>0?fmt(val):'—';pill.className='cspill '+(val>0?'cspill-live':'cspill-zero');}
+  updateContribTotal(cid);
+}
+
+function updateContribTotal(cid){
+  var total=0;
+  var sl=document.getElementById('cs-list-'+cid);
+  if(sl){var sn=sl.querySelectorAll('[data-csid]');for(var i=0;i<sn.length;i++){var sid=parseInt(sn[i].getAttribute('data-csid'));total+=calcContribStreamVal(cid,sid);}}
+  var pill=document.getElementById('cpill-'+cid);
+  if(pill){pill.textContent=total>0?fmt(total):'No streams yet';pill.className='mroi-pill '+(total>0?'mroi-live':'mroi-zero');}
+  updateRunning();
+}
+
+function updateRunning(){
+  var contribs=getAllContribs();
+  var totalRoi=contribs.reduce(function(s,c){return s+c.totalVal;},0);
+  var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
+  var totalCost=sal*(1+ben)+ext;
+  var months=parseInt(gv('team-period'))||12;
+  var periodCost=totalCost*(months/12);
+  var net=totalRoi-periodCost;
+  var rc=document.getElementById('running-card');if(rc)rc.style.display=totalRoi>0?'block':'none';
+  se('run-roi',fmt(totalRoi));se('run-cost',fmt(periodCost));
+  var rn=document.getElementById('run-net');if(rn){rn.textContent=fmt(net);rn.className='vl '+(net>=0?'pos':'neg');}
+}
+
+function renderContribStreamQs(cid,sid){
+  var type=gv('cstype-'+cid+'-'+sid);var qc=document.getElementById('csqs-'+cid+'-'+sid);if(!qc)return;
+  if(!type){qc.innerHTML='';updateContribStream(cid,sid);return;}
+  var def=CTYPES[type];
+  var h='<div style="margin-bottom:7px"><span class="tbadge '+def.cls+'"><i class="ti '+def.icon+'" style="font-size:11px;vertical-align:-1px"></i> '+def.label+'</span></div>';
+  for(var i=0;i<def.qs.length;i++){
+    var q=def.qs[i];
+    h+='<div class="qb"><label>'+q.lbl+'</label><span class="qh">'+q.hint+'</span>';
+    if(q.t==='select'){h+='<select id="csq-'+cid+'-'+sid+'-'+q.id+'" onchange="updateContribStream('+cid+','+sid+')">';for(var oi=0;oi<q.opts.length;oi++)h+='<option value="'+q.opts[oi]+'">'+q.opts[oi]+'</option>';h+='</select>';}
+    else if(q.t==='text')h+='<input type="text" id="csq-'+cid+'-'+sid+'-'+q.id+'" placeholder="'+q.ph+'" oninput="updateContribStream('+cid+','+sid+')" />';
+    else h+='<input type="number" id="csq-'+cid+'-'+sid+'-'+q.id+'" placeholder="'+q.ph+'" oninput="updateContribStream('+cid+','+sid+')" />';
+    h+='</div>';
+  }
+  qc.innerHTML=h;updateContribStream(cid,sid);
+}
+
+function addContribStream(cid){
+  streamN++;var sid=streamN;
+  var container=document.getElementById('cs-list-'+cid);if(!container)return;
+  var count=container.querySelectorAll('[data-csid]').length+1;
+  var d=document.createElement('div');d.className='cstream';d.setAttribute('data-csid',sid);
+  d.innerHTML='<div class="cshdr"><span style="font-size:12px;font-weight:500;color:var(--text2);flex:1">Impact stream '+count+'</span><span class="cspill cspill-zero" id="cspill-'+cid+'-'+sid+'">—</span><button class="delbtn" onclick="this.closest(\'[data-csid]\').remove();updateContribTotal('+cid+')" aria-label="Remove"><i class="ti ti-x"></i></button></div><div class="fg" style="margin-bottom:8px"><label>Value type</label><select id="cstype-'+cid+'-'+sid+'" onchange="renderContribStreamQs('+cid+','+sid+')"><option value="">— choose type —</option><option value="revenue">Revenue generated</option><option value="efficiency">Efficiency / time saved</option><option value="cost">Cost savings</option><option value="risk">Risk averted</option><option value="retention">Talent retained</option><option value="strategic">Strategic / other</option></select></div><div id="csqs-'+cid+'-'+sid+'"></div>';
+  container.appendChild(d);
+}
+
+function addContrib(){
+  contribN++;var cid=contribN;
+  var memberOpts='<option value="team">Whole team</option>';
+  for(var mid in members)memberOpts+='<option value="'+mid+'">'+members[mid].name+'</option>';
+  var d=document.createElement('div');d.className='member-outer';d.id='co-'+cid;
+  d.innerHTML='<div class="member-head" style="background:var(--purple-dim)"><div class="prog-num" style="background:var(--purple-dim);border-color:var(--purple-b);color:var(--purple)">'+cid+'</div><input class="member-name-input" id="cname-'+cid+'" placeholder="Name this contribution…" /><span class="mroi-pill mroi-zero" id="cpill-'+cid+'">No streams yet</span><button class="delbtn" onclick="document.getElementById(\'co-'+cid+'\').remove();updateRunning()" aria-label="Remove"><i class="ti ti-trash"></i></button></div><div style="padding:.875rem 1rem"><div class="fr" style="margin-bottom:.75rem"><div class="fg"><label>Brief description (used in exports)</label><input type="text" id="cdesc-'+cid+'" placeholder="e.g. Redesigned onboarding to cut time-to-productivity by 50%" style="width:100%" /></div><div class="fg"><label>Attributed to</label><select id="cmember-'+cid+'" class="member-select">'+memberOpts+'</select><span class="hint">Who drove this? Affects the recognition lens.</span></div></div><div style="font-size:12px;color:var(--text2);margin-bottom:.5rem;font-weight:500">Impact streams — one per value type</div><div id="cs-list-'+cid+'"></div><button class="add-stream-btn" onclick="addContribStream('+cid+')"><i class="ti ti-plus" style="font-size:12px;vertical-align:-2px"></i> Add impact stream</button></div>';
+  document.getElementById('contrib-list').appendChild(d);
+  addContribStream(cid);
+}
+
+function getAllContribs(){
+  var contribs=[];
+  document.querySelectorAll('[id^="co-"]').forEach(function(co){
+    var cid=parseInt(co.id.replace('co-',''));
+    var title=gv('cname-'+cid)||'Contribution '+cid;
+    var desc=gv('cdesc-'+cid)||title;
+    var attribution=gv('cmember-'+cid)||'team';
+    var streams=[];
+    var sl=document.getElementById('cs-list-'+cid);
+    if(sl){var sn=sl.querySelectorAll('[data-csid]');for(var si=0;si<sn.length;si++){var sid=parseInt(sn[si].getAttribute('data-csid'));var type=gv('cstype-'+cid+'-'+sid);if(!type)continue;var val=calcContribStreamVal(cid,sid);var gdesc=gv('csq-'+cid+'-'+sid+'-gdesc')||'Stream '+sid;streams.push({sid:sid,type:type,label:CTYPES[type]?CTYPES[type].label:type,gdesc:gdesc,val:val});}}
+    var totalVal=streams.reduce(function(s,st){return s+st.val;},0);
+    contribs.push({cid:cid,title:title,desc:desc,attribution:attribution,streams:streams,totalVal:totalVal});
+  });
+  return contribs;
+}
+
+/* ── Build per-member ROI map ── */
+function buildMemberMap(contribs){
+  var map={};
+  for(var mid in members)map[mid]={id:mid,name:members[mid].name,role:members[mid].role,salary:members[mid].salary,roi:0,contribs:[]};
+  map['team']={id:'team',name:'Whole team',roi:0,contribs:[]};
+  contribs.forEach(function(c){
+    var key=c.attribution||'team';
+    if(!map[key])map[key]={id:key,name:key==='team'?'Whole team':key,roi:0,contribs:[]};
+    map[key].roi+=c.totalVal;
+    map[key].contribs.push(c);
+  });
+  return map;
+}
+
+/* ── Ledger ── */
+function calcLedger(){
+  var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
+  var totalCost=sal*(1+ben)+ext;
+  var months=parseInt(gv('team-period'))||12;
+  var periodCost=totalCost*(months/12);
+  var contribs=getAllContribs();
+  var totalRoi=contribs.reduce(function(s,c){return s+c.totalVal;},0);
+  var net=totalRoi-periodCost,mult=periodCost>0?totalRoi/periodCost:0;
+  var memberList=getMemberList();
+  var size=memberList.length||1;
+  var avgRoi=totalRoi/size;
+  var memberMap=buildMemberMap(contribs);
+
+  S={totalCost:totalCost,periodCost:periodCost,months:months,contribs:contribs,totalRoi:totalRoi,net:net,mult:mult,avgRoi:avgRoi,memberMap:memberMap,memberList:memberList};
+
+  document.getElementById('no-ledger').style.display='none';
+  document.getElementById('ledger-block').style.display='block';
+
+  var band=document.getElementById('ledger-band');
+  band.style.background=net>0?'var(--green-dim)':net<0?'var(--red-dim)':'var(--amber-dim)';
+  band.style.borderColor=net>0?'var(--green-b)':net<0?'var(--red-b)':'var(--amber-b)';
+  se('lb-lbl',net>0?'Team surplus — ROI exceeds team cost':net<0?'Team deficit — document more contributions':' Exactly at break-even');
+  se('lb-surplus',(net>=0?'+':'')+fmt(net));
+  se('lb-cost',fmt(periodCost));
+  var bpct=Math.min((totalRoi/Math.max(periodCost,1))/2*100,100);
+  var bel=document.getElementById('lb-bar');bel.style.width=Math.round(bpct)+'%';bel.style.background=net>=0?'var(--green)':mult>=0.6?'var(--amber)':'var(--red)';
+  se('lb-bar-max',fmt(periodCost*2));
+  se('l-cost',fmt(periodCost));se('l-roi',fmt(totalRoi));
+  var ml=document.getElementById('l-mult');if(ml){ml.textContent=mult>=1?mult.toFixed(2)+'×':'<1×';ml.className='vl '+(mult>=1?'pc':'warnc');}
+  se('l-avg',fmt(avgRoi));
+
+  var rows='';
+  for(var i=0;i<contribs.length;i++){
+    var c=contribs[i];
+    var attrName=c.attribution==='team'?'Team':((members[c.attribution]&&members[c.attribution].name)||'Member');
+    rows+='<div class="irow" style="flex-direction:column;align-items:flex-start;gap:3px"><div style="display:flex;justify-content:space-between;width:100%"><strong>'+c.title+'</strong><strong style="font-family:\'DM Mono\',monospace">'+fmt(c.totalVal)+'</strong></div>';
+    rows+='<div style="font-size:11px;color:var(--text3);padding-left:10px">→ '+attrName+'</div>';
+    for(var si=0;si<c.streams.length;si++){var st=c.streams[si];rows+='<div style="font-size:11px;color:var(--text2);display:flex;justify-content:space-between;width:100%;padding-left:10px"><span><span class="tbadge '+(CTYPES[st.type]?CTYPES[st.type].cls:'')+'" style="font-size:10px">'+st.label+'</span> '+st.gdesc+'</span><span style="font-family:\'DM Mono\',monospace">'+fmt(st.val)+'</span></div>';}
+    rows+='</div>';
+  }
+  sh('ledger-rows',rows||'<p style="font-size:13px;color:var(--text2)">No contributions with calculated ROI.</p>');
+  se('l-total',fmt(totalRoi));
+
+  /* Per-member ROI bars */
+  var namedMembers=memberList.filter(function(m){return m.name&&memberMap[m.id]&&memberMap[m.id].roi>0;});
+  var mbc=document.getElementById('member-roi-card');
+  if(namedMembers.length>0&&mbc){
+    mbc.style.display='block';
+    var maxRoi=Math.max.apply(null,namedMembers.map(function(m){return memberMap[m.id].roi;}));
+    var barsHtml='';
+    var sorted=namedMembers.slice().sort(function(a,b){return (memberMap[b.id]?memberMap[b.id].roi:0)-(memberMap[a.id]?memberMap[a.id].roi:0);});
+    sorted.forEach(function(m,idx){
+      var mRoi=memberMap[m.id]?memberMap[m.id].roi:0;
+      var pct=maxRoi>0?Math.round(mRoi/maxRoi*100):0;
+      var color=AVATAR_COLORS[idx%AVATAR_COLORS.length];
+      barsHtml+='<div class="contrib-bar-wrap"><div class="contrib-bar-label"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+color+';margin-right:5px;vertical-align:1px"></span>'+m.name+(m.role?' <span style="color:var(--text3);font-size:11px">'+m.role+'</span>':'')+'</span><strong>'+fmt(mRoi)+'</strong></div><div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div></div>';
+    });
+    sh('member-roi-bars',barsHtml);
+  }
+
+  /* Recognition lens */
+  var rc=document.getElementById('recog-card');
+  var rg=document.getElementById('recog-grid');
+  if(namedMembers.length>=2&&rc&&rg){
+    rc.style.display='block';
+    var sortedByRoi=namedMembers.slice().sort(function(a,b){return (memberMap[b.id]?memberMap[b.id].roi:0)-(memberMap[a.id]?memberMap[a.id].roi:0);});
+    var top=sortedByRoi[0];var bottom=sortedByRoi[sortedByRoi.length-1];
+    var salaryRanked=namedMembers.filter(function(m){return m.salary>0;}).sort(function(a,b){
+      var roiA=memberMap[a.id]?memberMap[a.id].roi:0;var roiB=memberMap[b.id]?memberMap[b.id].roi:0;
+      var ratioA=a.salary>0?roiA/a.salary:0;var ratioB=b.salary>0?roiB/b.salary:0;
+      return ratioB-ratioA;
+    });
+    var hidden=salaryRanked.length>0?salaryRanked[0]:null;
+    var rhtml='';
+    if(top)rhtml+='<div class="recog-card"><div class="recog-title"><i class="ti ti-trophy" style="color:var(--amber)"></i> Highest ROI contributor</div><div class="recog-name">'+top.name+'</div><div class="recog-val pos">'+fmt(memberMap[top.id]?memberMap[top.id].roi:0)+'</div></div>';
+    if(hidden)rhtml+='<div class="recog-card" style="border-color:var(--purple-b);background:var(--purple-dim)"><div class="recog-title"><i class="ti ti-sparkles" style="color:var(--purple)"></i> Highest ROI/salary ratio</div><div class="recog-name">'+hidden.name+'</div><div class="recog-val pc">'+(hidden.salary>0?((memberMap[hidden.id]?memberMap[hidden.id].roi:0)/hidden.salary).toFixed(1)+'× salary':'—')+'</div></div>';
+    sh('recog-grid',rhtml);
+    var ra='';
+    if(top)ra+='<strong>'+top.name+'</strong> is the team\'s highest documented ROI contributor at <strong>'+fmt(memberMap[top.id]?memberMap[top.id].roi:0)+'</strong>. ';
+    if(hidden&&hidden.id!=(top&&top.id))ra+='<strong>'+hidden.name+'</strong> generates the best return relative to salary — a candidate for recognition or increased responsibility. ';
+    if(bottom&&bottom.id!=(top&&top.id))ra+='<strong>'+bottom.name+'</strong> has the lowest documented ROI — this may reflect undocumented contributions. Consider adding more streams before drawing conclusions.';
+    sh('recog-analysis',ra);
+  }
+
+  /* Verdict */
+  var verdict='';
+  if(mult>=3)verdict='This team generates <strong>'+mult.toFixed(1)+'×</strong> its cost — an exceptionally strong ROI case. Budget defense, headcount justification, and investment arguments are all well-supported by the data.';
+  else if(mult>=2)verdict='This team generates <strong>'+mult.toFixed(1)+'×</strong> its cost — a solid case for current headcount and a credible platform for asking for more investment.';
+  else if(mult>=1)verdict='This team is at <strong>'+mult.toFixed(1)+'×</strong> — positive but modest. Add more contribution streams, especially around risk averted and efficiency gains, to strengthen the case.';
+  else verdict='Documented ROI is below team cost at <strong>'+mult.toFixed(2)+'×</strong>. This almost always means contributions are undercounted — not that the team isn\'t delivering. Use the coach (tab 5) to surface hidden value.';
+  sh('team-verdict',verdict);
+
+  genDocs();
+  document.getElementById('exp-block').style.display='block';
+  document.getElementById('no-exp').style.display='none';
+}
+
+/* ── Document generation ── */
+function genDocs(){
+  var teamName=gv('team-name')||'[Team]',org=gv('team-org')||'[Organization]',author=gv('team-author')||'[Author]';
+  var fn=gv('team-function')||'delivering value',audience=gv('team-audience');
+  var dt=new Date().toLocaleDateString(),yr=new Date().getFullYear();
+  var months=S.months||12,pStr=months===12?String(yr):months<12?'last '+months+' months':'last '+(months/12).toFixed(1)+' years';
+  var periodCost=S.periodCost||0,totalRoi=S.totalRoi||0,net=S.net||0,mult=S.mult||0;
+  var contribs=S.contribs||[],memberList=S.memberList||[],memberMap=S.memberMap||{};
+  var audLabel={'vp':'VP/Director','ceo':'CEO/C-suite','board':'Board of Directors','hr':'HR/People Team','investors':'Investors/Stakeholders'}[audience]||'Leadership';
+
+  var cLines=contribs.map(function(c,i){
+    var attrName=c.attribution==='team'?'Team':((memberList.find&&memberList.find(function(m){return String(m.id)===String(c.attribution);})||{}).name||'Member');
+    var sl=c.streams.map(function(s){return'     '+s.label+': '+s.gdesc+' — '+fmt(s.val);}).join('\n');
+    return (i+1)+'. '+c.title+' ['+attrName+']\n   '+c.desc+'\n'+sl+'\n   Total: '+fmt(c.totalVal);
+  }).join('\n\n');
+
+  var cShort=contribs.map(function(c){return'• '+c.title+' — '+fmt(c.totalVal);}).join('\n');
+
+  var report=dt+'\n\nTEAM ROI REPORT — '+pStr.toUpperCase()+'\n'+teamName+' | '+org+'\nPrepared by: '+author+'\n'+'─'.repeat(54)+'\n\nTEAM SUMMARY\n• Function: '+fn+'\n• Members: '+memberList.length+'\n• Period: '+months+' months\n\nFINANCIAL OVERVIEW\n• Period cost (salary + benefits + overhead): '+fmt(periodCost)+'\n• Total documented ROI: '+fmt(totalRoi)+'\n• Net position: '+(net>=0?'surplus '+fmt(net):'deficit '+fmt(Math.abs(net)))+'\n• ROI multiplier: '+(mult>=1?mult.toFixed(2)+'×':'<1×')+'\n• Average ROI per member: '+fmt(S.avgRoi)+'\n\nCONTRIBUTION LEDGER\n'+cLines+'\n\nTOTAL ROI: '+fmt(totalRoi)+'\n\nNote: All figures are confidence-weighted estimates from self-reported data.';
+
+  var topMembers=memberList.filter(function(m){return memberMap[m.id]&&memberMap[m.id].roi>0;}).sort(function(a,b){return (memberMap[b.id]?memberMap[b.id].roi:0)-(memberMap[a.id]?memberMap[a.id].roi:0);});
+  var recog=dt+'\n\nRECOGNITION & SPOTLIGHT MEMO\n'+teamName+' | '+org+' | '+pStr+'\n'+'─'.repeat(48)+'\n\nTo: '+author+'\nRe: Compensation and recognition recommendations\n\nThis memo surfaces team members whose documented ROI warrants additional recognition, compensation review, or increased responsibility.\n\n';
+  topMembers.forEach(function(m,i){
+    var mRoi=memberMap[m.id]?memberMap[m.id].roi:0;
+    var ratio=m.salary>0?mRoi/m.salary:0;
+    recog+=(i+1)+'. '+m.name+(m.role?' ('+m.role+')':'')+'\n';
+    recog+='   Documented ROI: '+fmt(mRoi)+(m.salary>0?' | Salary: '+fmt(m.salary)+' | ROI/Salary ratio: '+ratio.toFixed(1)+'×':'')+'\n';
+    recog+='   Key contributions: '+memberMap[m.id].contribs.slice(0,2).map(function(c){return c.title;}).join(', ')+'\n\n';
+  });
+  recog+='RECOMMENDATION\nFor team members generating 2× or more their salary in documented ROI, a compensation review is warranted. The replacement cost of a strong contributor typically exceeds 50% of their annual salary, plus 3–6 months of productivity loss.\n\nData: Self-reported estimates.';
+
+  var audienceIntro={'vp':'This report summarizes the '+teamName+'\'s documented return on investment for the '+months+'-month period ending today.','ceo':'The '+teamName+' generated a documented '+mult.toFixed(1)+'× return on investment against its fully-loaded cost of '+fmt(periodCost)+' for '+pStr+'.','board':'The following summarizes the financial contribution of the '+teamName+' relative to its cost, prepared for board review.','hr':'This report provides HR with documented ROI data to support compensation reviews, recognition programs, and headcount decisions for the '+teamName+'.','investors':'The '+teamName+' represents a '+mult.toFixed(1)+'× ROI investment relative to its fully-loaded cost, as documented below.'}[audience]||'Team ROI summary follows.';
+  var brief=dt+'\n\nLEADERSHIP BRIEFING: '+teamName.toUpperCase()+'\nFor: '+audLabel+' | '+org+'\nPrepared by: '+author+' | Period: '+pStr+'\n'+'─'.repeat(48)+'\n\n'+audienceIntro+'\n\nKEY NUMBERS\n• Period cost: '+fmt(periodCost)+'\n• Documented ROI: '+fmt(totalRoi)+'\n• ROI multiplier: '+(mult>=1?mult.toFixed(2)+'×':'<1× (undercounted — see contributions below)')+'\n• Net value created: '+(net>=0?'+'+fmt(net):fmt(net))+'\n\nHIGHLIGHT CONTRIBUTIONS\n'+cShort+'\n\n'+(mult>=2?'BOTTOM LINE\nThe '+teamName+' generates '+mult.toFixed(1)+'× its cost. This is a well-performing team with a clear investment case. Headcount is justified and additional resourcing would likely return positive ROI.':'BOTTOM LINE\nAdditional contribution streams exist beyond what is documented here. The team is delivering value — this report captures the most quantifiable portion. A fuller picture would include intangibles not yet modeled.')+'\n\nData: Self-reported estimates and public benchmarks only.';
+
+  var dr=document.getElementById('doc-report');if(dr)dr.textContent=report;
+  var drec=document.getElementById('doc-recognition');if(drec)drec.textContent=recog;
+  var db=document.getElementById('doc-brief');if(db)db.textContent=brief;
+}
+
+function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
+function refine(type){
+  var ids={report:'doc-report',recognition:'doc-recognition',brief:'doc-brief'};
+  var prompts={
+    report:'Here is my team ROI report:\n\n'+document.getElementById('doc-report').textContent+'\n\nPlease strengthen the language, make the ROI case more compelling, and suggest any missing contribution categories.',
+    recognition:'Here is my team recognition memo:\n\n'+document.getElementById('doc-recognition').textContent+'\n\nPlease refine — make each case more compelling, add specificity, and suggest how to frame these conversations.',
+    brief:'Here is my leadership briefing:\n\n'+document.getElementById('doc-brief').textContent+'\n\nPlease refine for the stated audience. Make it more executive-facing, sharpen the bottom line, and suggest any missing strategic framing.'
+  };
+  alert('Copy this prompt and paste it into Claude.ai:\n\n'+(prompts[type]||'Please help me improve this document.'));
+}
+
+/* ── Coach ── */
+var teamContext=function(){
+  return 'Team: '+(gv('team-name')||'[team]')+' | Org: '+(gv('team-org')||'[org]')+' | Function: '+(gv('team-function')||'[function]')+'\nMembers: '+getMemberCount()+' | Period: '+(gv('team-period')||'12')+' months\nTotal ROI: '+fmt(S.totalRoi||0)+' | Team cost: '+fmt(S.periodCost||0)+' | Multiplier: '+((S.mult||0)>=1?(S.mult||0).toFixed(2)+'×':'<1×');
+};
+
+var CSYS={
+  headcount:'You are an expert at helping managers defend team headcount to leadership. You have access to the team\'s ROI data. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-sentence headcount defense grounded in the ROI data, (2) the single most powerful number to lead with, and (3) how to respond if leadership asks about AI replacing parts of this team.',
+  recognition:'You are a compensation and recognition coach for people managers. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) the strongest case for recognizing one or two specific contributors, (2) how to frame a salary conversation using ROI data, and (3) the risk of not acting on recognition.',
+  investment:'You are a business case coach helping managers build investment cases for their teams. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-bullet ROI-grounded investment case, (2) how to frame the ask in terms of cost vs. risk, and (3) what metric to track to demonstrate continued ROI.',
+  performance:'You are a performance narrative coach for people managers. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-paragraph team narrative for a leadership audience, (2) how to lead with the data without sounding defensive, and (3) one story or example that puts the numbers in human terms.'
+};
+var COPENERS={
+  headcount:"Let's build your headcount defense. Tell me what specific pressure you're facing — is this a budget cut, a reorg proposal, or a general request to justify the team size?",
+  recognition:"Let's figure out who deserves more. Tell me about someone on your team whose contribution you feel is undervalued — what do they do, and what makes you say that?",
+  investment:"Let's build your investment case. What specifically are you asking for — more headcount, budget, tools, or something else?",
+  performance:"Let's shape your performance narrative. Who is your audience, and what's the main thing you want them to walk away believing about your team?"
+};
+
+async function startCoach(mode){
+  cMode=mode;cHist=[];
+  document.getElementById('coach-idle').style.display='none';
+  document.getElementById('coach-session').style.display='block';
+  document.getElementById('coach-result').style.display='none';
+  sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
+  var sys=CSYS[mode]+'\n\nCurrent team context:\n'+teamContext();
+  var ok=false;
+  try{
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
+    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
+    if(!txt||txt.length<10)throw new Error('empty');
+    cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
+    sh('coach-msgs','<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>');ok=true;
+  }catch(e){ok=false;}
+  if(!ok){sh('coach-msgs','<div class="cmsg cmai">'+COPENERS[mode]+'</div>');cHist=[{role:'assistant',content:COPENERS[mode]}];}
+}
+
+async function sendCoach(){
+  var input=document.getElementById('coach-input').value.trim();if(!input)return;
+  document.getElementById('coach-input').value='';
+  var msgs=document.getElementById('coach-msgs');
+  msgs.innerHTML+='<div class="cmsg">'+input.replace(/\n/g,'<br>')+'</div>';
+  msgs.innerHTML+='<div class="cmsg cmai" id="ctyping"><span class="spin"></span> Thinking…</div>';
+  cHist.push({role:'user',content:input});
+  var ok=false;
+  try{
+    var sys=CSYS[cMode]+'\n\nCurrent team context:\n'+teamContext();
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:cHist})});
+    if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
+    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
+    if(!txt||txt.length<5)throw new Error('empty');
+    cHist.push({role:'assistant',content:txt});
+    var ct=document.getElementById('ctyping');if(ct)ct.remove();
+    msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
+    if(txt.indexOf('COACH OUTPUT:')>=0){var out=txt.split('COACH OUTPUT:')[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
+    ok=true;
+  }catch(e){ok=false;}
+  if(!ok){
+    var ct2=document.getElementById('ctyping');if(ct2)ct2.remove();
+    var hist=cHist.map(function(m){return(m.role==='user'?'You: ':'Coach: ')+m.content;}).join('\n\n');
+    var names={headcount:'headcount defense',recognition:'recognition strategy',investment:'investment case',performance:'performance narrative'};
+    alert('API unavailable. Copy this and paste it into Claude.ai:\n\nI am in a '+names[cMode]+' coaching session.\n\nTeam context:\n'+teamContext()+'\n\nConversation:\n'+hist+'\n\nPlease continue as the coach.');
+    msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E">API unavailable — copy the prompt from the alert and continue in Claude.ai.</div>';
+  }
+}
+
+function endCoach(){document.getElementById('coach-session').style.display='none';document.getElementById('coach-idle').style.display='block';cMode=null;cHist=[];}
+function cpCoach(){var t=document.getElementById('coach-out');if(!t)return;navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline='';},1400);}
+
+/* ── Export / destroy ── */
+function exportJSON(){
+  try{
+    var payload={version:'roi-v4-teams',exported:new Date().toISOString(),disclaimer:'Self-reported estimates only. No confidential HR or salary data transmitted.',team:{name:gv('team-name'),org:gv('team-org'),author:gv('team-author'),function:gv('team-function'),audience:gv('team-audience')},members:Object.values(members),ledger:S};
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='roi-v4-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
+  }catch(e){alert('Download not supported in this browser.');}
+}
+
+function destroyAll(){
+  S={};memberN=0;contribN=0;streamN=0;cMode=null;cHist=[];members={};
+  document.getElementById('member-list').innerHTML='';
+  document.getElementById('contrib-list').innerHTML='';
+  document.getElementById('coach-msgs').innerHTML='';
+  document.getElementById('coach-session').style.display='none';
+  document.getElementById('coach-idle').style.display='block';
+  document.getElementById('coach-result').style.display='none';
+  document.getElementById('running-card').style.display='none';
+  document.querySelectorAll('input,textarea').forEach(function(e){if(e.type!=='hidden')e.value='';});
+  document.querySelectorAll('select').forEach(function(e){e.selectedIndex=0;});
+  ['doc-report','doc-recognition','doc-brief'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  ['tc-total','tc-period','tc-size','lb-surplus','lb-cost','lb-bar-max','l-cost','l-roi','l-mult','l-avg','l-total','run-roi','run-cost','run-net'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='—';});
+  ['ledger-rows','member-roi-bars','recog-grid','recog-analysis','team-verdict'].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML='';});
+  document.getElementById('lb-bar').style.width='0%';
+  document.getElementById('ledger-block').style.display='none';
+  document.getElementById('no-ledger').style.display='block';
+  document.getElementById('exp-block').style.display='none';
+  document.getElementById('no-exp').style.display='block';
+  var mrc=document.getElementById('member-roi-card');if(mrc)mrc.style.display='none';
+  var rcc=document.getElementById('recog-card');if(rcc)rcc.style.display='none';
+  document.getElementById('t1').checked=true;
+  liveTeam();
+}
+
+/* ── AVATAR colors on prog-num ── */
+var pnStyle='.prog-num{width:24px;height:24px;border-radius:50%;background:var(--purple-dim);border:1px solid var(--purple-b);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--purple);flex-shrink:0}';
+var st=document.createElement('style');st.textContent=pnStyle;document.head.appendChild(st);
+
+liveTeam();
+</script>
+</body>
+</html>
