@@ -65,6 +65,7 @@ if (!API_KEY || API_KEY.indexOf('sk-ant-') !== 0) {
 }
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
+var cors = require('cors');
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
