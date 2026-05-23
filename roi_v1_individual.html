@@ -887,10 +887,10 @@ function confirmCoachTransfer(){
   document.getElementById('t3').checked=true;
   addAch();
   var aid=achN;
+  var sid=streamN; /* capture the stream addAch auto-created */
   var ti=document.getElementById('ach-ti-'+aid);if(ti)ti.value=title;
   var di=document.getElementById('ach-desc-'+aid);if(di)di.value=desc;
-  addStream(aid);
-  var sid=streamN;
+  /* Use the auto-created stream — no need to add another */
   var stSel=document.getElementById('stype-'+aid+'-'+sid);
   if(stSel){stSel.value=type;renderStreamQs(aid,sid);}
   setTimeout(function(){
