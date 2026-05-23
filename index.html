@@ -4,12 +4,13 @@
 <meta name="grammarly-disable-extension" content="true">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>receipts. by Aric Civic Labs — Know Your Worth. Prove It.</title>
+<title>receipts. by AricCivicLabs.Org — Know Your Worth. Prove It.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 :root{
   --ink:#1A1410;--paper:#F5F0E8;--paper2:#EDE8DC;--warm:#D4C9B0;
   --accent:#2C6E49;--accent2:#4A9E71;--accent-light:#E8F5EE;
@@ -84,7 +85,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 .quiz-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
 .quiz-opt{background:var(--paper);border:2px solid var(--warm);border-radius:var(--radius);padding:1.25rem;cursor:pointer;transition:all .2s;text-align:center;text-decoration:none}
 .quiz-opt:hover{border-color:var(--accent);background:var(--accent-light);transform:translateY(-3px);box-shadow:0 6px 20px rgba(44,110,73,.15)}
-.quiz-opt-icon{font-size:2rem;margin-bottom:.75rem;display:block}
+.quiz-opt-icon{display:flex;justify-content:center;margin-bottom:.875rem}
 .quiz-opt-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:.5rem}
 .quiz-opt-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.5}
 
@@ -98,13 +99,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 .vc-v3::before{background:linear-gradient(135deg,var(--accent-light),transparent)}
 .vc-v4::before{background:linear-gradient(135deg,#f0e8fa,transparent)}
 .version-card:hover::before{opacity:1}
-.vc-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
-.vc-tag-v1{background:var(--blue-light);color:var(--blue)}
-.vc-tag-v2{background:var(--gold-light);color:var(--gold)}
-.vc-tag-v3{background:var(--accent-light);color:var(--accent)}
-.vc-tag-v4{background:#f0e8fa;color:#6030A0}
+.vc-tag{display:block;font-family:'Lora',Georgia,serif;font-size:1.4rem;font-weight:700;letter-spacing:-.02em;text-transform:none;padding:0;border-radius:0;margin-bottom:.25rem;background:transparent!important;color:var(--ink)}
+.vc-tag-v1{color:var(--blue)}
+.vc-tag-v2{color:var(--gold)}
+.vc-tag-v3{color:var(--accent)}
+.vc-tag-v4{color:#6030A0}
 .vc-tag-soon{background:var(--paper2);color:var(--text3)}
-.vc-title{font-family:'Lora',Georgia,serif;font-size:1.3rem;font-weight:600;color:var(--ink);margin-bottom:.5rem;position:relative;z-index:1}
+.vc-title{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem;position:relative;z-index:1}
 .vc-subtitle{font-size:13px;font-weight:500;color:var(--text3);margin-bottom:1rem;position:relative;z-index:1}
 .vc-desc{font-size:14px;font-weight:300;color:var(--text2);line-height:1.6;margin-bottom:1.5rem;position:relative;z-index:1}
 .vc-features{list-style:none;margin-bottom:1.5rem;position:relative;z-index:1}
@@ -190,6 +191,14 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
 .hero-brand em{font-style:italic;color:var(--accent)}
 .hero-brand .brand-sub{font-size:clamp(1.1rem,2.5vw,1.6rem);font-weight:400;font-style:normal;letter-spacing:.01em;color:var(--text2);display:block;margin-top:.25rem}
 .hero-tagline{font-family:'Lora',Georgia,serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:400;font-style:italic;line-height:1.4;letter-spacing:-.01em;color:var(--text2);margin:.5rem 0 0}
+
+.quotes-carousel{position:relative;min-height:180px}
+.quote-slide{display:none;animation:qfade .5s ease}
+.quote-slide.active{display:block}
+@keyframes qfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.quote-dots{display:flex;justify-content:center;gap:8px;margin-top:1.5rem}
+.qdot{width:8px;height:8px;border-radius:50%;background:rgba(245,240,232,.25);border:none;cursor:pointer;padding:0;transition:background .2s}
+.qdot.active{background:var(--accent2);width:24px;border-radius:4px}
 </style>
 </head>
 <body>
@@ -245,7 +254,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
 
   <!-- TAGLINE -->
   <div class="hero-tagline-block">
-    <p class="hero-brand">receipts<em>.</em><span class="brand-sub">A product of Aric Civic Labs</span></p>
+    <p class="hero-brand">receipts<em>.</em><span class="brand-sub">A product of AricCivicLabs.Org</span></p>
     <p class="hero-tagline">Know your worth. Prove it.</p>
   </div>
 
@@ -295,22 +304,43 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
       <p class="quiz-q">I'm here because I want to...</p>
       <div class="quiz-options">
         <a href="roi_v1_individual.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🙋</span>
+          <span class="quiz-opt-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="20" cy="20" r="19" stroke="var(--blue)" stroke-width="1.5" fill="var(--blue-light)"/>
+  <path d="M20 11c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z" fill="var(--blue)"/>
+  <path d="M12 29c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M26 22l2 2 4-4" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
           <div class="quiz-opt-title">Prove my value at work</div>
           <div class="quiz-opt-desc">Prepare for a review, negotiate pay, or make sure I get credit for what I've done</div>
         </a>
         <a href="roi_v2_smallbusiness.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🏢</span>
+          <span class="quiz-opt-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="20" cy="20" r="19" stroke="var(--gold)" stroke-width="1.5" fill="var(--gold-light)"/>
+  <rect x="10" y="22" width="5" height="8" rx="1" fill="var(--gold)" opacity=".4"/>
+  <rect x="17.5" y="17" width="5" height="13" rx="1" fill="var(--gold)" opacity=".7"/>
+  <rect x="25" y="12" width="5" height="18" rx="1" fill="var(--gold)"/>
+  <path d="M11 20l6-5 6 3 6-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span>
           <div class="quiz-opt-title">Make smarter people decisions</div>
           <div class="quiz-opt-desc">Assess a role, retain key talent, justify a hire, or decide between AI and a human</div>
         </a>
         <a href="roi_v3_nonprofit.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🌱</span>
+          <span class="quiz-opt-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="20" cy="20" r="19" stroke="var(--accent)" stroke-width="1.5" fill="var(--accent-light)"/>
+  <path d="M20 10c0 0-8 4-8 10 0 4.4 3.6 8 8 8s8-3.6 8-8c0-6-8-10-8-10z" fill="var(--accent)" opacity=".2" stroke="var(--accent)" stroke-width="1.5"/>
+  <path d="M20 14v12M16 20h8" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+</svg></span>
           <div class="quiz-opt-title">Quantify my mission's impact</div>
           <div class="quiz-opt-desc">Build donor cases, write grant narratives, or prove my nonprofit's programs work</div>
         </a>
         <a href="roi_v4_teams.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🤝</span>
+          <span class="quiz-opt-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="20" cy="20" r="19" stroke="#6030A0" stroke-width="1.5" fill="#f0e8fa"/>
+  <circle cx="14" cy="17" r="4" fill="#6030A0" opacity=".3" stroke="#6030A0" stroke-width="1.2"/>
+  <circle cx="26" cy="17" r="4" fill="#6030A0" opacity=".3" stroke="#6030A0" stroke-width="1.2"/>
+  <circle cx="20" cy="14" r="4" fill="#6030A0" opacity=".6" stroke="#6030A0" stroke-width="1.2"/>
+  <path d="M9 29c0-3 2.2-5 5-5h12c2.8 0 5 2 5 5" stroke="#6030A0" stroke-width="1.5" stroke-linecap="round"/>
+</svg></span>
           <div class="quiz-opt-title">Show what my team accomplishes</div>
           <div class="quiz-opt-desc">Aggregate team impact, surface unrecognized contributors, and frame it for leadership</div>
         </a>
@@ -502,8 +532,30 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
 <!-- PHILOSOPHY -->
 <section class="philosophy">
   <div class="phil-inner">
-    <p class="phil-quote reveal">"Most people create far more value than they can articulate. That gap — between <strong>what you do</strong> and what you can prove — is what costs you raises, grants, headcount, and recognition."</p>
-    <p class="phil-author reveal">The idea behind receipts.</p>
+    <div class="quotes-carousel">
+      <div class="quote-slide active">
+        <p class="phil-quote">"Most people create far more value than they can articulate. That gap — between <strong>what you do</strong> and what you can prove — is what costs you raises, grants, headcount, and recognition."</p>
+        <p class="phil-author">The idea behind receipts. — Aric Roberts, creator &amp; founder</p>
+      </div>
+      <div class="quote-slide">
+        <p class="phil-quote">"Many of us struggle to communicate the value we bring to different arenas of life. receipts helps give you that voice."</p>
+        <p class="phil-author">— Aric Roberts, creator &amp; founder, <strong style="color:var(--accent2)">AricCivicLabs.Org</strong></p>
+      </div>
+      <div class="quote-slide">
+        <p class="phil-quote">"It is easy to be focused on staying afloat versus getting ahead. receipts helps you stop and take that breather to get your bearings."</p>
+        <p class="phil-author">— On finding clarity in the noise</p>
+      </div>
+      <div class="quote-slide">
+        <p class="phil-quote">"So much of life is convincing others that you are effective. Using receipts helps give you a foothold in those interactions."</p>
+        <p class="phil-author">— On making your case with confidence</p>
+      </div>
+    </div>
+    <div class="quote-dots">
+      <button class="qdot active" onclick="goQuote(0)"></button>
+      <button class="qdot" onclick="goQuote(1)"></button>
+      <button class="qdot" onclick="goQuote(2)"></button>
+      <button class="qdot" onclick="goQuote(3)"></button>
+    </div>
     <div class="phil-pillars">
       <div class="reveal">
         <div class="phil-pillar-title">Honest by design</div>
@@ -565,18 +617,25 @@ function submitContact(e){
   e.preventDefault();
   var btn=document.getElementById('cf-btn');
   var status=document.getElementById('cf-status');
-  var name=document.getElementById('cf-name').value;
-  var email=document.getElementById('cf-email').value;
-  var msg=document.getElementById('cf-msg').value;
-  btn.textContent='Sending...';btn.disabled=true;
-  /* Send via mailto as fallback — no backend needed */
-  var subject=encodeURIComponent('receipts. contact from '+name);
-  var body=encodeURIComponent('From: '+name+'\nEmail: '+email+'\n\n'+msg);
-  window.open('mailto:aricroberts@gmail.com?subject='+subject+'&body='+body);
-  btn.textContent='Send message →';btn.disabled=false;
-  status.textContent='✓ Opening your email client...';
-  document.getElementById('contact-form').reset();
-  setTimeout(function(){status.textContent='';},4000);
+  btn.textContent='Sending…';btn.disabled=true;
+  var data=new FormData(document.getElementById('contact-form'));
+  fetch('https://formspree.io/f/mbdbkznw',{method:'POST',body:data,headers:{'Accept':'application/json'}})
+    .then(function(r){
+      if(r.ok){
+        status.style.color='var(--accent)';
+        status.textContent='✓ Message sent! We'll be in touch.';
+        document.getElementById('contact-form').reset();
+      }else{
+        status.style.color='var(--red)';
+        status.textContent='Something went wrong — email us directly at aricroberts@gmail.com';
+      }
+      btn.textContent='Send message →';btn.disabled=false;
+    })
+    .catch(function(){
+      status.style.color='var(--red)';
+      status.textContent='Could not send — email aricroberts@gmail.com directly.';
+      btn.textContent='Send message →';btn.disabled=false;
+    });
 }
 </script>
 
@@ -585,7 +644,7 @@ function submitContact(e){
   <div class="footer-inner">
     <div class="footer-logo" style="font-family:'Lora',Georgia,serif;font-size:28px;font-weight:700;font-style:italic;letter-spacing:-.03em;margin-bottom:.5rem">receipts<span style="color:var(--accent);font-style:normal">.</span></div>
     <div class="footer-tagline">Know your worth. Prove it.</div>
-    <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(245,240,232,.4);margin-bottom:1.5rem">A product of Aric Civic Labs</div>
+    <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(245,240,232,.4);margin-bottom:1.5rem">A product of AricCivicLabs.Org</div>
     <div class="footer-links">
       <a href="roi_v1_individual.html">receipts. v1</a>
       <a href="roi_v2_smallbusiness.html">receipts. v2</a>
@@ -593,7 +652,7 @@ function submitContact(e){
       <a href="roi_v4_teams.html">receipts. v4</a>
       <a href="#contact">Contact</a>
     </div>
-    <div class="footer-copy">All data is session-only and never transmitted. No tracking. No ads. Built with care by <strong style="color:rgba(245,240,232,.6)">Aric Civic Labs</strong>.</div>
+    <div class="footer-copy">All data is session-only and never transmitted. No tracking. No ads. Built with care by <strong style="color:rgba(245,240,232,.6)">AricCivicLabs.Org</strong>.</div>
   </div>
 </footer>
 
@@ -614,6 +673,22 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
   });
 });
+</script>
+
+<script>
+var _qi=0,_qt=null;
+function goQuote(i){
+  var slides=document.querySelectorAll('.quote-slide');
+  var dots=document.querySelectorAll('.qdot');
+  slides.forEach(function(s){s.classList.remove('active');});
+  dots.forEach(function(d){d.classList.remove('active');});
+  _qi=i;
+  slides[i].classList.add('active');
+  dots[i].classList.add('active');
+  clearInterval(_qt);
+  _qt=setInterval(function(){goQuote((_qi+1)%slides.length);},6000);
+}
+document.addEventListener('DOMContentLoaded',function(){_qt=setInterval(function(){goQuote((_qi+1)%4);},6000);});
 </script>
 </body>
 </html>
