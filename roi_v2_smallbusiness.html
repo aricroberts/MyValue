@@ -692,6 +692,7 @@ function refine(type){
   alert('Copy this prompt and paste it into Claude.ai:\n\n'+prompt);
 }
 
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 var CSYS={
   retain:'You are a management coach helping a small business owner navigate a retention conversation. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of actionable coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) structured conversation brief, (2) suggested opening language, (3) fallback plan if they still leave.\n{\"summary\":\"one sentence coaching takeaway\",\"key_metric\":\"the number to lead with\",\"opening_line\":\"suggested first sentence for the conversation\"}',
   hire:'You are a management coach helping build the case for a new hire. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of actionable coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) ROI-based justification, (2) how to frame it for investors, (3) key metric to track.\n{\"summary\":\"one sentence coaching takeaway\",\"key_metric\":\"the ROI number to lead with\",\"framing\":\"how to frame for investors\"}',
