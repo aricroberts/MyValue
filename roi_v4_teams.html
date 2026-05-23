@@ -411,7 +411,19 @@ button:hover{background:var(--surface2)}
         <div class="dpre" id="doc-brief">—</div>
         <div class="brow"><button onclick="cpDoc('doc-brief')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('brief')">Refine ↗</button></div>
       </div>
-      <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
+      <div class="ecard">
+        <h3><i class="ti ti-file-text" style="font-size:14px;color:var(--green)"></i> Budget justification memo</h3>
+        <p>ROI-grounded memo making the financial case for team budget, headcount, or resource requests.</p>
+        <div class="dpre" id="doc-budget">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-budget')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('budget')">Refine ↗</button></div>
+      </div>
+      <div class="ecard">
+        <h3><i class="ti ti-id-badge" style="font-size:14px;color:var(--amber)"></i> Individual contributor summaries</h3>
+        <p>One-page impact summary per team member — shareable with each contributor for their own records and performance conversations.</p>
+        <div class="dpre" id="doc-individual">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-individual')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('individual')">Refine ↗</button></div>
+      </div>
+            <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportJSON()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download backup (JSON)</button>
         <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
