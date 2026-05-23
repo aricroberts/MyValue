@@ -458,6 +458,7 @@ function gn(id){return parseFloat(gv(id))||0;}
 function fmt(n){if(!isFinite(n)||isNaN(n))return'—';var s=n<0?'-':'';var a=Math.abs(n);if(a>=1e9)return s+'$'+(a/1e9).toFixed(2)+'B';if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a);}
 function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
 function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
 function getColAdj(){
   var l=gv('loc').toLowerCase();
@@ -746,7 +747,7 @@ async function sendCoach(){
   var input=document.getElementById('coach-input').value.trim();if(!input)return;
   document.getElementById('coach-input').value='';
   var msgs=document.getElementById('coach-msgs');
-  msgs.innerHTML+='<div class="cmsg">'+input.replace(/\n/g,'<br>')+'</div>';
+  msgs.innerHTML+='<div class="cmsg">'+esc(input).replace(/\n/g,'<br>')+'</div>';
   msgs.innerHTML+='<div class="cmsg cmai" id="ctyping"><span class="spin"></span> Thinking…</div>';
   cHist.push({role:'user',content:input});
   var ok=false;
@@ -754,7 +755,6 @@ async function sendCoach(){
     var txt=await callClaude(cHist,CSYS[cMode],600);
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
-    msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
     if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0||txt.indexOf('COACH OUTPUT')>=0){
       var rawOut=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:').split(/COACH OUTPUT:/i)[1].trim();
       /* Try to parse JSON from the output */
@@ -763,22 +763,26 @@ async function sendCoach(){
         var jm=rawOut.match(/\{[\s\S]*\}/);
         if(jm)parsed=JSON.parse(jm[0]);
       }catch(e){parsed={};}
+      if(parsed.impact_type==='cost'&&!parsed.saved&&parsed.rev_amt)parsed.saved=parsed.rev_amt;
       /* Store parsed data globally for confirmCoachTransfer */
       window._coachParsed=parsed;
       /* Show human-readable summary in the output box */
       var displayTxt=rawOut;
       if(parsed.summary){
-        displayTxt='<strong>Summary:</strong> '+parsed.summary;
-        if(parsed.subject_line)displayTxt+='<br><strong>Subject line:</strong> '+parsed.subject_line;
-        if(parsed.impact_type)displayTxt+='<br><strong>Impact type:</strong> '+parsed.impact_type;
+        displayTxt='<strong>Summary:</strong> '+esc(parsed.summary);
+        if(parsed.subject_line)displayTxt+='<br><strong>Subject line:</strong> '+esc(parsed.subject_line);
+        if(parsed.impact_type)displayTxt+='<br><strong>Impact type:</strong> '+esc(parsed.impact_type);
         if(parsed.credit)displayTxt+='<br><strong>Attribution:</strong> '+parsed.credit+'%';
         if(parsed.conf)displayTxt+='<br><strong>Confidence:</strong> '+parsed.conf+'%';
-        if(parsed.rev_amt)displayTxt+='<br><strong>Revenue:</strong> $'+Number(parsed.rev_amt).toLocaleString();
+        if(parsed.rev_amt&&parsed.impact_type!=='cost')displayTxt+='<br><strong>Revenue:</strong> $'+Number(parsed.rev_amt).toLocaleString();
         if(parsed.val)displayTxt+='<br><strong>Estimated value:</strong> $'+Number(parsed.val).toLocaleString();
         if(parsed.saved)displayTxt+='<br><strong>Annual savings:</strong> $'+Number(parsed.saved).toLocaleString();
       }
+      msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):displayTxt)+'</div>';
       document.getElementById('coach-result').style.display='block';
       sh('coach-out',displayTxt);
+    }else{
+      msgs.innerHTML+='<div class="cmsg cmai">'+esc(txt).replace(/\n/g,'<br>')+'</div>';
     }
     ok=true;
   }catch(e){ok=false;}
