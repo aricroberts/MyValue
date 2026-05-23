@@ -339,7 +339,7 @@ button:hover{background:var(--surface2)}
           <div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>
           <div style="margin-top:8px;display:flex;gap:7px">
             <button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button>
-            <button onclick="coachToLedger()" style="background:var(--green-dim);border-color:var(--green-b);color:var(--green);font-weight:600"><i class="ti ti-transfer-in" style="font-size:12px;vertical-align:-1px"></i> Pre-fill a new achievement with this →</button>
+            <button onclick="coachToLedger()">Add to achievements →</button>
           </div>
         </div>
       </div>
@@ -538,14 +538,22 @@ async function fetchSalBenchmark(){
   var el=document.getElementById('sal-preview');el.style.display='block';
   el.innerHTML='<div class="card card-info"><div class="apirow"><div class="adot aload"></div><span style="color:var(--blue);font-size:12px"><span class="spin"></span>Searching live salary data for '+title+' in '+loc+'…</span></div></div>';
   try{
-    var txt=await callClaude([{role:'user',content:'Search for current '+new Date().getFullYear()+' salary benchmarks for "'+title+'" with '+exp+' years experience in '+loc+', in '+ind+' industry. Use BLS, Glassdoor, LinkedIn, Levels.fyi. Respond ONLY with JSON: {"p25":number,"p50":number,"p75":number,"p90":number,"source":"source names","notes":"key caveats"}'}],null,600,true);
+    var salPrompt='Provide salary benchmark data for this role. Use web search to find current data, then respond.\n\nRole: "'+title+'"\nExperience: '+exp+' years\nLocation: '+loc+'\nIndustry: '+ind+'\n\nSearch for current salary ranges from BLS.gov, salary.com, payscale.com, or similar compensation databases. Then respond ONLY with this exact JSON (no other text, no markdown):\n{"p25":number,"p50":number,"p75":number,"p90":number,"source":"site names used","notes":"1 sentence about data quality or caveats"}\n\nAll numbers must be annual USD integers. If you cannot find specific data, use your best estimate based on similar roles and note that in source.';
+    var txt=await callClaude([{role:'user',content:salPrompt}],null,1200,true);
     var j=exJSON(txt);
     if(j.p50&&j.p50>0){
       liveSal={p25:j.p25,p50:j.p50,p75:j.p75,p90:j.p90,source:j.source||'market data',notes:j.notes||''};
       el.innerHTML='<div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-check"></i> Live salary data loaded — '+liveSal.source+'</p><div class="g4"><div class="mc"><p class="lb">25th pct</p><p class="vl">'+fmt(j.p25)+'</p></div><div class="mc"><p class="lb">Median</p><p class="vl ic">'+fmt(j.p50)+'</p></div><div class="mc"><p class="lb">75th pct</p><p class="vl">'+fmt(j.p75)+'</p></div><div class="mc"><p class="lb">90th pct</p><p class="vl pos">'+fmt(j.p90)+'</p></div></div><p style="font-size:11px;color:var(--green);opacity:.7;margin:3px 0 0">'+liveSal.notes+'</p></div>';
       se('sal-src-lbl','live market data — '+liveSal.source);
       var ct=document.getElementById('co-target');if(ct&&!ct.value)ct.value=Math.round(j.p75)||'';
-    }else el.innerHTML='<div class="card card-warn"><p class="sl sl-warn"><i class="ti ti-alert-triangle"></i> Live salary data not found — using built-in benchmarks.</p></div>';
+    }else{
+      /* Show built-in estimate confidently instead of just a warning */
+      var builtInSal=gn('salary')||85000;
+      var dept=gv('dept-mapped')||'ops';
+      var baseSals={engineering:145000,sales:110000,marketing:95000,ops:85000,finance_dept:105000,hr:90000,product:130000,cs:80000};
+      var base=baseSals[dept]||85000;
+      el.innerHTML='<div class="card card-warn"><p class="sl sl-warn"><i class="ti ti-alert-triangle"></i> Live data unavailable — showing built-in estimates for your role type.</p><div class="g4" style="margin-top:.5rem"><div class="mc"><p class="lb">25th pct</p><p class="vl">'+fmt(Math.round(base*.8))+'</p></div><div class="mc"><p class="lb">Median</p><p class="vl ic">'+fmt(base)+'</p></div><div class="mc"><p class="lb">75th pct</p><p class="vl">'+fmt(Math.round(base*1.25))+'</p></div><div class="mc"><p class="lb">90th pct</p><p class="vl pos">'+fmt(Math.round(base*1.5))+'</p></div></div><p style="font-size:11px;color:var(--amber);opacity:.8;margin:4px 0 0">Built-in estimates. Try again or adjust your location/title for better results.</p></div>';
+    }
   }catch(e){el.innerHTML='<div class="card card-warn"><p class="sl sl-warn"><i class="ti ti-alert-triangle"></i> Could not fetch live salary data — using built-in benchmarks.</p></div>';}
 }
 
@@ -554,7 +562,8 @@ async function fetchEdgar(){
   var el=document.getElementById('edgar-status');
   el.innerHTML='<div class="apirow"><div class="adot aload"></div><span style="font-size:12px;color:var(--text2)"><span class="spin"></span>Fetching financials…</span></div>';
   try{
-    var txt=await callClaude([{role:'user',content:'Find the most recent annual financial data for '+(ticker?'ticker "'+ticker+'" ('+co+')':'company "'+co+'"')+'. Search SEC EDGAR or financial databases. Respond ONLY with JSON: {"revenue":number,"employees":number,"net_income":number,"market_cap":number,"fiscal_year":string,"source":string}'}],null,400,true);
+    var coPrompt='Find the most recent annual financial data for '+(ticker?'public company with ticker "'+ticker+'"'+(co?' ('+co+')'):'':'company "'+co+'"')+'. Search SEC EDGAR, annual reports, or financial news.\n\nRespond ONLY with this exact JSON (no other text, no markdown):\n{"revenue":number,"employees":number,"net_income":number,"market_cap":number,"fiscal_year":"YYYY","source":"where data came from"}\n\nAll numbers in USD. revenue and market_cap in full dollars (not millions). If a field is unavailable use 0.';
+    var txt=await callClaude([{role:'user',content:coPrompt}],null,800,true);
     var j=exJSON(txt);
     if(j.revenue&&j.revenue>0){
       if(j.revenue){var e=document.getElementById('corev');if(e)e.value=j.revenue;}
@@ -769,39 +778,75 @@ async function sendCoach(){
 function endCoach(){document.getElementById('coach-session').style.display='none';document.getElementById('coach-idle').style.display='block';cMode=null;cHist=[];}
 function cpCoach(){var t=document.getElementById('coach-out');if(!t)return;navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline='';},1400);}
 function coachToLedger(){
+  /* Get the raw coach output */
+  var outEl=document.getElementById('coach-out');
+  var outTxt=outEl?(outEl.textContent||outEl.innerText)||'':'';
+  if(!outTxt){alert('No coach output to transfer yet. Complete a coaching session first.');return;}
+
+  /* Show the transfer modal */
+  var modal=document.getElementById('coach-transfer-modal');
+  if(!modal){
+    modal=document.createElement('div');
+    modal.id='coach-transfer-modal';
+    modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem';
+    modal.innerHTML='<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;max-width:500px;width:100%"><p style="font-size:15px;font-weight:600;margin-bottom:.5rem">Transfer to achievement ledger</p><p style="font-size:12px;color:var(--text2);margin-bottom:1rem">Choose the type that best matches what the coach helped you quantify. The title and description will be pre-filled from the coach output.</p><div class="fg" style="margin-bottom:1rem"><label>Achievement title</label><input id="ctm-title" style="width:100%" placeholder="Name this achievement"/></div><div class="fg" style="margin-bottom:1rem"><label>Description (used in exports)</label><input id="ctm-desc" style="width:100%" placeholder="Brief description of the achievement"/></div><div class="fg" style="margin-bottom:1.25rem"><label>What type of impact did this create?</label><select id="ctm-type" style="width:100%"><option value="">— choose the primary impact type —</option><option value="efficiency">Efficiency gain (time/workload saved)</option><option value="email">Email / communication reduction</option><option value="headcount">Headcount / visibility value</option><option value="revenue">Revenue generated or influenced</option><option value="cost">Cost savings</option><option value="risk">Risk averted</option><option value="other">Strategic / other value</option></select></div><div style="display:flex;gap:8px"><button onclick="confirmCoachTransfer()" style="flex:1;background:var(--green-dim);border:1px solid var(--green-b);color:var(--green);border-radius:var(--radius-sm);padding:9px;cursor:pointer;font-weight:600;font-size:13px"><i class="ti ti-transfer-in" style="font-size:12px"></i> Add to ledger</button><button onclick="document.getElementById('coach-transfer-modal').remove()" style="padding:9px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Cancel</button></div></div>';
+    document.body.appendChild(modal);
+  }else{modal.style.display='flex';}
+
+  /* Pre-fill title and description intelligently */
+  var titles={credit:'Shared credit claim',soft:'Quantified soft contribution',communicate:'Strategic impact documentation'};
+  var ti=document.getElementById('ctm-title');
+  if(ti)ti.value=titles[cMode]||'Achievement from ROI coach';
+
+  /* Extract best description line from coach output */
+  var lines=outTxt.split(/
+|/).map(function(l){return l.trim().replace(/^[\*\#\-\s\d\.\)]+/,'').trim();}).filter(function(l){return l.length>20;});
+  var dollarLine=lines.find(function(l){return l.indexOf('$')>=0&&l.length<200;});
+  var desc=dollarLine||lines[0]||'';
+  if(desc.length>200)desc=desc.substring(0,197)+'…';
+  var di=document.getElementById('ctm-desc');
+  if(di)di.value=desc;
+}
+
+function confirmCoachTransfer(){
+  var type=document.getElementById('ctm-type').value;
+  var title=document.getElementById('ctm-title').value||'Achievement from coach';
+  var desc=document.getElementById('ctm-desc').value||'';
+  if(!type){alert('Please choose an impact type.');return;}
+
+  /* Close modal */
+  var modal=document.getElementById('coach-transfer-modal');
+  if(modal)modal.remove();
+
   /* Switch to achievements tab */
   document.getElementById('t3').checked=true;
-  /* Get the coach output text */
-  var outEl=document.getElementById('coach-out');
-  var outTxt=outEl?outEl.textContent||'':'';
+
   /* Create new achievement */
   addAch();
   var aid=achN;
-  /* Pre-populate title */
-  var titles={credit:'Shared credit claim (from ROI coach)',soft:'Soft value contribution (from ROI coach)',communicate:'Strategic impact (from ROI coach)'};
+
+  /* Set title */
   var ti=document.getElementById('ach-ti-'+aid);
-  if(ti)ti.value=titles[cMode]||'Achievement (from ROI coach)';
-  /* Pre-populate description: extract the most useful sentence from COACH OUTPUT */
-  var desc='';
-  if(outTxt){
-    /* Try to find a dollar estimate or key summary sentence */
-    var lines=outTxt.split(/\n|\r/).map(function(l){return l.trim();}).filter(Boolean);
-    /* Look for a line with a dollar sign or percentage - likely the key finding */
-    var dollarLine=lines.find(function(l){return l.indexOf('$')>=0||l.indexOf('%')>=0;});
-    /* Otherwise take the first substantive line */
-    desc=dollarLine||lines.find(function(l){return l.length>30;})||'';
-    /* Strip numbering like "1)" or "(1)" from start */
-    desc=desc.replace(/^[\(\d\)\.:\s]+/,'').trim();
-    /* Truncate if very long */
-    if(desc.length>200)desc=desc.substring(0,197)+'…';
-  }
+  if(ti)ti.value=title;
+
+  /* Set description */
   var di=document.getElementById('ach-desc-'+aid);
-  if(di&&desc)di.value=desc;
-  /* Scroll to new achievement */
+  if(di)di.value=desc;
+
+  /* Add a stream of the chosen type */
+  addStream(aid);
+  var sid=streamN;
+  var stSel=document.getElementById('stype-'+aid+'-'+sid);
+  if(stSel){stSel.value=type;renderStreamQs(aid,sid);}
+
+  /* Set stream description if we have context */
   setTimeout(function(){
+    var gdescEl=document.getElementById('sq-'+aid+'-'+sid+'-gdesc');
+    if(gdescEl&&!gdescEl.value)gdescEl.value=desc.substring(0,100);
+    /* Scroll to new achievement */
     var el=document.getElementById('ach-outer-'+aid);
     if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-  },200);
+  },150);
 }
 
 function genDocs(){
