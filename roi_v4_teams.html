@@ -895,6 +895,9 @@ async function sendCoach(){
       msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):esc(conversational||rawOut))+'</div>';
       document.getElementById('coach-result').style.display='block';
       sh('coach-out',fullDisplay);
+    }else{
+      /* Regular conversational response - no COACH OUTPUT yet */
+      msgs.innerHTML+='<div class="cmsg cmai">'+esc(txt).replace(/\n/g,'<br>')+'</div>';
     }
     ok=true;
   }catch(e){ok=false;}
