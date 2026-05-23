@@ -157,7 +157,7 @@ button:hover{background:var(--surface2)}
     <label for="t2">2. Break-even</label>
     <label for="t3">3. Achievements</label>
     <label for="t4">4. Ledger</label>
-    <label for="t5">5. coach</label>
+    <label for="t5">5. Coach</label>
     <label for="t6">6. Exports</label>
   </div>
 
@@ -755,7 +755,7 @@ async function sendCoach(){
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
     msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
-    if(txt.indexOf('COACH OUTPUT:')>=0){var out=txt.split('COACH OUTPUT:')[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
+    if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0||txt.indexOf('COACH OUTPUT')>=0){var out=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:').split(/COACH OUTPUT:/i)[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
     ok=true;
   }catch(e){ok=false;}
   if(!ok){
