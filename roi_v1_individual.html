@@ -339,7 +339,7 @@ button:hover{background:var(--surface2)}
           <div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>
           <div style="margin-top:8px;display:flex;gap:7px">
             <button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button>
-            <button onclick="coachToLedger()">Add to achievements →</button>
+            <button onclick="coachToLedger()" style="background:var(--green-dim);border-color:var(--green-b);color:var(--green);font-weight:600"><i class="ti ti-transfer-in" style="font-size:12px;vertical-align:-1px"></i> Pre-fill a new achievement with this →</button>
           </div>
         </div>
       </div>
@@ -768,7 +768,41 @@ async function sendCoach(){
 
 function endCoach(){document.getElementById('coach-session').style.display='none';document.getElementById('coach-idle').style.display='block';cMode=null;cHist=[];}
 function cpCoach(){var t=document.getElementById('coach-out');if(!t)return;navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline='';},1400);}
-function coachToLedger(){document.getElementById('t3').checked=true;addAch();var aid=achN;var ti=document.getElementById('ach-ti-'+aid);if(ti)ti.value='From ROI coach — '+({credit:'shared credit claim',soft:'soft contribution',communicate:'strategic value'}[cMode]||'contribution');}
+function coachToLedger(){
+  /* Switch to achievements tab */
+  document.getElementById('t3').checked=true;
+  /* Get the coach output text */
+  var outEl=document.getElementById('coach-out');
+  var outTxt=outEl?outEl.textContent||'':'';
+  /* Create new achievement */
+  addAch();
+  var aid=achN;
+  /* Pre-populate title */
+  var titles={credit:'Shared credit claim (from ROI coach)',soft:'Soft value contribution (from ROI coach)',communicate:'Strategic impact (from ROI coach)'};
+  var ti=document.getElementById('ach-ti-'+aid);
+  if(ti)ti.value=titles[cMode]||'Achievement (from ROI coach)';
+  /* Pre-populate description: extract the most useful sentence from COACH OUTPUT */
+  var desc='';
+  if(outTxt){
+    /* Try to find a dollar estimate or key summary sentence */
+    var lines=outTxt.split(/\n|\r/).map(function(l){return l.trim();}).filter(Boolean);
+    /* Look for a line with a dollar sign or percentage - likely the key finding */
+    var dollarLine=lines.find(function(l){return l.indexOf('$')>=0||l.indexOf('%')>=0;});
+    /* Otherwise take the first substantive line */
+    desc=dollarLine||lines.find(function(l){return l.length>30;})||'';
+    /* Strip numbering like "1)" or "(1)" from start */
+    desc=desc.replace(/^[\(\d\)\.:\s]+/,'').trim();
+    /* Truncate if very long */
+    if(desc.length>200)desc=desc.substring(0,197)+'…';
+  }
+  var di=document.getElementById('ach-desc-'+aid);
+  if(di&&desc)di.value=desc;
+  /* Scroll to new achievement */
+  setTimeout(function(){
+    var el=document.getElementById('ach-outer-'+aid);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },200);
+}
 
 function genDocs(){
   var name=gv('fname')||'[Your Name]',title=gv('jtitle')||'[Your Role]',co=gv('coname')||'[Company]',loc=gv('loc')||'[Location]';
