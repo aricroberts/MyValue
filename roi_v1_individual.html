@@ -756,32 +756,47 @@ async function sendCoach(){
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
     if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0||txt.indexOf('COACH OUTPUT')>=0){
-      var rawOut=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:').split(/COACH OUTPUT:/i)[1].trim();
-      /* Try to parse JSON from the output */
+      var cleanTxt=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:');
+      var splitParts=cleanTxt.split(/COACH OUTPUT:/i);
+      var conversational=splitParts[0].trim(); /* text BEFORE COACH OUTPUT: */
+      var rawOut=splitParts[1].trim();         /* text AFTER COACH OUTPUT: */
+      /* Parse JSON */
       var parsed={};
       try{
         var jm=rawOut.match(/\{[\s\S]*\}/);
         if(jm)parsed=JSON.parse(jm[0]);
       }catch(e){parsed={};}
       if(parsed.impact_type==='cost'&&!parsed.saved&&parsed.rev_amt)parsed.saved=parsed.rev_amt;
-      /* Store parsed data globally for confirmCoachTransfer */
       window._coachParsed=parsed;
-      window._coachSummary=parsed.summary||parsed.gdesc||parsed.summary||'';
-      /* Show human-readable summary in the output box */
-      var displayTxt=rawOut;
+      window._coachSummary=parsed.summary||'';
+      /* Build structured fields display */
+      var structuredTxt='';
       if(parsed.summary){
-        displayTxt='<strong>Summary:</strong> '+esc(parsed.summary);
-        if(parsed.subject_line)displayTxt+='<br><strong>Subject line:</strong> '+esc(parsed.subject_line);
-        if(parsed.impact_type)displayTxt+='<br><strong>Impact type:</strong> '+esc(parsed.impact_type);
-        if(parsed.credit)displayTxt+='<br><strong>Attribution:</strong> '+parsed.credit+'%';
-        if(parsed.conf)displayTxt+='<br><strong>Confidence:</strong> '+parsed.conf+'%';
-        if(parsed.rev_amt&&parsed.impact_type!=='cost')displayTxt+='<br><strong>Revenue:</strong> $'+Number(parsed.rev_amt).toLocaleString();
-        if(parsed.val)displayTxt+='<br><strong>Estimated value:</strong> $'+Number(parsed.val).toLocaleString();
-        if(parsed.saved)displayTxt+='<br><strong>Annual savings:</strong> $'+Number(parsed.saved).toLocaleString();
+        structuredTxt='<strong>Summary:</strong> '+esc(parsed.summary);
+        if(parsed.subject_line)structuredTxt+='<br><strong>Subject line:</strong> '+esc(parsed.subject_line);
+        if(parsed.impact_type)structuredTxt+='<br><strong>Impact type:</strong> '+esc(parsed.impact_type);
+        if(parsed.credit)structuredTxt+='<br><strong>Attribution:</strong> '+parsed.credit+'%';
+        if(parsed.conf)structuredTxt+='<br><strong>Confidence:</strong> '+parsed.conf+'%';
+        if(parsed.rev_amt&&parsed.impact_type!=='cost')structuredTxt+='<br><strong>Revenue:</strong> $'+Number(parsed.rev_amt).toLocaleString();
+        if(parsed.val)structuredTxt+='<br><strong>Estimated value:</strong> $'+Number(parsed.val).toLocaleString();
+        if(parsed.saved)structuredTxt+='<br><strong>Annual savings:</strong> $'+Number(parsed.saved).toLocaleString();
+        if(parsed.n_people)structuredTxt+='<br><strong>People:</strong> '+parsed.n_people;
+        if(parsed.awareness_hrs)structuredTxt+='<br><strong>Hrs/person/month:</strong> '+parsed.awareness_hrs;
+        if(parsed.value_mult)structuredTxt+='<br><strong>Value multiplier:</strong> '+parsed.value_mult;
+      }else{
+        structuredTxt=esc(rawOut).replace(/\n/g,'<br>');
       }
-      msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):displayTxt)+'</div>';
+      /* Add conversational narrative below structured fields if present */
+      var fullDisplay=structuredTxt;
+      if(conversational&&conversational.length>20){
+        fullDisplay+='<hr style="border:none;border-top:1px solid var(--border);margin:.75rem 0"/>';
+        fullDisplay+='<p style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Full analysis</p>';
+        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(conversational).replace(/\n/g,'<br>')+'</div>';
+      }
+      /* Show summary in chat bubble, full display in output panel */
+      msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):esc(conversational||rawOut))+'</div>';
       document.getElementById('coach-result').style.display='block';
-      sh('coach-out',displayTxt);
+      sh('coach-out',fullDisplay);
     }else{
       msgs.innerHTML+='<div class="cmsg cmai">'+esc(txt).replace(/\n/g,'<br>')+'</div>';
     }
@@ -844,7 +859,12 @@ function coachToLedger(){
     var kl=lns.find(function(l){return l.indexOf('$')>=0&&l.indexOf('%')>=0&&l.length<100;})||lns.find(function(l){return l.indexOf('$')>=0&&l.length<100;})||lns.find(function(l){return l.length>10&&l.length<80;})||'';
     desc=kl.replace(/^[A-Z][A-Za-z\s\-\/]+:\s*/,'').trim();
   }
-  if(desc.length>100)desc=desc.substring(0,97)+'...';
+  if(desc.length>120){
+    /* Truncate at word boundary, not mid-word */
+    var cut=desc.substring(0,117);
+    var lastSpace=cut.lastIndexOf(' ');
+    desc=(lastSpace>80?cut.substring(0,lastSpace):cut)+'...';
+  }
   descIn.value=desc;
 
   /* Impact type */
