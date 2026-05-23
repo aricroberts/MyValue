@@ -810,25 +810,27 @@ function coachToLedger(){
   var descIn=document.createElement('input');
   descIn.id='ctm-desc';
   descIn.style.cssText='width:100%;margin-bottom:.75rem';
-  /* Smart extraction: clean markdown, find best short summary line */
+  /* Smart extraction: clean markdown, produce one short sentence for export field */
   var cleaned=outTxt
-    .replace(/\*\*([^*]+)\*\*/g,'$1')  /* remove bold */
-    .replace(/\*([^*]+)\*/g,'$1')        /* remove italic */
-    .replace(/#{1,6}\s*/g,'')             /* remove headers */
-    .replace(/^[-*>]\s*/gm,'')            /* remove bullets */
-    .replace(/\([^)]{0,3}\)\s*/g,'')    /* remove numbering like (1) */
-    .replace(/\d+\.\s+/g,'');           /* remove "1. " numbering */
-  var lines=cleaned.split(/[\n\r]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>15&&l.length<200;});
-  /* Priority 1: short line with $ and % (the key finding) */
-  var keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.indexOf('%')>=0&&l.length<150;});
-  /* Priority 2: line with $ */
-  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.length<150;});
-  /* Priority 3: line with % */
-  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('%')>=0&&l.length<150;});
-  /* Priority 4: first substantive line that isn't a methodology step */
-  if(!keyLine)keyLine=lines.find(function(l){return l.length>20&&l.toLowerCase().indexOf('step')<0&&l.toLowerCase().indexOf('methodology')<0;});
-  var desc=keyLine||lines[0]||'';
-  if(desc.length>180)desc=desc.substring(0,177)+'...';
+    .replace(/\*\*([^*]+)\*\*/g,'$1')
+    .replace(/\*([^*]+)\*/g,'$1')
+    .replace(/#{1,6}\s*/g,'')
+    .replace(/^[-*>]\s*/gm,'')
+    .replace(/^\(?\d+\)?\s*/gm,'')
+    .replace(/^[A-Z][A-Za-z\s]+:\s*/gm,''); /* strip "Label: " prefixes like "Defensible Attribution Percentage: " */
+  var lines=cleaned.split(/[\n\r]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>10&&l.length<120;});
+  /* Priority 1: short line with $ and % */
+  var keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.indexOf('%')>=0&&l.length<100;});
+  /* Priority 2: $ only, short */
+  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.length<100;});
+  /* Priority 3: % only, short */
+  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('%')>=0&&l.length<100;});
+  /* Priority 4: first short line, not a methodology word */
+  if(!keyLine)keyLine=lines.find(function(l){return l.length>10&&l.length<80&&['step','method','confirm','calculate','multiply','divide'].every(function(w){return l.toLowerCase().indexOf(w)<0;});});
+  var desc=keyLine||'';
+  /* Final clean: strip any remaining label prefix pattern */
+  desc=desc.replace(/^[A-Z][A-Za-z\s\-\/]+:\s*/,'').trim();
+  if(desc.length>100)desc=desc.substring(0,97)+'...';
   descIn.value=desc;
 
   /* Type selector */
