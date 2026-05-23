@@ -518,7 +518,7 @@ async function callClaude(msgs,sys,maxTok,search){
     var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error('http');
     var d=await r.json();
-    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,20000);});var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r2.ok)throw new Error('http');d=await r2.json();}
+    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r2.ok)throw new Error('http');d=await r2.json();if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r3=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r3.ok)throw new Error('http');d=await r3.json();}}
     if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
@@ -787,9 +787,13 @@ async function sendCoach(){
       var rawOut=splitParts[1].trim();         /* text AFTER COACH OUTPUT: */
       /* Parse JSON */
       var parsed={};
+      var postJson='';
       try{
-        var jm=rawOut.match(/\{[\s\S]*\}/);
-        if(jm)parsed=JSON.parse(jm[0]);
+        var jm=rawOut.match(/\{[\s\S]*?\}/);
+        if(jm){
+          parsed=JSON.parse(jm[0]);
+          postJson=rawOut.substring(rawOut.indexOf(jm[0])+jm[0].length).trim();
+        }
       }catch(e){parsed={};}
       if(parsed.impact_type==='cost'&&!parsed.saved&&parsed.rev_amt)parsed.saved=parsed.rev_amt;
       window._coachParsed=parsed;
@@ -813,10 +817,11 @@ async function sendCoach(){
       }
       /* Add conversational narrative below structured fields if present */
       var fullDisplay=structuredTxt;
-      if(conversational&&conversational.length>20){
+      var fullAnalysis=(conversational||'')+(postJson?'\n\n'+postJson:'');
+      if(fullAnalysis&&fullAnalysis.trim().length>20){
         fullDisplay+='<hr style="border:none;border-top:1px solid var(--border);margin:.75rem 0"/>';
         fullDisplay+='<p style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Full analysis</p>';
-        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(conversational).replace(/\n/g,'<br>')+'</div>';
+        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(fullAnalysis).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';
       }
       /* Show summary in chat bubble, full display in output panel */
       msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):esc(conversational||rawOut))+'</div>';

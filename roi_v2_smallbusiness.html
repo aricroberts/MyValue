@@ -738,25 +738,39 @@ async function sendCoach(){
     var d=await r.json();
     if(d.error&&d.error.type==='rate_limit_error'){
       var _msgs=document.getElementById('coach-msgs');
-      if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Rate limit — retrying in 20s…</div>';
-      await new Promise(function(res){setTimeout(res,20000);});
+      if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Rate limit — retrying in 30s…</div>';
+      await new Promise(function(res){setTimeout(res,30000);});
       var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
       if(!r2.ok)throw new Error('http');
       d=await r2.json();
+      if(d.error&&d.error.type==='rate_limit_error'){
+        if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Still rate limited — one more retry in 30s…</div>';
+        await new Promise(function(res){setTimeout(res,30000);});
+        var r3=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
+        if(!r3.ok)throw new Error('http');
+        d=await r3.json();
+      }
     }
     if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
-    msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
     if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0){
       var cleanTxt=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:');
       var splitParts=cleanTxt.split(/COACH OUTPUT:/i);
       var conversational=splitParts[0].trim();
       var rawOut=splitParts[1].trim();
       var parsed={};
-      try{var jm=rawOut.match(/\{[\s\S]*\}/);if(jm)parsed=JSON.parse(jm[0]);}catch(e){parsed={};}
+      var postJson='';
+      try{
+        var jm=rawOut.match(/\{[\s\S]*?\}/);
+        if(jm){
+          parsed=JSON.parse(jm[0]);
+          /* Capture any prose that came after the JSON block */
+          postJson=rawOut.substring(rawOut.indexOf(jm[0])+jm[0].length).trim();
+        }
+      }catch(e){parsed={};}
       window._coachParsed=parsed;
       var structTxt='';
       if(parsed.summary){
@@ -769,10 +783,11 @@ async function sendCoach(){
         if(parsed.challenge_response)structTxt+='<br><strong>Board challenge response:</strong> '+esc(parsed.challenge_response);
       } else { structTxt=esc(rawOut).replace(/\n/g,'<br>'); }
       var fullDisplay=structTxt;
-      if(conversational&&conversational.length>20){
+      var fullAnalysis=(conversational||'')+(postJson?'\n\n'+postJson:'');
+      if(fullAnalysis&&fullAnalysis.trim().length>20){
         fullDisplay+='<hr style="border:none;border-top:1px solid var(--border);margin:.75rem 0"/>';
         fullDisplay+='<p style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Full analysis</p>';
-        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(conversational).replace(/\n/g,'<br>')+'</div>';
+        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(fullAnalysis).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';
       }
       msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):esc(conversational||rawOut))+'</div>';
       document.getElementById('coach-result').style.display='block';
