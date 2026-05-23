@@ -4,7 +4,7 @@
 <meta name="grammarly-disable-extension" content="true">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>[FIXED-V1] ROI Engine v1 — Individual</title>
+<title>receipts. v1 — Individual</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -157,7 +157,7 @@ button:hover{background:var(--surface2)}
     <label for="t2">2. Break-even</label>
     <label for="t3">3. Achievements</label>
     <label for="t4">4. Ledger</label>
-    <label for="t5">5. ROI coach</label>
+    <label for="t5">5. coach</label>
     <label for="t6">6. Exports</label>
   </div>
 
@@ -810,10 +810,24 @@ function coachToLedger(){
   var descIn=document.createElement('input');
   descIn.id='ctm-desc';
   descIn.style.cssText='width:100%;margin-bottom:.75rem';
-  /* Extract best line from coach output */
-  var lines=outTxt.split(/[\n\r]+/).map(function(l){return l.trim().replace(/^[*#\-\s\d.\)]+/,'').trim();}).filter(function(l){return l.length>20;});
-  var dollarLine=lines.find(function(l){return l.indexOf('$')>=0&&l.length<200;});
-  var desc=dollarLine||lines[0]||'';
+  /* Smart extraction: clean markdown, find best short summary line */
+  var cleaned=outTxt
+    .replace(/\*\*([^*]+)\*\*/g,'$1')  /* remove bold */
+    .replace(/\*([^*]+)\*/g,'$1')        /* remove italic */
+    .replace(/#{1,6}\s*/g,'')             /* remove headers */
+    .replace(/^[-*>]\s*/gm,'')            /* remove bullets */
+    .replace(/\([^)]{0,3}\)\s*/g,'')    /* remove numbering like (1) */
+    .replace(/\d+\.\s+/g,'');           /* remove "1. " numbering */
+  var lines=cleaned.split(/[\n\r]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>15&&l.length<200;});
+  /* Priority 1: short line with $ and % (the key finding) */
+  var keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.indexOf('%')>=0&&l.length<150;});
+  /* Priority 2: line with $ */
+  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.length<150;});
+  /* Priority 3: line with % */
+  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('%')>=0&&l.length<150;});
+  /* Priority 4: first substantive line that isn't a methodology step */
+  if(!keyLine)keyLine=lines.find(function(l){return l.length>20&&l.toLowerCase().indexOf('step')<0&&l.toLowerCase().indexOf('methodology')<0;});
+  var desc=keyLine||lines[0]||'';
   if(desc.length>180)desc=desc.substring(0,177)+'...';
   descIn.value=desc;
 
@@ -878,8 +892,7 @@ function confirmCoachTransfer(){
   var stSel=document.getElementById('stype-'+aid+'-'+sid);
   if(stSel){stSel.value=type;renderStreamQs(aid,sid);}
   setTimeout(function(){
-    var gdescEl=document.getElementById('sq-'+aid+'-'+sid+'-gdesc');
-    if(gdescEl&&!gdescEl.value)gdescEl.value=desc.substring(0,100);
+    /* Scroll to new achievement - don't pre-fill stream fields, let user fill those */
     var el=document.getElementById('ach-outer-'+aid);
     if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
   },150);
