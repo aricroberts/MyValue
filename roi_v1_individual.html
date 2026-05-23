@@ -720,9 +720,9 @@ function calcCounter(){
 }
 
 var CSYS={
-  credit:'You are an expert career coach helping people claim appropriate credit for shared wins. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a defensible attribution percentage, (2) a dollar estimate for their ROI ledger with methodology, and (3) a one-paragraph statement they can use verbatim.',
-  soft:'You are an expert at translating intangible contributions into dollar values. Ask ONE question at a time. After 4–5 exchanges produce COACH OUTPUT: with: (1) a dollar estimate with step-by-step methodology, (2) a confidence percentage (40–70%), and (3) a statement for their ledger.',
-  communicate:'You are a communication coach for high-impact professionals who struggle to articulate value upward. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) an executive-facing summary using risk/cost/revenue/strategy language, (2) a suggested subject line for a message to their manager, and (3) one sentence that quantifies the impact.'
+  credit:'You are an expert career coach helping people claim appropriate credit for shared wins. Ask ONE question at a time — but if the user\'s first message already contains enough detail (role, what they did, team size, revenue or cost impact, and attribution), skip straight to COACH OUTPUT: without asking any questions. Otherwise gather what you need then produce COACH OUTPUT: followed immediately by a plain JSON block (no markdown, no backticks) with this exact structure:\nCOACH OUTPUT:\n{"impact_type":"revenue","gdesc":"brief group description","credit":35,"conf":65,"rev_amt":450000,"recur":"annual","summary":"one sentence the user can copy verbatim"}\n\nChoose impact_type from: revenue, cost, risk, efficiency, other. Set credit (attribution %) and conf (confidence %) as integers 0-100. Set rev_amt as annual dollar integer. summary must be one clean sentence under 120 chars with no markdown.',
+  soft:'You are an expert at translating intangible contributions into dollar values. Ask ONE question at a time — but if the user\'s first message already contains enough detail (what they did, who it affected, rough scale or dollar context), skip straight to COACH OUTPUT: without asking any questions. Otherwise gather what you need then produce COACH OUTPUT: followed immediately by a plain JSON block (no markdown, no backticks) with this exact structure:\nCOACH OUTPUT:\n{"impact_type":"other","gdesc":"brief description of the value area","val":50000,"credit":40,"conf":55,"summary":"one sentence the user can copy verbatim"}\n\nChoose impact_type from: efficiency, cost, risk, other. Set val as best dollar estimate integer. credit (attribution %) and conf (confidence %) as integers 0-100. summary must be one clean sentence under 120 chars with no markdown.',
+  communicate:'You are a communication coach for high-impact professionals who struggle to articulate value upward. Ask ONE question at a time — but if the user\'s first message already contains enough detail (what they did, the business impact, and the audience), skip straight to COACH OUTPUT: without asking any questions. Otherwise gather what you need then produce COACH OUTPUT: followed immediately by a plain JSON block (no markdown, no backticks) with this exact structure:\nCOACH OUTPUT:\n{"impact_type":"revenue","gdesc":"brief group or initiative description","credit":40,"conf":60,"rev_amt":300000,"recur":"annual","summary":"one executive-facing sentence under 120 chars","subject_line":"suggested email subject line"}\n\nChoose impact_type from: revenue, cost, risk, efficiency, other. All numbers as integers. summary and subject_line must have no markdown.'
 };
 var COPENERS={
   credit:"Let's start. Tell me about a situation where you contributed to something significant but felt you couldn't fully claim credit for it. What happened?",
@@ -755,7 +755,31 @@ async function sendCoach(){
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
     msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
-    if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0||txt.indexOf('COACH OUTPUT')>=0){var out=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:').split(/COACH OUTPUT:/i)[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
+    if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0||txt.indexOf('COACH OUTPUT')>=0){
+      var rawOut=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:').split(/COACH OUTPUT:/i)[1].trim();
+      /* Try to parse JSON from the output */
+      var parsed={};
+      try{
+        var jm=rawOut.match(/\{[\s\S]*\}/);
+        if(jm)parsed=JSON.parse(jm[0]);
+      }catch(e){parsed={};}
+      /* Store parsed data globally for confirmCoachTransfer */
+      window._coachParsed=parsed;
+      /* Show human-readable summary in the output box */
+      var displayTxt=rawOut;
+      if(parsed.summary){
+        displayTxt='<strong>Summary:</strong> '+parsed.summary;
+        if(parsed.subject_line)displayTxt+='<br><strong>Subject line:</strong> '+parsed.subject_line;
+        if(parsed.impact_type)displayTxt+='<br><strong>Impact type:</strong> '+parsed.impact_type;
+        if(parsed.credit)displayTxt+='<br><strong>Attribution:</strong> '+parsed.credit+'%';
+        if(parsed.conf)displayTxt+='<br><strong>Confidence:</strong> '+parsed.conf+'%';
+        if(parsed.rev_amt)displayTxt+='<br><strong>Revenue:</strong> $'+Number(parsed.rev_amt).toLocaleString();
+        if(parsed.val)displayTxt+='<br><strong>Estimated value:</strong> $'+Number(parsed.val).toLocaleString();
+        if(parsed.saved)displayTxt+='<br><strong>Annual savings:</strong> $'+Number(parsed.saved).toLocaleString();
+      }
+      document.getElementById('coach-result').style.display='block';
+      sh('coach-out',displayTxt);
+    }
     ok=true;
   }catch(e){ok=false;}
   if(!ok){
@@ -773,15 +797,12 @@ function coachToLedger(){
   var outEl=document.getElementById('coach-out');
   var outTxt=outEl?(outEl.textContent||outEl.innerText)||'':'';
   if(!outTxt){alert('No coach output yet. Complete a coaching session first.');return;}
-
-  /* Remove any existing modal */
   var old=document.getElementById('ctm');if(old)old.remove();
+  var parsed=window._coachParsed||{};
 
-  /* Build modal with createElement to avoid quote issues */
   var overlay=document.createElement('div');
   overlay.id='ctm';
   overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
-
   var box=document.createElement('div');
   box.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;max-width:480px;width:100%';
 
@@ -791,9 +812,9 @@ function coachToLedger(){
 
   var sub=document.createElement('p');
   sub.style.cssText='font-size:12px;color:var(--text2);margin-bottom:1rem;line-height:1.5';
-  sub.textContent='Choose the impact type, confirm the title and description, then add to your ledger.';
+  sub.textContent='Review and confirm before adding to your ledger. Stream fields will be pre-filled from the coach session.';
 
-  /* Title field */
+  /* Title */
   var titleLbl=document.createElement('label');
   titleLbl.style.cssText='font-size:12px;font-weight:500;display:block;margin-bottom:3px';
   titleLbl.textContent='Achievement title';
@@ -801,60 +822,35 @@ function coachToLedger(){
   titleIn.id='ctm-title';
   titleIn.style.cssText='width:100%;margin-bottom:.75rem';
   var titles={credit:'Shared credit claim',soft:'Quantified soft contribution',communicate:'Strategic impact'};
-  titleIn.value=titles[cMode]||'Achievement from ROI coach';
+  titleIn.value=titles[cMode]||'Achievement from receipts. coach';
 
-  /* Description field */
+  /* Description */
   var descLbl=document.createElement('label');
   descLbl.style.cssText='font-size:12px;font-weight:500;display:block;margin-bottom:3px';
   descLbl.textContent='Description (used in exports)';
   var descIn=document.createElement('input');
   descIn.id='ctm-desc';
   descIn.style.cssText='width:100%;margin-bottom:.75rem';
-  /* Smart extraction: clean markdown, produce one short sentence for export field */
-  var cleaned=outTxt
-    .replace(/\*\*([^*]+)\*\*/g,'$1')
-    .replace(/\*([^*]+)\*/g,'$1')
-    .replace(/#{1,6}\s*/g,'')
-    .replace(/^[-*>]\s*/gm,'')
-    .replace(/^\(?\d+\)?\s*/gm,'')
-    .replace(/^[A-Z][A-Za-z\s]+:\s*/gm,''); /* strip "Label: " prefixes like "Defensible Attribution Percentage: " */
-  var lines=cleaned.split(/[\n\r]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>10&&l.length<120;});
-  /* Priority 1: short line with $ and % */
-  var keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.indexOf('%')>=0&&l.length<100;});
-  /* Priority 2: $ only, short */
-  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('$')>=0&&l.length<100;});
-  /* Priority 3: % only, short */
-  if(!keyLine)keyLine=lines.find(function(l){return l.indexOf('%')>=0&&l.length<100;});
-  /* Priority 4: first short line, not a methodology word */
-  if(!keyLine)keyLine=lines.find(function(l){return l.length>10&&l.length<80&&['step','method','confirm','calculate','multiply','divide'].every(function(w){return l.toLowerCase().indexOf(w)<0;});});
-  var desc=keyLine||'';
-  /* Final clean: strip any remaining label prefix pattern */
-  desc=desc.replace(/^[A-Z][A-Za-z\s\-\/]+:\s*/,'').trim();
+  var desc=parsed.summary||'';
+  if(!desc){
+    var cl=outTxt.replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/#{1,6}\s*/g,'').replace(/^[-*>]\s*/gm,'').replace(/^[A-Z][A-Za-z\s]+:\s*/gm,'');
+    var lns=cl.split(/[\n\r]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>10&&l.length<120;});
+    var kl=lns.find(function(l){return l.indexOf('$')>=0&&l.indexOf('%')>=0&&l.length<100;})||lns.find(function(l){return l.indexOf('$')>=0&&l.length<100;})||lns.find(function(l){return l.length>10&&l.length<80;})||'';
+    desc=kl.replace(/^[A-Z][A-Za-z\s\-\/]+:\s*/,'').trim();
+  }
   if(desc.length>100)desc=desc.substring(0,97)+'...';
   descIn.value=desc;
 
-  /* Type selector */
+  /* Impact type */
   var typeLbl=document.createElement('label');
   typeLbl.style.cssText='font-size:12px;font-weight:500;display:block;margin-bottom:3px';
   typeLbl.textContent='Primary impact type';
   var typeSel=document.createElement('select');
   typeSel.id='ctm-type';
   typeSel.style.cssText='width:100%;margin-bottom:1.25rem';
-  var typeOpts=[
-    ['','— choose impact type —'],
-    ['efficiency','Efficiency gain (time / workload saved)'],
-    ['email','Email / communication reduction'],
-    ['headcount','Headcount / visibility value'],
-    ['revenue','Revenue generated or influenced'],
-    ['cost','Cost savings'],
-    ['risk','Risk averted'],
-    ['other','Strategic / other value']
-  ];
-  typeOpts.forEach(function(o){
-    var opt=document.createElement('option');
-    opt.value=o[0];opt.textContent=o[1];
-    typeSel.appendChild(opt);
-  });
+  var typeOpts=[['','— choose impact type —'],['efficiency','Efficiency gain'],['email','Email / communication reduction'],['headcount','Headcount / visibility value'],['revenue','Revenue generated'],['cost','Cost savings'],['risk','Risk averted'],['other','Strategic / other']];
+  typeOpts.forEach(function(o){var opt=document.createElement('option');opt.value=o[0];opt.textContent=o[1];typeSel.appendChild(opt);});
+  if(parsed.impact_type)typeSel.value=parsed.impact_type;
 
   /* Buttons */
   var btnRow=document.createElement('div');
@@ -884,17 +880,68 @@ function confirmCoachTransfer(){
   var desc=(document.getElementById('ctm-desc').value||'').trim();
   if(!type){alert('Please choose an impact type.');return;}
   var overlay=document.getElementById('ctm');if(overlay)overlay.remove();
+
+  /* Switch to achievements tab */
   document.getElementById('t3').checked=true;
+
+  /* Create achievement - addAch auto-creates stream 1 */
   addAch();
   var aid=achN;
-  var sid=streamN; /* capture the stream addAch auto-created */
+  var sid=streamN; /* capture the stream addAch just created */
+
+  /* Set title and description */
   var ti=document.getElementById('ach-ti-'+aid);if(ti)ti.value=title;
   var di=document.getElementById('ach-desc-'+aid);if(di)di.value=desc;
-  /* Use the auto-created stream — no need to add another */
+
+  /* Set stream type and render its fields */
   var stSel=document.getElementById('stype-'+aid+'-'+sid);
   if(stSel){stSel.value=type;renderStreamQs(aid,sid);}
+
+  /* ── HYDRATE STREAM FIELDS from parsed JSON ── */
+  var p=window._coachParsed||{};
+  function setQ(qid,val){
+    if(val===undefined||val===null||val==='')return;
+    var el=document.getElementById('sq-'+aid+'-'+sid+'-'+qid);
+    if(el)el.value=val;
+  }
+
+  /* Fields common to multiple types */
+  setQ('gdesc', p.gdesc||'');
+  setQ('conf',  p.conf||'');
+  setQ('credit',p.credit||'');
+
+  /* Revenue */
+  if(type==='revenue'){
+    setQ('rev_amt', p.rev_amt||p.val||'');
+    setQ('recur',   p.recur||'annual');
+  }
+  /* Cost savings */
+  if(type==='cost'){
+    setQ('saved',   p.saved||p.val||'');
+    setQ('onetime', p.onetime||'0');
+  }
+  /* Risk */
+  if(type==='risk'){
+    setQ('exposure', p.exposure||p.val||'');
+    setQ('prob',     p.prob||'40');
+  }
+  /* Efficiency */
+  if(type==='efficiency'){
+    setQ('hrs_pw',   p.hrs_pw||'');
+    setQ('n_people', p.n_people||'');
+    setQ('avg_rate', p.avg_rate||'');
+    setQ('months',   p.months||'12');
+  }
+  /* Other / strategic */
+  if(type==='other'){
+    setQ('val', p.val||p.rev_amt||'');
+  }
+
+  /* Trigger ROI calc so the pill updates */
+  updateStreamRoi(aid,sid);
+
+  /* Scroll to new achievement */
   setTimeout(function(){
-    /* Scroll to new achievement - don't pre-fill stream fields, let user fill those */
     var el=document.getElementById('ach-outer-'+aid);
     if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
   },150);
