@@ -130,6 +130,10 @@ button:hover{background:var(--surface2)}
 .adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--text3)}
 .alive{background:var(--green)!important}.aload{background:var(--amber)!important}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}}
+
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
+.back-nav label:hover{background:var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -221,6 +225,7 @@ button:hover{background:var(--surface2)}
     <div id="sal-preview" style="display:none;margin-bottom:.875rem"></div>
     <button class="fullbtn btn-primary" onclick="fetchSalBenchmark()">Fetch live salary benchmarks</button>
     <label for="t2" style="display:block"><span class="secbtn" style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text2)">Continue to break-even →</span></label>
+    <div class="back-nav"><label for="t1"><i class="ti ti-arrow-left" style="font-size:11px"></i> Profile</label></div>
   </div>
 
   <div class="tab-panel" id="p2">
@@ -238,6 +243,7 @@ button:hover{background:var(--surface2)}
     <div class="card"><p class="sl">Break-even by time period</p><div class="g3"><div class="mc"><p class="lb">Daily</p><p class="vl ic" id="be-day">—</p></div><div class="mc"><p class="lb">Weekly</p><p class="vl ic" id="be-wk">—</p></div><div class="mc"><p class="lb">Quarterly</p><p class="vl ic" id="be-qtr">—</p></div></div></div>
     <div class="card"><p class="sl">Peer comparison</p><div id="be-peers"></div></div>
     <label for="t3" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:#fff">Next: log your achievements →</span></label>
+    <div class="back-nav"><label for="t1"><i class="ti ti-arrow-left" style="font-size:11px"></i> Profile</label></div>
   </div>
 
   <div class="tab-panel" id="p3">
@@ -263,6 +269,8 @@ button:hover{background:var(--surface2)}
     </div>
     <div id="ach-list"></div>
     <button class="addbtn" onclick="addAch()"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px"></i> Add an achievement</button>
+
+    <div class="back-nav"><label for="t2"><i class="ti ti-arrow-left" style="font-size:11px"></i> Break-even</label></div>
     <label for="t4" style="display:block">
       <span onclick="calcLedger()" style="display:block;text-align:center;padding:8px;border:1px solid var(--blue);border-radius:var(--radius-sm);cursor:pointer;background:var(--blue);color:#fff;font-size:13px"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Calculate debt ledger</span>
     </label>
@@ -312,6 +320,7 @@ button:hover{background:var(--surface2)}
       <label for="t6" style="display:block">
         <span onclick="genDocs()" style="display:block;text-align:center;padding:8px;border:1px solid var(--blue);border-radius:var(--radius-sm);cursor:pointer;background:var(--blue);color:#fff;font-size:13px">Generate export documents →</span>
       </label>
+    <div class="back-nav"><label for="t3"><i class="ti ti-arrow-left" style="font-size:11px"></i> Achievements</label></div>
     </div>
   </div>
 
@@ -344,6 +353,8 @@ button:hover{background:var(--surface2)}
         </div>
       </div>
     </div>
+
+    <div class="back-nav"><label for="t4"><i class="ti ti-arrow-left" style="font-size:11px"></i> Ledger</label></div>
   </div>
 
   <div class="tab-panel" id="p6">
@@ -373,7 +384,21 @@ button:hover{background:var(--surface2)}
       </div>
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportJSON()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download backup (JSON)</button>
-        <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
+  
+    <div class="back-nav"><label for="t4"><i class="ti ti-arrow-left" style="font-size:11px"></i> Ledger</label></div>
+
+    <!-- Contextual resources -->
+    <div style="margin-top:1.5rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm)">
+      <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.75rem">Take your next step</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+        <a href="https://www.linkedin.com/learning/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-certificate" style="font-size:14px;color:var(--blue)"></i> LinkedIn Learning</a>
+        <a href="https://www.levels.fyi/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-chart-bar" style="font-size:14px;color:var(--green)"></i> Salary benchmarks</a>
+        <a href="https://www.glassdoor.com/Salaries/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-building" style="font-size:14px;color:var(--amber)"></i> Glassdoor salaries</a>
+        <a href="https://coachfederation.org/find-a-coach" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-user-check" style="font-size:14px;color:var(--green)"></i> Find a career coach</a>
+      </div>
+      <p style="font-size:10px;color:var(--text3);margin-top:.5rem">External links open in a new tab. receipts. has no affiliation with these services.</p>
+    </div>
+      <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
       <p style="font-size:11px;color:var(--text3);margin:.5rem 0 0">JSON backup contains only self-reported estimates and publicly available data. No confidential information included.</p>
     </div>

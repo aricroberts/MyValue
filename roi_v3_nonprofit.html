@@ -1152,10 +1152,10 @@ function refine(type){
 
 /* ── Coach ── */
 var CSYS={
-  donor:'You are a nonprofit fundraising coach helping leaders make compelling donor impact cases. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-sentence donor impact statement grounded in the data, (2) the single most powerful number to lead with, and (3) a suggested opening for a major donor conversation.',
-  grant:'You are a grants writer coach helping nonprofit staff write compelling outcomes sections. Ask ONE question at a time. After 4–5 exchanges produce COACH OUTPUT: with: (1) a ready-to-paste outcomes paragraph for a grant report, (2) the SMART metrics to emphasize, and (3) the most likely funder objection and how to address it.',
-  board:'You are a nonprofit governance coach helping executive directors present impact data to boards. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-bullet board summary using financial framing, (2) the one metric the board will most likely fixate on, and (3) how to frame mission success in terms board members with business backgrounds will respect.',
-  program:'You are a program evaluation coach helping nonprofits defend or improve individual programs. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) an honest assessment of whether this program is worth continuing at current cost, (2) what additional data would make the case stronger, and (3) specific ways to reduce cost-per-beneficiary if needed.'
+  donor:'You are a nonprofit fundraising coach helping leaders make compelling donor impact cases. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) a 3-sentence donor impact statement grounded in the data, (2) the single most powerful number to lead with, and (3) a suggested opening for a major donor conversation.\n{\"summary\":\"one sentence coaching takeaway\",\"lead_number\":\"the single most powerful number\",\"opening\":\"suggested opening sentence for donor conversation\"}',
+  grant:'You are a grants writer coach helping nonprofit staff write compelling outcomes sections. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) a ready-to-paste outcomes paragraph for a grant report, (2) the SMART metrics to emphasize, and (3) the most likely funder objection and how to address it.\n{\"summary\":\"one sentence coaching takeaway\",\"smart_metric\":\"key SMART metric to emphasize\",\"objection_response\":\"how to handle likely funder objection\"}',
+  board:'You are a nonprofit governance coach helping executive directors present impact data to boards. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) a 3-bullet board summary using financial framing, (2) the one metric the board will most likely fixate on, and (3) how to frame mission success in terms board members with business backgrounds will respect.\n{\"summary\":\"one sentence coaching takeaway\",\"lead_metric\":\"the metric board will fixate on\",\"business_framing\":\"how to frame mission in business terms\"}',
+  program:'You are a program evaluation coach helping nonprofits defend or improve individual programs. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) an honest assessment of whether this program is worth continuing at current cost, (2) what additional data would make the case stronger, and (3) specific ways to reduce cost-per-beneficiary if needed.\n{\"summary\":\"one sentence coaching takeaway\",\"verdict\":\"continue or restructure\",\"cost_reduction\":\"one specific way to reduce cost-per-beneficiary\"}'
 };
 var COPENERS={
   donor:"Let's build your donor impact case. Tell me about your most impressive program outcome from the last year — something you know happened but struggle to put into financial terms.",
@@ -1209,7 +1209,35 @@ async function sendCoach(){
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
     msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
-    if(txt.indexOf('COACH OUTPUT:')>=0){var out=txt.split('COACH OUTPUT:')[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
+    if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0){
+      var cleanTxt=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:');
+      var splitParts=cleanTxt.split(/COACH OUTPUT:/i);
+      var conversational=splitParts[0].trim();
+      var rawOut=splitParts[1].trim();
+      var parsed={};
+      try{var jm=rawOut.match(/\{[\s\S]*\}/);if(jm)parsed=JSON.parse(jm[0]);}catch(e){parsed={};}
+      var structTxt='';
+      if(parsed.summary){
+        structTxt='<strong>Coaching takeaway:</strong> '+esc(parsed.summary);
+        if(parsed.lead_number)structTxt+='<br><strong>Lead with:</strong> '+esc(parsed.lead_number);
+        if(parsed.lead_metric)structTxt+='<br><strong>Key metric:</strong> '+esc(parsed.lead_metric);
+        if(parsed.opening)structTxt+='<br><strong>Opening line:</strong> '+esc(parsed.opening);
+        if(parsed.smart_metric)structTxt+='<br><strong>SMART metric:</strong> '+esc(parsed.smart_metric);
+        if(parsed.objection_response)structTxt+='<br><strong>Funder objection:</strong> '+esc(parsed.objection_response);
+        if(parsed.business_framing)structTxt+='<br><strong>Board framing:</strong> '+esc(parsed.business_framing);
+        if(parsed.verdict)structTxt+='<br><strong>Verdict:</strong> '+esc(parsed.verdict);
+        if(parsed.cost_reduction)structTxt+='<br><strong>Cost reduction:</strong> '+esc(parsed.cost_reduction);
+      } else { structTxt=esc(rawOut).replace(/\n/g,'<br>'); }
+      var fullDisplay=structTxt;
+      if(conversational&&conversational.length>20){
+        fullDisplay+='<hr style="border:none;border-top:1px solid var(--border);margin:.75rem 0"/>';
+        fullDisplay+='<p style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Full analysis</p>';
+        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(conversational).replace(/\n/g,'<br>')+'</div>';
+      }
+      msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):esc(conversational||rawOut))+'</div>';
+      document.getElementById('coach-result').style.display='block';
+      sh('coach-out',fullDisplay);
+    }
     ok=true;
   }catch(e){ok=false;}
   if(!ok){

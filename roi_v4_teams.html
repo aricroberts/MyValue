@@ -793,10 +793,10 @@ var teamContext=function(){
 };
 
 var CSYS={
-  headcount:'You are an expert at helping managers defend team headcount to leadership. You have access to the team\'s ROI data. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-sentence headcount defense grounded in the ROI data, (2) the single most powerful number to lead with, and (3) how to respond if leadership asks about AI replacing parts of this team.',
-  recognition:'You are a compensation and recognition coach for people managers. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) the strongest case for recognizing one or two specific contributors, (2) how to frame a salary conversation using ROI data, and (3) the risk of not acting on recognition.',
-  investment:'You are a business case coach helping managers build investment cases for their teams. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-bullet ROI-grounded investment case, (2) how to frame the ask in terms of cost vs. risk, and (3) what metric to track to demonstrate continued ROI.',
-  performance:'You are a performance narrative coach for people managers. Ask ONE question at a time. After 3–4 exchanges produce COACH OUTPUT: with: (1) a 3-paragraph team narrative for a leadership audience, (2) how to lead with the data without sounding defensive, and (3) one story or example that puts the numbers in human terms.'
+  headcount:'You are an expert at helping managers defend team headcount to leadership. You have access to the team\'s ROI data. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) a 3-sentence headcount defense grounded in the ROI data, (2) the single most powerful number to lead with, and (3) how to respond if leadership asks about AI replacing parts of this team.\n{\"summary\":\"one sentence coaching takeaway\",\"lead_number\":\"strongest ROI number to open with\",\"ai_response\":\"how to address AI replacement question\"}',
+  recognition:'You are a compensation and recognition coach for people managers. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) the strongest case for recognizing one or two specific contributors, (2) how to frame a salary conversation using ROI data, and (3) the risk of not acting on recognition.\n{\"summary\":\"one sentence coaching takeaway\",\"recognition_case\":\"strongest case for recognizing a contributor\",\"retention_risk\":\"risk of not acting\"}',
+  investment:'You are a business case coach helping managers build investment cases for their teams. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) a 3-bullet ROI-grounded investment case, (2) how to frame the ask in terms of cost vs. risk, and (3) what metric to track to demonstrate continued ROI.\n{\"summary\":\"one sentence coaching takeaway\",\"lead_bullet\":\"strongest ROI-grounded bullet\",\"tracking_metric\":\"metric to track going forward\"}',
+  performance:'You are a performance narrative coach for people managers. Ask ONE question at a time. When you have enough information, ALWAYS write 2-3 sentences of coaching insight first, then on a new line output COACH OUTPUT: followed immediately by this JSON (no markdown, no backticks): (1) a 3-paragraph team narrative for a leadership audience, (2) how to lead with the data without sounding defensive, and (3) one story or example that puts the numbers in human terms.\n{\"summary\":\"one sentence coaching takeaway\",\"lead_data\":\"how to lead with data without sounding defensive\",\"human_story\":\"the example that puts numbers in human terms\"}'
 };
 var COPENERS={
   headcount:"Let's build your headcount defense. Tell me what specific pressure you're facing — is this a budget cut, a reorg proposal, or a general request to justify the team size?",
@@ -852,7 +852,35 @@ async function sendCoach(){
     cHist.push({role:'assistant',content:txt});
     var ct=document.getElementById('ctyping');if(ct)ct.remove();
     msgs.innerHTML+='<div class="cmsg cmai">'+txt.replace(/\n/g,'<br>')+'</div>';
-    if(txt.indexOf('COACH OUTPUT:')>=0){var out=txt.split('COACH OUTPUT:')[1].trim();document.getElementById('coach-result').style.display='block';sh('coach-out',out.replace(/\n/g,'<br>'));}
+    if(txt.indexOf('COACH OUTPUT:')>=0||txt.indexOf('**COACH OUTPUT:**')>=0){
+      var cleanTxt=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:');
+      var splitParts=cleanTxt.split(/COACH OUTPUT:/i);
+      var conversational=splitParts[0].trim();
+      var rawOut=splitParts[1].trim();
+      var parsed={};
+      try{var jm=rawOut.match(/\{[\s\S]*\}/);if(jm)parsed=JSON.parse(jm[0]);}catch(e){parsed={};}
+      var structTxt='';
+      if(parsed.summary){
+        structTxt='<strong>Coaching takeaway:</strong> '+esc(parsed.summary);
+        if(parsed.lead_number)structTxt+='<br><strong>Lead with:</strong> '+esc(parsed.lead_number);
+        if(parsed.ai_response)structTxt+='<br><strong>AI replacement response:</strong> '+esc(parsed.ai_response);
+        if(parsed.recognition_case)structTxt+='<br><strong>Recognition case:</strong> '+esc(parsed.recognition_case);
+        if(parsed.retention_risk)structTxt+='<br><strong>Retention risk:</strong> '+esc(parsed.retention_risk);
+        if(parsed.lead_bullet)structTxt+='<br><strong>Lead bullet:</strong> '+esc(parsed.lead_bullet);
+        if(parsed.tracking_metric)structTxt+='<br><strong>Track:</strong> '+esc(parsed.tracking_metric);
+        if(parsed.lead_data)structTxt+='<br><strong>Data framing:</strong> '+esc(parsed.lead_data);
+        if(parsed.human_story)structTxt+='<br><strong>Human story:</strong> '+esc(parsed.human_story);
+      } else { structTxt=esc(rawOut).replace(/\n/g,'<br>'); }
+      var fullDisplay=structTxt;
+      if(conversational&&conversational.length>20){
+        fullDisplay+='<hr style="border:none;border-top:1px solid var(--border);margin:.75rem 0"/>';
+        fullDisplay+='<p style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Full analysis</p>';
+        fullDisplay+='<div style="font-size:12px;color:var(--text2);line-height:1.7">'+esc(conversational).replace(/\n/g,'<br>')+'</div>';
+      }
+      msgs.innerHTML+='<div class="cmsg cmai">'+(parsed.summary?esc(parsed.summary):esc(conversational||rawOut))+'</div>';
+      document.getElementById('coach-result').style.display='block';
+      sh('coach-out',fullDisplay);
+    }
     ok=true;
   }catch(e){ok=false;}
   if(!ok){

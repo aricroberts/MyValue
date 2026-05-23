@@ -27,7 +27,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--warm)}
-.nav-logo{font-family:'Lora',Georgia,serif;font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.nav-logo{font-family:'Lora',Georgia,serif;font-size:24px;font-weight:700;color:var(--ink);letter-spacing:-.03em;display:flex;align-items:center;gap:8px;font-style:italic}
 .nav-logo span{font-style:italic;font-weight:400;color:var(--accent)}
 .nav-links{display:flex;align-items:center;gap:1.5rem}
 .nav-links a{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;transition:color .2s}
@@ -189,11 +189,12 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
 <body>
 
 <nav>
-  <div class="nav-logo">receipts.<span>.</span></div>
+  <div class="nav-logo">receipts<span style="color:var(--accent);font-style:normal">.</span></div>
   <div class="nav-links">
     <a href="#how-it-works">How it works</a>
     <a href="#versions">Tools</a>
     <a href="#who">Who it's for</a>
+    <a href="#contact">Contact</a>
   </div>
   <a href="#versions" class="nav-cta">Get started →</a>
 </nav>
@@ -517,15 +518,66 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
   </div>
 </section>
 
+<!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
+<section class="section" id="contact" style="background:var(--paper2);border-top:1px solid var(--warm)">
+  <div class="section-inner" style="max-width:560px">
+    <p class="section-label reveal">Say hello</p>
+    <h2 class="section-heading reveal" style="margin-bottom:.5rem">Get in touch</h2>
+    <p class="section-sub reveal" style="margin:0 auto 2rem;text-align:left">Questions, feedback, partnership ideas, or just want to tell us how receipts. is working for you — we'd love to hear it.</p>
+    <form id="contact-form" style="display:flex;flex-direction:column;gap:.875rem" onsubmit="submitContact(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.875rem">
+        <div>
+          <label style="font-size:12px;font-weight:500;display:block;margin-bottom:4px;color:var(--text2)">Name</label>
+          <input id="cf-name" type="text" placeholder="Your name" style="width:100%;padding:9px 12px;border:1px solid var(--warm);border-radius:8px;background:var(--paper);font-family:inherit;font-size:14px;color:var(--ink)" required/>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:500;display:block;margin-bottom:4px;color:var(--text2)">Email</label>
+          <input id="cf-email" type="email" placeholder="you@example.com" style="width:100%;padding:9px 12px;border:1px solid var(--warm);border-radius:8px;background:var(--paper);font-family:inherit;font-size:14px;color:var(--ink)" required/>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:500;display:block;margin-bottom:4px;color:var(--text2)">Message</label>
+        <textarea id="cf-msg" placeholder="What's on your mind?" rows="4" style="width:100%;padding:9px 12px;border:1px solid var(--warm);border-radius:8px;background:var(--paper);font-family:inherit;font-size:14px;color:var(--ink);resize:vertical" required></textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <button type="submit" class="btn-primary" style="padding:10px 24px" id="cf-btn">Send message →</button>
+        <p id="cf-status" style="font-size:13px;color:var(--text2);margin:0"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+function submitContact(e){
+  e.preventDefault();
+  var btn=document.getElementById('cf-btn');
+  var status=document.getElementById('cf-status');
+  var name=document.getElementById('cf-name').value;
+  var email=document.getElementById('cf-email').value;
+  var msg=document.getElementById('cf-msg').value;
+  btn.textContent='Sending...';btn.disabled=true;
+  /* Send via mailto as fallback — no backend needed */
+  var subject=encodeURIComponent('receipts. contact from '+name);
+  var body=encodeURIComponent('From: '+name+'\nEmail: '+email+'\n\n'+msg);
+  window.open('mailto:aricroberts@gmail.com?subject='+subject+'&body='+body);
+  btn.textContent='Send message →';btn.disabled=false;
+  status.textContent='✓ Opening your email client...';
+  document.getElementById('contact-form').reset();
+  setTimeout(function(){status.textContent='';},4000);
+}
+</script>
+
+
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">receipts.</div>
+    <div class="footer-logo" style="font-family:'Lora',Georgia,serif;font-size:28px;font-weight:700;font-style:italic;letter-spacing:-.03em;margin-bottom:.5rem">receipts<span style="color:var(--accent);font-style:normal">.</span></div>
     <div class="footer-tagline">Know your worth. Prove it.</div>
     <div class="footer-links">
       <a href="roi_v1_individual.html">receipts. v1</a>
       <a href="roi_v2_smallbusiness.html">receipts. v2</a>
       <a href="roi_v3_nonprofit.html">receipts. v3</a>
       <a href="roi_v4_teams.html">receipts. v4</a>
+      <a href="#contact">Contact</a>
     </div>
     <div class="footer-copy">All data is session-only and never transmitted. No tracking. No ads. Built with care.</div>
   </div>
