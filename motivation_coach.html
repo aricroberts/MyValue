@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="grammarly-disable-extension" content="true"/>
+<title>receipts. — Motivational Conversation</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F1117;--surface:#1A1D27;--surface2:#22263A;--border:#2A2F45;
+  --text:#E8EAF0;--text2:#8A90A8;--text3:#4A5070;
+  --blue:#4A9EFF;--blue-dim:#0A1830;--blue-b:#4A9EFF44;
+  --green:#2ECC8A;--green-dim:#081C14;--green-b:#2ECC8A44;
+  --amber:#F59E0B;--amber-dim:#1C1200;--amber-b:#F59E0B44;
+  --red:#F0514F;--red-dim:#1C0808;--red-b:#F0514F44;
+  --teal:#22D4C8;--teal-dim:#061C1A;--teal-b:#22D4C844;
+  --purple:#9B8BF8;--purple-dim:#12102A;--purple-b:#9B8BF844;
+  --radius:10px;--radius-sm:6px;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:920px;margin:0 auto;padding:1.25rem}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.875rem;border-bottom:1px solid var(--border);gap:1rem;flex-wrap:wrap}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lab{font-size:9px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
+.version-badge,.privacy-pill{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500;border:1px solid}
+.version-badge{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-b)}
+.privacy-pill{display:flex;align-items:center;gap:5px;color:var(--teal);background:var(--teal-dim);border-color:var(--teal-b);white-space:nowrap}
+.tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
+.tab-nav button{padding:6px 13px;font-size:12px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2)}
+.tab-nav button.active{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
+.card-ok{background:var(--green-dim);border-color:var(--green-b)}
+.card-warn{background:var(--amber-dim);border-color:var(--amber-b)}
+.card-ai{background:var(--purple-dim);border-color:var(--purple-b)}
+.card-teal{background:var(--teal-dim);border-color:var(--teal-b)}
+.sl{font-size:12px;font-weight:600;color:var(--text2);margin:0 0 10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
+.sl-ok{color:var(--green)}.sl-warn{color:var(--amber)}.sl-ai{color:var(--purple)}.sl-teal{color:var(--teal)}
+.lede{font-size:13px;line-height:1.65;color:var(--text2);max-width:760px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fr3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fg label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit}
+.fg textarea{min-height:86px;resize:vertical;line-height:1.55}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--blue)}
+.hint{font-size:11px;color:var(--text3);line-height:1.4;margin-top:2px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:.875rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.875rem}
+.mc{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;min-height:76px}
+.mc .lb{font-size:11px;color:var(--text3);margin:0 0 3px;text-transform:uppercase;letter-spacing:.04em}
+.mc .vl{font-size:20px;font-weight:600;margin:0;font-family:'DM Mono',monospace}
+.pos{color:var(--green)!important}.neg{color:var(--red)!important}.warnc{color:var(--amber)!important}.ic{color:var(--teal)!important}
+.meter{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:8px 0}
+.mfill{height:100%;border-radius:99px;background:var(--blue);transition:width .25s}
+.irow{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--text2);padding:6px 0;border-bottom:1px solid var(--border);gap:12px}
+.irow:last-child{border-bottom:none}.irow strong{color:var(--text);font-weight:500;font-family:'DM Mono',monospace;text-align:right}
+.plan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.task{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.55;color:var(--text2)}
+.task strong{display:block;color:var(--text);font-weight:600;margin-bottom:2px}
+.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.resource{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1rem;text-decoration:none;color:var(--text);display:block}
+.resource:hover{border-color:var(--blue-b);background:var(--surface2)}
+.resource strong{display:block;font-size:13px;font-weight:600;margin-bottom:3px}
+.resource span{display:block;font-size:11px;color:var(--text3);line-height:1.4}
+.dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:240px;overflow-y:auto;color:var(--text)}
+.brow{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.coach-mode{padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer;text-align:center}
+.coach-mode i{font-size:18px}.coach-mode span:first-of-type{font-weight:500;font-size:13px}.coach-mode span:last-of-type{color:var(--text2);font-size:11px;line-height:1.35}
+.cmsg{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.7;color:var(--text);margin-bottom:6px;border:1px solid var(--border)}
+.cmai{background:var(--green-dim);border-color:var(--green-b);color:#A0E8C8}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+button:hover{background:var(--surface2)}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.btn-primary:hover{background:#3a8eef}
+.btn-teal{background:var(--teal);border-color:var(--teal);color:#061C1A;font-weight:600}
+.btn-danger{color:var(--red);border-color:var(--red-b);background:var(--red-dim)}
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav a{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none}
+.back-nav a:hover{background:var(--border);color:var(--text)}
+@media(max-width:680px){.fr,.fr3,.g2,.g3,.g4,.plan-grid,.resource-grid{grid-template-columns:1fr}.app{padding:1rem}.privacy-pill{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.COACH_KIND='motivation';
+// ── Proxy URL ────────────────────────────────────────────────────────────────
+var PROXY='https://myvalue.onrender.com/api/messages';
+// ── Inline toolkit JS ───────────────────────────────────────────────────────
+var COACHES={
+motivation:{
+  icon:'ti-sun-high',badge:'v1 · Motivational Conversation',title:'Motivational Conversation',tone:'card-ok',
+  lede:'Turn whatever someone brings in into a useful positive: a next step, a kinder frame, and a few psychology-grounded ways to feel more willing to move.',
+  modes:[
+    ['reframe','ti-refresh','Positive reframe','Turn the situation into a useful story'],
+    ['stuck','ti-traffic-cone','Unstuck plan','Find the smallest next action'],
+    ['confidence','ti-shield-check','Confidence builder','Build self-trust without hype'],
+    ['energy','ti-battery-3','Energy reset','Motivation when tired or flat']
+  ],
+  resources:[
+    ['Self-Determination Theory','Motivation improves when autonomy, competence, and relatedness are supported','https://selfdeterminationtheory.org/theory/'],
+    ['APA Stress Resources','Psychology-backed stress and resilience articles','https://www.apa.org/topics/stress'],
+    ['NIH Emotional Wellness Toolkit','Simple practices for emotional well-being','https://www.nih.gov/health-information/emotional-wellness-toolkit'],
+    ['Mindset Kit','Growth mindset resources from Stanford-associated researchers','https://www.mindsetkit.org/']
+  ],
+  systems:{
+    reframe:'You are a warm motivational psychology coach. Your job is to help the user turn anything they enter into a grounded positive: not fake optimism, but a useful reframe, a strength they are showing, and a next step. Ask ONE question at a time unless the user asks for a full answer. Use principles from cognitive reappraisal, self-compassion, implementation intentions, and self-determination theory. Do not provide medical or therapy advice. When you have enough information, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, positive_reframe, psychology_tip, next_step.',
+    stuck:'You are a motivational action coach. Help the user move from stuck to the smallest honest next step. Ask ONE question at a time. Use behavioral activation, friction reduction, tiny habits, and implementation intentions. Be encouraging but specific. Do not shame the user. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, tiny_step, friction_to_remove, when_then_plan.',
+    confidence:'You are a confidence and self-trust coach. Help the user identify evidence that they can handle the situation, build a realistic confidence statement, and choose a practice rep. Ask ONE question at a time. Avoid exaggerated affirmations. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, evidence, confidence_line, practice_rep.',
+    energy:'You are an energy-aware motivation coach. Help the user distinguish low energy, unclear priority, fear, and overwhelm. Suggest humane reset steps, not grind culture. Ask ONE question at a time. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, likely_block, reset_tip, ten_minute_move.'
+  },
+  openers:{
+    reframe:"Tell me what happened or what you're thinking, even if it feels messy. I'll help turn it into something usable without pretending it's all easy.",
+    stuck:"What are you avoiding, postponing, or circling around right now?",
+    confidence:"What situation do you want to feel more confident about, and what part of it makes you doubt yourself?",
+    energy:"What's your energy like today: tired body, overloaded mind, low mood, or unclear direction?"
+  },
+  outputLabels:{summary:'Coaching takeaway',positive_reframe:'Positive reframe',psychology_tip:'Psychology tip',next_step:'Next step',tiny_step:'Tiny step',friction_to_remove:'Friction to remove',when_then_plan:'When-then plan',evidence:'Evidence',confidence_line:'Confidence line',practice_rep:'Practice rep',likely_block:'Likely block',reset_tip:'Reset tip',ten_minute_move:'10-minute move'}
+},
+speaking:{
+  icon:'ti-microphone-2',badge:'v1 · Speaking + Influence',title:'Speaking, Presentation & Influence Coach',tone:'card-ai',
+  lede:'A communication coach for stronger speaking, presentation presence, influence, voice, story, and audience connection.',
+  modes:[
+    ['voice','ti-wave-sine','Voice polish','Pace, pause, pitch, resonance'],
+    ['presentation','ti-presentation','Presentation plan','Structure and persuasive flow'],
+    ['influence','ti-messages','Influence moment','Audience psychology and framing'],
+    ['practice','ti-repeat','Practice drill','A focused speaking exercise']
+  ],
+  resources:[
+    ['Vinh Giang','Communication and public speaking coach','https://www.vinhgiang.com/'],
+    ['Julian Treasure at TED','Speaker on conscious listening and powerful speaking','https://www.ted.com/speakers/julian_treasure'],
+    ['Amy Cuddy','Presence, body language, and confidence speaker','https://www.amycuddy.com/'],
+    ['TED: Amy Cuddy Talk','Body language talk, with TED note about reproducibility debate','https://www.ted.com/talks/amy_cuddy_your_body_language_may_shape_who_you_are']
+  ],
+  systems:{
+    voice:'You are a speaking coach helping the user improve voice, delivery, and presence. Draw from broad public-speaking principles associated with coaches like Vinh Giang and Julian Treasure: vocal variety, pace, pause, pitch, projection, articulation, and intentional silence. Do not claim to be those creators. Ask ONE question at a time. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, voice_focus, drill, line_to_practice.',
+    presentation:'You are a presentation coach helping the user build a clearer, more persuasive talk. Use audience-first structure, contrast, story, one core message, and a strong close. Ask ONE question at a time. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, core_message, structure, stronger_opening.',
+    influence:'You are an ethical influence coach. Help the user increase clarity, trust, credibility, emotional resonance, and audience readiness without manipulation. Use psychology concepts such as framing, social proof, loss/gain framing, cognitive load, and reciprocity responsibly. Ask ONE question at a time. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, audience_need, influence_move, ethical_guardrail.',
+    practice:'You are a speaking practice coach. Give short drills for presence, articulation, pausing, storytelling, and concise answers. Ask ONE question at a time. When ready, output 2-3 sentences of coaching first, then a new line exactly: COACH OUTPUT: followed by valid JSON only with keys summary, drill, timing, self_review_prompt.'
+  },
+  openers:{
+    voice:'What kind of speaking moment are you preparing for: meeting, presentation, video, interview, pitch, or difficult conversation?',
+    presentation:'What is the presentation about, who is the audience, and what do you want them to do or believe afterward?',
+    influence:'What are you trying to influence someone to understand, decide, support, or change?',
+    practice:'What speaking skill do you want to practice today: clarity, confidence, vocal variety, storytelling, or concise answers?'
+  },
+  outputLabels:{summary:'Coaching takeaway',voice_focus:'Voice focus',drill:'Drill',line_to_practice:'Line to practice',core_message:'Core message',structure:'Structure',stronger_opening:'Stronger opening',audience_need:'Audience need',influence_move:'Influence move',ethical_guardrail:'Ethical guardrail',timing:'Timing',self_review_prompt:'Self-review'}
+}};
+
+var APP=COACHES[window.COACH_KIND]||COACHES.motivation;
+var cMode=null,cHist=[];
+function byId(id){return document.getElementById(id)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function htmlText(s){return esc(s).replace(/\n/g,'<br>')}
+function renderCoach(){
+  byId('app').innerHTML='<div class="app">'+
+    '<div class="topbar"><div class="logo"><i class="ti '+APP.icon+'" style="font-size:16px;color:var(--green)"></i>receipts.<span class="lab">Aric Civic Labs</span><span class="version-badge">'+APP.badge+'</span></div><span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span></div>'+
+    '<div class="card '+APP.tone+'"><p class="sl sl-ok"><i class="ti '+APP.icon+'"></i>'+APP.title+'</p><p class="lede">'+APP.lede+'</p></div>'+
+    '<div class="g2" style="margin-bottom:1rem">'+APP.modes.map(function(m){return '<button class="coach-mode" data-mode="'+m[0]+'" onclick="startCoach(this.dataset.mode)"><i class="ti '+m[1]+'" style="color:var(--teal)"></i><span>'+m[2]+'</span><span>'+m[3]+'</span></button>'}).join('')+'</div>'+
+    '<div id="coach-idle" class="card" style="text-align:center;color:var(--text2);font-size:13px">Choose a coaching mode above to begin.</div>'+
+    '<div id="coach-session" style="display:none"><div id="coach-msgs" style="margin-bottom:8px"></div><div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here..." style="min-height:80px"></textarea></div><div style="display:flex;gap:7px"><button class="btn-primary" onclick="sendCoach()" style="flex:1"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px"></i> Send</button><button onclick="endCoach()">End session</button></div><div id="coach-result" style="display:none;margin-top:.875rem"><div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p><div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div><div class="brow"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div></div></div></div>'+
+    '<div class="card" style="margin-top:.875rem"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p><div class="resource-grid">'+APP.resources.map(function(r){return '<a class="resource" href="'+r[2]+'" target="_blank" rel="noopener"><strong>'+esc(r[0])+'</strong><span>'+esc(r[1])+'</span></a>'}).join('')+'</div></div>'+
+  '</div>';
+}
+async function callClaude(body){
+  var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('http');
+  var d=await r.json();
+  if(d.error)throw new Error('api');
+  return (d.content||[]).map(function(b){return b.type==='text'?b.text:''}).join('').trim();
+}
+async function startCoach(mode){
+  cMode=mode;cHist=[];
+  byId('coach-idle').style.display='none';byId('coach-session').style.display='block';byId('coach-result').style.display='none';
+  byId('coach-msgs').innerHTML='<div class="cmsg cmai"><span class="spin"></span>Starting session...</div>';
+  try{
+    var txt=await callClaude({model:'claude-sonnet-4-6',max_tokens:180,system:APP.systems[mode],messages:[{role:'user',content:'Begin the coaching session.'}]});
+    if(!txt)throw new Error('empty');
+    cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
+    byId('coach-msgs').innerHTML='<div class="cmsg cmai">'+htmlText(txt)+'</div>';
+  }catch(e){
+    var op=APP.openers[mode];
+    cHist=[{role:'assistant',content:op}];
+    byId('coach-msgs').innerHTML='<div class="cmsg cmai">'+htmlText(op)+'</div>';
+  }
+}
+async function sendCoach(){
+  var input=byId('coach-input').value.trim();if(!input||!cMode)return;
+  byId('coach-input').value='';
+  var msgs=byId('coach-msgs');
+  msgs.innerHTML+='<div class="cmsg">'+htmlText(input)+'</div><div class="cmsg cmai" id="ctyping"><span class="spin"></span>Thinking...</div>';
+  cHist.push({role:'user',content:input});
+  try{
+    var txt=await callClaude({model:'claude-sonnet-4-6',max_tokens:750,system:APP.systems[cMode],messages:cHist});
+    if(!txt)throw new Error('empty');
+    cHist.push({role:'assistant',content:txt});
+    var ct=byId('ctyping');if(ct)ct.remove();
+    handleCoachText(txt,msgs);
+  }catch(e){
+    var ct2=byId('ctyping');if(ct2)ct2.remove();
+    var hist=cHist.map(function(m){return (m.role==='user'?'You: ':'Coach: ')+m.content}).join('\n\n');
+    var prompt='I am using a '+APP.title+' tool. Continue this coaching conversation in the same style. Ask one question at a time unless you have enough information to give a concise coaching output.\n\n'+hist;
+    msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--gold-dim);border-color:var(--gold-b);color:#F5D79E">API unavailable. Copy this fallback prompt and paste it into Claude.ai.</div><div class="dpre">'+esc(prompt)+'</div>';
+  }
+}
+function handleCoachText(txt,msgs){
+  var clean=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:');
+  if(clean.indexOf('COACH OUTPUT:')<0){msgs.innerHTML+='<div class="cmsg cmai">'+htmlText(txt)+'</div>';return;}
+  var parts=clean.split(/COACH OUTPUT:/i), conversational=parts[0].trim(), raw=parts.slice(1).join('COACH OUTPUT:').trim(), parsed={};
+  try{var jm=raw.match(/\{[\s\S]*\}/);if(jm)parsed=JSON.parse(jm[0]);}catch(e){parsed={};}
+  msgs.innerHTML+='<div class="cmsg cmai">'+htmlText(parsed.summary||conversational||raw)+'</div>';
+  var out='';
+  Object.keys(APP.outputLabels).forEach(function(k){if(parsed[k])out+='<strong>'+APP.outputLabels[k]+':</strong> '+esc(parsed[k])+'<br>';});
+  if(!out)out=htmlText(conversational+'\n\n'+raw);
+  byId('coach-result').style.display='block';byId('coach-out').innerHTML=out;
+}
+function endCoach(){byId('coach-session').style.display='none';byId('coach-idle').style.display='block';byId('coach-result').style.display='none';cMode=null;cHist=[]}
+function cpCoach(){var t=byId('coach-out');navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline=''},1200)}
+renderCoach();
+
+</script>
+<div class="app" style="padding-top:.5rem">
+  <div class="back-nav">
+    <a href="index.html"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to receipts.</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="grammarly-disable-extension" content="true"/>
+<title>receipts. — Workforce Entry</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F1117;--surface:#1A1D27;--surface2:#22263A;--border:#2A2F45;
+  --text:#E8EAF0;--text2:#8A90A8;--text3:#4A5070;
+  --blue:#4A9EFF;--blue-dim:#0A1830;--blue-b:#4A9EFF44;
+  --green:#2ECC8A;--green-dim:#081C14;--green-b:#2ECC8A44;
+  --amber:#F59E0B;--amber-dim:#1C1200;--amber-b:#F59E0B44;
+  --red:#F0514F;--red-dim:#1C0808;--red-b:#F0514F44;
+  --teal:#22D4C8;--teal-dim:#061C1A;--teal-b:#22D4C844;
+  --purple:#9B8BF8;--purple-dim:#12102A;--purple-b:#9B8BF844;
+  --radius:10px;--radius-sm:6px;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:920px;margin:0 auto;padding:1.25rem}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.875rem;border-bottom:1px solid var(--border);gap:1rem;flex-wrap:wrap}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lab{font-size:9px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
+.version-badge,.privacy-pill{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500;border:1px solid}
+.version-badge{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-b)}
+.privacy-pill{display:flex;align-items:center;gap:5px;color:var(--teal);background:var(--teal-dim);border-color:var(--teal-b);white-space:nowrap}
+.tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
+.tab-nav button{padding:6px 13px;font-size:12px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2)}
+.tab-nav button.active{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
+.card-ok{background:var(--green-dim);border-color:var(--green-b)}
+.card-warn{background:var(--amber-dim);border-color:var(--amber-b)}
+.card-ai{background:var(--purple-dim);border-color:var(--purple-b)}
+.card-teal{background:var(--teal-dim);border-color:var(--teal-b)}
+.sl{font-size:12px;font-weight:600;color:var(--text2);margin:0 0 10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
+.sl-ok{color:var(--green)}.sl-warn{color:var(--amber)}.sl-ai{color:var(--purple)}.sl-teal{color:var(--teal)}
+.lede{font-size:13px;line-height:1.65;color:var(--text2);max-width:760px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fr3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fg label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit}
+.fg textarea{min-height:86px;resize:vertical;line-height:1.55}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--blue)}
+.hint{font-size:11px;color:var(--text3);line-height:1.4;margin-top:2px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:.875rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.875rem}
+.mc{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;min-height:76px}
+.mc .lb{font-size:11px;color:var(--text3);margin:0 0 3px;text-transform:uppercase;letter-spacing:.04em}
+.mc .vl{font-size:20px;font-weight:600;margin:0;font-family:'DM Mono',monospace}
+.pos{color:var(--green)!important}.neg{color:var(--red)!important}.warnc{color:var(--amber)!important}.ic{color:var(--teal)!important}
+.meter{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:8px 0}
+.mfill{height:100%;border-radius:99px;background:var(--blue);transition:width .25s}
+.irow{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--text2);padding:6px 0;border-bottom:1px solid var(--border);gap:12px}
+.irow:last-child{border-bottom:none}.irow strong{color:var(--text);font-weight:500;font-family:'DM Mono',monospace;text-align:right}
+.plan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.task{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.55;color:var(--text2)}
+.task strong{display:block;color:var(--text);font-weight:600;margin-bottom:2px}
+.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.resource{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1rem;text-decoration:none;color:var(--text);display:block}
+.resource:hover{border-color:var(--blue-b);background:var(--surface2)}
+.resource strong{display:block;font-size:13px;font-weight:600;margin-bottom:3px}
+.resource span{display:block;font-size:11px;color:var(--text3);line-height:1.4}
+.dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:240px;overflow-y:auto;color:var(--text)}
+.brow{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.coach-mode{padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer;text-align:center}
+.coach-mode i{font-size:18px}.coach-mode span:first-of-type{font-weight:500;font-size:13px}.coach-mode span:last-of-type{color:var(--text2);font-size:11px;line-height:1.35}
+.cmsg{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.7;color:var(--text);margin-bottom:6px;border:1px solid var(--border)}
+.cmai{background:var(--green-dim);border-color:var(--green-b);color:#A0E8C8}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+button:hover{background:var(--surface2)}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.btn-primary:hover{background:#3a8eef}
+.btn-teal{background:var(--teal);border-color:var(--teal);color:#061C1A;font-weight:600}
+.btn-danger{color:var(--red);border-color:var(--red-b);background:var(--red-dim)}
+.back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.back-nav a{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none}
+.back-nav a:hover{background:var(--border);color:var(--text)}
+@media(max-width:680px){.fr,.fr3,.g2,.g3,.g4,.plan-grid,.resource-grid{grid-template-columns:1fr}.app{padding:1rem}.privacy-pill{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.TOOLKIT_MODE='entry';
+// ── Proxy URL ────────────────────────────────────────────────────────────────
+var PROXY='https://myvalue.onrender.com/api/messages';
+// ── Inline toolkit JS ───────────────────────────────────────────────────────
+var MODES={
+entry:{
+  icon:'ti-briefcase',badge:'v1 · Workforce Entry',title:'Workforce Entry ROI',tone:'card-ok',
+  lede:'A first-job launchpad for turning an offer, hourly wage, or early salary into take-home pay, stability targets, and a first 90-day plan.',
+  fields:[
+    ['role','Target role','text','Program assistant'],
+    ['income','Gross annual pay','number','42000'],
+    ['tax','Estimated tax + payroll %','number','18'],
+    ['rent','Rent / housing per month','number','950'],
+    ['debt','Debt payments per month','number','120'],
+    ['basics','Food, transit, phone, basics','number','780'],
+    ['save','Monthly savings goal','number','250'],
+    ['efund','Emergency fund saved now','number','800']
+  ],
+  metrics:['Take-home / mo','Core costs / mo','Savings rate','Months covered'],
+  resources:[
+    ['CareerOneStop Occupation Profiles','Wages, skills, training, and local job outlook','https://www.careeronestop.org/Toolkit/Careers/Occupations/occupation-profile.aspx'],
+    ['My Next Move','Plain-language career exploration from O*NET','https://www.mynextmove.org/'],
+    ['Apprenticeship Finder','Earn-and-learn programs in the U.S.','https://www.apprenticeship.gov/apprenticeship-job-finder'],
+    ['IRS Withholding Estimator','Check whether paycheck withholding is in range','https://www.irs.gov/individuals/tax-withholding-estimator']
+  ],
+  calc:function(v){
+    var take=v.income*(1-v.tax/100)/12, costs=v.rent+v.debt+v.basics+v.save, net=take-costs;
+    var rate=take>0?v.save/take*100:0, covered=(v.efund/Math.max(1,v.rent+v.debt+v.basics));
+    return {
+      metrics:[money(take),money(costs),rate.toFixed(1)+'%',covered.toFixed(1)+' mo'],
+      cls:['ic',net>=0?'pos':'neg',rate>=10?'pos':'warnc',covered>=3?'pos':'warnc'],
+      rows:[
+        ['Monthly cushion after plan',money(net)],
+        ['Emergency fund target: 1 month',money(v.rent+v.debt+v.basics)],
+        ['Emergency fund target: 3 months',money((v.rent+v.debt+v.basics)*3)],
+        ['First raise target at +8%',money(v.income*1.08)]
+      ],
+      plan:[
+        ['Week 1','Confirm offer math: gross pay, pay cycle, benefits start date, commute cost, and payroll withholding.'],
+        ['Week 2','Open the first-job money stack: checking, high-yield savings, direct deposit split, and automatic emergency transfer.'],
+        ['First 30 days','Document wins and responsibilities in a tiny brag log so performance reviews do not rely on memory.'],
+        ['First 90 days','Ask your manager what “ready for more responsibility” means and convert it into two measurable goals.']
+      ],
+      narrative:'For '+(v.role||'this role')+', the current plan leaves '+money(net)+' per month after core costs and savings. The next stability milestone is a 3-month emergency fund of '+money((v.rent+v.debt+v.basics)*3)+'.'
+    };
+  }
+},
+reentry:{
+  icon:'ti-door-enter',badge:'v1 · Workforce Re-entry',title:'Workforce Re-entry ROI',tone:'card-teal',
+  lede:'A re-entry planner for translating a work gap, caregiving chapter, recovery period, layoff, or pause into readiness evidence and a manageable job-search runway.',
+  fields:[
+    ['target','Target role','text','Operations coordinator'],
+    ['income','Target annual pay','number','52000'],
+    ['current','Current monthly income','number','1200'],
+    ['expenses','Monthly required expenses','number','2600'],
+    ['savings','Available runway savings','number','6000'],
+    ['skill','Skill match %','number','62'],
+    ['hours','Weekly search / training hours','number','12'],
+    ['months','Months until desired start','number','4']
+  ],
+  metrics:['Runway','Income gap','Readiness','Weekly pace'],
+  resources:[
+    ['CareerOneStop ReEntry Resources','Job-search help for people returning to work','https://www.careeronestop.org/ResourcesFor/WorkerReEntry/worker-reentry.aspx'],
+    ['O*NET Online','Detailed skills and task data by occupation','https://www.onetonline.org/'],
+    ['American Job Centers','Local workforce centers and training support','https://www.careeronestop.org/LocalHelp/AmericanJobCenters/american-job-centers.aspx'],
+    ['FindHelp','Local food, housing, care, health, and financial support','https://www.findhelp.org/']
+  ],
+  calc:function(v){
+    var gap=Math.max(0,v.expenses-v.current), runway=gap>0?v.savings/gap:99, readiness=Math.min(100,v.skill+(v.hours*1.4)+(v.months*2));
+    return {
+      metrics:[runway>=90?'Stable':runway.toFixed(1)+' mo',money(gap)+'/mo',Math.round(readiness)+'%',v.hours+' hrs/wk'],
+      cls:[runway>=3?'pos':'warnc',gap===0?'pos':'warnc',readiness>=75?'pos':'warnc',v.hours>=10?'pos':'warnc'],
+      rows:[
+        ['Target monthly gross pay',money(v.income/12)],
+        ['Estimated take-home at 80%',money(v.income*.8/12)],
+        ['Savings needed for 3-month runway',money(gap*3)],
+        ['Readiness gap to strong launch',Math.max(0,75-readiness).toFixed(0)+' pts']
+      ],
+      plan:[
+        ['Positioning','Turn the gap into a short, factual bridge: what happened, what stayed strong, and why now is the right return point.'],
+        ['Evidence','Build two proof assets: a refreshed resume story and one sample, certificate, portfolio item, or volunteer project.'],
+        ['Search system','Use a weekly loop: 4 tailored applications, 3 warm contacts, 1 mock interview, 1 skills block.'],
+        ['Support math','If runway is under 3 months, prioritize bridge income, childcare/care support, SNAP/TANF/local aid, or paid training programs.']
+      ],
+      narrative:'The re-entry plan is strongest when readiness reaches 75%+ and runway covers at least 3 months. This version shows '+(runway>=90?'stable income coverage':runway.toFixed(1)+' months of runway')+' and a readiness score of '+Math.round(readiness)+'%.'
+    };
+  }
+},
+exit:{
+  icon:'ti-sunset-2',badge:'v1 · Workforce Exit',title:'Workforce Exit ROI',tone:'card-warn',
+  lede:'A retirement and late-career exit planner for comparing income streams, living costs, care exposure, and practical links before leaving paid work.',
+  fields:[
+    ['age','Current age','number','62'],
+    ['savings','Retirement savings','number','420000'],
+    ['spend','Expected monthly living cost','number','4200'],
+    ['ss','Estimated Social Security / mo','number','2100'],
+    ['pension','Pension or annuity / mo','number','0'],
+    ['rate','Expected annual return %','number','4'],
+    ['withdraw','Annual withdrawal %','number','4'],
+    ['care','Potential elderhealth reserve','number','30000']
+  ],
+  metrics:['Income / mo','Monthly gap','Nest egg income','Care reserve'],
+  resources:[
+    ['Social Security Retirement Estimator','Estimate retirement benefits from SSA','https://www.ssa.gov/benefits/retirement/estimator.html'],
+    ['Medicare Care Compare','Compare hospitals, nursing homes, hospice, and home health','https://www.medicare.gov/care-compare/'],
+    ['Eldercare Locator','Find local aging and caregiver support','https://eldercare.acl.gov/'],
+    ['Investor.gov Compound Interest Calculator','SEC calculator for growth assumptions','https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator']
+  ],
+  calc:function(v){
+    var nest=v.savings*v.withdraw/100/12, income=v.ss+v.pension+nest, gap=v.spend-income, reserve=v.spend>0?v.care/v.spend:0;
+    return {
+      metrics:[money(income),money(gap),money(nest)+'/mo',reserve.toFixed(1)+' mo'],
+      cls:[income>=v.spend?'pos':'warnc',gap<=0?'pos':'neg',nest>0?'ic':'warnc',reserve>=6?'pos':'warnc'],
+      rows:[
+        ['Annual spending target',money(v.spend*12)],
+        ['Annual guaranteed income',money((v.ss+v.pension)*12)],
+        ['Annual portfolio withdrawal',money(v.savings*v.withdraw/100)],
+        ['Savings after one growth year',money(v.savings*(1+v.rate/100))]
+      ],
+      plan:[
+        ['Before notice','Price health coverage, Medicare timing, COBRA/ACA bridge coverage, and prescription costs.'],
+        ['Account map','List taxable, pre-tax, Roth, HSA, pension, Social Security, and cash reserve buckets.'],
+        ['Living model','Run a base budget, lower-cost budget, and care-event budget before committing to the exit date.'],
+        ['Care readiness','Name health proxy, emergency contacts, care preferences, nearby support, and the first local aging agency to call.']
+      ],
+      narrative:'The current exit model produces '+money(income)+' per month against expected spending of '+money(v.spend)+'. The modeled gap is '+money(gap)+' per month before taxes and healthcare surprises.'
+    };
+  }
+},
+equity:{
+  icon:'ti-chart-arcs',badge:'v1 · Equity Builder',title:'Equity & Retirement Builder',tone:'card-ai',
+  lede:'A time-value-of-money comparison for people trying to build retirement savings, employer-match value, home/equity reserves, and long-horizon optionality.',
+  fields:[
+    ['age','Current age','number','32'],
+    ['retire','Target retirement age','number','67'],
+    ['balance','Current invested balance','number','18000'],
+    ['monthly','Monthly contribution','number','450'],
+    ['match','Employer match / mo','number','150'],
+    ['rate','Expected annual return %','number','6'],
+    ['raise','Annual contribution increase %','number','3'],
+    ['alt','Alternative monthly amount','number','250']
+  ],
+  metrics:['Future value','Total put in','Growth value','Delay cost'],
+  resources:[
+    ['IRS Retirement Plans','Official IRA, 401(k), and plan rules','https://www.irs.gov/retirement-plans'],
+    ['Investor.gov Calculators','SEC financial calculators and education','https://www.investor.gov/financial-tools-calculators'],
+    ['FINRA Fund Analyzer','Compare mutual fund and ETF costs','https://tools.finra.org/fund_analyzer/'],
+    ['CFPB Planning for Retirement','Consumer retirement planning resources','https://www.consumerfinance.gov/consumer-tools/retirement/']
+  ],
+  calc:function(v){
+    var years=Math.max(0,v.retire-v.age), fv=compound(v.balance,v.monthly+v.match,v.rate,years,v.raise), contrib=(v.monthly+v.match)*12*years, alt=compound(v.balance,v.alt+v.match,v.rate,years,v.raise);
+    var delay=compound(v.balance,v.monthly+v.match,v.rate,years,v.raise)-compound(v.balance,v.monthly+v.match,v.rate,Math.max(0,years-5),v.raise);
+    return {
+      metrics:[money(fv),money(contrib+v.balance),money(fv-contrib-v.balance),money(delay)],
+      cls:['pos','ic','pos','warnc'],
+      rows:[
+        ['Years invested',years.toFixed(0)],
+        ['Employer match captured',money(v.match*12*years)],
+        ['Alternative contribution outcome',money(alt)],
+        ['Value of +$100/mo',money(compound(v.balance,v.monthly+v.match+100,v.rate,years,v.raise)-fv)]
+      ],
+      plan:[
+        ['Capture match','Contribute at least enough to receive the full employer match before optimizing anything else.'],
+        ['Automate increases','Tie contribution bumps to raises so lifestyle creep does not consume every pay increase.'],
+        ['Compare buckets','Use Roth/pre-tax/taxable/HSA based on tax bracket, liquidity needs, and employer plan quality.'],
+        ['Watch fees','A 1% fee drag over decades can quietly erase a meaningful part of compound growth.']
+      ],
+      narrative:'At the current pace, the modeled retirement/equity balance reaches '+money(fv)+' by age '+v.retire+'. Waiting five years to run this same plan has an estimated opportunity cost of '+money(delay)+'.'
+    };
+  }
+},
+change:{
+  icon:'ti-route',badge:'v1 · Career Change',title:'Career Change Plan Builder',tone:'card-teal',
+  lede:'A transition planner for comparing the cost, time, risk, and upside of moving from one career track into another.',
+  fields:[
+    ['current','Current role','text','Customer support lead'],
+    ['target','Target role','text','Business analyst'],
+    ['nowpay','Current annual pay','number','52000'],
+    ['newpay','Target annual pay','number','72000'],
+    ['cost','Training / credential cost','number','3500'],
+    ['months','Months to transition','number','9'],
+    ['hours','Weekly build hours','number','8'],
+    ['readiness','Current readiness %','number','48']
+  ],
+  metrics:['Pay upside','Payback','Readiness','Build hours'],
+  resources:[
+    ['O*NET Skills Search','Search occupations by skills and tasks','https://www.onetonline.org/skills/'],
+    ['CareerOneStop Training Finder','Find programs and compare training options','https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx'],
+    ['Apprenticeship.gov','Paid pathways into new fields','https://www.apprenticeship.gov/'],
+    ['BLS Occupational Outlook Handbook','Pay, outlook, and education requirements','https://www.bls.gov/ooh/']
+  ],
+  calc:function(v){
+    var upside=v.newpay-v.nowpay, monthlyUpside=upside/12, payback=monthlyUpside>0?v.cost/monthlyUpside:0, future=Math.min(100,v.readiness+v.months*3+v.hours*1.2);
+    return {
+      metrics:[money(upside)+'/yr',payback>0?payback.toFixed(1)+' mo':'N/A',Math.round(future)+'%',(v.hours*v.months*4.33).toFixed(0)],
+      cls:[upside>0?'pos':'warnc',payback>0&&payback<=12?'pos':'warnc',future>=75?'pos':'warnc',v.hours>=6?'ic':'warnc'],
+      rows:[
+        ['Current monthly gross',money(v.nowpay/12)],
+        ['Target monthly gross',money(v.newpay/12)],
+        ['Transition cost per month',money(v.cost/Math.max(1,v.months))],
+        ['Readiness gap after plan',Math.max(0,75-future).toFixed(0)+' pts']
+      ],
+      plan:[
+        ['Weeks 1-2','Interview three people in the target role and identify the repeated skills, tools, and proof employers actually ask for.'],
+        ['Month 1','Build a public or shareable work sample that maps directly to '+(v.target||'the target role')+'.'],
+        ['Midpoint','Apply to bridge roles that use your current credibility while adding target-role responsibilities.'],
+        ['Final month','Package the story: why the shift, what transfers, what is newly proven, and what risk you removed for the employer.']
+      ],
+      narrative:'Moving from '+(v.current||'the current role')+' to '+(v.target||'the target role')+' shows modeled upside of '+money(upside)+' per year. Training cost pays back in about '+(payback>0?payback.toFixed(1)+' months':'an unclear period')+' if the salary target lands.'
+    };
+  }
+},
+compare:{
+  icon:'ti-scale',badge:'v1 · Career Compare',title:'Career Comparison + Readiness Checker',tone:'card-ai',
+  lede:'A side-by-side decision tool for comparing career options by income, fit, demand, training burden, and near-term readiness.',
+  fields:[
+    ['aName','Career A','text','Data analyst'],['aPay','A pay','number','78000'],['aFit','A fit %','number','72'],['aSkill','A skill match %','number','60'],['aDemand','A demand %','number','78'],['aTrain','A training months','number','6'],
+    ['bName','Career B','text','Project manager'],['bPay','B pay','number','85000'],['bFit','B fit %','number','68'],['bSkill','B skill match %','number','74'],['bDemand','B demand %','number','70'],['bTrain','B training months','number','4'],
+    ['cName','Career C','text','UX researcher'],['cPay','C pay','number','92000'],['cFit','C fit %','number','80'],['cSkill','C skill match %','number','46'],['cDemand','C demand %','number','62'],['cTrain','C training months','number','12']
+  ],
+  metrics:['Best path','Best score','Readiness gap','Fastest path'],
+  resources:[
+    ['BLS Occupational Outlook Handbook','Pay, outlook, and requirements by occupation','https://www.bls.gov/ooh/'],
+    ['O*NET Interest Profiler','Career fit by interests','https://www.mynextmove.org/explore/ip'],
+    ['CareerOneStop Compare Occupations','Compare wages, tasks, and outlook','https://www.careeronestop.org/Toolkit/Careers/compare-occupations.aspx'],
+    ['My Next Move','Career exploration from O*NET','https://www.mynextmove.org/']
+  ],
+  calc:function(v){
+    var items=[
+      career(v.aName,v.aPay,v.aFit,v.aSkill,v.aDemand,v.aTrain),
+      career(v.bName,v.bPay,v.bFit,v.bSkill,v.bDemand,v.bTrain),
+      career(v.cName,v.cPay,v.cFit,v.cSkill,v.cDemand,v.cTrain)
+    ].sort(function(x,y){return y.score-x.score});
+    var fastest=items.slice().sort(function(x,y){return x.train-y.train})[0];
+    return {
+      metrics:[items[0].name,Math.round(items[0].score)+'/100',Math.max(0,75-items[0].ready).toFixed(0)+' pts',fastest.name],
+      cls:['pos','pos',items[0].ready>=75?'pos':'warnc','ic'],
+      rows:items.map(function(i){return [i.name,money(i.pay)+' · score '+Math.round(i.score)+' · readiness '+Math.round(i.ready)+'%'];}),
+      plan:[
+        ['Decision rule','Treat the top score as a starting hypothesis, then validate with real job posts and two conversations.'],
+        ['Readiness check','If skill match is under 65%, build one proof project before applying heavily.'],
+        ['Risk check','If training takes more than 9 months, test bridge roles before committing to a full pivot.'],
+        ['Offer check','Compare salary, benefits, schedule control, commute, credential cost, and hiring timeline together.']
+      ],
+      narrative:'The strongest modeled path is '+items[0].name+' with a score of '+Math.round(items[0].score)+'/100. Its readiness gap is '+Math.max(0,75-items[0].ready).toFixed(0)+' points before a confident application push.'
+    };
+  }
+}};
+
+function byId(id){return document.getElementById(id)}
+function val(id){var e=byId(id);if(!e)return'';return e.type==='number'?(parseFloat(e.value)||0):(e.value||'')}
+function money(n){if(!isFinite(n)||isNaN(n))return'$0';var s=n<0?'-':'';var a=Math.abs(n);if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a)}
+function compound(start,monthly,rate,years,raisePct){
+  var bal=start||0, mRate=(rate||0)/100/12, m=monthly||0, total=Math.max(0,Math.round(years*12));
+  for(var i=1;i<=total;i++){bal=bal*(1+mRate)+m;if(i%12===0)m*=1+(raisePct||0)/100}
+  return bal;
+}
+function career(name,pay,fit,skill,demand,train){
+  var ready=(fit*.35+skill*.45+demand*.20);
+  var payScore=Math.min(100,pay/1000);
+  var burden=Math.max(0,100-train*5);
+  var score=payScore*.25+fit*.25+skill*.25+demand*.15+burden*.10;
+  return {name:name||'Career',pay:pay,fit:fit,skill:skill,demand:demand,train:train,ready:ready,score:score};
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+function render(){
+  var mode=MODES[window.TOOLKIT_MODE]||MODES.entry;
+  document.title='receipts. '+mode.title.toLowerCase();
+  byId('app').innerHTML=
+    '<div class="app">'+
+      '<div class="topbar"><div class="logo"><i class="ti '+mode.icon+'" style="font-size:16px;color:var(--green)"></i>receipts.<span class="lab">Aric Civic Labs</span><span class="version-badge">'+mode.badge+'</span></div><span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span></div>'+
+      '<div class="tab-nav"><button class="active" data-tab="snapshot">1. Snapshot</button><button data-tab="math">2. Math</button><button data-tab="plan">3. Plan</button><button data-tab="resources">4. Resources</button><button data-tab="export">5. Export</button></div>'+
+      '<div id="snapshot" class="tab-panel active"></div><div id="math" class="tab-panel"></div><div id="plan" class="tab-panel"></div><div id="resources" class="tab-panel"></div><div id="export" class="tab-panel"></div>'+
+    '</div>';
+  document.querySelectorAll('.tab-nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.tab-nav button,.tab-panel').forEach(function(x){x.classList.remove('active')});b.classList.add('active');byId(b.dataset.tab).classList.add('active')}});
+  renderSnapshot(mode);renderResources(mode);calc();
+}
+function fieldHtml(f){return '<div class="fg"><label for="'+f[0]+'">'+f[1]+'</label><input id="'+f[0]+'" type="'+f[2]+'" value="'+esc(f[3])+'" oninput="calc()"></div>'}
+function renderSnapshot(mode){
+  var groups='', fields=mode.fields;
+  for(var i=0;i<fields.length;i+=2)groups+='<div class="fr">'+fieldHtml(fields[i])+(fields[i+1]?fieldHtml(fields[i+1]):'')+'</div>';
+  byId('snapshot').innerHTML='<div class="card '+mode.tone+'"><p class="sl sl-ok"><i class="ti '+mode.icon+'"></i>'+mode.title+'</p><p class="lede">'+mode.lede+'</p></div><div class="card"><p class="sl"><i class="ti ti-forms"></i>Inputs</p>'+groups+'<div class="hint">All math stays in this browser tab. Figures are planning estimates, not tax, legal, investment, or medical advice.</div></div><div id="metric-grid" class="g4"></div><div id="narrative" class="card card-teal"></div>';
+}
+function calc(){
+  var mode=MODES[window.TOOLKIT_MODE]||MODES.entry, v={};
+  mode.fields.forEach(function(f){v[f[0]]=val(f[0])});
+  var out=mode.calc(v);
+  byId('metric-grid').innerHTML=mode.metrics.map(function(m,i){return '<div class="mc"><p class="lb">'+m+'</p><p class="vl '+(out.cls[i]||'')+'">'+esc(out.metrics[i])+'</p></div>'}).join('');
+  byId('narrative').innerHTML='<p class="sl sl-teal"><i class="ti ti-sparkles"></i>Reading</p><p class="lede">'+esc(out.narrative)+'</p><div class="meter"><div class="mfill" style="width:'+scoreWidth(out)+'%"></div></div>';
+  byId('math').innerHTML='<div class="card"><p class="sl"><i class="ti ti-calculator"></i>Working math</p>'+out.rows.map(function(r){return '<div class="irow"><span>'+esc(r[0])+'</span><strong>'+esc(r[1])+'</strong></div>'}).join('')+'</div>';
+  byId('plan').innerHTML='<div class="card"><p class="sl sl-ok"><i class="ti ti-list-check"></i>Action plan</p><div class="plan-grid">'+out.plan.map(function(p){return '<div class="task"><strong>'+esc(p[0])+'</strong>'+esc(p[1])+'</div>'}).join('')+'</div></div>';
+  byId('export').innerHTML='<div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Copyable brief</p><div id="brief" class="dpre">'+esc(makeBrief(mode,v,out))+'</div><div class="brow"><button class="btn-primary" onclick="copyBrief()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy brief</button><button onclick="downloadBrief()"><i class="ti ti-download" style="font-size:13px;vertical-align:-1px"></i> Download .txt</button></div></div>';
+}
+function scoreWidth(out){
+  var nums=(out.metrics||[]).join(' ').match(/\d+(\.\d+)?/g)||['60'];
+  return Math.max(15,Math.min(100,parseFloat(nums[0])||60));
+}
+function makeBrief(mode,v,out){
+  var lines=[mode.title,'Generated: '+new Date().toLocaleDateString(),''];
+  mode.fields.forEach(function(f){lines.push(f[1]+': '+v[f[0]])});
+  lines.push('','Key metrics:');
+  mode.metrics.forEach(function(m,i){lines.push('- '+m+': '+out.metrics[i])});
+  lines.push('','Plan:');
+  out.plan.forEach(function(p){lines.push('- '+p[0]+': '+p[1])});
+  lines.push('','Note: Planning estimate only.');
+  return lines.join('\n');
+}
+function renderResources(mode){
+  byId('resources').innerHTML='<div class="card"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p><div class="resource-grid">'+mode.resources.map(function(r){return '<a class="resource" href="'+r[2]+'" target="_blank" rel="noopener"><strong>'+esc(r[0])+'</strong><span>'+esc(r[1])+'</span></a>'}).join('')+'</div></div>';
+}
+function copyBrief(){var e=byId('brief');navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline=''},1200)}
+function downloadBrief(){var e=byId('brief'), blob=new Blob([e.textContent||''],{type:'text/plain'}), url=URL.createObjectURL(blob), a=document.createElement('a');a.href=url;a.download='receipts-brief-'+new Date().toISOString().slice(0,10)+'.txt';a.click();URL.revokeObjectURL(url)}
+render();
+
+</script>
+<div class="app" style="padding-top:.5rem">
+  <div class="back-nav">
+    <a href="index.html"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to receipts.</a>
+  </div>
+</div>
+</body>
+</html>
