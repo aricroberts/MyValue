@@ -379,7 +379,7 @@ button:hover{background:var(--surface2)}
         <div class="card card-ok">
           <p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p>
           <div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>
-          <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>
+          <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="useCoachInExports()" style="background:var(--green-dim);border:1px solid var(--green-b);color:var(--green);font-weight:600"><i class="ti ti-transfer-in" style="font-size:12px;vertical-align:-1px"></i> Use in exports →</button></div>
         </div>
       </div>
     </div>
@@ -921,6 +921,31 @@ async function sendCoach(){
     alert('API unavailable. Copy this and paste it into Claude.ai:\n\nI am in a '+names[cMode]+' coaching session.\n\nTeam context:\n'+teamContext()+'\n\nConversation:\n'+hist+'\n\nPlease continue as the coach.');
     msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E">API unavailable — copy the prompt from the alert and continue in Claude.ai.</div>';
   }
+}
+
+
+function useCoachInExports(){
+  var p=window._coachParsed||{};
+  if(!p.summary){alert('No structured coach output yet. Complete a coaching session first.');return;}
+  document.getElementById('t4').checked=true;
+  var out='COACH SUMMARY\n'+p.summary;
+  if(p.lead_number)out+='\n\nLead with: '+p.lead_number;
+  if(p.ai_response)out+='\n\nAI replacement response: '+p.ai_response;
+  if(p.recognition_case)out+='\n\nRecognition case: '+p.recognition_case;
+  if(p.retention_risk)out+='\n\nRetention risk: '+p.retention_risk;
+  if(p.lead_bullet)out+='\n\nROI bullet: '+p.lead_bullet;
+  if(p.tracking_metric)out+='\n\nTrack: '+p.tracking_metric;
+  if(p.lead_data)out+='\n\nData framing: '+p.lead_data;
+  if(p.human_story)out+='\n\nHuman story: '+p.human_story;
+  window._coachExportNote=out;
+  var note=document.getElementById('coach-export-note');
+  if(!note){
+    note=document.createElement('div');note.id='coach-export-note';
+    note.className='card card-ok';note.style.marginBottom='.875rem';
+    var exports=document.getElementById('p4');
+    if(exports)exports.insertBefore(note,exports.firstChild);
+  }
+  note.innerHTML='<p class="sl sl-ok"><i class="ti ti-check"></i> Coach insights ready for exports</p><p style="font-size:13px;color:#A0E8C8;line-height:1.7;white-space:pre-wrap">'+esc(out)+'</p><div class="brow"><button onclick="navigator.clipboard.writeText(window._coachExportNote||\'\')" ><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy coaching notes</button></div>';
 }
 
 function endCoach(){document.getElementById('coach-session').style.display='none';document.getElementById('coach-idle').style.display='block';cMode=null;cHist=[];}
