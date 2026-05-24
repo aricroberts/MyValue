@@ -203,6 +203,7 @@ button:hover{background:var(--surface2)}
     <div style="display:flex;align-items:center;gap:8px">
       <span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span>
       <button class="destroy-btn" onclick="destroyAll()"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all</button>
+      <a href="https://receipts.aricciviclabs.org/index.html" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-home" style="font-size:12px"></i> receipts. home</a>
     </div>
   </div>
 
@@ -617,9 +618,7 @@ button:hover{background:var(--surface2)}
             <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportJSON()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download backup (JSON)</button>
         
-    <div class="back-nav" style="margin-top:1rem"><a href="index.html" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-arrow-left" style="font-size:11px"></i> receipts. home</a></div>
-      <div class="back-nav" style="margin-top:1rem"><a href="https://receipts.aricciviclabs.org/index.html" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-arrow-left" style="font-size:11px"></i> receipts. home</a></div>
-      <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
+                <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
       <p style="font-size:11px;color:var(--text3);margin:.5rem 0 0">JSON backup contains only self-reported estimates and publicly available data. No confidential information included.</p>
     </div>
