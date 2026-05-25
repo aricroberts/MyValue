@@ -436,40 +436,58 @@ button:hover{background:var(--surface2)}
 
 <script>
 
-/* ── API routing — environment-aware ────────────────────────────────────────
- *  claude.ai widget  → calls Anthropic directly (key auto-injected)
- *  Deployed site     → routes through your proxy (set PROXY_URL below)
- *  TO DEPLOY: replace PROXY_URL with your Render/Railway proxy address.
- * ─────────────────────────────────────────────────────────────────────────── */
-var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← replace with your proxy URL after deploying proxy-server.js
 
-var _isClaudeWidget = (function() {
+/* ── API routing ─────────────────────────────────────────────────────────────
+ *
+ *  HOW THIS WORKS:
+ *  - Inside claude.ai  → direct Anthropic call, key auto-injected, works fine
+ *  - On your deployed site → goes through PROXY_URL (your own proxy-server.js)
+ *
+ *  TO FIX 401/CORS ON YOUR DEPLOYED SITE:
+ *  1. Deploy proxy-server.js on Render.com with your ANTHROPIC_API_KEY set
+ *  2. Change PROXY_URL below to your Render URL, e.g.:
+ *       https://receipts-proxy.onrender.com/api/messages
+ *  3. Re-upload this file. Done.
+ *
+ * ─────────────────────────────────────────────────────────────────────────── */
+var PROXY_URL = 'https://receipts-proxy.onrender.com/api/messages'; // ← your proxy URL here
+
+var _DIRECT   = 'https://api.anthropic.com/v1/messages';
+
+var _isWidget = (function() {
   try {
-    var host = window.location.hostname || '';
-    return host === 'claude.ai' || host.indexOf('.claude.ai') !== -1;
+    var h = window.location.hostname || '';
+    return h === 'claude.ai' || h.indexOf('.claude.ai') !== -1;
   } catch(e) { return false; }
 })();
 
-var _apiEndpoint = _isClaudeWidget
-  ? 'https://api.anthropic.com/v1/messages'
-  : PROXY_URL;
-
 async function apiCall(payload, useSearch) {
+  /* Pick endpoint */
+  var url = _isWidget ? _DIRECT : PROXY_URL;
+
+  /* Headers — only needed for direct calls (proxy adds its own) */
   var headers = { 'Content-Type': 'application/json' };
-  if (_isClaudeWidget) {
+  if (_isWidget) {
     headers['anthropic-version'] = '2023-06-01';
     headers['anthropic-dangerous-direct-browser-access'] = 'true';
     if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
   }
-  var r = await fetch(_apiEndpoint, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+
+  var r = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+
   if (!r.ok) {
     var eb = await r.json().catch(function(){ return {}; });
-    var e = new Error('http ' + r.status); e.status = r.status; e.apiErr = eb.error || eb; throw e;
+    var e = new Error('http ' + r.status);
+    e.status  = r.status;
+    e.apiErr  = eb.error || eb;
+    throw e;
   }
+
   var d = await r.json();
   if (d.error) { var e2 = new Error('api'); e2.apiErr = d.error; throw e2; }
   return d;
 }
+
 /* ── Contribution stream type definitions ── */
 var CTYPES={
   revenue:{label:'Revenue generated',cls:'tb',icon:'ti-trending-up',qs:[
