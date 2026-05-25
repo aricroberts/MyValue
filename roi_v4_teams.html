@@ -435,6 +435,41 @@ button:hover{background:var(--surface2)}
 </div>
 
 <script>
+
+/* ── API routing — environment-aware ────────────────────────────────────────
+ *  claude.ai widget  → calls Anthropic directly (key auto-injected)
+ *  Deployed site     → routes through your proxy (set PROXY_URL below)
+ *  TO DEPLOY: replace PROXY_URL with your Render/Railway proxy address.
+ * ─────────────────────────────────────────────────────────────────────────── */
+var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← replace with your proxy URL after deploying proxy-server.js
+
+var _isClaudeWidget = (function() {
+  try {
+    var host = window.location.hostname || '';
+    return host === 'claude.ai' || host.indexOf('.claude.ai') !== -1;
+  } catch(e) { return false; }
+})();
+
+var _apiEndpoint = _isClaudeWidget
+  ? 'https://api.anthropic.com/v1/messages'
+  : PROXY_URL;
+
+async function apiCall(payload, useSearch) {
+  var headers = { 'Content-Type': 'application/json' };
+  if (_isClaudeWidget) {
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+    if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
+  }
+  var r = await fetch(_apiEndpoint, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+  if (!r.ok) {
+    var eb = await r.json().catch(function(){ return {}; });
+    var e = new Error('http ' + r.status); e.status = r.status; e.apiErr = eb.error || eb; throw e;
+  }
+  var d = await r.json();
+  if (d.error) { var e2 = new Error('api'); e2.apiErr = d.error; throw e2; }
+  return d;
+}
 /* ── Contribution stream type definitions ── */
 var CTYPES={
   revenue:{label:'Revenue generated',cls:'tb',icon:'ti-trending-up',qs:[
@@ -827,8 +862,8 @@ async function startCoach(mode){
   var sys=CSYS[mode]+'\n\nCurrent team context:\n'+teamContext();
   var ok=false;
   try{
-    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]})});
-    if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
+    var r=await apiCall({model:'claude-sonnet-4-6',max_tokens:150,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]}, false);
+var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
     cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
@@ -848,24 +883,11 @@ async function sendCoach(){
   try{
     var sys=CSYS[cMode]+'\n\nCurrent team context:\n'+teamContext();
     var _cbody={model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:cHist};
-    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
-    if(!r.ok)throw new Error('http');
-    var d=await r.json();
+    var d=await apiCall(_cbody, false);
     if(d.error&&d.error.type==='rate_limit_error'){
       var _msgs=document.getElementById('coach-msgs');
       if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Rate limit — retrying in 30s…</div>';
-      await new Promise(function(res){setTimeout(res,30000);});
-      var r2=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
-      if(!r2.ok)throw new Error('http');
-      d=await r2.json();
-      if(d.error&&d.error.type==='rate_limit_error'){
-        if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Still rate limited — one more retry in 30s…</div>';
-        await new Promise(function(res){setTimeout(res,30000);});
-        var r3=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
-        if(!r3.ok)throw new Error('http');
-        d=await r3.json();
-      }
-    }
+      await new Promise(function(res){setTimeout(res,30000);});}
     if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');

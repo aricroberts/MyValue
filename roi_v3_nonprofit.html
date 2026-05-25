@@ -727,17 +727,61 @@ button:hover{background:var(--surface2)}
 </div><!-- end .app -->
 
 <script>
-/* ── API fetch helper — direct Anthropic endpoint ── */
-var API_URL='https://api.anthropic.com/v1/messages';
-var API_HEADERS={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
-var API_HEADERS_SEARCH={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-beta':'web-search-2025-03-05','anthropic-dangerous-direct-browser-access':'true'};
+/* ── API routing — environment-aware ────────────────────────────────────────
+ *
+ *  Three environments:
+ *  1. claude.ai widget  → call Anthropic directly (key injected automatically)
+ *  2. Deployed site     → call your proxy (PROXY_URL below)
+ *  3. Local dev         → call localhost proxy
+ *
+ *  TO DEPLOY: set PROXY_URL to your Render/Railway proxy URL, e.g.:
+ *    var PROXY_URL = 'https://receipts-proxy.onrender.com/api/messages';
+ * ─────────────────────────────────────────────────────────────────────────── */
+var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← replace with your own proxy URL
 
-async function apiCall(payload, useSearch){
-  var headers=useSearch?API_HEADERS_SEARCH:API_HEADERS;
-  var r=await fetch(API_URL,{method:'POST',headers:headers,body:JSON.stringify(payload)});
-  if(!r.ok){var err=await r.json().catch(function(){return{};});throw Object.assign(new Error('http '+r.status),{status:r.status,apiErr:err});}
-  var d=await r.json();
-  if(d.error)throw Object.assign(new Error('api'),{apiErr:d.error});
+var _isClaudeWidget = (function() {
+  try {
+    /* claude.ai injects window.claude or runs in a sandboxed iframe on claude.ai domain */
+    var host = window.location.hostname || '';
+    return host === 'claude.ai' || host.indexOf('.claude.ai') !== -1;
+  } catch(e) { return false; }
+})();
+
+var _apiEndpoint = _isClaudeWidget
+  ? 'https://api.anthropic.com/v1/messages'   // widget: key auto-injected
+  : PROXY_URL;                                  // deployed: go through proxy
+
+async function apiCall(payload, useSearch) {
+  var headers = { 'Content-Type': 'application/json' };
+
+  if (_isClaudeWidget) {
+    /* Direct call — claude.ai injects the key; we supply the required headers */
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+    if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
+  }
+  /* Proxy call: no auth headers needed — proxy adds the key + beta header */
+
+  var r = await fetch(_apiEndpoint, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload)
+  });
+
+  if (!r.ok) {
+    var errBody = await r.json().catch(function() { return {}; });
+    var e = new Error('http ' + r.status);
+    e.status = r.status;
+    e.apiErr = errBody.error || errBody;
+    throw e;
+  }
+
+  var d = await r.json();
+  if (d.error) {
+    var e2 = new Error('api');
+    e2.apiErr = d.error;
+    throw e2;
+  }
   return d;
 }
 
@@ -1009,7 +1053,7 @@ async function fetchFunding(){
   var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 4–5 specific, real funding opportunities that match this organization. For each, provide: funder name, grant program, award amount, deadline, fit level, match score 0-100, brief rationale, one specific application tip, url, and type. Prioritize currently open opportunities. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium/Low","match_score":85,"rationale":"one sentence why this fits","apply_tip":"one specific tip for this organization\'s application","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
 
   try{
-    var payload={model:'claude-sonnet-4-5',max_tokens:1200,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]};
+    var payload={model:'claude-sonnet-4-6',max_tokens:1200,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]};
     var d=await apiCall(payload,true);
     if(d.error&&d.error.type==='rate_limit_error'){
       sh('fund-status','<div class="card card-teal"><p class="sl sl-teal"><i class="ti ti-clock"></i> Rate limit reached — retrying in 15 seconds…</p></div>');
@@ -1216,7 +1260,7 @@ async function runExpAnalysis(){
   var prompt='You are an experienced nonprofit strategy advisor. Analyze this proposed expansion and give a direct go/no-go recommendation.\n\nOrganization: '+gv('org-name')+' | Mission: '+gv('org-mission')+'\nCurrent budget: '+fmt(gn('org-budget'))+'\n\nProposed expansion: '+ES.name+'\nType: '+ES.type+'\nDescription: '+ES.desc+'\n\nFINANCIAL MODEL ('+ES.years+' years):\n• Startup cost: '+fmt(ES.startup)+'\n• Annual operating: '+fmt(ES.totalAnnual)+' (incl. '+fmt(ES.staffCost)+' staff)\n• Ramp-up period: '+ES.ramp+' months\n• Total investment: '+fmt(ES.totalCost)+'\n• Funding secured: '+fmt(ES.secured)+'\n• Funding gap: '+fmt(Math.max(0,ES.gap))+'\n\nPROJECTED IMPACT:\n• Annual impact at capacity: '+fmt(ES.annualImpact)+'\n• '+ES.years+'-year total impact: '+fmt(ES.totalImpact)+'\n• Mission leverage ratio: '+ES.lev.toFixed(2)+'×\n• Break-even: '+(ES.beMonth>0?'Month '+ES.beMonth:'Beyond 3 years')+'\n\nIMPACT STREAMS:\n'+ES.streams.map(function(s){return'• '+s.label+': '+s.gdesc+' — '+fmt(s.val)+'/yr';}).join('\n')+'\n\nProvide:\n1. GO / CONDITIONAL GO / NO-GO recommendation with one clear rationale sentence\n2. The strongest argument FOR proceeding\n3. The biggest risk or reason to pause\n4. One specific condition or milestone that would make this a stronger investment\n5. Suggested funding sources to close the gap (2–3 specific grant types or funder categories)\n\nBe direct and honest. Do not hedge everything. Format with clear headers.';
 
   try{
-    var d=await apiCall({model:'claude-sonnet-4-5',max_tokens:700,messages:[{role:'user',content:prompt}]},false);
+    var d=await apiCall({model:'claude-sonnet-4-6',max_tokens:700,messages:[{role:'user',content:prompt}]},false);
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<20)throw new Error('empty');
     sh('exp-ai-out',txt.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>'));
@@ -1395,7 +1439,7 @@ async function startCoach(mode){
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
   var ok=false;
   try{
-    var d=await apiCall({model:'claude-sonnet-4-5',max_tokens:150,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]},false);
+    var d=await apiCall({model:'claude-sonnet-4-6',max_tokens:150,system:CSYS[mode],messages:[{role:'user',content:'Begin the coaching session.'}]},false);
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
     cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
@@ -1413,7 +1457,7 @@ async function sendCoach(){
   cHist.push({role:'user',content:input});
   var ok=false;
   try{
-    var _cbody={model:'claude-sonnet-4-5',max_tokens:600,system:CSYS[cMode],messages:cHist};
+    var _cbody={model:'claude-sonnet-4-6',max_tokens:600,system:CSYS[cMode],messages:cHist};
     var d=await apiCall(_cbody,false);
     if(d.error&&d.error.type==='rate_limit_error'){
       var _msgs=document.getElementById('coach-msgs');

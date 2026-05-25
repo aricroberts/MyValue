@@ -403,6 +403,41 @@ button:hover{background:var(--surface2)}
 </div>
 
 <script>
+
+/* ── API routing — environment-aware ────────────────────────────────────────
+ *  claude.ai widget  → calls Anthropic directly (key auto-injected)
+ *  Deployed site     → routes through your proxy (set PROXY_URL below)
+ *  TO DEPLOY: replace PROXY_URL with your Render/Railway proxy address.
+ * ─────────────────────────────────────────────────────────────────────────── */
+var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← replace with your proxy URL after deploying proxy-server.js
+
+var _isClaudeWidget = (function() {
+  try {
+    var host = window.location.hostname || '';
+    return host === 'claude.ai' || host.indexOf('.claude.ai') !== -1;
+  } catch(e) { return false; }
+})();
+
+var _apiEndpoint = _isClaudeWidget
+  ? 'https://api.anthropic.com/v1/messages'
+  : PROXY_URL;
+
+async function apiCall(payload, useSearch) {
+  var headers = { 'Content-Type': 'application/json' };
+  if (_isClaudeWidget) {
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+    if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
+  }
+  var r = await fetch(_apiEndpoint, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+  if (!r.ok) {
+    var eb = await r.json().catch(function(){ return {}; });
+    var e = new Error('http ' + r.status); e.status = r.status; e.apiErr = eb.error || eb; throw e;
+  }
+  var d = await r.json();
+  if (d.error) { var e2 = new Error('api'); e2.apiErr = d.error; throw e2; }
+  return d;
+}
 var INDD={
   tech:{rpe:450000,salBase:{engineering:145000,sales:120000,product:140000,marketing:105000,ops:100000,finance_dept:110000,hr:95000,cs:105000}},
   finance:{rpe:600000,salBase:{engineering:135000,sales:140000,product:125000,marketing:100000,ops:100000,finance_dept:130000,hr:95000,cs:100000}},
@@ -510,10 +545,8 @@ async function callClaude(msgs,sys,maxTok,search){
     var body={model:'claude-sonnet-4-6',max_tokens:maxTok||400,messages:msgs};
     if(sys)body.system=sys;
     if(search)body.tools=[{type:'web_search_20250305',name:'web_search'}];
-    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!r.ok)throw new Error('http');
-    var d=await r.json();
-    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r2=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r2.ok)throw new Error('http');d=await r2.json();if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r3=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r3.ok)throw new Error('http');d=await r3.json();}}
+    var d=await apiCall(body, false);
+    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});}
     if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
