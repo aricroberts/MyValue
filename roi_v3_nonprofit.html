@@ -190,6 +190,43 @@ button:hover{background:var(--surface2)}
 .yr-pos{color:var(--green)}.yr-neg{color:var(--red)}.yr-warn{color:var(--gold)}
 
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+
+/* ── Paywall gate ── */
+.paywall-gate{position:relative;border-radius:var(--radius);overflow:hidden}
+.paywall-gate .ecard{filter:blur(3px);pointer-events:none;user-select:none;opacity:.45}
+.paywall-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(8,16,15,.82);backdrop-filter:blur(2px);border-radius:var(--radius);border:1px solid var(--gold-b);padding:1.5rem;text-align:center;z-index:10}
+.paywall-overlay .pw-icon{font-size:28px;color:var(--gold)}
+.paywall-overlay .pw-title{font-size:14px;font-weight:600;color:var(--text);margin:0}
+.paywall-overlay .pw-sub{font-size:12px;color:var(--text2);margin:0;line-height:1.5;max-width:280px}
+.paywall-overlay .pw-price{font-size:11px;font-weight:600;color:var(--gold);background:var(--gold-dim);border:1px solid var(--gold-b);border-radius:99px;padding:3px 12px}
+.paywall-overlay .pw-unlock{background:var(--gold);border:none;border-radius:99px;color:#1a0e00;font-weight:700;font-size:13px;padding:9px 22px;cursor:pointer;transition:all .15s}
+.paywall-overlay .pw-unlock:hover{opacity:.88;transform:translateY(-1px)}
+.paywall-overlay .pw-free{font-size:11px;color:var(--text3);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0}
+.paywall-overlay .pw-free:hover{color:var(--text2)}
+
+/* ── Grant match bar ── */
+.grant-match-bar{margin:7px 0 4px}
+.gmb-label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text3);margin-bottom:3px}
+.gmb-label span:last-child{font-weight:600;font-size:12px}
+.gmb-track{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.gmb-fill{height:100%;border-radius:99px;transition:width .5s}
+
+/* ── Application tracker ── */
+.tracker-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:5px;background:var(--surface2);font-size:12px}
+.tracker-item .ti-name{flex:1;color:var(--text);font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tracker-item select{font-size:11px;padding:2px 6px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;width:auto}
+.tracker-item .ti-remove{background:none;border:none;color:var(--text3);cursor:pointer;padding:2px 4px;font-size:12px;border-radius:var(--radius-sm)}
+.tracker-item .ti-remove:hover{color:var(--red);background:var(--red-dim)}
+
+/* ── Premium CTA strip ── */
+.premium-strip{background:linear-gradient(135deg,var(--gold-dim),rgba(42,30,8,.95));border:1px solid var(--gold-b);border-radius:var(--radius);padding:.875rem 1.125rem;margin-bottom:.875rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.premium-strip .ps-icon{font-size:20px;color:var(--gold);flex-shrink:0}
+.premium-strip .ps-text{flex:1;min-width:180px}
+.premium-strip .ps-title{font-size:13px;font-weight:600;color:var(--text);margin:0 0 2px}
+.premium-strip .ps-sub{font-size:11px;color:var(--text2);margin:0}
+.premium-strip .ps-btn{background:var(--gold);border:none;border-radius:99px;color:#1a0e00;font-weight:700;font-size:12px;padding:7px 16px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.premium-strip .ps-btn:hover{opacity:.88}
+.unlocked-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 9px;border-radius:99px;background:var(--green-dim);color:var(--green);border:1px solid var(--green-b);font-weight:600}
 </style>
 </head>
 <body>
@@ -375,10 +412,29 @@ button:hover{background:var(--surface2)}
         <p class="sl sl-donor"><i class="ti ti-heart"></i> Donor value story</p>
         <div id="donor-story" style="font-size:13px;color:#F5D79E;line-height:1.8"></div>
       </div>
-      <div class="g3" style="margin-top:.5rem">
+      <!-- Premium CTAs -->
+      <div id="premium-ctas" style="margin-top:.875rem">
+        <div class="premium-strip" id="pcta-grant">
+          <i class="ti ti-file-certificate ps-icon"></i>
+          <div class="ps-text">
+            <p class="ps-title">Turn this into a grant outcomes narrative</p>
+            <p class="ps-sub">Board-ready, funder-facing language — ready to paste into any application.</p>
+          </div>
+          <button class="ps-btn" onclick="unlockExport('grant')">Unlock Grant Narrative → $19</button>
+        </div>
+        <div class="premium-strip" id="pcta-board">
+          <i class="ti ti-presentation ps-icon"></i>
+          <div class="ps-text">
+            <p class="ps-title">Build your board one-pager</p>
+            <p class="ps-sub">Executive summary with leverage ratio, highlights, and a strategic ask.</p>
+          </div>
+          <button class="ps-btn" onclick="unlockExport('board')">Unlock Board Packet → $19</button>
+        </div>
+      </div>
+      <div class="g3" style="margin-top:.875rem">
         <label for="t5" style="display:block"><span class="btn-teal" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Find funding →</span></label>
         <label for="t6" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Model expansion →</span></label>
-        <label for="t8" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Exports →</span></label>
+        <label for="t8" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View all exports →</span></label>
       </div>
     </div>
   </div>
@@ -427,12 +483,25 @@ button:hover{background:var(--surface2)}
     <div id="fund-results" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
         <p class="sl" style="margin:0"><i class="ti ti-trophy"></i> <span id="fund-count">0</span> opportunities found</p>
-        <button onclick="cpFunding()" style="font-size:11px;padding:4px 10px"><i class="ti ti-copy" style="font-size:11px;vertical-align:-1px"></i> Copy all</button>
+        <div style="display:flex;gap:6px">
+          <button onclick="cpFunding()" style="font-size:11px;padding:4px 10px"><i class="ti ti-copy" style="font-size:11px;vertical-align:-1px"></i> Copy all</button>
+        </div>
       </div>
       <div id="fund-list"></div>
       <div class="card" style="margin-top:.5rem">
         <p class="sl sl-warn"><i class="ti ti-info-circle"></i> Important notes</p>
         <p style="font-size:12px;color:#F5D79E;line-height:1.6;margin:0">Grant deadlines and amounts change frequently. Always verify details directly with the funder before applying. Results are based on your organization profile and live web data — eligibility is not guaranteed. Links open the funder's official site or grants.gov listing.</p>
+      </div>
+    </div>
+
+    <!-- Application Tracker -->
+    <div class="card" style="margin-top:.875rem" id="tracker-section">
+      <p class="sl sl-teal"><i class="ti ti-checklist"></i> Application tracker <span style="font-size:11px;font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0;margin-left:4px">— session only, not saved</span></p>
+      <p style="font-size:12px;color:var(--text2);margin:0 0 10px;line-height:1.5">Track which grants you're pursuing. Click "Track this" on any grant card above to add it here.</p>
+      <div id="tracker-list"><p style="font-size:12px;color:var(--text3);text-align:center;padding:.75rem 0">No grants tracked yet. Click "Track this →" on any result above.</p></div>
+      <div id="tracker-deadline-view" style="display:none;margin-top:10px">
+        <p class="sl" style="margin-bottom:6px"><i class="ti ti-calendar-event"></i> Deadline calendar</p>
+        <div id="tracker-deadlines" style="font-size:12px;color:var(--text2);line-height:1.9"></div>
       </div>
     </div>
   </div>
@@ -591,11 +660,21 @@ button:hover{background:var(--surface2)}
         <div class="dpre" id="doc-donor">—</div>
         <div class="brow"><button onclick="cpDoc('doc-donor')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('donor')">Refine ↗</button></div>
       </div>
-      <div class="ecard">
-        <h3><i class="ti ti-file-certificate" style="font-size:14px;color:var(--sage)"></i> Grant outcomes narrative</h3>
-        <p>Program-by-program outcomes with methodology and funder-facing language.</p>
-        <div class="dpre" id="doc-grant">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-grant')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('grant')">Refine ↗</button></div>
+      <div class="paywall-gate" id="gate-grant">
+        <div class="ecard">
+          <h3><i class="ti ti-file-certificate" style="font-size:14px;color:var(--sage)"></i> Grant outcomes narrative</h3>
+          <p>Program-by-program outcomes with methodology and funder-facing language.</p>
+          <div class="dpre" id="doc-grant">—</div>
+          <div class="brow"><button onclick="cpDoc('doc-grant')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('grant')">Refine ↗</button></div>
+        </div>
+        <div class="paywall-overlay" id="overlay-grant">
+          <i class="ti ti-file-certificate pw-icon"></i>
+          <p class="pw-title">Grant Outcomes Narrative</p>
+          <p class="pw-sub">Funder-facing language, SROI methodology framing, and outcome-by-outcome breakdown — ready to paste into any grant report.</p>
+          <span class="pw-price">$19 one-time · or included in Pro</span>
+          <button class="pw-unlock" onclick="unlockExport('grant')">Unlock this document</button>
+          <button class="pw-free" onclick="previewFree('grant')">Preview first 3 lines free</button>
+        </div>
       </div>
       <div class="ecard" id="exp-export-card" style="display:none">
         <h3><i class="ti ti-rocket" style="font-size:14px;color:var(--purple)"></i> Expansion proposal brief</h3>
@@ -603,17 +682,37 @@ button:hover{background:var(--surface2)}
         <div class="dpre" id="doc-expansion-copy">—</div>
         <div class="brow"><button onclick="cpDoc('doc-expansion-copy')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button></div>
       </div>
-      <div class="ecard">
-        <h3><i class="ti ti-presentation" style="font-size:14px;color:#6030A0"></i> Board one-pager</h3>
-        <p>Executive summary for board presentations — leverage ratio, program highlights, and strategic ask in one page.</p>
-        <div class="dpre" id="doc-board">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-board')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('board')">Refine ↗</button></div>
+      <div class="paywall-gate" id="gate-board">
+        <div class="ecard">
+          <h3><i class="ti ti-presentation" style="font-size:14px;color:#6030A0"></i> Board one-pager</h3>
+          <p>Executive summary for board presentations — leverage ratio, program highlights, and strategic ask in one page.</p>
+          <div class="dpre" id="doc-board">—</div>
+          <div class="brow"><button onclick="cpDoc('doc-board')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('board')">Refine ↗</button></div>
+        </div>
+        <div class="paywall-overlay" id="overlay-board">
+          <i class="ti ti-presentation pw-icon"></i>
+          <p class="pw-title">Board One-Pager</p>
+          <p class="pw-sub">Leadership-ready executive summary with your leverage ratio, program highlights, and a data-grounded strategic ask — formatted for board review.</p>
+          <span class="pw-price">$19 one-time · or included in Pro</span>
+          <button class="pw-unlock" onclick="unlockExport('board')">Unlock this document</button>
+          <button class="pw-free" onclick="previewFree('board')">Preview first 3 lines free</button>
+        </div>
       </div>
-      <div class="ecard">
-        <h3><i class="ti ti-users" style="font-size:14px;color:var(--teal)"></i> Community impact letter</h3>
-        <p>Warm, data-grounded letter for volunteers, community partners, and stakeholders — acknowledges their contribution, shares impact numbers.</p>
-        <div class="dpre" id="doc-community">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-community')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('community')">Refine ↗</button></div>
+      <div class="paywall-gate" id="gate-community">
+        <div class="ecard">
+          <h3><i class="ti ti-users" style="font-size:14px;color:var(--teal)"></i> Community impact letter</h3>
+          <p>Warm, data-grounded letter for volunteers, community partners, and stakeholders — acknowledges their contribution, shares impact numbers.</p>
+          <div class="dpre" id="doc-community">—</div>
+          <div class="brow"><button onclick="cpDoc('doc-community')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('community')">Refine ↗</button></div>
+        </div>
+        <div class="paywall-overlay" id="overlay-community">
+          <i class="ti ti-users pw-icon"></i>
+          <p class="pw-title">Community Impact Letter</p>
+          <p class="pw-sub">Warm, data-grounded acknowledgment letter for volunteers, partners, and stakeholders — with real numbers that make people feel the impact of their contribution.</p>
+          <span class="pw-price">Included in Pro ($19/month)</span>
+          <button class="pw-unlock" onclick="unlockExport('community')">Unlock with Pro</button>
+          <button class="pw-free" onclick="previewFree('community')">Preview first 3 lines free</button>
+        </div>
       </div>
             <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportJSON()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download backup (JSON)</button>
@@ -893,7 +992,7 @@ async function fetchFunding(){
 
   var sizeLabel={'any':'any size','small':'under $25k','mid':'$25k–$100k','large':'$100k–$500k','major':'$500k+'}[fundSize]||'any size';
   var typeLabel={'all':'all types','federal':'federal grants','foundation':'private foundations','corporate':'corporate giving','state':'state and local grants','capacity':'capacity building grants'}[fundType]||'all types';
-  var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 4–5 specific, real funding opportunities that match this organization. For each: funder name, grant program, award amount, deadline, fit, rationale, url, type. Prioritize currently open opportunities. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium","rationale":"one sentence why this fits","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
+  var prompt='Search for '+fundFocus+' grant and funding opportunities ('+typeLabel+', '+sizeLabel+') for a nonprofit organization with these characteristics:\n\nOrganization: '+org+'\nMission: '+mission+'\nLocation/service area: '+loc+'\nAnnual budget: '+(budget>0?'$'+Math.round(budget).toLocaleString():'not specified')+'\nTax status: '+status501+'\nKeywords: '+(keywords||mission)+(extra?'\nAdditional context: '+extra:'')+'\n\nFind 4–5 specific, real funding opportunities that match this organization. For each, provide: funder name, grant program, award amount, deadline, fit level, match score 0-100, brief rationale, one specific application tip, url, and type. Prioritize currently open opportunities. Respond ONLY with valid JSON array:\n[{"funder":"name","program":"grant name","amount":"$X–$Y","deadline":"Month Year or Recurring","fit":"High/Medium/Low","match_score":85,"rationale":"one sentence why this fits","apply_tip":"one specific tip for this organization\'s application","url":"https://...","type":"federal|foundation|corporate|state|other"}]';
 
   try{
     var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
@@ -931,20 +1030,29 @@ function renderFunding(grants){
     var g=grants[i];
     var tc=typeColors[g.type]||'to';
     var fitCls=g.fit==='High'?'gpfit':g.fit==='Medium'?'gpdeadline':'to';
-    html+='<div class="grant-card">';
+    var matchPct=g.fit==='High'?88:g.fit==='Medium'?62:38;
+    if(g.match_score)matchPct=parseInt(g.match_score)||matchPct;
+    var matchColor=matchPct>=75?'var(--green)':matchPct>=50?'var(--gold)':'var(--sage)';
+    html+='<div class="grant-card" data-grant-idx="'+i+'">';
     html+='<div class="grant-title"><span>'+g.program+'</span><span class="tbadge '+tc+'" style="font-size:10px;flex-shrink:0">'+(g.type||'other')+'</span></div>';
     html+='<div class="grant-funder"><i class="ti ti-building" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>'+g.funder+'</div>';
+    html+='<div class="grant-match-bar"><div class="gmb-label"><span>Mission match</span><span style="color:'+matchColor+'">'+matchPct+'%</span></div><div class="gmb-track"><div class="gmb-fill" style="width:'+matchPct+'%;background:'+matchColor+'"></div></div></div>';
     html+='<div class="grant-meta">';
     if(g.amount)html+='<span class="grant-pill gpamt"><i class="ti ti-coin" style="font-size:10px;vertical-align:-1px"></i> '+g.amount+'</span>';
     if(g.fit)html+='<span class="grant-pill '+fitCls+'">'+g.fit+' fit</span>';
     if(g.deadline)html+='<span class="grant-pill gpdeadline"><i class="ti ti-calendar" style="font-size:10px;vertical-align:-1px"></i> '+g.deadline+'</span>';
     html+='</div>';
     if(g.rationale)html+='<div class="grant-rationale">'+g.rationale+'</div>';
+    if(g.apply_tip)html+='<div style="font-size:11px;color:var(--teal);margin:4px 0 6px;line-height:1.5"><i class="ti ti-bulb" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>'+g.apply_tip+'</div>';
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:5px">';
     if(g.url&&g.url.indexOf('http')===0)html+='<a class="grant-link" href="'+g.url+'" target="_blank" rel="noopener"><i class="ti ti-external-link" style="font-size:11px"></i> Visit funder website</a>';
-    html+='</div>';
+    else html+='<span></span>';
+    html+='<button onclick="trackGrant('+i+')" id="track-btn-'+i+'" style="font-size:11px;padding:4px 10px;background:var(--teal-dim);border-color:var(--teal-b);color:var(--teal)"><i class="ti ti-bookmark" style="font-size:11px;vertical-align:-1px"></i> Track this →</button>';
+    html+='</div></div>';
   }
   sh('fund-list',html);
   document.getElementById('fund-results').style.display='block';
+  window._lastGrants=grants;
 }
 
 function cpFunding(){
@@ -1149,19 +1257,113 @@ function genDocs(){
   var di=document.getElementById('doc-impact');if(di)di.textContent=impactDoc;
   var dd=document.getElementById('doc-donor');if(dd)dd.textContent=donorDoc;
   var dg=document.getElementById('doc-grant');if(dg)dg.textContent=grantDoc;
+
+  /* Board one-pager */
+  var topProgs=progs.slice(0,3);
+  var strategicAsk=budget>0?'a budget investment of '+fmt(budget*(1.2)):fmt(totalImpact*0.1)+' in unrestricted capacity funding';
+  var boardDoc=dt+'\n\nBOARD IMPACT ONE-PAGER — '+pStr.toUpperCase()+'\n'+org+' | '+statusLabel+'\nPrepared by: '+contact+' | '+loc+'\n'+'─'.repeat(54)+'\n\nOUR MISSION IN NUMBERS\n\nFor every $1 invested in '+org+', we generate $'+lev.toFixed(2)+' in documented mission value.\n\n• Total investment this period: '+fmt(budget)+'\n• Total documented mission impact: '+fmt(totalImpact)+'\n• Mission leverage ratio: '+lev.toFixed(2)+'×'+(cpb>0?'\n• Cost per direct beneficiary: '+fmt(cpb):'')+'\n• Direct lives touched: '+(direct>0?direct.toLocaleString():'—')+(indirect>0?'\n• Community reach: '+indirect.toLocaleString():'')+'\n\nPROGRAM HIGHLIGHTS\n'+topProgs.map(function(p,i){return(i+1)+'. '+p.title+'\n   '+p.desc+'\n   Documented value: '+fmt(p.totalVal);}).join('\n\n')+'\n\nSTRATEGIC ASK\nTo sustain and grow this impact, we are requesting board support for '+strategicAsk+'. This investment is projected to maintain our leverage ratio of '+lev.toFixed(2)+'× and expand services to an additional '+(direct>0?Math.round(direct*0.25).toLocaleString():'[N]')+' beneficiaries.\n\nWHY NOW\n'+mission+' is a growing need in '+loc+'. Our track record demonstrates that we can convert investment into documented, measurable change. The data above represents conservative, confidence-weighted estimates — the real impact is broader.\n\nPrepared: '+dt+' | Data: Self-reported estimates and public benchmarks.';
+
+  /* Community impact letter */
+  var communityDoc=dt+'\n\nCOMMUNITY IMPACT LETTER\n\nDear Friend, Partner, and Volunteer,\n\nBecause of you, '+org+'\'s work in '+loc+' made a measurable difference in '+pStr+'.\n\nHere is what we accomplished together:\n\n'+pShort+'\nCombined, our programs created approximately '+fmt(totalImpact)+' in documented community value — a leverage ratio of '+(lev>=1?lev.toFixed(2)+'×':'"less than 1×" by conservative estimate, though the real impact extends far beyond any model can measure')+'.'+(direct>0?' We reached '+direct.toLocaleString()+' people directly'+(indirect>0?', with ripple effects touching an estimated '+indirect.toLocaleString()+' more':'')+'.':'')+'\n\nNone of this is possible without the people who show up — to volunteer, to give, to partner, to spread the word, and to believe that '+mission+' is work worth doing.\n\nThank you for being part of this.\n\nWith gratitude,\n'+contact+'\n'+org+'\n\n—\nAll figures are confidence-weighted estimates from program data. Our commitment is to honest accounting of our impact.';
+
+  var db=document.getElementById('doc-board');if(db)db.textContent=boardDoc;
+  var dc2=document.getElementById('doc-community');if(dc2)dc2.textContent=communityDoc;
+
+  /* Show premium CTAs now that data is available */
+  var pg=document.getElementById('pcta-grant');if(pg&&!window._unlockedGrant)pg.style.display='flex';
+  var pb=document.getElementById('pcta-board');if(pb&&!window._unlockedBoard)pb.style.display='flex';
 }
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
 function refine(type){
-  var map={impact:'doc-impact',donor:'doc-donor',grant:'doc-grant',expansion:'doc-expansion'};
+  var map={impact:'doc-impact',donor:'doc-donor',grant:'doc-grant',expansion:'doc-expansion','expansion-copy':'doc-expansion-copy',board:'doc-board',community:'doc-community'};
   var el=map[type]?document.getElementById(map[type]):null;
   var prompts={
     impact:'Here is my nonprofit impact report:\n\n'+(el?el.textContent:'')+'\n\nPlease strengthen the language, make the leverage ratio and cost-per-beneficiary more compelling, and suggest any missing impact areas.',
     donor:'Here is my donor stewardship letter:\n\n'+(el?el.textContent:'')+'\n\nPlease refine — warm but data-confident. Improve the emotional resonance while keeping all the numbers accurate.',
     grant:'Here is my grant outcomes narrative:\n\n'+(el?el.textContent:'')+'\n\nPlease improve the funder-facing language, strengthen the methodology section, and suggest how to frame the outcomes for a foundation audience.',
-    expansion:'Here is my expansion proposal brief:\n\n'+(el?el.textContent:'')+'\n\nPlease sharpen the investment case, improve the board-facing language, and suggest how to make this more compelling for a major funder conversation.'
+    expansion:'Here is my expansion proposal brief:\n\n'+(el?el.textContent:'')+'\n\nPlease sharpen the investment case, improve the board-facing language, and suggest how to make this more compelling for a major funder conversation.',
+    board:'Here is my board one-pager:\n\n'+(el?el.textContent:'')+'\n\nPlease sharpen the executive summary, make the leverage ratio framing more compelling, and refine the strategic ask to be more specific and actionable for a board audience.',
+    community:'Here is my community impact letter:\n\n'+(el?el.textContent:'')+'\n\nPlease make this warmer and more personal while keeping all numbers accurate. Improve the acknowledgment language and the closing call to continued engagement.'
   };
   alert('Copy this prompt and paste it into Claude.ai:\n\n'+(prompts[type]||'Please help me improve this document.'));
+}
+
+/* ── Paywall / unlock logic ── */
+var _unlockedDocs={};
+function unlockExport(type){
+  /* In production this triggers a Stripe checkout. For now, simulate unlock for demo. */
+  var confirmMsg='This would open a Stripe checkout for $19 to unlock the "'+type.charAt(0).toUpperCase()+type.slice(1)+'" document.\n\nFor this demo, click OK to unlock it locally (no charge).';
+  if(!confirm(confirmMsg))return;
+  _unlockedDocs[type]=true;
+  var overlay=document.getElementById('overlay-'+type);
+  var gate=document.getElementById('gate-'+type);
+  if(overlay)overlay.style.display='none';
+  if(gate){var ec=gate.querySelector('.ecard');if(ec){ec.style.filter='none';ec.style.pointerEvents='';ec.style.opacity='1';}}
+  /* Hide the premium CTA strip if it exists */
+  var strip=document.getElementById('pcta-'+type);if(strip)strip.style.display='none';
+  /* Show unlocked badge */
+  var ecard=gate?gate.querySelector('.ecard'):null;
+  if(ecard){
+    var badge=document.createElement('span');badge.className='unlocked-badge';badge.style.cssText='margin-bottom:8px;display:inline-flex';
+    badge.innerHTML='<i class="ti ti-check" style="font-size:11px"></i> Unlocked';
+    ecard.insertBefore(badge,ecard.firstChild);
+  }
+}
+function previewFree(type){
+  var docId={'grant':'doc-grant','board':'doc-board','community':'doc-community'}[type];
+  var el=docId?document.getElementById(docId):null;
+  if(!el||!el.textContent||el.textContent==='—'){alert('Complete your impact ledger first — documents are generated automatically when you calculate.');return;}
+  var lines=el.textContent.split('\n').slice(0,6).join('\n');
+  alert('Preview (first 6 lines):\n\n'+lines+'\n\n[Unlock to access the full document]');
+}
+
+/* ── Application tracker ── */
+var _trackedGrants=[];
+function trackGrant(idx){
+  var grants=window._lastGrants||[];
+  var g=grants[idx];if(!g)return;
+  /* Check if already tracked */
+  for(var i=0;i<_trackedGrants.length;i++){if(_trackedGrants[i]._idx===idx){alert('Already tracking: '+g.program);return;}}
+  _trackedGrants.push({_idx:idx,program:g.program,funder:g.funder,deadline:g.deadline||'—',amount:g.amount||'—',status:'researching'});
+  renderTracker();
+  /* Update button */
+  var btn=document.getElementById('track-btn-'+idx);
+  if(btn){btn.innerHTML='<i class="ti ti-check" style="font-size:11px;vertical-align:-1px"></i> Tracked';btn.style.background='var(--green-dim)';btn.style.borderColor='var(--green-b)';btn.style.color='var(--green)';}
+}
+function renderTracker(){
+  var list=document.getElementById('tracker-list');if(!list)return;
+  if(!_trackedGrants.length){list.innerHTML='<p style="font-size:12px;color:var(--text3);text-align:center;padding:.75rem 0">No grants tracked yet. Click "Track this →" on any result above.</p>';
+    var dv=document.getElementById('tracker-deadline-view');if(dv)dv.style.display='none';return;}
+  var html='';
+  var statusOpts=['researching','drafting','submitted','awarded','declined'];
+  var statusColors={researching:'var(--teal)',drafting:'var(--gold)',submitted:'var(--purple)',awarded:'var(--green)',declined:'var(--text3)'};
+  _trackedGrants.forEach(function(g,i){
+    html+='<div class="tracker-item">';
+    html+='<span style="width:8px;height:8px;border-radius:50%;background:'+(statusColors[g.status]||'var(--text3)')+';flex-shrink:0;margin-right:2px"></span>';
+    html+='<span class="ti-name" title="'+g.funder+'">'+g.program+'</span>';
+    if(g.deadline&&g.deadline!=='—')html+='<span style="font-size:11px;color:var(--gold);white-space:nowrap"><i class="ti ti-calendar" style="font-size:10px;vertical-align:-1px"></i> '+g.deadline+'</span>';
+    html+='<select onchange="updateTrackStatus('+i+',this.value)">';
+    statusOpts.forEach(function(s){html+='<option value="'+s+'"'+(g.status===s?' selected':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</option>';});
+    html+='</select>';
+    html+='<button class="ti-remove" onclick="removeTracked('+i+')" title="Remove"><i class="ti ti-x"></i></button>';
+    html+='</div>';
+  });
+  list.innerHTML=html;
+  renderDeadlines();
+}
+function updateTrackStatus(i,val){if(_trackedGrants[i])_trackedGrants[i].status=val;renderTracker();}
+function removeTracked(i){_trackedGrants.splice(i,1);renderTracker();}
+function renderDeadlines(){
+  var dv=document.getElementById('tracker-deadline-view');
+  var dl=document.getElementById('tracker-deadlines');
+  if(!dv||!dl)return;
+  var withDeadlines=_trackedGrants.filter(function(g){return g.deadline&&g.deadline!=='—';});
+  if(!withDeadlines.length){dv.style.display='none';return;}
+  dv.style.display='block';
+  dl.innerHTML=withDeadlines.map(function(g){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text)">'+g.program+'</span><span style="color:var(--gold);font-weight:500">'+g.deadline+'</span></div>';
+  }).join('');
 }
 
 /* ── Coach ── */
