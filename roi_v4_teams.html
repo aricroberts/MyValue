@@ -880,8 +880,7 @@ async function startCoach(mode){
   var sys=CSYS[mode]+'\n\nCurrent team context:\n'+teamContext();
   var ok=false;
   try{
-    var r=await apiCall({model:'claude-sonnet-4-6',max_tokens:150,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]}, false);
-var d=await r.json();if(d.error)throw new Error('err');
+    var d=await apiCall({model:'claude-sonnet-4-6',max_tokens:150,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]}, false);
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
     cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
