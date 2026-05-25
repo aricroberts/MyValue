@@ -827,7 +827,7 @@ async function startCoach(mode){
   var sys=CSYS[mode]+'\n\nCurrent team context:\n'+teamContext();
   var ok=false;
   try{
-    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]})});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:sys,messages:[{role:'user',content:'Begin the coaching session.'}]})});
     if(!r.ok)throw new Error('http');var d=await r.json();if(d.error)throw new Error('err');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<10)throw new Error('empty');
@@ -848,20 +848,20 @@ async function sendCoach(){
   try{
     var sys=CSYS[cMode]+'\n\nCurrent team context:\n'+teamContext();
     var _cbody={model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:cHist};
-    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
     if(!r.ok)throw new Error('http');
     var d=await r.json();
     if(d.error&&d.error.type==='rate_limit_error'){
       var _msgs=document.getElementById('coach-msgs');
       if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Rate limit — retrying in 30s…</div>';
       await new Promise(function(res){setTimeout(res,30000);});
-      var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
+      var r2=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
       if(!r2.ok)throw new Error('http');
       d=await r2.json();
       if(d.error&&d.error.type==='rate_limit_error'){
         if(_msgs)_msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E"><i class="ti ti-clock" style="font-size:12px"></i> Still rate limited — one more retry in 30s…</div>';
         await new Promise(function(res){setTimeout(res,30000);});
-        var r3=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
+        var r3=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_cbody)});
         if(!r3.ok)throw new Error('http');
         d=await r3.json();
       }

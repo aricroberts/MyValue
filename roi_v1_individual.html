@@ -510,10 +510,10 @@ async function callClaude(msgs,sys,maxTok,search){
     var body={model:'claude-sonnet-4-6',max_tokens:maxTok||400,messages:msgs};
     if(sys)body.system=sys;
     if(search)body.tools=[{type:'web_search_20250305',name:'web_search'}];
-    var r=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error('http');
     var d=await r.json();
-    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r2=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r2.ok)throw new Error('http');d=await r2.json();if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r3=await fetch('https://myvalue.onrender.com/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r3.ok)throw new Error('http');d=await r3.json();}}
+    if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r2=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r2.ok)throw new Error('http');d=await r2.json();if(d.error&&d.error.type==='rate_limit_error'){await new Promise(function(res){setTimeout(res,30000);});var r3=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r3.ok)throw new Error('http');d=await r3.json();}}
     if(d.error)throw new Error('api');
     var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('');
     if(!txt||txt.length<5)throw new Error('empty');
