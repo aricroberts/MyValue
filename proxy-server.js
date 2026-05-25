@@ -68,7 +68,9 @@ if (!API_KEY || API_KEY.indexOf('sk-ant-') !== 0) {
   process.exit(1);
 }
 
-var isProd = ALLOWED_ORIGINS.length > 0;
+// Wildcard * means allow all origins
+var allowAllOrigins = ALLOWED_ORIGINS.length === 0 || ALLOWED_ORIGINS.indexOf('*') !== -1;
+var isProd = !allowAllOrigins;
 console.log('\n' + (isProd ? '🔒 Production mode' : '🛠  Dev mode (all origins allowed)'));
 if (isProd) console.log('   Allowed origins: ' + ALLOWED_ORIGINS.join(', '));
 
@@ -76,21 +78,15 @@ if (isProd) console.log('   Allowed origins: ' + ALLOWED_ORIGINS.join(', '));
 app.use(function(req, res, next) {
   var origin = req.headers['origin'] || '';
 
-  if (!isProd) {
-    // Dev: allow everything
+  if (allowAllOrigins) {
+    // Allow everything — send back the requesting origin (or * for non-browser requests)
     res.header('Access-Control-Allow-Origin', origin || '*');
   } else {
-    // Prod: enforce whitelist
-    var allowed = ALLOWED_ORIGINS.indexOf(origin) !== -1;
-    if (allowed) {
+    // Enforce whitelist — only send header if origin is on the list
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) {
       res.header('Access-Control-Allow-Origin', origin);
-    } else if (!origin) {
-      // Server-to-server or same-origin — allow
-      res.header('Access-Control-Allow-Origin', ALLOWED_ORIGINS[0]);
-    } else {
-      // Unknown origin in prod — reject preflight, let POST through with no ACOA header
-      // (browser will block it; curl/server calls still work)
     }
+    // Unknown origin: no ACAO header → browser blocks (correct behaviour)
   }
 
   res.header('Vary', 'Origin');
