@@ -148,8 +148,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 
 /* who it's for */
 .personas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-top:2.5rem}
-.persona{background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.5rem;transition:all .2s}
-.persona:hover{background:var(--paper);box-shadow:0 4px 16px rgba(26,20,16,.08);transform:translateY(-2px)}
+.persona{background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.5rem}
 .persona-emoji{display:flex;margin-bottom:.875rem}
 .persona-role{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.25rem}
 .persona-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.5}
@@ -371,7 +370,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
       <div class="hiw-step reveal" style="transition-delay:.2s">
         <div class="hiw-num">03</div>
         <div class="hiw-title">Get documents that open doors</div>
-        <div class="hiw-desc">Export ready-to-use reports, letters, grant narratives, and proposals. Refined with an AI coach that asks one question at a time.</div>
+        <div class="hiw-desc">Export ready-to-use reports, letters, grant narratives, and proposals. Use the Transitions suite to navigate every career moment — entering, returning, changing, or exiting. Refined with an AI coach that asks one question at a time.</div>
       </div>
       <div class="hiw-step reveal" style="transition-delay:.3s">
         <div class="hiw-num">04</div>
@@ -720,6 +719,45 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
 
 <!-- ═══ TRANSITIONS
 
+
+<!-- ═══ DISCLOSURE ════════════════════════════════════════════════════════ -->
+<section class="section" id="disclosure" style="background:var(--paper);border-top:1px solid var(--warm)">
+  <div class="section-inner" style="max-width:760px">
+    <p class="section-label reveal">Important disclosure</p>
+    <h2 class="section-heading reveal" style="font-size:clamp(1.3rem,2.5vw,1.75rem);margin-bottom:1.25rem">Directional tools, not professional advice</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:1.5rem">
+      <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Estimates, not guarantees
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">All calculations are based on self-reported inputs and publicly available benchmarks. Results are directional estimates intended to support your thinking — not certified valuations, financial projections, or guarantees of outcome.</p>
+      </div>
+      <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Not professional advice
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">receipts. is not a substitute for licensed financial, legal, accounting, or career counseling. Before making major compensation, hiring, investment, or retirement decisions, consult a qualified professional who can review your specific situation.</p>
+      </div>
+      <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          Verify with reality
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">AI-generated outputs — including salary benchmarks, grant language, negotiation scripts, and impact narratives — reflect patterns in training data and may not match your local market, employer, or funder. Always cross-check results against current, authoritative sources.</p>
+      </div>
+      <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Your data stays with you
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">Nothing you enter is stored, transmitted, or logged. All inputs live only in your browser tab and are destroyed when you leave. Any exported files contain only your own self-reported data and are generated entirely on your device.</p>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text3);margin-top:1.5rem;line-height:1.6;text-align:center">By using receipts., you acknowledge that outputs are for planning and preparation purposes only. AricCivicLabs assumes no liability for decisions made based on these tools. Use receipts. as a starting point — then do your reality check.</p>
+  </div>
+</section>
 
 <!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
 <section class="section" id="contact" style="background:var(--paper2);border-top:1px solid var(--warm)">
