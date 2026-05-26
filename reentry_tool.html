@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="grammarly-disable-extension" content="true"/>
-<title>receipts. — Workforce Re-entry</title>
+<title>receipts. — Career Transitions</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
@@ -22,24 +22,40 @@
   font-family:'DM Sans',system-ui,sans-serif;
 }
 body{background:var(--bg);color:var(--text);min-height:100vh}
-.app{max-width:920px;margin:0 auto;padding:1.25rem}
+.app{max-width:960px;margin:0 auto;padding:1.25rem}
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.875rem;border-bottom:1px solid var(--border);gap:1rem;flex-wrap:wrap}
 .logo{font-size:15px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .lab{font-size:9px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--text3)}
 .version-badge,.privacy-pill{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500;border:1px solid}
 .version-badge{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-b)}
 .privacy-pill{display:flex;align-items:center;gap:5px;color:var(--teal);background:var(--teal-dim);border-color:var(--teal-b);white-space:nowrap}
-.tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
-.tab-nav button{padding:6px 13px;font-size:12px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2)}
-.tab-nav button.active{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
-.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* CSS-only tab nav per project brief */
+.tab-radio{display:none}
+.tab-labels{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
+.tab-label{padding:6px 13px;font-size:12px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2);cursor:pointer;user-select:none;transition:all .15s}
+.tab-label:hover{background:var(--surface2);color:var(--text)}
+.tab-panel{display:none}
+
+#t1:checked ~ .tab-labels label[for="t1"],
+#t2:checked ~ .tab-labels label[for="t2"],
+#t3:checked ~ .tab-labels label[for="t3"],
+#t4:checked ~ .tab-labels label[for="t4"],
+#t5:checked ~ .tab-labels label[for="t5"]{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
+#t1:checked ~ .panels #p1,
+#t2:checked ~ .panels #p2,
+#t3:checked ~ .panels #p3,
+#t4:checked ~ .panels #p4,
+#t5:checked ~ .panels #p5{display:block}
+
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
 .card-ok{background:var(--green-dim);border-color:var(--green-b)}
 .card-warn{background:var(--amber-dim);border-color:var(--amber-b)}
 .card-ai{background:var(--purple-dim);border-color:var(--purple-b)}
 .card-teal{background:var(--teal-dim);border-color:var(--teal-b)}
+.card-red{background:var(--red-dim);border-color:var(--red-b)}
 .sl{font-size:12px;font-weight:600;color:var(--text2);margin:0 0 10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
-.sl-ok{color:var(--green)}.sl-warn{color:var(--amber)}.sl-ai{color:var(--purple)}.sl-teal{color:var(--teal)}
+.sl-ok{color:var(--green)}.sl-warn{color:var(--amber)}.sl-ai{color:var(--purple)}.sl-teal{color:var(--teal)}.sl-red{color:var(--red)}
 .lede{font-size:13px;line-height:1.65;color:var(--text2);max-width:760px}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .fr3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
@@ -57,12 +73,16 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .mc .vl{font-size:20px;font-weight:600;margin:0;font-family:'DM Mono',monospace}
 .pos{color:var(--green)!important}.neg{color:var(--red)!important}.warnc{color:var(--amber)!important}.ic{color:var(--teal)!important}
 .meter{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:8px 0}
-.mfill{height:100%;border-radius:99px;background:var(--blue);transition:width .25s}
+.mfill{height:100%;border-radius:99px;background:var(--blue);transition:width .4s}
 .irow{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--text2);padding:6px 0;border-bottom:1px solid var(--border);gap:12px}
 .irow:last-child{border-bottom:none}.irow strong{color:var(--text);font-weight:500;font-family:'DM Mono',monospace;text-align:right}
 .plan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .task{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.55;color:var(--text2)}
 .task strong{display:block;color:var(--text);font-weight:600;margin-bottom:2px}
+.task.task-urgent{border-color:var(--red-b);background:var(--red-dim)}
+.task.task-urgent strong{color:var(--red)}
+.task.task-ok{border-color:var(--green-b);background:var(--green-dim)}
+.task.task-ok strong{color:var(--green)}
 .resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .resource{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1rem;text-decoration:none;color:var(--text);display:block}
 .resource:hover{border-color:var(--blue-b);background:var(--surface2)}
@@ -70,18 +90,63 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .resource span{display:block;font-size:11px;color:var(--text3);line-height:1.4}
 .dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:240px;overflow-y:auto;color:var(--text)}
 .brow{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
-.coach-mode{padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;height:auto;cursor:pointer;text-align:center}
-.coach-mode i{font-size:18px}.coach-mode span:first-of-type{font-weight:500;font-size:13px}.coach-mode span:last-of-type{color:var(--text2);font-size:11px;line-height:1.35}
-.cmsg{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.7;color:var(--text);margin-bottom:6px;border:1px solid var(--border)}
-.cmai{background:var(--green-dim);border-color:var(--green-b);color:#A0E8C8}
-.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
-@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Insight card */
+.insight-card{background:var(--surface2);border:1px solid var(--blue-b);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
+.insight-label{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:6px;margin-bottom:.625rem}
+.insight-body{font-size:13px;line-height:1.75;color:var(--text)}
+.insight-body strong{color:var(--text);font-weight:600}
+
+/* Signal blocks */
+.signal-row{display:flex;flex-direction:column;gap:6px;margin-bottom:.875rem}
+.signal{display:flex;align-items:flex-start;gap:10px;background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;line-height:1.55;color:var(--text2);border:1px solid var(--border)}
+.signal.sig-ok{border-color:var(--green-b);background:var(--green-dim);color:#A0E8C8}
+.signal.sig-warn{border-color:var(--amber-b);background:var(--amber-dim);color:#F0C97A}
+.signal.sig-red{border-color:var(--red-b);background:var(--red-dim);color:#F0A0A0}
+.signal i{margin-top:1px;flex-shrink:0;font-size:15px}
+
+/* Skill checklist */
+.skill-list{display:flex;flex-direction:column;gap:6px;margin:.75rem 0}
+.skill-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .15s}
+.skill-item:hover{border-color:var(--blue-b)}
+.skill-item.checked{border-color:var(--green-b);background:var(--green-dim)}
+.skill-item input[type="checkbox"]{width:15px;height:15px;accent-color:var(--green);flex-shrink:0;margin-top:2px;cursor:pointer}
+.skill-item .sk-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+.skill-item .sk-desc{font-size:11px;color:var(--text3);line-height:1.35;margin-top:2px}
+.skill-item.checked .sk-name{color:var(--green)}
+.skill-loading{font-size:13px;color:var(--text3);padding:10px 12px;background:var(--surface2);border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px}
+
+/* ROI assessment (reentry) */
+.roi-task-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start;padding:10px 0;border-bottom:1px solid var(--border)}
+.roi-task-row:last-child{border-bottom:none}
+.roi-bullets{background:var(--surface2);border:1px solid var(--green-b);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;line-height:1.75;color:var(--text);white-space:pre-wrap}
+.add-task-row{display:flex;gap:8px;margin-top:8px}
+.add-task-row input{flex:1;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit}
+.add-task-row input:focus{outline:none;border-color:var(--blue)}
+
+/* Progress bar for readiness */
+.readiness-bar{margin:.875rem 0}
+.readiness-bar .rb-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px}
+.readiness-bar .rb-label strong{font-family:'DM Mono',monospace;color:var(--text)}
+.rb-track{height:10px;background:var(--surface2);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+.rb-fill{height:100%;border-radius:99px;transition:width .4s}
+.rb-fill.rf-low{background:var(--red)}
+.rb-fill.rf-mid{background:var(--amber)}
+.rb-fill.rf-high{background:var(--green)}
+
+/* Next tab label-button */
+.next-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--blue);color:#fff;font-weight:600;font-size:13px;border-radius:var(--radius-sm);cursor:pointer;border:none;margin-top:.75rem;text-decoration:none}
+.next-tab-btn:hover{background:#3a8eef}
+
 button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
 button:hover{background:var(--surface2)}
 .btn-primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
 .btn-primary:hover{background:#3a8eef}
 .btn-teal{background:var(--teal);border-color:var(--teal);color:#061C1A;font-weight:600}
 .btn-danger{color:var(--red);border-color:var(--red-b);background:var(--red-dim)}
+.btn-green{background:var(--green);border-color:var(--green);color:#061C14;font-weight:600}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--text2);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:3px}
+@keyframes sp{to{transform:rotate(360deg)}}
 .back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
 .back-nav a{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none}
 .back-nav a:hover{background:var(--border);color:var(--text)}
@@ -105,265 +170,34 @@ button:hover{background:var(--surface2)}
 .badge-tool{font-size:10px;padding:1px 6px;border-radius:99px;font-weight:600;background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue-b)}
 .badge-free{font-size:10px;padding:1px 6px;border-radius:99px;font-weight:600;background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-b)}
 @media(max-width:680px){.res-grid{grid-template-columns:1fr;margin-left:0}}
+
+/* Compare table */
+.compare-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:.875rem}
+.compare-table th{text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;padding:6px 10px;border-bottom:1px solid var(--border)}
+.compare-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+.compare-table td:first-child{font-weight:600;color:var(--text)}
+.compare-table tr.winner{background:var(--green-dim)}
+.compare-table tr.winner td{color:var(--text)}
+.score-pill{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:600;font-family:'DM Mono',monospace}
+.score-high{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
+.score-mid{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-b)}
+.score-low{background:var(--red-dim);color:var(--red);border:1px solid var(--red-b)}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<script>
-window.TOOLKIT_MODE='reentry';
-// ── Proxy URL ────────────────────────────────────────────────────────────────
-var PROXY='https://myvalue.onrender.com/api/messages';
-// ── Inline toolkit JS ───────────────────────────────────────────────────────
-var MODES={
-entry:{
-  icon:'ti-briefcase',badge:'v1 · Workforce Entry',title:'Workforce Entry ROI',tone:'card-ok',
-  lede:'A first-job launchpad for turning an offer, hourly wage, or early salary into take-home pay, stability targets, and a first 90-day plan.',
-  fields:[
-    ['role','Target role','text','Program assistant'],
-    ['income','Gross annual pay','number','42000'],
-    ['tax','Estimated tax + payroll %','number','18'],
-    ['rent','Rent / housing per month','number','950'],
-    ['debt','Debt payments per month','number','120'],
-    ['basics','Food, transit, phone, basics','number','780'],
-    ['save','Monthly savings goal','number','250'],
-    ['efund','Emergency fund saved now','number','800']
-  ],
-  metrics:['Take-home / mo','Core costs / mo','Savings rate','Months covered'],
-  resources:[
-    ['CareerOneStop Occupation Profiles','Wages, skills, training, and local job outlook','https://www.careeronestop.org/Toolkit/Careers/Occupations/occupation-profile.aspx'],
-    ['My Next Move','Plain-language career exploration from O*NET','https://www.mynextmove.org/'],
-    ['Apprenticeship Finder','Earn-and-learn programs in the U.S.','https://www.apprenticeship.gov/apprenticeship-job-finder'],
-    ['IRS Withholding Estimator','Check whether paycheck withholding is in range','https://www.irs.gov/individuals/tax-withholding-estimator']
-  ],
-  calc:function(v){
-    var take=v.income*(1-v.tax/100)/12, costs=v.rent+v.debt+v.basics+v.save, net=take-costs;
-    var rate=take>0?v.save/take*100:0, covered=(v.efund/Math.max(1,v.rent+v.debt+v.basics));
-    return {
-      metrics:[money(take),money(costs),rate.toFixed(1)+'%',covered.toFixed(1)+' mo'],
-      cls:['ic',net>=0?'pos':'neg',rate>=10?'pos':'warnc',covered>=3?'pos':'warnc'],
-      rows:[
-        ['Monthly cushion after plan',money(net)],
-        ['Emergency fund target: 1 month',money(v.rent+v.debt+v.basics)],
-        ['Emergency fund target: 3 months',money((v.rent+v.debt+v.basics)*3)],
-        ['First raise target at +8%',money(v.income*1.08)]
-      ],
-      plan:[
-        ['Week 1','Confirm offer math: gross pay, pay cycle, benefits start date, commute cost, and payroll withholding.'],
-        ['Week 2','Open the first-job money stack: checking, high-yield savings, direct deposit split, and automatic emergency transfer.'],
-        ['First 30 days','Document wins and responsibilities in a tiny brag log so performance reviews do not rely on memory.'],
-        ['First 90 days','Ask your manager what “ready for more responsibility” means and convert it into two measurable goals.']
-      ],
-      narrative:'For '+(v.role||'this role')+', the current plan leaves '+money(net)+' per month after core costs and savings. The next stability milestone is a 3-month emergency fund of '+money((v.rent+v.debt+v.basics)*3)+'.'
-    };
-  }
-},
-reentry:{
-  icon:'ti-door-enter',badge:'v1 · Workforce Re-entry',title:'Workforce Re-entry ROI',tone:'card-teal',
-  lede:'A re-entry planner for translating a work gap, caregiving chapter, recovery period, layoff, or pause into readiness evidence and a manageable job-search runway.',
-  fields:[
-    ['target','Target role','text','Operations coordinator'],
-    ['income','Target annual pay','number','52000'],
-    ['current','Current monthly income','number','1200'],
-    ['expenses','Monthly required expenses','number','2600'],
-    ['savings','Available runway savings','number','6000'],
-    ['skill','Skill match %','number','62'],
-    ['hours','Weekly search / training hours','number','12'],
-    ['months','Months until desired start','number','4']
-  ],
-  metrics:['Runway','Income gap','Readiness','Weekly pace'],
-  resources:[
-    ['CareerOneStop ReEntry Resources','Job-search help for people returning to work','https://www.careeronestop.org/ResourcesFor/WorkerReEntry/worker-reentry.aspx'],
-    ['O*NET Online','Detailed skills and task data by occupation','https://www.onetonline.org/'],
-    ['American Job Centers','Local workforce centers and training support','https://www.careeronestop.org/LocalHelp/AmericanJobCenters/american-job-centers.aspx'],
-    ['FindHelp','Local food, housing, care, health, and financial support','https://www.findhelp.org/']
-  ],
-  calc:function(v){
-    var gap=Math.max(0,v.expenses-v.current), runway=gap>0?v.savings/gap:99, readiness=Math.min(100,v.skill+(v.hours*1.4)+(v.months*2));
-    return {
-      metrics:[runway>=90?'Stable':runway.toFixed(1)+' mo',money(gap)+'/mo',Math.round(readiness)+'%',v.hours+' hrs/wk'],
-      cls:[runway>=3?'pos':'warnc',gap===0?'pos':'warnc',readiness>=75?'pos':'warnc',v.hours>=10?'pos':'warnc'],
-      rows:[
-        ['Target monthly gross pay',money(v.income/12)],
-        ['Estimated take-home at 80%',money(v.income*.8/12)],
-        ['Savings needed for 3-month runway',money(gap*3)],
-        ['Readiness gap to strong launch',Math.max(0,75-readiness).toFixed(0)+' pts']
-      ],
-      plan:[
-        ['Positioning','Turn the gap into a short, factual bridge: what happened, what stayed strong, and why now is the right return point.'],
-        ['Evidence','Build two proof assets: a refreshed resume story and one sample, certificate, portfolio item, or volunteer project.'],
-        ['Search system','Use a weekly loop: 4 tailored applications, 3 warm contacts, 1 mock interview, 1 skills block.'],
-        ['Support math','If runway is under 3 months, prioritize bridge income, childcare/care support, SNAP/TANF/local aid, or paid training programs.']
-      ],
-      narrative:'The re-entry plan is strongest when readiness reaches 75%+ and runway covers at least 3 months. This version shows '+(runway>=90?'stable income coverage':runway.toFixed(1)+' months of runway')+' and a readiness score of '+Math.round(readiness)+'%.'
-    };
-  }
-},
-exit:{
-  icon:'ti-sunset-2',badge:'v1 · Workforce Exit',title:'Workforce Exit ROI',tone:'card-warn',
-  lede:'A retirement and late-career exit planner for comparing income streams, living costs, care exposure, and practical links before leaving paid work.',
-  fields:[
-    ['age','Current age','number','62'],
-    ['savings','Retirement savings','number','420000'],
-    ['spend','Expected monthly living cost','number','4200'],
-    ['ss','Estimated Social Security / mo','number','2100'],
-    ['pension','Pension or annuity / mo','number','0'],
-    ['rate','Expected annual return %','number','4'],
-    ['withdraw','Annual withdrawal %','number','4'],
-    ['care','Potential elderhealth reserve','number','30000']
-  ],
-  metrics:['Income / mo','Monthly gap','Nest egg income','Care reserve'],
-  resources:[
-    ['Social Security Retirement Estimator','Estimate retirement benefits from SSA','https://www.ssa.gov/benefits/retirement/estimator.html'],
-    ['Medicare Care Compare','Compare hospitals, nursing homes, hospice, and home health','https://www.medicare.gov/care-compare/'],
-    ['Eldercare Locator','Find local aging and caregiver support','https://eldercare.acl.gov/'],
-    ['Investor.gov Compound Interest Calculator','SEC calculator for growth assumptions','https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator']
-  ],
-  calc:function(v){
-    var nest=v.savings*v.withdraw/100/12, income=v.ss+v.pension+nest, gap=v.spend-income, reserve=v.spend>0?v.care/v.spend:0;
-    return {
-      metrics:[money(income),money(gap),money(nest)+'/mo',reserve.toFixed(1)+' mo'],
-      cls:[income>=v.spend?'pos':'warnc',gap<=0?'pos':'neg',nest>0?'ic':'warnc',reserve>=6?'pos':'warnc'],
-      rows:[
-        ['Annual spending target',money(v.spend*12)],
-        ['Annual guaranteed income',money((v.ss+v.pension)*12)],
-        ['Annual portfolio withdrawal',money(v.savings*v.withdraw/100)],
-        ['Savings after one growth year',money(v.savings*(1+v.rate/100))]
-      ],
-      plan:[
-        ['Before notice','Price health coverage, Medicare timing, COBRA/ACA bridge coverage, and prescription costs.'],
-        ['Account map','List taxable, pre-tax, Roth, HSA, pension, Social Security, and cash reserve buckets.'],
-        ['Living model','Run a base budget, lower-cost budget, and care-event budget before committing to the exit date.'],
-        ['Care readiness','Name health proxy, emergency contacts, care preferences, nearby support, and the first local aging agency to call.']
-      ],
-      narrative:'The current exit model produces '+money(income)+' per month against expected spending of '+money(v.spend)+'. The modeled gap is '+money(gap)+' per month before taxes and healthcare surprises.'
-    };
-  }
-},
-equity:{
-  icon:'ti-chart-arcs',badge:'v1 · Equity Builder',title:'Equity & Retirement Builder',tone:'card-ai',
-  lede:'A time-value-of-money comparison for people trying to build retirement savings, employer-match value, home/equity reserves, and long-horizon optionality.',
-  fields:[
-    ['age','Current age','number','32'],
-    ['retire','Target retirement age','number','67'],
-    ['balance','Current invested balance','number','18000'],
-    ['monthly','Monthly contribution','number','450'],
-    ['match','Employer match / mo','number','150'],
-    ['rate','Expected annual return %','number','6'],
-    ['raise','Annual contribution increase %','number','3'],
-    ['alt','Alternative monthly amount','number','250']
-  ],
-  metrics:['Future value','Total put in','Growth value','Delay cost'],
-  resources:[
-    ['IRS Retirement Plans','Official IRA, 401(k), and plan rules','https://www.irs.gov/retirement-plans'],
-    ['Investor.gov Calculators','SEC financial calculators and education','https://www.investor.gov/financial-tools-calculators'],
-    ['FINRA Fund Analyzer','Compare mutual fund and ETF costs','https://tools.finra.org/fund_analyzer/'],
-    ['CFPB Planning for Retirement','Consumer retirement planning resources','https://www.consumerfinance.gov/consumer-tools/retirement/']
-  ],
-  calc:function(v){
-    var years=Math.max(0,v.retire-v.age), fv=compound(v.balance,v.monthly+v.match,v.rate,years,v.raise), contrib=(v.monthly+v.match)*12*years, alt=compound(v.balance,v.alt+v.match,v.rate,years,v.raise);
-    var delay=compound(v.balance,v.monthly+v.match,v.rate,years,v.raise)-compound(v.balance,v.monthly+v.match,v.rate,Math.max(0,years-5),v.raise);
-    return {
-      metrics:[money(fv),money(contrib+v.balance),money(fv-contrib-v.balance),money(delay)],
-      cls:['pos','ic','pos','warnc'],
-      rows:[
-        ['Years invested',years.toFixed(0)],
-        ['Employer match captured',money(v.match*12*years)],
-        ['Alternative contribution outcome',money(alt)],
-        ['Value of +$100/mo',money(compound(v.balance,v.monthly+v.match+100,v.rate,years,v.raise)-fv)]
-      ],
-      plan:[
-        ['Capture match','Contribute at least enough to receive the full employer match before optimizing anything else.'],
-        ['Automate increases','Tie contribution bumps to raises so lifestyle creep does not consume every pay increase.'],
-        ['Compare buckets','Use Roth/pre-tax/taxable/HSA based on tax bracket, liquidity needs, and employer plan quality.'],
-        ['Watch fees','A 1% fee drag over decades can quietly erase a meaningful part of compound growth.']
-      ],
-      narrative:'At the current pace, the modeled retirement/equity balance reaches '+money(fv)+' by age '+v.retire+'. Waiting five years to run this same plan has an estimated opportunity cost of '+money(delay)+'.'
-    };
-  }
-},
-change:{
-  icon:'ti-route',badge:'v1 · Career Change',title:'Career Change Plan Builder',tone:'card-teal',
-  lede:'A transition planner for comparing the cost, time, risk, and upside of moving from one career track into another.',
-  fields:[
-    ['current','Current role','text','Customer support lead'],
-    ['target','Target role','text','Business analyst'],
-    ['nowpay','Current annual pay','number','52000'],
-    ['newpay','Target annual pay','number','72000'],
-    ['cost','Training / credential cost','number','3500'],
-    ['months','Months to transition','number','9'],
-    ['hours','Weekly build hours','number','8'],
-    ['readiness','Current readiness %','number','48']
-  ],
-  metrics:['Pay upside','Payback','Readiness','Build hours'],
-  resources:[
-    ['O*NET Skills Search','Search occupations by skills and tasks','https://www.onetonline.org/skills/'],
-    ['CareerOneStop Training Finder','Find programs and compare training options','https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx'],
-    ['Apprenticeship.gov','Paid pathways into new fields','https://www.apprenticeship.gov/'],
-    ['BLS Occupational Outlook Handbook','Pay, outlook, and education requirements','https://www.bls.gov/ooh/']
-  ],
-  calc:function(v){
-    var upside=v.newpay-v.nowpay, monthlyUpside=upside/12, payback=monthlyUpside>0?v.cost/monthlyUpside:0, future=Math.min(100,v.readiness+v.months*3+v.hours*1.2);
-    return {
-      metrics:[money(upside)+'/yr',payback>0?payback.toFixed(1)+' mo':'N/A',Math.round(future)+'%',(v.hours*v.months*4.33).toFixed(0)],
-      cls:[upside>0?'pos':'warnc',payback>0&&payback<=12?'pos':'warnc',future>=75?'pos':'warnc',v.hours>=6?'ic':'warnc'],
-      rows:[
-        ['Current monthly gross',money(v.nowpay/12)],
-        ['Target monthly gross',money(v.newpay/12)],
-        ['Transition cost per month',money(v.cost/Math.max(1,v.months))],
-        ['Readiness gap after plan',Math.max(0,75-future).toFixed(0)+' pts']
-      ],
-      plan:[
-        ['Weeks 1-2','Interview three people in the target role and identify the repeated skills, tools, and proof employers actually ask for.'],
-        ['Month 1','Build a public or shareable work sample that maps directly to '+(v.target||'the target role')+'.'],
-        ['Midpoint','Apply to bridge roles that use your current credibility while adding target-role responsibilities.'],
-        ['Final month','Package the story: why the shift, what transfers, what is newly proven, and what risk you removed for the employer.']
-      ],
-      narrative:'Moving from '+(v.current||'the current role')+' to '+(v.target||'the target role')+' shows modeled upside of '+money(upside)+' per year. Training cost pays back in about '+(payback>0?payback.toFixed(1)+' months':'an unclear period')+' if the salary target lands.'
-    };
-  }
-},
-compare:{
-  icon:'ti-scale',badge:'v1 · Career Compare',title:'Career Comparison + Readiness Checker',tone:'card-ai',
-  lede:'A side-by-side decision tool for comparing career options by income, fit, demand, training burden, and near-term readiness.',
-  fields:[
-    ['aName','Career A','text','Data analyst'],['aPay','A pay','number','78000'],['aFit','A fit %','number','72'],['aSkill','A skill match %','number','60'],['aDemand','A demand %','number','78'],['aTrain','A training months','number','6'],
-    ['bName','Career B','text','Project manager'],['bPay','B pay','number','85000'],['bFit','B fit %','number','68'],['bSkill','B skill match %','number','74'],['bDemand','B demand %','number','70'],['bTrain','B training months','number','4'],
-    ['cName','Career C','text','UX researcher'],['cPay','C pay','number','92000'],['cFit','C fit %','number','80'],['cSkill','C skill match %','number','46'],['cDemand','C demand %','number','62'],['cTrain','C training months','number','12']
-  ],
-  metrics:['Best path','Best score','Readiness gap','Fastest path'],
-  resources:[
-    ['BLS Occupational Outlook Handbook','Pay, outlook, and requirements by occupation','https://www.bls.gov/ooh/'],
-    ['O*NET Interest Profiler','Career fit by interests','https://www.mynextmove.org/explore/ip'],
-    ['CareerOneStop Compare Occupations','Compare wages, tasks, and outlook','https://www.careeronestop.org/Toolkit/Careers/compare-occupations.aspx'],
-    ['My Next Move','Career exploration from O*NET','https://www.mynextmove.org/']
-  ],
-  calc:function(v){
-    var items=[
-      career(v.aName,v.aPay,v.aFit,v.aSkill,v.aDemand,v.aTrain),
-      career(v.bName,v.bPay,v.bFit,v.bSkill,v.bDemand,v.bTrain),
-      career(v.cName,v.cPay,v.cFit,v.cSkill,v.cDemand,v.cTrain)
-    ].sort(function(x,y){return y.score-x.score});
-    var fastest=items.slice().sort(function(x,y){return x.train-y.train})[0];
-    return {
-      metrics:[items[0].name,Math.round(items[0].score)+'/100',Math.max(0,75-items[0].ready).toFixed(0)+' pts',fastest.name],
-      cls:['pos','pos',items[0].ready>=75?'pos':'warnc','ic'],
-      rows:items.map(function(i){return [i.name,money(i.pay)+' · score '+Math.round(i.score)+' · readiness '+Math.round(i.ready)+'%'];}),
-      plan:[
-        ['Decision rule','Treat the top score as a starting hypothesis, then validate with real job posts and two conversations.'],
-        ['Readiness check','If skill match is under 65%, build one proof project before applying heavily.'],
-        ['Risk check','If training takes more than 9 months, test bridge roles before committing to a full pivot.'],
-        ['Offer check','Compare salary, benefits, schedule control, commute, credential cost, and hiring timeline together.']
-      ],
-      narrative:'The strongest modeled path is '+items[0].name+' with a score of '+Math.round(items[0].score)+'/100. Its readiness gap is '+Math.max(0,75-items[0].ready).toFixed(0)+' points before a confident application push.'
-    };
-  }
-}};
 
+<script>
+window.TOOLKIT_MODE = window.TOOLKIT_MODE || 'reentry';
+var PROXY = 'https://myvalue.onrender.com/api/messages';
+
+// ── Utilities ────────────────────────────────────────────────────────────────
 function byId(id){return document.getElementById(id)}
 function val(id){var e=byId(id);if(!e)return'';return e.type==='number'?(parseFloat(e.value)||0):(e.value||'')}
 function money(n){if(!isFinite(n)||isNaN(n))return'$0';var s=n<0?'-':'';var a=Math.abs(n);if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a)}
+function esc(s){return String(s==null?'':s).replace(/[&<>\"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function compound(start,monthly,rate,years,raisePct){
-  var bal=start||0, mRate=(rate||0)/100/12, m=monthly||0, total=Math.max(0,Math.round(years*12));
+  var bal=start||0,mRate=(rate||0)/100/12,m=monthly||0,total=Math.max(0,Math.round(years*12));
   for(var i=1;i<=total;i++){bal=bal*(1+mRate)+m;if(i%12===0)m*=1+(raisePct||0)/100}
   return bal;
 }
@@ -372,86 +206,852 @@ function career(name,pay,fit,skill,demand,train){
   var payScore=Math.min(100,pay/1000);
   var burden=Math.max(0,100-train*5);
   var score=payScore*.25+fit*.25+skill*.25+demand*.15+burden*.10;
-  return {name:name||'Career',pay:pay,fit:fit,skill:skill,demand:demand,train:train,ready:ready,score:score};
+  return{name:name||'Career',pay:pay,fit:fit,skill:skill,demand:demand,train:train,ready:ready,score:score};
 }
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function exJSON(txt){
+  try{var clean=txt.replace(/```json/g,'').replace(/```/g,'').trim();var m=clean.match(/\{[\s\S]*\}/);return m?JSON.parse(m[0]):{}}catch(e){return{}}
+}
+async function callClaude(messages,systemPrompt,useSearch){
+  var body={model:'claude-sonnet-4-20250514',max_tokens:800,system:systemPrompt,messages:messages};
+  if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
+  try{
+    var r=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok)throw new Error('http');
+    var d=await r.json();
+    if(d.error)throw new Error('err');
+    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:''}).join('');
+    if(!txt||txt.length<5)throw new Error('empty');
+    return txt;
+  }catch(e){return null}
+}
 
-var RESOURCE_DATA={"entry":{"orient":"Starting your career. These resources are ordered by what you need to figure out first — understand the landscape before you apply, and get your finances in place before you accept an offer.","stages":[{"title":"Understand the landscape","links":[{"name":"BLS Occupational Outlook Handbook","desc":"Pay, growth outlook, and education requirements for 900+ jobs","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"O*NET OnLine","desc":"Skills, tasks, and work context by occupation","url":"https://www.onetonline.org/","badge":"gov"},{"name":"MyNextMove","desc":"Plain-language career exploration by interest or keyword","url":"https://www.mynextmove.org/","badge":"free"},{"name":"LinkedIn Salary","desc":"Real compensation by title, location, and experience level","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"CareerOneStop Occupation Profile","desc":"Local wages and employment data by role","url":"https://www.careeronestop.org/toolkit/careers/explore-careers.aspx","badge":"gov"}]},{"title":"Know your rights and benefits","links":[{"name":"DOL Wage & Hour Division","desc":"Minimum wage, overtime rules, and youth labor protections","url":"https://www.dol.gov/agencies/whd","badge":"gov"},{"name":"EEOC Know Your Rights","desc":"Discrimination protections and how to file a complaint","url":"https://www.eeoc.gov/know-your-rights","badge":"gov"},{"name":"IRS W-4 Withholding Estimator","desc":"Set your first paycheck up right — avoid over- or under-withholding","url":"https://www.irs.gov/individuals/tax-withholding-estimator","badge":"gov"},{"name":"Benefits.gov","desc":"Federal benefit eligibility finder across all programs","url":"https://www.benefits.gov/","badge":"gov"},{"name":"Healthcare.gov Plan Finder","desc":"Marketplace coverage if your employer doesn't offer insurance","url":"https://www.healthcare.gov/see-plans/","badge":"gov"}]},{"title":"Build credentials","links":[{"name":"Federal Student Aid (FAFSA)","desc":"Grants, loans, and work-study eligibility","url":"https://studentaid.gov/h/apply-for-aid/fafsa","badge":"gov"},{"name":"College Scorecard","desc":"Cost, graduation rates, and earnings outcomes by school","url":"https://collegescorecard.ed.gov/","badge":"gov"},{"name":"Apprenticeship.gov","desc":"Paid earn-while-you-learn pathways into real careers","url":"https://www.apprenticeship.gov/","badge":"gov"},{"name":"Google Career Certificates","desc":"Job-ready certificates in tech fields in about 6 months","url":"https://grow.google/certificates/","badge":"free"},{"name":"Coursera / edX","desc":"Accredited certificates and degrees from top universities","url":"https://www.coursera.org/","badge":"tool"},{"name":"Credential Engine","desc":"Verify and compare the market value of credentials","url":"https://credentialengine.org/","badge":"tool"}]},{"title":"Build your job search infrastructure","links":[{"name":"USAJOBS","desc":"Every federal government job opening in one place","url":"https://www.usajobs.gov/","badge":"gov"},{"name":"Handshake","desc":"Entry-level roles and campus recruiting partnerships","url":"https://joinhandshake.com/","badge":"tool"},{"name":"Idealist","desc":"Nonprofit and mission-driven job board","url":"https://www.idealist.org/","badge":"free"},{"name":"Indeed","desc":"Largest general-purpose job board by volume","url":"https://www.indeed.com/","badge":"tool"},{"name":"CareerOneStop Job Finder","desc":"Government-curated openings with local filters","url":"https://www.careeronestop.org/toolkit/jobs/find-jobs.aspx","badge":"gov"}]},{"title":"Set up your financial foundation","links":[{"name":"CFPB Budgeting Worksheets","desc":"Free federal financial planning tools and templates","url":"https://www.consumerfinance.gov/consumer-tools/budget/","badge":"gov"},{"name":"Student Loan Simulator","desc":"Income-driven repayment planning for federal loans","url":"https://studentaid.gov/loan-simulator/","badge":"gov"},{"name":"IRS Free File","desc":"File federal taxes for free if income is under the threshold","url":"https://www.irs.gov/filing/free-file-do-your-federal-taxes-for-free","badge":"gov"},{"name":"MyMoney.gov","desc":"FDIC-backed financial literacy hub and planning guides","url":"https://www.mymoney.gov/","badge":"gov"}]}]},"reentry":{"orient":"Returning to work after a gap. Each stage reflects the real sequence — your financial runway affects which opportunities you can pursue, so understand it before you narrow your search.","stages":[{"title":"Assess where you stand","links":[{"name":"CareerOneStop Skills Matcher","desc":"Map past experience to current in-demand jobs","url":"https://www.careeronestop.org/toolkit/skills/skills-matcher.aspx","badge":"gov"},{"name":"O*NET Skills Search","desc":"Identify transferable skill sets across occupations","url":"https://www.onetonline.org/skills/","badge":"gov"},{"name":"AARP Job Search","desc":"Gap-friendly employers and 50+ focused resources","url":"https://www.aarp.org/work/job-search/","badge":"free"},{"name":"Encore.org","desc":"Second-act careers and experienced worker programs","url":"https://encore.org/","badge":"free"},{"name":"BLS Occupational Outlook Handbook","desc":"Check whether your field grew or contracted during your gap","url":"https://www.bls.gov/ooh/","badge":"gov"}]},{"title":"Bridge the gap — training and retraining","links":[{"name":"American Job Centers","desc":"Free job search help, resume coaching, training referrals","url":"https://www.careeronestop.org/localhelp/americanjobcenters/","badge":"gov"},{"name":"WIOA Retraining Funding","desc":"Federally funded career retraining for eligible workers","url":"https://www.careeronestop.org/localhelp/wioa/","badge":"gov"},{"name":"Per Scholas","desc":"Free tech training specifically for returning workers","url":"https://perscholas.org/","badge":"free"},{"name":"Goodwill Career Services","desc":"Employment programs with wraparound support nationwide","url":"https://www.goodwill.org/jobs-training/","badge":"free"},{"name":"Trade Adjustment Assistance","desc":"If your job was lost to trade, outsourcing, or automation","url":"https://www.dol.gov/agencies/eta/tradeact/","badge":"gov"}]},{"title":"Financial lifeline during re-entry","links":[{"name":"Benefits.gov","desc":"Find every assistance program you may qualify for","url":"https://www.benefits.gov/","badge":"gov"},{"name":"211.org","desc":"Local social services, food, housing, and utilities by zip code","url":"https://www.211.org/","badge":"free"},{"name":"SNAP Pre-Screener","desc":"Food assistance eligibility check before applying","url":"https://snap-screener.fns.usda.gov/snap-screener/","badge":"gov"},{"name":"LIHEAP Utility Assistance","desc":"Utility bill help for low-income households","url":"https://www.acf.hhs.gov/ocs/programs/liheap","badge":"gov"},{"name":"Child Care Aware","desc":"Childcare subsidy finder for working parents returning to work","url":"https://www.childcareaware.org/","badge":"free"},{"name":"NCOA BenefitsCheckUp","desc":"Benefits finder for adults 55+ across 2,500+ programs","url":"https://www.benefitscheckup.org/","badge":"free"}]},{"title":"Navigate re-entry logistics","links":[{"name":"LinkedIn Career Break Feature","desc":"Officially acknowledge your gap professionally on your profile","url":"https://www.linkedin.com/help/linkedin/","badge":"tool"},{"name":"Ban the Box Employer Map","desc":"Find employers with gap-friendly hiring policies by location","url":"https://bantheboxcampaign.org/","badge":"free"},{"name":"DOL Reentry Employment Opportunities","desc":"Federally funded programs specifically for returning citizens","url":"https://www.dol.gov/agencies/eta/reentry/","badge":"gov"},{"name":"National H.I.R.E. Network","desc":"Hiring resources and employer connections for returning citizens","url":"https://www.hirenetwork.org/","badge":"free"}]},{"title":"Healthcare during the gap","links":[{"name":"Healthcare.gov Special Enrollment","desc":"Job loss triggers a special enrollment window — act within 60 days","url":"https://www.healthcare.gov/glossary/special-enrollment-period/","badge":"gov"},{"name":"Medicaid & CHIP","desc":"Healthcare coverage during income gap periods","url":"https://www.medicaid.gov/","badge":"gov"},{"name":"VA Health Benefits","desc":"Veterans returning to civilian work may still qualify","url":"https://www.va.gov/health-care/apply/","badge":"gov"}]}]},"exit":{"orient":"Retiring or leaving paid work. Work through these stages before you give notice — healthcare and income gaps are much harder to fix after the fact.","stages":[{"title":"Know your income picture","links":[{"name":"My Social Security Account","desc":"Full earnings history and personalized benefit estimates","url":"https://www.ssa.gov/myaccount/","badge":"gov"},{"name":"SSA Retirement Estimator","desc":"Explore how claiming age affects your monthly benefit","url":"https://www.ssa.gov/benefits/retirement/estimator.html","badge":"gov"},{"name":"Pension Rights Center","desc":"Understand your defined-benefit rights and protections","url":"https://www.pensionrights.org/","badge":"free"},{"name":"PBGC Pension Lookup","desc":"If your employer pension is at risk, find your coverage","url":"https://www.pbgc.gov/","badge":"gov"},{"name":"IRS Retirement Topics","desc":"RMD rules, account types, and withdrawal rules in plain language","url":"https://www.irs.gov/retirement-plans","badge":"gov"}]},{"title":"Sort out healthcare before and after Medicare","links":[{"name":"Medicare Plan Finder","desc":"Compare Part D and Medicare Advantage plans side by side","url":"https://www.medicare.gov/plan-compare/","badge":"gov"},{"name":"SHIP Medicare Counseling","desc":"Free personalized Medicare counseling available in every state","url":"https://www.shiphelp.org/","badge":"gov"},{"name":"Healthcare.gov for Early Retirees","desc":"Marketplace coverage for those who retire before age 65","url":"https://www.healthcare.gov/","badge":"gov"},{"name":"NCOA Medicare Savings Programs","desc":"Help paying premiums, deductibles, and out-of-pocket costs","url":"https://www.ncoa.org/medicare/medicare-savings-programs/","badge":"free"},{"name":"COBRA Coverage Guide (DOL)","desc":"Bridge between employer plan and Medicare eligibility","url":"https://www.dol.gov/sites/dolgov/files/ebsa/about-ebsa/our-activities/resource-center/faqs/cobra-continuation-coverage.pdf","badge":"gov"}]},{"title":"Plan withdrawals and investments","links":[{"name":"Investor.gov Compound Calculator","desc":"SEC-maintained growth and withdrawal modeling tool","url":"https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator","badge":"gov"},{"name":"FINRA BrokerCheck","desc":"Verify your financial advisor's credentials and complaint history","url":"https://brokercheck.finra.org/","badge":"gov"},{"name":"IRS RMD Worksheets","desc":"Required minimum distribution calculations and rules","url":"https://www.irs.gov/publications/p590b","badge":"gov"},{"name":"Bogleheads Wiki","desc":"Evidence-based retirement planning — no products, no sales pitch","url":"https://www.bogleheads.org/wiki/Main_Page","badge":"free"},{"name":"SSA Claiming Age Break-Even","desc":"When does waiting to claim Social Security actually pay off?","url":"https://www.ssa.gov/benefits/retirement/planner/agereduction.html","badge":"gov"}]},{"title":"Legal and estate readiness","links":[{"name":"Five Wishes Advance Directive","desc":"Plain-language living will recognized in most states","url":"https://www.agingwithdignity.org/five-wishes/","badge":"free"},{"name":"USA.gov Wills & Estate Planning","desc":"Official federal starting point for estate planning basics","url":"https://www.usa.gov/wills-and-estates","badge":"gov"},{"name":"ABA Elder Law Resources","desc":"Find elder law attorneys in your state via the Bar Association","url":"https://www.americanbar.org/groups/law_aging/","badge":"free"},{"name":"CaringInfo — State Directives","desc":"Download your state's official advance directive forms","url":"https://www.nhpco.org/patients-and-caregivers/advance-care-planning/advance-directives/download-your-states-advance-directive/","badge":"free"}]},{"title":"Care, community, and daily life","links":[{"name":"Eldercare Locator","desc":"Find aging services and local support by zip code","url":"https://eldercare.acl.gov/","badge":"gov"},{"name":"Area Agencies on Aging","desc":"Coordinated local aging services — rides, meals, in-home care","url":"https://eldercare.acl.gov/Public/Find_Providers/Index.aspx","badge":"gov"},{"name":"Medicare Care Compare","desc":"Compare nursing homes, home health agencies, and facilities","url":"https://www.medicare.gov/care-compare/","badge":"gov"},{"name":"NCOA EconomicCheckUp","desc":"Benefits and savings programs for older adults","url":"https://www.ncoa.org/","badge":"free"},{"name":"SCSEP — Work After Retirement","desc":"Federally funded jobs program for older adults who want to keep working","url":"https://www.doleta.gov/seniors/","badge":"gov"}]}]},"equity":{"orient":"Building retirement savings over time. Start by understanding your account types, then stack the tax advantages in order before projecting growth — the sequence matters more than the total.","stages":[{"title":"Understand your account types","links":[{"name":"IRS Retirement Plan Types","desc":"401k, IRA, Roth, SEP, SIMPLE — how each works and who qualifies","url":"https://www.irs.gov/retirement-plans/plan-sponsor/types-of-retirement-plans","badge":"gov"},{"name":"IRS IRA Contribution Limits","desc":"Current year limits by account type and income level","url":"https://www.irs.gov/retirement-plans/ira-contribution-limits","badge":"gov"},{"name":"DOL 401k Fee Disclosure","desc":"How to read your plan's expense ratios and find hidden fees","url":"https://www.dol.gov/agencies/ebsa/","badge":"gov"},{"name":"FINRA Fund Analyzer","desc":"Compare investment fees across mutual funds and ETFs side by side","url":"https://tools.finra.org/fund_analyzer/","badge":"gov"}]},{"title":"Maximize employer benefits","links":[{"name":"DOL 401k Resources","desc":"Employer match rules, vesting schedules, and your plan rights","url":"https://www.dol.gov/general/topic/retirement/401ksavingsplans","badge":"gov"},{"name":"IRS HSA Rules","desc":"Triple-tax-advantaged account that bridges healthcare and retirement","url":"https://www.irs.gov/publications/p969","badge":"gov"},{"name":"PBGC My Pension Benefit","desc":"Look up defined-benefit plan status and insurance coverage","url":"https://www.pbgc.gov/workers-retirees","badge":"gov"},{"name":"Benefits.gov","desc":"Find all work and savings benefits you may qualify for","url":"https://www.benefits.gov/","badge":"gov"}]},{"title":"Project your future","links":[{"name":"SSA Retirement Estimator","desc":"Includes Social Security in your full retirement projection","url":"https://www.ssa.gov/benefits/retirement/estimator.html","badge":"gov"},{"name":"Investor.gov Compound Calculator","desc":"Official SEC compound growth and withdrawal modeling tool","url":"https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator","badge":"gov"},{"name":"FIRECalc","desc":"Historical portfolio survival rate calculator for early retirement planning","url":"https://www.firecalc.com/","badge":"free"},{"name":"cFIREsim","desc":"Monte Carlo simulation for retirement portfolio sustainability","url":"https://www.cfiresim.com/","badge":"free"},{"name":"Vanguard Retirement Calculator","desc":"Income gap visualization and withdrawal sustainability modeling","url":"https://investor.vanguard.com/tools-calculators/retirement-income-calculator","badge":"tool"}]},{"title":"Tax-smart withdrawal strategies","links":[{"name":"IRS Publication 590-B","desc":"IRA distributions, RMD rules, and inherited account guidance","url":"https://www.irs.gov/publications/p590b","badge":"gov"},{"name":"IRS Roth Conversion Rules","desc":"When and how to convert — tax implications explained clearly","url":"https://www.irs.gov/retirement-plans/roth-iras","badge":"gov"},{"name":"Tax Foundation State Tax Maps","desc":"Compare retirement-friendly states by income and Social Security tax","url":"https://taxfoundation.org/data/all/state/state-income-tax-rates/","badge":"free"},{"name":"CFPB Retirement Savings Guidance","desc":"Consumer-level retirement planning guidance without jargon","url":"https://www.consumerfinance.gov/consumer-tools/retirement/","badge":"gov"}]},{"title":"Get advice you can trust","links":[{"name":"NAPFA Advisor Finder","desc":"Fee-only financial planners who don't earn product commissions","url":"https://www.napfa.org/","badge":"free"},{"name":"CFP Board Advisor Search","desc":"Verify certified financial planner credentials before you hire","url":"https://www.cfp.net/find-a-cfp-professional","badge":"free"},{"name":"FINRA BrokerCheck","desc":"Verify broker and advisor licensing and disciplinary history","url":"https://brokercheck.finra.org/","badge":"gov"},{"name":"SEC Investor Alerts","desc":"Stay ahead of scams and fraud targeting retirement savers","url":"https://www.investor.gov/introduction-investing/investing-basics/glossary/investor-alerts-bulletins","badge":"gov"}]}]},"change":{"orient":"Moving from one field to another. Research your destination before you commit to training, and build proof of your new skills before you apply — not after you do.","stages":[{"title":"Research the target role","links":[{"name":"O*NET Occupation Explorer","desc":"Full job profile: tasks, skills, pay, tools, and 10-year outlook","url":"https://www.onetonline.org/","badge":"gov"},{"name":"BLS Occupational Outlook Handbook","desc":"Growth projections and entry requirements by occupation","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"LinkedIn Salary","desc":"Real compensation by role, location, and years of experience","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"Glassdoor Career Explorer","desc":"Career path mapping and company culture insights by role","url":"https://www.glassdoor.com/Career/","badge":"tool"},{"name":"Lightcast Open Skills","desc":"Real-time job posting data — what employers actually require now","url":"https://lightcast.io/open-skills","badge":"tool"}]},{"title":"Map your transferable skills","links":[{"name":"O*NET Skills Transferability","desc":"Find occupations that match your existing skill set","url":"https://www.onetonline.org/skills/","badge":"gov"},{"name":"CareerOneStop Skills Matcher","desc":"Compare current and target role skill overlap side by side","url":"https://www.careeronestop.org/toolkit/skills/skills-matcher.aspx","badge":"gov"},{"name":"MyNextMove Interest Profiler","desc":"Align the change to your natural strengths and interests","url":"https://www.mynextmove.org/explore/ip","badge":"gov"},{"name":"SkillScan","desc":"Structured transferable skills self-assessment and inventory","url":"https://www.skillscan.com/","badge":"tool"}]},{"title":"Fill the credential gap","links":[{"name":"CareerOneStop Training Finder","desc":"Local and online programs with cost and duration data","url":"https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx","badge":"gov"},{"name":"WIOA Training Funding","desc":"Federally funded retraining — may cover full tuition costs","url":"https://www.careeronestop.org/localhelp/wioa/","badge":"gov"},{"name":"Apprenticeship.gov","desc":"Earn while you learn in your new field with pay from day one","url":"https://www.apprenticeship.gov/","badge":"gov"},{"name":"Community College Finder (AACC)","desc":"Affordable local credentials through member colleges nationwide","url":"https://www.aacc.nche.edu/college-finder/","badge":"free"},{"name":"Coursera / edX","desc":"Accredited certificates from top universities, fully online","url":"https://www.coursera.org/","badge":"tool"}]},{"title":"Build proof before you apply","links":[{"name":"GitHub","desc":"Build and host a public technical portfolio for employers to review","url":"https://github.com/","badge":"free"},{"name":"Behance","desc":"Creative portfolio hosting for design, media, and visual fields","url":"https://www.behance.net/","badge":"free"},{"name":"Volunteer Match","desc":"Get real experience in your target field through meaningful volunteering","url":"https://www.volunteermatch.org/","badge":"free"},{"name":"LinkedIn Featured Section Guide","desc":"Showcase work samples and proof assets directly on your profile","url":"https://www.linkedin.com/help/linkedin/","badge":"tool"}]},{"title":"Execute the job search in your new field","links":[{"name":"American Job Centers","desc":"Free resume help and interview coaching through the DOL network","url":"https://www.careeronestop.org/localhelp/americanjobcenters/","badge":"gov"},{"name":"USAJOBS","desc":"Federal roles — strong culture of welcoming career changers","url":"https://www.usajobs.gov/","badge":"gov"},{"name":"Idealist","desc":"Mission-driven and nonprofit sector roles across the country","url":"https://www.idealist.org/","badge":"free"},{"name":"LinkedIn Jobs","desc":"Professional job board with alumni and network filters built in","url":"https://www.linkedin.com/jobs/","badge":"tool"},{"name":"Indeed","desc":"Highest job volume across all industries and experience levels","url":"https://www.indeed.com/","badge":"tool"}]}]},"compare":{"orient":"Comparing multiple paths at once. Run research in parallel for each option — this order helps you move from data to decision without getting stuck in analysis.","stages":[{"title":"Research all options simultaneously","links":[{"name":"O*NET Occupation Explorer","desc":"Side-by-side skill and task profiles for any occupation","url":"https://www.onetonline.org/","badge":"gov"},{"name":"BLS Occupational Outlook Handbook","desc":"10-year outlook and entry requirements — compare occupations directly","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"BLS Wages by Area and Occupation","desc":"Hyper-local salary data by occupation and metro area","url":"https://www.bls.gov/oes/","badge":"gov"},{"name":"LinkedIn Salary Insights","desc":"Compensation by title, metro area, and years of experience","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"CareerOneStop Occupation Profile","desc":"Local employment numbers and wage ranges by role","url":"https://www.careeronestop.org/toolkit/careers/explore-careers.aspx","badge":"gov"}]},{"title":"Understand what each path really costs","links":[{"name":"College Scorecard","desc":"Education cost and actual earnings outcomes by program and school","url":"https://collegescorecard.ed.gov/","badge":"gov"},{"name":"CareerOneStop Training Finder","desc":"Cost and duration of training programs for each path","url":"https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx","badge":"gov"},{"name":"MIT Living Wage Calculator","desc":"Minimum viable wage by metro area — does the path pay enough to live on?","url":"https://livingwage.mit.edu/","badge":"free"},{"name":"NerdWallet Cost of Living","desc":"Compare city-by-city costs if any of the paths require relocation","url":"https://www.nerdwallet.com/cost-of-living-calculator","badge":"tool"},{"name":"Credential Engine","desc":"Compare credential market value across competing options","url":"https://credentialengine.org/","badge":"tool"}]},{"title":"Assess fit, not just pay","links":[{"name":"O*NET Interest Profiler (Holland Code)","desc":"Map your personality type to occupational environments","url":"https://www.onetonline.org/explore/interests/","badge":"gov"},{"name":"CliftonStrengths (Gallup)","desc":"Strengths-based career fit assessment with detailed work style guidance","url":"https://www.gallup.com/cliftonstrengths/","badge":"tool"},{"name":"SkillScan","desc":"Transferable skill inventory to stress-test readiness across all paths","url":"https://www.skillscan.com/","badge":"tool"},{"name":"16Personalities","desc":"Cognitive style and work environment fit assessment, free version available","url":"https://www.16personalities.com/","badge":"free"}]},{"title":"Validate with real people","links":[{"name":"LinkedIn Alumni Tool","desc":"Find people who made similar transitions from your exact background","url":"https://www.linkedin.com/alumni/","badge":"tool"},{"name":"Meetup","desc":"Find professional communities in each field before you commit to one","url":"https://www.meetup.com/","badge":"free"},{"name":"Reddit Career Communities","desc":"r/cscareerquestions, r/nonprofit, r/financialcareers — real practitioner candor","url":"https://www.reddit.com/","badge":"free"}]},{"title":"Make the decision with a framework","links":[{"name":"CFPB Financial Capability Survey","desc":"Know your financial baseline before committing to a long training path","url":"https://www.consumerfinance.gov/","badge":"gov"},{"name":"Pivot Method (Jenny Blake)","desc":"Scan, pilot, launch — structured framework for making career pivots","url":"https://pivotmethod.com/","badge":"free"},{"name":"MindTools Decision Matrix","desc":"Weighted comparison framework for multi-factor decisions","url":"https://www.mindtools.com/dz5ry0s","badge":"free"}]}]}};
+// ── Reentry task ROI store ───────────────────────────────────────────────────
+var reentryTasks = [];
+var reentryROIOutput = '';
+
+// ── Skill store for change tool ──────────────────────────────────────────────
+var changeSkills = [];
+var changeSkillsLoaded = false;
+var lastChangeFetch = '';
+
+// ── MODES ────────────────────────────────────────────────────────────────────
+var MODES = {
+
+entry:{
+  icon:'ti-briefcase',badge:'v1 · Workforce Entry',title:'Workforce Entry',tone:'card-ok',
+  lede:'Turn your first offer or wage into take-home pay, stability targets, and a concrete 90-day plan. Every number is a planning estimate — not advice.',
+  fields:[
+    ['role','Target role','text','Program assistant'],
+    ['income','Gross annual pay','number','42000'],
+    ['tax','Tax + payroll estimate %','number','18'],
+    ['rent','Rent / housing / mo','number','950'],
+    ['debt','Debt payments / mo','number','120'],
+    ['basics','Food, transit, phone, basics / mo','number','780'],
+    ['save','Monthly savings goal','number','250'],
+    ['efund','Emergency fund saved now','number','800']
+  ],
+  metrics:['Take-home / mo','Monthly cushion','Savings rate','Emergency runway'],
+  calc:function(v){
+    var take=v.income*(1-v.tax/100)/12;
+    var costs=v.rent+v.debt+v.basics+v.save;
+    var net=take-costs;
+    var rate=take>0?v.save/take*100:0;
+    var monthlyBare=v.rent+v.debt+v.basics;
+    var covered=monthlyBare>0?v.efund/monthlyBare:0;
+    var monthsTo3=net>0&&v.save>0?(monthlyBare*3-Math.max(0,v.efund))/v.save:999;
+    var firstRaise=v.income*1.08;
+    var cushionStatus=net<0?'critical':net<200?'thin':net<600?'ok':'strong';
+    var efundStatus=covered<1?'critical':covered<3?'building':'ok';
+    var rateStatus=rate<5?'low':rate<10?'building':'ok';
+
+    // Signals
+    var signals=[];
+    if(net<0){signals.push({cls:'sig-red',icon:'ti-alert-triangle',text:'Your current plan runs a deficit of '+money(Math.abs(net))+'/month — expenses plus savings target exceed take-home pay. You need to either reduce monthly expenses by '+money(Math.abs(net))+', lower your savings goal temporarily, or negotiate a higher starting salary.'})}
+    else if(net<200){signals.push({cls:'sig-warn',icon:'ti-alert-circle',text:'The '+money(net)+'/month cushion is critically thin. Any single unplanned expense — a medical co-pay, car repair, or phone replacement — erases it. This plan is fragile until the emergency fund is built.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-circle-check',text:'The '+money(net)+'/month cushion is workable as a starting point. The priority is building your emergency fund before lifestyle creep absorbs it.'})}
+
+    if(efundStatus==='critical'){signals.push({cls:'sig-red',icon:'ti-shield-off',text:'With only '+money(v.efund)+' saved, you have '+covered.toFixed(1)+' months of bare-minimum coverage. One job disruption could put you in debt. Building to '+money(monthlyBare)+' (1 month) is the first milestone — everything else is secondary.'})}
+    else if(efundStatus==='building'){signals.push({cls:'sig-warn',icon:'ti-shield',text:'You have '+covered.toFixed(1)+' months of emergency coverage. The 3-month target of '+money(monthlyBare*3)+' would take about '+(monthsTo3<100?Math.ceil(monthsTo3)+' months at this savings rate':'a long time — consider increasing your monthly savings')+ ' to reach.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-shield-check',text:'Your emergency fund covers '+covered.toFixed(1)+' months of bare expenses. That is a meaningful buffer — now the focus shifts to growing income and building longer-term security.'})}
+
+    if(rateStatus==='low'&&net>=0){signals.push({cls:'sig-warn',icon:'ti-trending-up',text:'A '+rate.toFixed(1)+'% savings rate won\'t build financial resilience quickly. Even adding $50/month more — by substituting one line item — compresses the timeline to your emergency fund target significantly.'})}
+
+    // Adaptive plan
+    var plan=[];
+    if(net<0){
+      plan.push({cls:'task-urgent',label:'Before day 1',text:'Run a revised budget: identify one expense to cut by '+money(Math.abs(net)+50)+' to get the plan into surplus. Do this before accepting the offer.'});
+      plan.push({cls:'',label:'Negotiate the offer',text:'Even a $2,000 increase in starting salary — often achievable with one ask — adds '+money(2000*(1-v.tax/100)/12)+'/month net. The cost to the employer is low; the impact to you is high.'});
+    }else{
+      plan.push({cls:'',label:'Before day 1',text:'Confirm offer math: gross pay, pay cycle, benefits start date, commute cost, and payroll withholding. Then split direct deposit: '+money(v.save)+'/mo straight to savings, the rest to checking.'});
+    }
+    plan.push({cls:'',label:'Week 1: Money stack',text:'Open a high-yield savings account if you don\'t have one. Set up automatic transfers on payday. Remove friction from saving — it should require an action to spend savings, not to save.'});
+    plan.push({cls:'',label:'Days 1-30: Proof habit',text:'Start a brag log — one sentence per week documenting what you did, who it helped, and the result. Performance reviews reward people who remember their wins, not just the ones who work hardest.'});
+    plan.push({cls:'',label:'Days 31-90: Define "more"',text:'Ask your manager what "ready for more responsibility" looks like. Get it in writing or email. Convert the answer into two measurable targets. This is the foundation of your first raise conversation.'});
+    if(efundStatus!=='ok'){plan.push({cls:'',label:'Milestone: '+money(monthlyBare)+' saved',text:'Once you hit one month of bare expenses saved, you have graduated from financial emergency mode. This is the first real stability milestone — worth marking and telling someone about.'})}
+
+    // Rows
+    var rows=[
+      ['Monthly take-home (estimated)',money(take)],
+      ['Total committed expenses + savings',money(costs)],
+      ['Monthly cushion',money(net)],
+      ['Emergency fund: 1-month target',money(monthlyBare)],
+      ['Emergency fund: 3-month target',money(monthlyBare*3)],
+      ['Months to 3-month fund at current pace',monthsTo3<100?Math.ceil(monthsTo3)+' mo':'Not on track'],
+      ['First raise target at +8%',money(firstRaise)+'/yr']
+    ];
+
+    var narrative='';
+    if(net<0){
+      narrative='<strong>The plan as entered is in deficit.</strong> Take-home pay of '+money(take)+'/month doesn\'t cover committed expenses of '+money(costs)+'/month. Before accepting the offer, either renegotiate the salary, reduce a line item, or lower the savings goal temporarily — and treat that as a specific target to restore within 90 days, not a permanent cut.';
+    }else if(net<200){
+      narrative='<strong>The plan is technically in surplus, but barely.</strong> A '+money(net)+'/month cushion at this income level leaves almost no tolerance for variation. The emergency fund of '+money(v.efund)+' covers '+covered.toFixed(1)+' months of bare expenses — the goal is 3 months ('+money(monthlyBare*3)+'). At the current '+money(v.save)+'/month savings rate, that takes about '+(monthsTo3<100?Math.ceil(monthsTo3)+' months':' a long time')+'. The highest-ROI action is negotiating the starting salary before accepting the offer.';
+    }else{
+      narrative='<strong>The plan is viable.</strong> Take-home of '+money(take)+'/month leaves '+money(net)+' in cushion after expenses and savings. The current emergency fund of '+money(v.efund)+' covers '+covered.toFixed(1)+' months — '+(efundStatus==='ok'?'you\'ve cleared the 3-month threshold, which is a real milestone.':'the 3-month target of '+money(monthlyBare*3)+' is '+(monthsTo3<100?Math.ceil(monthsTo3)+' months away at this pace.':'a longer road — consider increasing the monthly savings amount.'))+' The next leverage point is documenting your impact from day one so the first raise conversation has evidence behind it.';
+    }
+
+    return{
+      metrics:[money(take),net>=0?money(net):'-'+money(Math.abs(net)),rate.toFixed(1)+'%',covered>=90?'Stable':covered.toFixed(1)+' mo'],
+      cls:['ic',net>=0?(net<200?'warnc':'pos'):'neg',rateStatus==='low'?'warnc':'pos',covered>=3?'pos':'warnc'],
+      rows:rows,signals:signals,plan:plan,narrative:narrative
+    };
+  }
+},
+
+reentry:{
+  icon:'ti-door-enter',badge:'v1 · Workforce Re-entry',title:'Workforce Re-entry',tone:'card-teal',
+  lede:'Returning to work after a gap is evidence of resilience, adaptability, and self-direction — qualities employers value. This planner translates your gap chapter into runway data, readiness metrics, and resume-ready language.',
+  fields:[
+    ['target','Target role','text','Operations coordinator'],
+    ['income','Target annual pay','number','52000'],
+    ['current','Current monthly income','number','1200'],
+    ['expenses','Monthly required expenses','number','2600'],
+    ['savings','Available runway savings','number','6000'],
+    ['skill','Skill match % (your estimate)','number','62'],
+    ['hours','Weekly search + training hours','number','12'],
+    ['months','Months until desired start','number','4']
+  ],
+  metrics:['Financial runway','Monthly gap','Readiness score','Weekly pace'],
+  calc:function(v){
+    var gap=Math.max(0,v.expenses-v.current);
+    var runway=gap>0?v.savings/gap:99;
+    var readiness=Math.min(100,v.skill+(v.hours*1.4)+(v.months*2));
+    var monthlyTarget=v.income/12;
+    var takeEstimate=v.income*.8/12;
+    var runwayStatus=runway<2?'critical':runway<3?'tight':runway>=90?'covered':'ok';
+    var readStatus=readiness<50?'low':readiness<75?'building':'strong';
+
+    var signals=[];
+    if(runwayStatus==='critical'){signals.push({cls:'sig-red',icon:'ti-alert-triangle',text:'With '+runway.toFixed(1)+' months of runway, your financial position is urgent. Bridge income — gig work, contract hours, part-time roles — should be the first priority over full-time applications. Applications from a stable financial position are more effective than applications made under pressure.'})}
+    else if(runwayStatus==='tight'){signals.push({cls:'sig-warn',icon:'ti-alert-circle',text:runway.toFixed(1)+' months of runway is workable but tight for a '+v.months+'-month timeline. If the job search extends past that window, you\'ll need bridge income or to draw down savings further. Worth having a plan B.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-shield-check',text:'Financial runway of '+(runway>=90?'stable (current income covers expenses)':runway.toFixed(1)+' months')+' is solid for a '+v.months+'-month timeline. You can run a focused, unhurried search — which almost always produces better offers than a pressured one.'})}
+
+    if(readStatus==='low'){signals.push({cls:'sig-warn',icon:'ti-target',text:'A '+Math.round(readiness)+'% readiness score suggests there are skill or confidence gaps to close before a heavy application push. At '+v.hours+' hours/week, you have '+(v.hours*v.months*4.33).toFixed(0)+' total build hours in this plan — enough to make meaningful progress. Focus on one credible proof asset first.'})}
+    else if(readStatus==='building'){signals.push({cls:'sig-ok',icon:'ti-trending-up',text:'Readiness is building toward the 75%+ threshold where applications are most effective. The remaining '+(Math.max(0,75-readiness)).toFixed(0)+' points come from closing the skill gap and adding one strong proof asset that shows what you can do, not just what you\'ve done.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-circle-check',text:'Readiness of '+Math.round(readiness)+'% is strong. The focus shifts from preparation to execution: 4-5 tailored applications per week, warm outreach to 2-3 contacts, and one practice interview or informational conversation.'})}
+
+    // The positive framing signal
+    signals.push({cls:'sig-ok',icon:'ti-star',text:'Career gaps are common and understood by most employers. What you did during the gap — caregiving, recovery, self-directed learning, freelancing, caregiving again — demonstrates qualities the workforce needs: persistence, adaptability, and the ability to function without institutional structure. The goal is to name it clearly, not hide it.'});
+
+    var plan=[];
+    plan.push({cls:'task-ok',label:'Your gap is an asset',text:'Frame it once, clearly: "I took time for [caregiving/health/family/personal development]. During that time I [maintained X, learned Y, managed Z]. I\'m returning because [reason]. Here\'s what I bring."'});
+    if(runwayStatus==='critical'||runwayStatus==='tight'){
+      plan.push({cls:'task-urgent',label:'Bridge income first',text:'Before heavy applications: explore part-time, contract, or gig roles in your field. Bridge income stabilizes the search. Check 211.org, SNAP, and LIHEAP if expenses are pressing.'})}
+    plan.push({cls:'',label:'Two proof assets',text:'Build a refreshed resume story and one concrete sample: a short report, a project, a certification, a volunteer engagement. Employers make decisions on evidence, not explanation.'});
+    plan.push({cls:'',label:'Weekly search loop',text:'4 tailored applications, 3 warm outreach messages, 1 mock interview, 1 skills block. Consistency beats intensity — a reliable weekly rhythm produces better results than sprint-and-stall.'});
+    plan.push({cls:'',label:'Translate the gap',text:'Use the ROI assessment below to turn what you\'ve been doing into dollar values and business language. Caregiving, managing a household budget, or running logistics for a community — these translate directly into resumes and interviews.'});
+
+    var rows=[
+      ['Monthly gap to cover',money(gap)],
+      ['Target monthly gross',money(monthlyTarget)],
+      ['Estimated take-home',money(takeEstimate)],
+      ['Savings for 3-month runway',money(gap*3)],
+      ['Readiness gap to 75%',Math.max(0,75-readiness).toFixed(0)+' pts'],
+      ['Total build hours in plan',(v.hours*v.months*4.33).toFixed(0)+' hrs']
+    ];
+
+    var narrative='<strong>You have more to offer than the gap suggests.</strong> ';
+    if(runwayStatus==='critical'){narrative+='The immediate priority is financial stability — '+(runway).toFixed(1)+' months of runway is tight. Bridge income unlocks a better search. ';}
+    else{narrative+='With '+(runway>=90?'stable income coverage':runway.toFixed(1)+' months of runway')+', you have the runway to run a quality search. ';}
+    narrative+='Readiness is at '+Math.round(readiness)+'% — '+(readStatus==='strong'?'strong enough to apply confidently.':readStatus==='building'?'building toward the 75% threshold where applications convert most reliably.':'there is meaningful ground to close, but the build hours in this plan are enough to get there.');
+
+    return{
+      metrics:[runway>=90?'Stable':runway.toFixed(1)+' mo',money(gap)+'/mo',Math.round(readiness)+'%',v.hours+' hrs/wk'],
+      cls:[runway>=3?'pos':'warnc',gap===0?'pos':'warnc',readiness>=75?'pos':readiness>=50?'warnc':'neg',v.hours>=10?'pos':'warnc'],
+      rows:rows,signals:signals,plan:plan,narrative:narrative
+    };
+  }
+},
+
+exit:{
+  icon:'ti-sunset-2',badge:'v1 · Workforce Exit',title:'Retirement & Exit Planner',tone:'card-warn',
+  lede:'Price your exit before you give notice. Healthcare, the monthly income gap, and care exposure are much harder to fix after the fact — this planner surfaces them in sequence.',
+  fields:[
+    ['age','Current age','number','62'],
+    ['savings','Retirement savings total','number','420000'],
+    ['spend','Expected monthly living cost','number','4200'],
+    ['ss','Social Security estimate / mo','number','2100'],
+    ['pension','Pension or annuity / mo','number','0'],
+    ['rate','Expected annual return %','number','4'],
+    ['withdraw','Annual withdrawal rate %','number','4'],
+    ['care','Elder / healthcare reserve','number','30000']
+  ],
+  metrics:['Monthly income','Monthly gap','Portfolio draw','Care reserve'],
+  calc:function(v){
+    var nest=v.savings*v.withdraw/100/12;
+    var income=v.ss+v.pension+nest;
+    var gap=v.spend-income;
+    var reserve=v.spend>0?v.care/v.spend:0;
+    var sustainYears=nest>0?(v.savings/(nest*12)):0;
+    var withdrawSafe=v.withdraw<=4;
+    var gapStatus=gap<=0?'surplus':gap<500?'tight':gap<1500?'moderate':'significant';
+    var annualGap=gap*12;
+
+    var signals=[];
+    if(gap>0){
+      signals.push({cls:gap>1000?'sig-red':'sig-warn',icon:'ti-alert-triangle',text:'The plan has a '+money(gap)+'/month shortfall ('+money(annualGap)+'/year). Over a 20-year retirement, uncorrected this totals '+money(annualGap*20)+'. Options: delay claiming Social Security (each year from 62-70 increases benefits by ~8%), reduce spending, or work part-time initially to bridge the gap.'});
+    }else{
+      signals.push({cls:'sig-ok',icon:'ti-circle-check',text:'Income covers projected spending with '+money(Math.abs(gap))+'/month to spare. That buffer matters — retirement spending often surprises to the upside in the first 5 years (travel, home projects) and again after age 80 (healthcare).'});
+    }
+
+    if(!withdrawSafe){signals.push({cls:'sig-warn',icon:'ti-trending-down',text:'A '+v.withdraw+'% withdrawal rate exceeds the commonly cited 4% safe withdrawal guideline. At this rate, the portfolio has a higher probability of depletion over a 25-30 year retirement. Consider reducing to 4% ('+money(v.savings*.04/12)+'/month) or adjusting spending.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-trending-up',text:'A '+v.withdraw+'% withdrawal rate is within the sustainable range based on historical portfolio research. The portfolio generates '+money(nest)+'/month in income, and at this rate has a strong probability of lasting 25-30 years.'})}
+
+    if(reserve<6){signals.push({cls:'sig-warn',icon:'ti-first-aid-kit',text:'The healthcare reserve of '+money(v.care)+' covers '+reserve.toFixed(1)+' months of living expenses. Most people will spend $250,000-$300,000 on healthcare in retirement above Medicare. If you\'re exiting before 65, pricing bridge coverage (COBRA or ACA) is the single most urgent pre-exit task.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-first-aid-kit',text:'The '+money(v.care)+' healthcare reserve covers '+reserve.toFixed(1)+' months of expenses. Still: price Medicare supplement (Medigap) options, review prescription coverage annually, and designate a health proxy before leaving active employment.'})}
+
+    var plan=[];
+    plan.push({cls:gap>0?'task-urgent':'',label:'Medicare + healthcare bridge',text:'If under 65: price COBRA (usually expensive), ACA marketplace plans (may be subsidized at lower retirement income), and any retiree coverage from your employer. Do this math before you give notice.'});
+    plan.push({cls:'',label:'Claiming age decision',text:'Running Social Security at 62 vs 70 can differ by 75%+ per month. Use SSA.gov to model your break-even age. If you can bridge 2-3 years from savings, waiting often pays back in 10-12 years.'});
+    plan.push({cls:'',label:'Three-budget stress test',text:'Run a base budget, a 20% lower budget (if a medical event or market downturn hits), and a care-event budget. If the lower budget is still livable, the exit is more resilient.'});
+    plan.push({cls:'',label:'Legal and proxy readiness',text:'Health proxy, durable power of attorney, and an advance directive. These cost almost nothing and prevent families from having to make urgent decisions without guidance. Do them before you exit.'});
+
+    var rows=[
+      ['Annual spending target',money(v.spend*12)],
+      ['Annual guaranteed income',money((v.ss+v.pension)*12)],
+      ['Annual portfolio withdrawal',money(v.savings*v.withdraw/100)],
+      ['Monthly surplus / gap',gap<=0?'+'+money(Math.abs(gap)):'-'+money(gap)],
+      ['Estimated portfolio years at '+v.withdraw+'%',sustainYears>0?sustainYears.toFixed(0)+' yrs':'N/A'],
+      ['Healthcare reserve in months of living cost',reserve.toFixed(1)+' mo']
+    ];
+
+    var narrative='<strong>Exit readiness is about the gaps that appear after you stop the paycheck.</strong> ';
+    if(gap>500){narrative+='The '+money(gap)+'/month income shortfall is the most pressing number: it means either the exit date should move, the withdrawal rate should increase (with risk), Social Security claiming should be delayed, or part-time work bridges the first years. '}
+    else if(gap>0){narrative+='The modest '+money(gap)+'/month shortfall is manageable — small spending adjustments or one-time income events could close it. '}
+    else{narrative+='Income covers spending with '+money(Math.abs(gap))+'/month to spare, which is a solid position. '}
+    narrative+='The healthcare picture is the second-priority variable: '+(v.age<65?'you\'re exiting before Medicare eligibility at 65 — bridge coverage pricing should happen in the next 30 days.':'Medicare eligibility is current, but supplement costs and prescription coverage should be reviewed annually.');
+
+    return{
+      metrics:[money(income),gap<=0?'+'+money(Math.abs(gap)):'-'+money(gap),money(nest)+'/mo',reserve.toFixed(1)+' mo'],
+      cls:[income>=v.spend?'pos':'warnc',gap<=0?'pos':'neg',nest>0?'ic':'warnc',reserve>=6?'pos':'warnc'],
+      rows:rows,signals:signals,plan:plan,narrative:narrative
+    };
+  }
+},
+
+equity:{
+  icon:'ti-chart-arcs',badge:'v1 · Equity Builder',title:'Equity & Retirement Builder',tone:'card-ai',
+  lede:'Model compound growth, find your employer match value, calculate the cost of waiting, and compare contribution scenarios across decades — before you optimize anything else.',
+  fields:[
+    ['age','Current age','number','32'],
+    ['retire','Target retirement age','number','67'],
+    ['balance','Current invested balance','number','18000'],
+    ['monthly','Your monthly contribution','number','450'],
+    ['match','Employer match / mo','number','150'],
+    ['rate','Expected annual return %','number','6'],
+    ['raise','Annual contribution increase %','number','3'],
+    ['alt','Alternative monthly amount','number','250']
+  ],
+  metrics:['Future value','Growth on contributions','5-year delay cost','Match captured'],
+  calc:function(v){
+    var years=Math.max(0,v.retire-v.age);
+    var fv=compound(v.balance,v.monthly+v.match,v.rate,years,v.raise);
+    var contrib=(v.monthly+v.match)*12*years;
+    var alt=compound(v.balance,v.alt+v.match,v.rate,years,v.raise);
+    var delay=fv-compound(v.balance,v.monthly+v.match,v.rate,Math.max(0,years-5),v.raise);
+    var matchAnnual=v.match*12;
+    var matchTotal=v.match*12*years;
+    var growth=fv-contrib-v.balance;
+    var altDiff=fv-alt;
+    var rateStatus=v.rate<=5?'conservative':v.rate<=8?'moderate':'aggressive';
+    var matchStatus=v.match>0?'capturing':'missing';
+
+    var signals=[];
+    if(matchStatus==='missing'){signals.push({cls:'sig-warn',icon:'ti-alert-circle',text:'No employer match is entered. If your employer offers a match and you\'re not capturing it, that\'s typically a 50-100% instant return on that contribution. Capturing full match should happen before any other investment optimization.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-circle-check',text:'Capturing '+money(matchAnnual)+'/year in employer match. Over '+years.toFixed(0)+' years, that totals '+money(matchTotal)+' in additional contributions — before growth. The match alone becomes '+money(compound(0,v.match,v.rate,years,v.raise))+' after compounding at '+v.rate+'%.'})}
+
+    if(rateStatus==='aggressive'){signals.push({cls:'sig-warn',icon:'ti-trending-up',text:'A '+v.rate+'% annual return assumption is on the aggressive side — historical average for a diversified stock portfolio is 7-8% before inflation, 5-6% after. Consider modeling at 6% to see the range, especially for plans 20+ years out.'})}
+
+    signals.push({cls:'sig-warn',icon:'ti-clock',text:'Waiting 5 years to start or increase contributions costs roughly '+money(delay)+' in final balance at the same return rate. That\'s the cost of delay — not a scare tactic, just time value of money. The earlier years of compounding do the heaviest lifting.'});
+
+    if(altDiff>50000){signals.push({cls:'sig-warn',icon:'ti-arrows-exchange',text:'Contributing '+money(v.alt)+'/month instead of '+money(v.monthly)+'/month produces a final balance '+money(altDiff)+' lower. That difference is larger than it looks because it compresses in the final years when account balance multiplies most.'})}
+
+    var plan=[];
+    plan.push({cls:'task-ok',label:'Step 1: Capture full match',text:'This is the only guaranteed return in investing. Calculate the exact monthly contribution needed to receive the maximum employer match — not a dollar less.'});
+    plan.push({cls:'',label:'Step 2: Max HSA if eligible',text:'Health Savings Accounts are triple-tax-advantaged — contributions pre-tax, growth tax-free, withdrawals for medical tax-free. After 65 they function as a regular retirement account. Fund before taxable accounts.'});
+    plan.push({cls:'',label:'Step 3: Automate increases',text:'Set contributions to increase by '+v.raise+'% annually (tied to raise cycles). Lifestyle creep is the silent killer of retirement savings — automating increases removes the decision point.'});
+    plan.push({cls:'',label:'Step 4: Watch fees',text:'A 1% annual fee difference on a '+money(fv)+' portfolio is roughly '+money(fv*.01)+'/year in the final years. Review your expense ratios. Index funds typically charge 0.03-0.20%. Actively managed funds often charge 0.5-1.5%+'});
+
+    var rows=[
+      ['Years investing',years.toFixed(0)],
+      ['Total you contribute',money((v.monthly)*12*years+v.balance)],
+      ['Total employer match',money(matchTotal)],
+      ['Growth generated',money(growth)],
+      ['Final balance (projected)',money(fv)],
+      ['Alternative amount outcome',money(alt)],
+      ['Difference at full vs alt contribution',money(altDiff)],
+      ['Value of an extra $100/mo',money(compound(v.balance,v.monthly+v.match+100,v.rate,years,v.raise)-fv)]
+    ];
+
+    var narrative='<strong>Compound growth is not linear — the last 10 years of a 35-year plan generate more than the first 25 combined.</strong> ';
+    narrative+='At '+v.rate+'% return over '+years+' years, '+money(contrib+v.balance)+' in total contributions (including your '+money(matchTotal)+' in employer match) becomes '+money(fv)+'. The growth of '+money(growth)+' is pure time value. ';
+    narrative+='The 5-year delay cost of '+money(delay)+' is the starkest number here: every year this plan is delayed costs roughly '+money(delay/5)+' in final balance.';
+
+    return{
+      metrics:[money(fv),money(growth),money(delay),money(matchTotal)],
+      cls:['pos','ic','warnc','pos'],
+      rows:rows,signals:signals,plan:plan,narrative:narrative
+    };
+  }
+},
+
+change:{
+  icon:'ti-route',badge:'v1 · Career Change',title:'Career Change Planner',tone:'card-teal',
+  lede:'Compare cost, time, and upside of a career pivot — then get AI-identified skills for your target role and check off what you already have to build an accurate readiness picture.',
+  fields:[
+    ['current','Current role','text','Customer support lead'],
+    ['target','Target role','text','Business analyst'],
+    ['nowpay','Current annual pay','number','52000'],
+    ['newpay','Target annual pay','number','72000'],
+    ['cost','Training / credential cost','number','3500'],
+    ['months','Months to transition','number','9'],
+    ['hours','Weekly build hours','number','8'],
+    ['industry','Target industry (optional)','text','Finance']
+  ],
+  metrics:['Pay upside','Payback','Readiness','Build hours'],
+  calc:function(v){
+    var upside=v.newpay-v.nowpay;
+    var monthlyUpside=upside/12;
+    var payback=monthlyUpside>0?v.cost/monthlyUpside:0;
+    // Readiness now driven by skill checklist if loaded
+    var baseReadiness=60; // default before skills loaded
+    var skillReadiness=baseReadiness;
+    if(changeSkillsLoaded&&changeSkills.length>0){
+      var checked=changeSkills.filter(function(s){return s.checked}).length;
+      skillReadiness=Math.round((checked/changeSkills.length)*100);
+    }
+    var future=Math.min(100,skillReadiness+(v.hours*0.5));
+    var upStatus=upside>10000?'strong':upside>0?'modest':'negative';
+    var paybackStatus=payback>0&&payback<=12?'fast':payback<=24?'medium':'slow';
+
+    var signals=[];
+    if(upStatus==='negative'){signals.push({cls:'sig-warn',icon:'ti-trending-down',text:'The target role pays '+money(Math.abs(upside))+'/year less than your current role. This may be intentional (mission fit, better conditions, growth trajectory) — but the financial trade-off should be explicit, not overlooked.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-trending-up',text:'The pay upside is '+money(upside)+'/year. At this gap, training cost of '+money(v.cost)+' pays back in '+payback.toFixed(1)+' months after landing the new role. Over three years the net gain is roughly '+money(upside*3-v.cost)+'.'})}
+
+    if(future<50){signals.push({cls:'sig-warn',icon:'ti-target',text:'Readiness is at '+Math.round(future)+'% — below the threshold for a confident application push. This is not discouraging; it means the build phase comes first. Use the '+(v.hours*v.months*4.33).toFixed(0)+' hours in this plan to close specific skill gaps rather than applying broadly.'})}
+    else if(future<75){signals.push({cls:'sig-warn',icon:'ti-progress',text:'Readiness is building ('+Math.round(future)+'%). At this level, bridge roles that overlap both fields are worth targeting — they pay in your new direction while adding real credentials from active work, which accelerates the remaining gap faster than training alone.'})}
+    else{signals.push({cls:'sig-ok',icon:'ti-circle-check',text:'Readiness of '+Math.round(future)+'% clears the threshold for active applications. Focus on proof: a work sample, a portfolio item, or a certifiable project that demonstrates target-role capability to a hiring manager who doesn\'t know you yet.'})}
+
+    var plan=[];
+    plan.push({cls:'',label:'Research first',text:'Interview 3 people who hold the target role at different companies. Ask what they actually do all day, what they wish they\'d known, and what screened them out from early roles. This data is more valuable than any job description.'});
+    plan.push({cls:'',label:'Close the checklist gaps',text:'Use the skills assessment below to identify the specific gaps. Each unchecked skill is a concrete action item — not a vague shortcoming. Prioritize the 2-3 skills that appear most often in real job postings for '+esc(v.target||'the target role')+'.'});
+    if(future<75){plan.push({cls:'',label:'Build one proof asset',text:'A work sample that demonstrates '+esc(v.target||'target role')+' capability is worth more than any credential to most hiring managers. It removes the "unproven" objection before the interview.'});}
+    plan.push({cls:'',label:'Bridge role strategy',text:'Apply to roles where your current experience is credible AND the target-role skills appear in the job description. These roles let you add the credential from real work — the fastest readiness accelerator.'});
+    plan.push({cls:'',label:'Package the story',text:'Why the shift, what transfers, what is newly proven, what risk you remove for the employer. Practice saying it in 90 seconds. This is the answer to "why are you leaving your field?"'});
+
+    var rows=[
+      ['Current annual pay',money(v.nowpay)],
+      ['Target annual pay',money(v.newpay)],
+      ['Pay upside per year',money(upside)],
+      ['Pay upside per month',money(upside/12)],
+      ['Training cost payback',payback>0?payback.toFixed(1)+' months':'N/A'],
+      ['Net gain over 3 years',money(upside*3-v.cost)],
+      ['Total build hours in plan',(v.hours*v.months*4.33).toFixed(0)+' hrs'],
+      ['Skill readiness',Math.round(skillReadiness)+'%']
+    ];
+
+    var narrative='<strong>A career pivot is a business case, not a wish.</strong> Moving from '+esc(v.current||'the current role')+' to '+esc(v.target||'the target role')+' shows '+money(upside)+'/year in pay upside, with training cost recovering in '+payback.toFixed(1)+' months. ';
+    narrative+='The readiness score of '+Math.round(future)+'% is based on '+(changeSkillsLoaded&&changeSkills.length>0?'the skill checklist below — each checked skill is a real credential, each unchecked one is a specific action.':'your input estimate — load the skills checklist for a more precise readiness picture.')+' ';
+    if(future<75){narrative+='At this level, the highest-leverage action is closing 2-3 specific skill gaps through targeted projects or bridge roles before a full application push.'}
+    else{narrative+='Readiness clears the application threshold — the remaining investment is in proof assets and a practiced narrative for the role transition.'}
+
+    return{
+      metrics:[money(upside)+'/yr',payback>0?payback.toFixed(1)+' mo':'N/A',Math.round(future)+'%',(v.hours*v.months*4.33).toFixed(0)+' hrs'],
+      cls:[upside>0?'pos':'warnc',paybackStatus==='fast'?'pos':'warnc',future>=75?'pos':future>=50?'warnc':'neg',v.hours>=6?'ic':'warnc'],
+      rows:rows,signals:signals,plan:plan,narrative:narrative
+    };
+  }
+},
+
+compare:{
+  icon:'ti-scale',badge:'v1 · Career Compare',title:'Career Comparison',tone:'card-ai',
+  lede:'Side-by-side decision analysis across up to three paths — income, fit, skill match, market demand, training burden. The score is a starting hypothesis; the signals tell you where it breaks down.',
+  fields:[
+    ['aName','Career A','text','Data analyst'],['aPay','A annual pay','number','78000'],['aFit','A fit %','number','72'],['aSkill','A skill match %','number','60'],['aDemand','A market demand %','number','78'],['aTrain','A training months','number','6'],
+    ['bName','Career B','text','Project manager'],['bPay','B annual pay','number','85000'],['bFit','B fit %','number','68'],['bSkill','B skill match %','number','74'],['bDemand','B market demand %','number','70'],['bTrain','B training months','number','4'],
+    ['cName','Career C (optional)','text','UX researcher'],['cPay','C annual pay','number','92000'],['cFit','C fit %','number','80'],['cSkill','C skill match %','number','46'],['cDemand','C market demand %','number','62'],['cTrain','C training months','number','12']
+  ],
+  metrics:['Strongest path','Composite score','Fastest entry','Highest pay'],
+  calc:function(v){
+    var all=[
+      career(v.aName,v.aPay,v.aFit,v.aSkill,v.aDemand,v.aTrain),
+      career(v.bName,v.bPay,v.bFit,v.bSkill,v.bDemand,v.bTrain),
+      career(v.cName,v.cPay,v.cFit,v.cSkill,v.cDemand,v.cTrain)
+    ].filter(function(c){return c.pay>0||c.fit>0});
+    var sorted=all.slice().sort(function(x,y){return y.score-x.score});
+    var fastest=all.slice().sort(function(x,y){return x.train-y.train})[0];
+    var highestPay=all.slice().sort(function(x,y){return y.pay-x.pay})[0];
+    var winner=sorted[0];
+    var second=sorted[1];
+    var scoreDiff=second?Math.round(winner.score-second.score):99;
+    var isClose=scoreDiff<8;
+
+    var signals=[];
+    if(isClose&&second){
+      signals.push({cls:'sig-warn',icon:'ti-equal',text:'The scores for '+esc(winner.name)+' and '+esc(second.name)+' differ by only '+scoreDiff+' points — too close to decide by score alone. The real differentiator is: which dimension matters most to you? If it\'s income certainty, '+esc(winner.pay>second.pay?winner.name:second.name)+' wins. If it\'s fastest path, that\'s '+esc(fastest.name)+'. If it\'s skill match (least to prove), that\'s '+esc(all.slice().sort(function(x,y){return y.skill-x.skill})[0].name)+'.'});
+    }else{
+      signals.push({cls:'sig-ok',icon:'ti-trophy',text:esc(winner.name)+' leads by '+scoreDiff+' points. The margin is significant enough that the score is directionally meaningful — though it should be validated with real job postings and a conversation with someone who holds the role.'});
+    }
+
+    // Skill match signal
+    var lowestSkill=all.slice().sort(function(x,y){return x.skill-y.skill})[0];
+    if(lowestSkill.skill<60){signals.push({cls:'sig-warn',icon:'ti-tools',text:esc(lowestSkill.name)+' has a '+lowestSkill.skill+'% skill match — the lowest in the comparison. Paths below 65% skill match typically require 6-12 months of active credential building before applications are competitive. That time cost should be factored into the comparison, not just the training months you entered.'})}
+
+    // Training burden signal
+    var longestTrain=all.slice().sort(function(x,y){return y.train-x.train})[0];
+    if(longestTrain.train>9){signals.push({cls:'sig-warn',icon:'ti-clock',text:esc(longestTrain.name)+' requires the most training at '+longestTrain.train+' months. For paths over 9 months, consider bridge roles that let you work toward the target field while earning — they reduce financial risk and often produce better hiring results than credentials alone.'})}
+
+    var plan=[];
+    plan.push({cls:'',label:'Validate with reality',text:'The score is a model. For each path: read 10 real job postings, message 2 practitioners on LinkedIn, and search salary data on BLS.gov. Two hours of research beats two months of analysis.'});
+    plan.push({cls:'',label:'Stress test the lowest-score path',text:'If one option is being dismissed because it scores lower, ask: is the model missing something? Is there a non-financial reason it keeps coming up? Scores don\'t capture fulfillment, mission fit, or lifestyle compatibility.'});
+    plan.push({cls:'',label:'Pilot before committing',text:'Volunteer, freelance, or shadow in your top path for 30 days before any major training investment. Real experience produces more information than any assessment.'});
+    plan.push({cls:'',label:'Use the fastest path as a hedge',text:esc(fastest.name)+' can be entered in '+fastest.train+' months. Even if it\'s not the top choice, a faster path to income provides the option value to pursue longer-horizon goals from a position of stability.'});
+
+    // Build comparison table rows
+    var tableRows=sorted.map(function(c,i){
+      var scoreClass=c.score>=70?'score-high':c.score>=55?'score-mid':'score-low';
+      return{name:c.name,pay:money(c.pay),fit:c.fit+'%',skill:c.skill+'%',demand:c.demand+'%',train:c.train+' mo',score:Math.round(c.score),scoreClass:scoreClass,winner:i===0};
+    });
+
+    var rows=sorted.map(function(c){
+      return[c.name,'Score: '+Math.round(c.score)+'/100 · Pay: '+money(c.pay)+' · Entry: '+c.train+' mo'];
+    });
+
+    var narrative='<strong>The strongest composite path is '+esc(winner.name)+'</strong> with a score of '+Math.round(winner.score)+'/100. ';
+    if(isClose&&second){narrative+='But '+esc(second.name)+' scores within '+scoreDiff+' points — close enough that the decision should turn on the dimension that matters most to you personally, not the composite. ';}
+    narrative+='The fastest entry is '+esc(fastest.name)+' at '+fastest.train+' months. The highest-paying option is '+esc(highestPay.name)+' at '+money(highestPay.pay)+'. ';
+    narrative+='Use the signals below to identify where the score is most likely to mislead, then validate the top path with real job postings before investing in training.';
+
+    return{
+      metrics:[winner.name,Math.round(winner.score)+'/100',fastest.name+' ('+fastest.train+' mo)',money(highestPay.pay)],
+      cls:['pos','pos',fastest.train<=6?'pos':'warnc','ic'],
+      rows:rows,signals:signals,plan:plan,narrative:narrative,tableRows:tableRows
+    };
+  }
+}
+
+}; // end MODES
+
+// ── Render engine ─────────────────────────────────────────────────────────────
 function render(){
   var mode=MODES[window.TOOLKIT_MODE]||MODES.entry;
-  document.title='receipts. '+mode.title.toLowerCase();
+  document.title='receipts. — '+mode.title;
   byId('app').innerHTML=
     '<div class="app">'+
-      '<div class="topbar"><div class="logo"><i class="ti '+mode.icon+'" style="font-size:16px;color:var(--green)"></i>receipts.<span class="lab">Aric Civic Labs</span><span class="version-badge">'+mode.badge+'</span></div><div style="display:flex;align-items:center;gap:8px"><span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span><a href="index.html#transitions" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-arrow-left" style="font-size:12px"></i> Transitions</a><a href="index.html" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-home" style="font-size:12px"></i> receipts. home</a></div></div>'+
-      '<div class="tab-nav"><button class="active" data-tab="snapshot">1. Snapshot</button><button data-tab="math">2. Math</button><button data-tab="plan">3. Plan</button><button data-tab="resources">4. Resources</button><button data-tab="export">5. Export</button></div>'+
-      '<div id="snapshot" class="tab-panel active"></div><div id="math" class="tab-panel"></div><div id="plan" class="tab-panel"></div><div id="resources" class="tab-panel"></div><div id="export" class="tab-panel"></div>'+
+      '<div class="topbar">'+
+        '<div class="logo"><i class="ti '+mode.icon+'" style="font-size:16px;color:var(--green)"></i>receipts.<span class="lab">Aric Civic Labs</span><span class="version-badge">'+mode.badge+'</span></div>'+
+        '<div style="display:flex;align-items:center;gap:8px">'+
+          '<span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span>'+
+          '<a href="index.html#transitions" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-arrow-left" style="font-size:12px"></i> Transitions</a>'+
+          '<a href="index.html" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-home" style="font-size:12px"></i> Home</a>'+
+        '</div>'+
+      '</div>'+
+      '<input type="radio" class="tab-radio" id="t1" name="tabs" checked/>'+
+      '<input type="radio" class="tab-radio" id="t2" name="tabs"/>'+
+      '<input type="radio" class="tab-radio" id="t3" name="tabs"/>'+
+      '<input type="radio" class="tab-radio" id="t4" name="tabs"/>'+
+      '<input type="radio" class="tab-radio" id="t5" name="tabs"/>'+
+      '<div class="tab-labels">'+
+        '<label class="tab-label" for="t1"><i class="ti ti-bolt" style="font-size:12px;vertical-align:-1px"></i> Snapshot</label>'+
+        '<label class="tab-label" for="t2"><i class="ti ti-calculator" style="font-size:12px;vertical-align:-1px"></i> Math</label>'+
+        '<label class="tab-label" for="t3"><i class="ti ti-list-check" style="font-size:12px;vertical-align:-1px"></i> Plan</label>'+
+        '<label class="tab-label" for="t4"><i class="ti ti-link" style="font-size:12px;vertical-align:-1px"></i> Resources</label>'+
+        '<label class="tab-label" for="t5"><i class="ti ti-file-export" style="font-size:12px;vertical-align:-1px"></i> Export</label>'+
+      '</div>'+
+      '<div class="panels">'+
+        '<div id="p1" class="tab-panel">'+buildSnapshot(mode)+'</div>'+
+        '<div id="p2" class="tab-panel"></div>'+
+        '<div id="p3" class="tab-panel"></div>'+
+        '<div id="p4" class="tab-panel">'+buildResources(mode)+'</div>'+
+        '<div id="p5" class="tab-panel"></div>'+
+      '</div>'+
     '</div>';
-  document.querySelectorAll('.tab-nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.tab-nav button,.tab-panel').forEach(function(x){x.classList.remove('active')});b.classList.add('active');byId(b.dataset.tab).classList.add('active')}});
-  renderSnapshot(mode);renderResources(mode);calc();
+  calc();
 }
-function fieldHtml(f){return '<div class="fg"><label for="'+f[0]+'">'+f[1]+'</label><input id="'+f[0]+'" type="'+f[2]+'" value="'+esc(f[3])+'" oninput="calc()"></div>'}
-function renderSnapshot(mode){
-  var groups='', fields=mode.fields;
-  for(var i=0;i<fields.length;i+=2)groups+='<div class="fr">'+fieldHtml(fields[i])+(fields[i+1]?fieldHtml(fields[i+1]):'')+'</div>';
-  byId('snapshot').innerHTML='<div class="card '+mode.tone+'"><p class="sl sl-ok"><i class="ti '+mode.icon+'"></i>'+mode.title+'</p><p class="lede">'+mode.lede+'</p></div><div class="card"><p class="sl"><i class="ti ti-forms"></i>Inputs</p>'+groups+'<div class="hint">All math stays in this browser tab. Figures are planning estimates, not tax, legal, investment, or medical advice.</div></div><div id="metric-grid" class="g4"></div><div id="narrative" class="card card-teal"></div>';
+
+function buildSnapshot(mode){
+  var fields=mode.fields, groups='';
+  // For compare, render in groups of 6 (3 careers)
+  if(window.TOOLKIT_MODE==='compare'){
+    groups+='<p style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Career A</p>';
+    groups+='<div class="fr3">'+fieldHtml(fields[0])+fieldHtml(fields[1])+fieldHtml(fields[2])+'</div>';
+    groups+='<div class="fr3">'+fieldHtml(fields[3])+fieldHtml(fields[4])+fieldHtml(fields[5])+'</div>';
+    groups+='<p style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">Career B</p>';
+    groups+='<div class="fr3">'+fieldHtml(fields[6])+fieldHtml(fields[7])+fieldHtml(fields[8])+'</div>';
+    groups+='<div class="fr3">'+fieldHtml(fields[9])+fieldHtml(fields[10])+fieldHtml(fields[11])+'</div>';
+    groups+='<p style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">Career C <span style="color:var(--text3);font-weight:400">(optional)</span></p>';
+    groups+='<div class="fr3">'+fieldHtml(fields[12])+fieldHtml(fields[13])+fieldHtml(fields[14])+'</div>';
+    groups+='<div class="fr3">'+fieldHtml(fields[15])+fieldHtml(fields[16])+fieldHtml(fields[17])+'</div>';
+  } else {
+    for(var i=0;i<fields.length;i+=2){
+      groups+='<div class="fr">'+fieldHtml(fields[i])+(fields[i+1]?fieldHtml(fields[i+1]):'')+'</div>';
+    }
+  }
+
+  var extra='';
+  if(window.TOOLKIT_MODE==='change'){
+    extra='<div id="skills-section"></div>';
+  }
+  if(window.TOOLKIT_MODE==='reentry'){
+    extra='<div id="roi-section"></div>';
+  }
+
+  return '<div class="card '+mode.tone+'"><p class="sl sl-teal"><i class="ti '+mode.icon+'"></i>'+mode.title+'</p><p class="lede">'+esc(mode.lede)+'</p></div>'+
+    '<div class="card"><p class="sl"><i class="ti ti-forms"></i>Inputs</p>'+groups+
+    '<div class="hint">All math stays in this browser tab. Figures are planning estimates — not tax, legal, investment, or medical advice.</div></div>'+
+    '<div id="metric-grid" class="g4"></div>'+
+    '<div id="signals-area" class="signal-row"></div>'+
+    '<div id="narrative-card" class="insight-card" style="display:none"><div class="insight-label"><i class="ti ti-sparkles"></i>Analysis</div><div id="narrative-body" class="insight-body"></div></div>'+
+    extra;
 }
+
+function fieldHtml(f){
+  return '<div class="fg"><label for="'+f[0]+'">'+esc(f[1])+'</label><input id="'+f[0]+'" type="'+f[2]+'" value="'+esc(f[3])+'" oninput="calc()"></div>';
+}
+
 function calc(){
   var mode=MODES[window.TOOLKIT_MODE]||MODES.entry, v={};
   mode.fields.forEach(function(f){v[f[0]]=val(f[0])});
   var out=mode.calc(v);
-  byId('metric-grid').innerHTML=mode.metrics.map(function(m,i){return '<div class="mc"><p class="lb">'+m+'</p><p class="vl '+(out.cls[i]||'')+'">'+esc(out.metrics[i])+'</p></div>'}).join('');
-  byId('narrative').innerHTML='<p class="sl sl-teal"><i class="ti ti-sparkles"></i>Reading</p><p class="lede">'+esc(out.narrative)+'</p><div class="meter"><div class="mfill" style="width:'+scoreWidth(out)+'%"></div></div>';
-  byId('math').innerHTML='<div class="card"><p class="sl"><i class="ti ti-calculator"></i>Working math</p>'+out.rows.map(function(r){return '<div class="irow"><span>'+esc(r[0])+'</span><strong>'+esc(r[1])+'</strong></div>'}).join('')+'</div>';
-  byId('plan').innerHTML='<div class="card"><p class="sl sl-ok"><i class="ti ti-list-check"></i>Action plan</p><div class="plan-grid">'+out.plan.map(function(p){return '<div class="task"><strong>'+esc(p[0])+'</strong>'+esc(p[1])+'</div>'}).join('')+'</div></div>';
-  byId('export').innerHTML='<div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Copyable brief</p><div id="brief" class="dpre">'+esc(makeBrief(mode,v,out))+'</div><div class="brow"><button class="btn-primary" onclick="copyBrief()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy brief</button><button onclick="downloadBrief()"><i class="ti ti-download" style="font-size:13px;vertical-align:-1px"></i> Download .txt</button></div></div>';
+
+  // Metrics
+  var mg=byId('metric-grid');
+  if(mg)mg.innerHTML=mode.metrics.map(function(m,i){
+    return '<div class="mc"><p class="lb">'+esc(m)+'</p><p class="vl '+(out.cls[i]||'')+'">'+esc(out.metrics[i])+'</p></div>';
+  }).join('');
+
+  // Signals
+  var sa=byId('signals-area');
+  if(sa&&out.signals){
+    sa.innerHTML=(out.signals||[]).map(function(s){
+      return '<div class="signal '+s.cls+'"><i class="ti '+s.icon+'" style="font-size:15px;flex-shrink:0;margin-top:1px"></i><span>'+s.text+'</span></div>';
+    }).join('');
+  }
+
+  // Narrative
+  var nc=byId('narrative-card'),nb=byId('narrative-body');
+  if(nc&&nb&&out.narrative){nc.style.display='block';nb.innerHTML=out.narrative;}
+
+  // Math tab
+  var p2=byId('p2');
+  if(p2){
+    var mathHtml='<div class="card"><p class="sl"><i class="ti ti-calculator"></i>Working math</p>';
+    if(out.tableRows&&window.TOOLKIT_MODE==='compare'){
+      mathHtml+='<div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>Career</th><th>Pay</th><th>Fit</th><th>Skill match</th><th>Demand</th><th>Training</th><th>Score</th></tr></thead><tbody>';
+      mathHtml+=out.tableRows.map(function(r){
+        return '<tr class="'+(r.winner?'winner':'')+'"><td>'+esc(r.name)+(r.winner?' <span style="font-size:10px;color:var(--green)">★ top</span>':'')+'</td><td>'+esc(r.pay)+'</td><td>'+esc(r.fit)+'</td><td>'+esc(r.skill)+'</td><td>'+esc(r.demand)+'</td><td>'+esc(r.train)+'</td><td><span class="score-pill '+esc(r.scoreClass)+'">'+esc(r.score)+'/100</span></td></tr>';
+      }).join('');
+      mathHtml+='</tbody></table></div>';
+    }else{
+      mathHtml+=out.rows.map(function(r){
+        return '<div class="irow"><span>'+esc(r[0])+'</span><strong>'+esc(r[1])+'</strong></div>';
+      }).join('');
+    }
+    mathHtml+='</div>';
+    p2.innerHTML=mathHtml;
+  }
+
+  // Plan tab
+  var p3=byId('p3');
+  if(p3&&out.plan){
+    p3.innerHTML='<div class="card"><p class="sl sl-ok"><i class="ti ti-list-check"></i>Action plan</p><div class="plan-grid">'+
+      out.plan.map(function(p){
+        return '<div class="task '+(p.cls||'')+'"><strong>'+esc(p.label)+'</strong>'+esc(p.text)+'</div>';
+      }).join('')+'</div></div>';
+  }
+
+  // Export tab
+  var p5=byId('p5');
+  if(p5){
+    p5.innerHTML='<div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Copyable brief</p><div id="brief-content" class="dpre">'+esc(makeBrief(mode,v,out))+'</div><div class="brow"><button class="btn-primary" onclick="copyBrief()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy brief</button><button onclick="downloadBrief()"><i class="ti ti-download" style="font-size:13px;vertical-align:-1px"></i> Download .txt</button></div></div>';
+  }
+
+  // Render tool-specific extras
+  if(window.TOOLKIT_MODE==='change')renderSkillsSection(v);
+  if(window.TOOLKIT_MODE==='reentry')renderROISection(v);
 }
-function scoreWidth(out){
-  var nums=(out.metrics||[]).join(' ').match(/\d+(\.\d+)?/g)||['60'];
-  return Math.max(15,Math.min(100,parseFloat(nums[0])||60));
+
+// ── Skills section (change tool) ──────────────────────────────────────────────
+function renderSkillsSection(v){
+  var sec=byId('skills-section');
+  if(!sec)return;
+  var target=v.target||'the target role';
+  var industry=v.industry||'';
+  var fetchKey=target+'|'+industry;
+
+  var checkedCount=changeSkills.filter(function(s){return s.checked}).length;
+  var total=changeSkills.length;
+
+  var html='<div class="card card-teal"><p class="sl sl-teal"><i class="ti ti-checklist"></i>Skills Readiness Assessment</p>';
+  html+='<p class="lede" style="margin-bottom:.875rem">Check off skills you already have. The readiness score updates automatically. Skills you\'re missing become your action list.</p>';
+
+  if(!changeSkillsLoaded||lastChangeFetch!==fetchKey){
+    html+='<button class="btn-teal" onclick="loadChangeSkills()"><i class="ti ti-sparkles" style="font-size:13px;vertical-align:-1px"></i> Load skills for '+esc(target)+'</button>';
+    if(changeSkills.length>0&&lastChangeFetch!==fetchKey){
+      html+='<p class="hint" style="margin-top:8px">Role changed — reload skills to update the list.</p>';
+    }
+  }else{
+    // Readiness bar
+    var pct=total>0?Math.round(checkedCount/total*100):0;
+    var barCls=pct<50?'rf-low':pct<75?'rf-mid':'rf-high';
+    html+='<div class="readiness-bar"><div class="rb-label"><span>Skill readiness</span><strong>'+checkedCount+' / '+total+' ('+pct+'%)</strong></div><div class="rb-track"><div class="rb-fill '+barCls+'" style="width:'+pct+'%"></div></div></div>';
+
+    // Grouped: have / need
+    var have=changeSkills.filter(function(s){return s.checked});
+    var need=changeSkills.filter(function(s){return !s.checked});
+
+    if(need.length>0){
+      html+='<p style="font-size:11px;font-weight:600;color:var(--amber);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">'+need.length+' skills to build</p>';
+      html+='<div class="skill-list">';
+      need.forEach(function(s,i){
+        html+='<label class="skill-item" onclick="toggleSkill('+changeSkills.indexOf(s)+')">'+
+          '<input type="checkbox" onclick="event.stopPropagation();toggleSkill('+changeSkills.indexOf(s)+')" '+(s.checked?'checked':'')+'/>'+
+          '<div><div class="sk-name">'+esc(s.name)+'</div><div class="sk-desc">'+esc(s.desc)+'</div></div></label>';
+      });
+      html+='</div>';
+    }
+
+    if(have.length>0){
+      html+='<p style="font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">'+have.length+' skills you have</p>';
+      html+='<div class="skill-list">';
+      have.forEach(function(s){
+        html+='<label class="skill-item checked" onclick="toggleSkill('+changeSkills.indexOf(s)+')">'+
+          '<input type="checkbox" onclick="event.stopPropagation();toggleSkill('+changeSkills.indexOf(s)+')" checked/>'+
+          '<div><div class="sk-name">'+esc(s.name)+'</div><div class="sk-desc">'+esc(s.desc)+'</div></div></label>';
+      });
+      html+='</div>';
+    }
+
+    // Gap resources
+    if(need.length>0){
+      html+='<div style="margin-top:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--amber-b);border-radius:var(--radius-sm);">';
+      html+='<p class="sl sl-warn" style="margin-bottom:6px"><i class="ti ti-books"></i>Resources for your gaps</p>';
+      html+='<p style="font-size:12px;color:var(--text2);line-height:1.6">Focus on: <strong style="color:var(--text)">'+esc(need.slice(0,3).map(function(s){return s.name}).join(', ')+(need.length>3?' + '+(need.length-3)+' more':''))+'</strong>. Check O*NET for official skill definitions, CareerOneStop Training Finder for programs, and LinkedIn Learning or Coursera for self-paced options. Each tab in Resources has targeted links for each gap category.</p>';
+      html+='</div>';
+    }
+
+    html+='<div class="brow" style="margin-top:8px"><button onclick="loadChangeSkills()" style="font-size:12px"><i class="ti ti-refresh" style="font-size:12px;vertical-align:-1px"></i> Reload skills</button></div>';
+  }
+
+  html+='</div>';
+  sec.innerHTML=html;
 }
-function makeBrief(mode,v,out){
-  var lines=[mode.title,'Generated: '+new Date().toLocaleDateString(),''];
-  mode.fields.forEach(function(f){lines.push(f[1]+': '+v[f[0]])});
-  lines.push('','Key metrics:');
-  mode.metrics.forEach(function(m,i){lines.push('- '+m+': '+out.metrics[i])});
-  lines.push('','Plan:');
-  out.plan.forEach(function(p){lines.push('- '+p[0]+': '+p[1])});
-  lines.push('','Note: Planning estimate only.');
-  return lines.join('\n');
+
+function toggleSkill(idx){
+  if(!changeSkills[idx])return;
+  changeSkills[idx].checked=!changeSkills[idx].checked;
+  calc();
 }
-function renderResources(mode){
+
+async function loadChangeSkills(){
+  var v={};
+  MODES.change.fields.forEach(function(f){v[f[0]]=val(f[0])});
+  var target=v.target||'business analyst';
+  var current=v.current||'';
+  var industry=v.industry||'';
+  var fetchKey=target+'|'+industry;
+
+  var sec=byId('skills-section');
+  if(!sec)return;
+  sec.innerHTML='<div class="card card-teal"><p class="sl sl-teal"><i class="ti ti-checklist"></i>Skills Readiness Assessment</p><div class="skill-loading"><span class="spin"></span>Loading skills for '+esc(target)+'…</div></div>';
+
+  var systemPrompt='You are a career skills analyst. Return ONLY valid JSON — no markdown, no explanation.';
+  var userMsg='List the 10-14 most important skills for a '+target+(industry?' in the '+industry+' industry':'')+'. For each, give a short name (2-4 words) and one sentence description of why it matters for this role. Format: {"skills":[{"name":"...","desc":"..."},...]}. Focus on specific, actionable skills — not generic traits like "communication".';
+
+  var txt=await callClaude([{role:'user',content:userMsg}],systemPrompt,false);
+  var parsed={};
+  if(txt){
+    var clean=txt.replace(/```json/g,'').replace(/```/g,'').trim();
+    var m=clean.match(/\{[\s\S]*\}/);
+    try{parsed=m?JSON.parse(m[0]):{}}catch(e){parsed={}}
+  }
+
+  if(parsed.skills&&parsed.skills.length>0){
+    changeSkills=parsed.skills.map(function(s){return{name:s.name,desc:s.desc,checked:false}});
+    changeSkillsLoaded=true;
+    lastChangeFetch=fetchKey;
+  }else{
+    // Fallback skills for common roles
+    changeSkills=[
+      {name:'Data analysis',desc:'Interpreting datasets to identify trends and support decisions',checked:false},
+      {name:'SQL querying',desc:'Extracting and manipulating data from relational databases',checked:false},
+      {name:'Requirements gathering',desc:'Documenting business needs from stakeholders clearly',checked:false},
+      {name:'Process mapping',desc:'Visualizing workflows to identify gaps and inefficiencies',checked:false},
+      {name:'Stakeholder communication',desc:'Translating technical findings into business language',checked:false},
+      {name:'Project documentation',desc:'Creating specs, reports, and summaries for cross-team use',checked:false},
+      {name:'Excel / Sheets',desc:'Advanced spreadsheet analysis and modeling',checked:false},
+      {name:'Problem framing',desc:'Defining the right question before proposing solutions',checked:false}
+    ];
+    changeSkillsLoaded=true;
+    lastChangeFetch=fetchKey;
+  }
+  calc();
+}
+
+// ── ROI Assessment section (reentry tool) ────────────────────────────────────
+function renderROISection(v){
+  var sec=byId('roi-section');
+  if(!sec)return;
+  var html='<div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-coin"></i>Gap Chapter ROI Assessment</p>';
+  html+='<p class="lede" style="margin-bottom:.875rem">What did you actually do during your time away from traditional employment? Add each activity — caregiving, managing a household, volunteering, freelancing, self-directed learning. We\'ll translate them into dollar values and business language you can use on a resume or in an interview.</p>';
+
+  html+='<div id="roi-task-list">';
+  if(reentryTasks.length===0){
+    html+='<p style="font-size:13px;color:var(--text3);padding:10px 0">No activities added yet — add one below.</p>';
+  }else{
+    reentryTasks.forEach(function(task,i){
+      html+='<div style="padding:10px 0;border-bottom:1px solid var(--border)">';
+      html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">';
+      html+='<span style="font-size:13px;font-weight:500;color:var(--text)">'+esc(task.name)+'</span>';
+      html+='<button onclick="removeTask('+i+')" class="btn-danger" style="font-size:11px;padding:3px 9px">Remove</button>';
+      html+='</div>';
+      if(task.roi){
+        html+='<div class="roi-bullets">'+esc(task.roi)+'</div>';
+      }else if(task.loading){
+        html+='<div class="skill-loading"><span class="spin"></span>Translating to business value…</div>';
+      }else{
+        html+='<button class="btn-green" onclick="translateTask('+i+')" style="font-size:12px;margin-top:4px"><i class="ti ti-sparkles" style="font-size:12px;vertical-align:-1px"></i> Translate to ROI language</button>';
+      }
+      html+='</div>';
+    });
+  }
+  html+='</div>';
+
+  html+='<div class="add-task-row" style="margin-top:10px">';
+  html+='<input id="new-task-input" type="text" placeholder="e.g. Primary caregiver for elderly parent, Managed household budget and logistics, Homeschooled two children…" />';
+  html+='<button class="btn-primary" onclick="addTask()"><i class="ti ti-plus" style="font-size:13px;vertical-align:-1px"></i> Add</button>';
+  html+='</div>';
+
+  if(reentryROIOutput){
+    html+='<div style="margin-top:14px"><p class="sl sl-ok" style="margin-bottom:6px"><i class="ti ti-file-text"></i>Full ROI Summary (copy to resume / interview prep)</p><div class="roi-bullets">'+esc(reentryROIOutput)+'</div>';
+    html+='<div class="brow" style="margin-top:6px"><button class="btn-primary" onclick="copyROI()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy summary</button></div></div>';
+  }
+
+  html+='</div>';
+  sec.innerHTML=html;
+
+  // Bind enter key
+  var inp=byId('new-task-input');
+  if(inp)inp.onkeydown=function(e){if(e.key==='Enter')addTask()};
+}
+
+function addTask(){
+  var inp=byId('new-task-input');
+  if(!inp)return;
+  var name=(inp.value||'').trim();
+  if(!name)return;
+  reentryTasks.push({name:name,roi:'',loading:false});
+  inp.value='';
+  calc();
+}
+
+function removeTask(i){
+  reentryTasks.splice(i,1);
+  calc();
+}
+
+async function translateTask(i){
+  var task=reentryTasks[i];
+  if(!task)return;
+  task.loading=true;
+  calc();
+
+  var v={};
+  MODES.reentry.fields.forEach(function(f){v[f[0]]=val(f[0])});
+  var target=v.target||'a professional role';
+  var systemPrompt='You are a career translation expert who helps people returning to the workforce after gaps. Be encouraging, specific, and use business language. Return plain text — no JSON.';
+  var userMsg='Translate this activity into 3-4 resume-ready bullet points with dollar estimates or quantified impact where possible. Activity: "'+task.name+'". The person is targeting: '+target+'. Each bullet should start with a strong action verb and include a quantified result (time saved, dollar value, number of people supported, budget managed, etc.). Be specific and confident — these activities have real business value. Also include one short sentence the person could say in an interview to frame this activity.';
+
+  var txt=await callClaude([{role:'user',content:userMsg}],systemPrompt,false);
+  task.loading=false;
+  if(txt){
+    task.roi=txt.trim();
+    // Build combined output
+    reentryROIOutput=reentryTasks.filter(function(t){return t.roi}).map(function(t){return'=== '+t.name+' ===\n'+t.roi}).join('\n\n');
+  }else{
+    // Fallback
+    task.roi='• Managed complex logistics and scheduling across multiple priorities\n• Maintained budget discipline and resource allocation under constraint\n• Developed communication and coordination skills through direct stakeholder management\n\nInterview framing: "This period required the same skills that drive business results — planning, adaptability, communication, and managing competing priorities without institutional support."';
+    reentryROIOutput=reentryTasks.filter(function(t){return t.roi}).map(function(t){return'=== '+t.name+' ===\n'+t.roi}).join('\n\n');
+  }
+  calc();
+}
+
+function copyROI(){
+  navigator.clipboard.writeText(reentryROIOutput||'').catch(function(){});
+  var el=byId('roi-section');
+  if(el){el.style.outline='1px solid var(--green)';setTimeout(function(){el.style.outline=''},1200);}
+}
+
+// ── Resources ─────────────────────────────────────────────────────────────────
+function buildResources(mode){
   var key=window.TOOLKIT_MODE||'entry';
   var data=RESOURCE_DATA[key];
   if(!data){
-    byId('resources').innerHTML='<div class="card"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p><div class="resource-grid">'+mode.resources.map(function(r){return '<a class="resource" href="'+r[2]+'" target="_blank" rel="noopener"><strong>'+esc(r[0])+'</strong><span>'+esc(r[1])+'</span></a>'}).join('')+'</div></div>';
-    return;
+    return '<div class="card"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p><div class="resource-grid">'+
+      mode.resources.map(function(r){return '<a class="resource" href="'+esc(r[2])+'" target="_blank" rel="noopener"><strong>'+esc(r[0])+'</strong><span>'+esc(r[1])+'</span></a>'}).join('')+'</div></div>';
   }
   var html='<div class="card"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p>';
   html+='<p class="res-orient">'+esc(data.orient)+'</p>';
   data.stages.forEach(function(stage,si){
     if(si>0)html+='<hr class="res-divider">';
-    html+='<div class="res-stage">';
-    html+='<div class="res-stage-hdr"><div class="res-stage-num">'+(si+1)+'</div><div class="res-stage-title">'+esc(stage.title)+'</div><div class="res-count">'+stage.links.length+' resources</div></div>';
+    html+='<div class="res-stage"><div class="res-stage-hdr"><div class="res-stage-num">'+(si+1)+'</div><div class="res-stage-title">'+esc(stage.title)+'</div><div class="res-count">'+stage.links.length+' resources</div></div>';
     html+='<div class="res-grid">';
     stage.links.forEach(function(lk){
       var bdg=lk.badge?'<span class="badge-'+esc(lk.badge)+'">'+esc(lk.badge==='gov'?'Official':lk.badge==='tool'?'Tool':'Free')+'</span>':'';
-      html+='<a class="res-card" href="'+esc(lk.url)+'" target="_blank" rel="noopener">';
-      html+='<div class="res-card-name"><i class="ti ti-external-link" aria-hidden="true" style="font-size:12px;color:var(--text3);flex-shrink:0"></i>'+esc(lk.name)+' '+bdg+'</div>';
-      html+='<div class="res-card-desc">'+esc(lk.desc)+'</div>';
-      html+='<div class="res-card-url">'+esc(lk.url.replace('https://','').replace(/\/$/,''))+'</div>';
-      html+='</a>';
+      html+='<a class="res-card" href="'+esc(lk.url)+'" target="_blank" rel="noopener"><div class="res-card-name"><i class="ti ti-external-link" style="font-size:12px;color:var(--text3);flex-shrink:0"></i>'+esc(lk.name)+' '+bdg+'</div><div class="res-card-desc">'+esc(lk.desc)+'</div><div class="res-card-url">'+esc(lk.url.replace('https://','').replace(/\/$/,''))+'</div></a>';
     });
     html+='</div></div>';
   });
   html+='</div>';
-  byId('resources').innerHTML=html;
-}).join('')+'</div></div>';
+  return html;
 }
-function copyBrief(){var e=byId('brief');navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline=''},1200)}
-function downloadBrief(){var e=byId('brief'), blob=new Blob([e.textContent||''],{type:'text/plain'}), url=URL.createObjectURL(blob), a=document.createElement('a');a.href=url;a.download='receipts-brief-'+new Date().toISOString().slice(0,10)+'.txt';a.click();URL.revokeObjectURL(url)}
+
+// ── Export ────────────────────────────────────────────────────────────────────
+function makeBrief(mode,v,out){
+  var lines=[mode.title,'Generated: '+new Date().toLocaleDateString(),''];
+  mode.fields.forEach(function(f){lines.push(f[1]+': '+v[f[0]])});
+  lines.push('','Key metrics:');
+  mode.metrics.forEach(function(m,i){lines.push('- '+m+': '+out.metrics[i])});
+  if(out.narrative){lines.push('','Analysis:',out.narrative.replace(/<[^>]+>/g,''))}
+  lines.push('','Action plan:');
+  (out.plan||[]).forEach(function(p){lines.push('- '+p.label+': '+p.text)});
+  if(window.TOOLKIT_MODE==='reentry'&&reentryROIOutput){lines.push('','Gap ROI Assessment:',reentryROIOutput)}
+  if(window.TOOLKIT_MODE==='change'&&changeSkillsLoaded){
+    var gaps=changeSkills.filter(function(s){return!s.checked}).map(function(s){return s.name});
+    var have=changeSkills.filter(function(s){return s.checked}).map(function(s){return s.name});
+    if(have.length)lines.push('','Skills confirmed: '+have.join(', '));
+    if(gaps.length)lines.push('Skills to build: '+gaps.join(', '));
+  }
+  lines.push('','Note: Planning estimate only. Not tax, legal, investment, or medical advice.');
+  return lines.join('\n');
+}
+function copyBrief(){var e=byId('brief-content');if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline=''},1200)}
+function downloadBrief(){var e=byId('brief-content');if(!e)return;var blob=new Blob([e.textContent||''],{type:'text/plain'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='receipts-brief-'+new Date().toISOString().slice(0,10)+'.txt';a.click();URL.revokeObjectURL(url)}
+
+// ── Resource data ─────────────────────────────────────────────────────────────
+var RESOURCE_DATA=HTMLEOF
+echo "File write started, continuing..."{"entry":{"orient":"Starting your career. These resources are ordered by what you need to figure out first — understand the landscape before you apply, and get your finances in place before you accept an offer.","stages":[{"title":"Understand the landscape","links":[{"name":"BLS Occupational Outlook Handbook","desc":"Pay, growth outlook, and education requirements for 900+ jobs","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"O*NET OnLine","desc":"Skills, tasks, and work context by occupation","url":"https://www.onetonline.org/","badge":"gov"},{"name":"MyNextMove","desc":"Plain-language career exploration by interest or keyword","url":"https://www.mynextmove.org/","badge":"free"},{"name":"LinkedIn Salary","desc":"Real compensation by title, location, and experience level","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"CareerOneStop Occupation Profile","desc":"Local wages and employment data by role","url":"https://www.careeronestop.org/toolkit/careers/explore-careers.aspx","badge":"gov"}]},{"title":"Know your rights and benefits","links":[{"name":"DOL Wage & Hour Division","desc":"Minimum wage, overtime rules, and youth labor protections","url":"https://www.dol.gov/agencies/whd","badge":"gov"},{"name":"EEOC Know Your Rights","desc":"Discrimination protections and how to file a complaint","url":"https://www.eeoc.gov/know-your-rights","badge":"gov"},{"name":"IRS W-4 Withholding Estimator","desc":"Set your first paycheck up right — avoid over- or under-withholding","url":"https://www.irs.gov/individuals/tax-withholding-estimator","badge":"gov"},{"name":"Benefits.gov","desc":"Federal benefit eligibility finder across all programs","url":"https://www.benefits.gov/","badge":"gov"},{"name":"Healthcare.gov Plan Finder","desc":"Marketplace coverage if your employer doesn't offer insurance","url":"https://www.healthcare.gov/see-plans/","badge":"gov"}]},{"title":"Build credentials","links":[{"name":"Federal Student Aid (FAFSA)","desc":"Grants, loans, and work-study eligibility","url":"https://studentaid.gov/h/apply-for-aid/fafsa","badge":"gov"},{"name":"College Scorecard","desc":"Cost, graduation rates, and earnings outcomes by school","url":"https://collegescorecard.ed.gov/","badge":"gov"},{"name":"Apprenticeship.gov","desc":"Paid earn-while-you-learn pathways into real careers","url":"https://www.apprenticeship.gov/","badge":"gov"},{"name":"Google Career Certificates","desc":"Job-ready certificates in tech fields in about 6 months","url":"https://grow.google/certificates/","badge":"free"},{"name":"Coursera / edX","desc":"Accredited certificates and degrees from top universities","url":"https://www.coursera.org/","badge":"tool"}]},{"title":"Build your job search infrastructure","links":[{"name":"USAJOBS","desc":"Every federal government job opening in one place","url":"https://www.usajobs.gov/","badge":"gov"},{"name":"Handshake","desc":"Entry-level roles and campus recruiting partnerships","url":"https://joinhandshake.com/","badge":"tool"},{"name":"Idealist","desc":"Nonprofit and mission-driven job board","url":"https://www.idealist.org/","badge":"free"},{"name":"Indeed","desc":"Largest general-purpose job board by volume","url":"https://www.indeed.com/","badge":"tool"},{"name":"CareerOneStop Job Finder","desc":"Government-curated openings with local filters","url":"https://www.careeronestop.org/toolkit/jobs/find-jobs.aspx","badge":"gov"}]},{"title":"Set up your financial foundation","links":[{"name":"CFPB Budgeting Worksheets","desc":"Free federal financial planning tools and templates","url":"https://www.consumerfinance.gov/consumer-tools/budget/","badge":"gov"},{"name":"Student Loan Simulator","desc":"Income-driven repayment planning for federal loans","url":"https://studentaid.gov/loan-simulator/","badge":"gov"},{"name":"IRS Free File","desc":"File federal taxes for free if income is under the threshold","url":"https://www.irs.gov/filing/free-file-do-your-federal-taxes-for-free","badge":"gov"},{"name":"MyMoney.gov","desc":"FDIC-backed financial literacy hub and planning guides","url":"https://www.mymoney.gov/","badge":"gov"}]}]},"reentry":{"orient":"Returning to work after a gap. Each stage reflects the real sequence — your financial runway affects which opportunities you can pursue, so understand it before you narrow your search.","stages":[{"title":"Assess where you stand","links":[{"name":"CareerOneStop Skills Matcher","desc":"Map past experience to current in-demand jobs","url":"https://www.careeronestop.org/toolkit/skills/skills-matcher.aspx","badge":"gov"},{"name":"O*NET Skills Search","desc":"Identify transferable skill sets across occupations","url":"https://www.onetonline.org/skills/","badge":"gov"},{"name":"AARP Job Search","desc":"Gap-friendly employers and 50+ focused resources","url":"https://www.aarp.org/work/job-search/","badge":"free"},{"name":"Encore.org","desc":"Second-act careers and experienced worker programs","url":"https://encore.org/","badge":"free"},{"name":"BLS Occupational Outlook Handbook","desc":"Check whether your field grew or contracted during your gap","url":"https://www.bls.gov/ooh/","badge":"gov"}]},{"title":"Bridge the gap — training and retraining","links":[{"name":"American Job Centers","desc":"Free job search help, resume coaching, training referrals","url":"https://www.careeronestop.org/localhelp/americanjobcenters/","badge":"gov"},{"name":"WIOA Retraining Funding","desc":"Federally funded career retraining for eligible workers","url":"https://www.careeronestop.org/localhelp/wioa/","badge":"gov"},{"name":"Per Scholas","desc":"Free tech training specifically for returning workers","url":"https://perscholas.org/","badge":"free"},{"name":"Goodwill Career Services","desc":"Employment programs with wraparound support nationwide","url":"https://www.goodwill.org/jobs-training/","badge":"free"},{"name":"Trade Adjustment Assistance","desc":"If your job was lost to trade, outsourcing, or automation","url":"https://www.dol.gov/agencies/eta/tradeact/","badge":"gov"}]},{"title":"Financial lifeline during re-entry","links":[{"name":"Benefits.gov","desc":"Find every assistance program you may qualify for","url":"https://www.benefits.gov/","badge":"gov"},{"name":"211.org","desc":"Local social services, food, housing, and utilities by zip code","url":"https://www.211.org/","badge":"free"},{"name":"SNAP Pre-Screener","desc":"Food assistance eligibility check before applying","url":"https://snap-screener.fns.usda.gov/snap-screener/","badge":"gov"},{"name":"Child Care Aware","desc":"Childcare subsidy finder for working parents returning to work","url":"https://www.childcareaware.org/","badge":"free"},{"name":"NCOA BenefitsCheckUp","desc":"Benefits finder for adults 55+ across 2,500+ programs","url":"https://www.benefitscheckup.org/","badge":"free"}]},{"title":"Navigate re-entry logistics","links":[{"name":"LinkedIn Career Break Feature","desc":"Officially acknowledge your gap professionally on your profile","url":"https://www.linkedin.com/help/linkedin/","badge":"tool"},{"name":"Ban the Box Employer Map","desc":"Find employers with gap-friendly hiring policies by location","url":"https://bantheboxcampaign.org/","badge":"free"},{"name":"DOL Reentry Employment Opportunities","desc":"Federally funded programs specifically for returning citizens","url":"https://www.dol.gov/agencies/eta/reentry/","badge":"gov"},{"name":"National H.I.R.E. Network","desc":"Hiring resources and employer connections for returning citizens","url":"https://www.hirenetwork.org/","badge":"free"}]},{"title":"Healthcare during the gap","links":[{"name":"Healthcare.gov Special Enrollment","desc":"Job loss triggers a special enrollment window — act within 60 days","url":"https://www.healthcare.gov/glossary/special-enrollment-period/","badge":"gov"},{"name":"Medicaid & CHIP","desc":"Healthcare coverage during income gap periods","url":"https://www.medicaid.gov/","badge":"gov"},{"name":"VA Health Benefits","desc":"Veterans returning to civilian work may still qualify","url":"https://www.va.gov/health-care/apply/","badge":"gov"}]}]},"exit":{"orient":"Retiring or leaving paid work. Work through these stages before you give notice — healthcare and income gaps are much harder to fix after the fact.","stages":[{"title":"Know your income picture","links":[{"name":"My Social Security Account","desc":"Full earnings history and personalized benefit estimates","url":"https://www.ssa.gov/myaccount/","badge":"gov"},{"name":"SSA Retirement Estimator","desc":"Explore how claiming age affects your monthly benefit","url":"https://www.ssa.gov/benefits/retirement/estimator.html","badge":"gov"},{"name":"Pension Rights Center","desc":"Understand your defined-benefit rights and protections","url":"https://www.pensionrights.org/","badge":"free"},{"name":"PBGC Pension Lookup","desc":"If your employer pension is at risk, find your coverage","url":"https://www.pbgc.gov/","badge":"gov"},{"name":"IRS Retirement Topics","desc":"RMD rules, account types, and withdrawal rules in plain language","url":"https://www.irs.gov/retirement-plans","badge":"gov"}]},{"title":"Sort out healthcare before and after Medicare","links":[{"name":"Medicare Plan Finder","desc":"Compare Part D and Medicare Advantage plans side by side","url":"https://www.medicare.gov/plan-compare/","badge":"gov"},{"name":"SHIP Medicare Counseling","desc":"Free personalized Medicare counseling available in every state","url":"https://www.shiphelp.org/","badge":"gov"},{"name":"Healthcare.gov for Early Retirees","desc":"Marketplace coverage for those who retire before age 65","url":"https://www.healthcare.gov/","badge":"gov"},{"name":"NCOA Medicare Savings Programs","desc":"Help paying premiums, deductibles, and out-of-pocket costs","url":"https://www.ncoa.org/medicare/medicare-savings-programs/","badge":"free"}]},{"title":"Plan withdrawals and investments","links":[{"name":"Investor.gov Compound Calculator","desc":"SEC-maintained growth and withdrawal modeling tool","url":"https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator","badge":"gov"},{"name":"FINRA BrokerCheck","desc":"Verify your financial advisor's credentials and complaint history","url":"https://brokercheck.finra.org/","badge":"gov"},{"name":"IRS RMD Worksheets","desc":"Required minimum distributions — rules and calculations","url":"https://www.irs.gov/publications/p590b","badge":"gov"},{"name":"Bogleheads Wiki","desc":"Evidence-based retirement planning — no products, no sales pitch","url":"https://www.bogleheads.org/wiki/Main_Page","badge":"free"}]},{"title":"Legal and estate readiness","links":[{"name":"Five Wishes Advance Directive","desc":"Plain-language living will recognized in most states","url":"https://www.agingwithdignity.org/five-wishes/","badge":"free"},{"name":"USA.gov Estate Planning","desc":"Official federal starting point for estate planning basics","url":"https://www.usa.gov/wills-and-estates","badge":"gov"},{"name":"ABA Elder Law Resources","desc":"Find elder law attorneys in your state via the Bar Association","url":"https://www.americanbar.org/groups/law_aging/","badge":"free"},{"name":"CaringInfo State Directives","desc":"Download your state's official advance directive forms","url":"https://www.nhpco.org/patients-and-caregivers/advance-care-planning/advance-directives/","badge":"free"}]},{"title":"Care, community, and daily life","links":[{"name":"Eldercare Locator","desc":"Find aging services and local support by zip code","url":"https://eldercare.acl.gov/","badge":"gov"},{"name":"Medicare Care Compare","desc":"Compare nursing homes, home health agencies, and facilities","url":"https://www.medicare.gov/care-compare/","badge":"gov"},{"name":"SCSEP Work After Retirement","desc":"Federally funded jobs program for older adults who want to keep working","url":"https://www.doleta.gov/seniors/","badge":"gov"}]}]},"equity":{"orient":"Building retirement savings over time. Start by understanding your account types, then stack the tax advantages in order before projecting growth — the sequence matters more than the total.","stages":[{"title":"Understand your account types","links":[{"name":"IRS Retirement Plan Types","desc":"401k, IRA, Roth, SEP, SIMPLE — how each works and who qualifies","url":"https://www.irs.gov/retirement-plans/plan-sponsor/types-of-retirement-plans","badge":"gov"},{"name":"IRS IRA Contribution Limits","desc":"Current year limits by account type and income level","url":"https://www.irs.gov/retirement-plans/ira-contribution-limits","badge":"gov"},{"name":"DOL 401k Fee Disclosure","desc":"How to read your plan's expense ratios and find hidden fees","url":"https://www.dol.gov/agencies/ebsa/","badge":"gov"},{"name":"FINRA Fund Analyzer","desc":"Compare investment fees across mutual funds and ETFs side by side","url":"https://tools.finra.org/fund_analyzer/","badge":"gov"}]},{"title":"Maximize employer benefits","links":[{"name":"DOL 401k Resources","desc":"Employer match rules, vesting schedules, and your plan rights","url":"https://www.dol.gov/general/topic/retirement/401ksavingsplans","badge":"gov"},{"name":"IRS HSA Rules","desc":"Triple-tax-advantaged account that bridges healthcare and retirement","url":"https://www.irs.gov/publications/p969","badge":"gov"},{"name":"PBGC My Pension Benefit","desc":"Look up defined-benefit plan status and insurance coverage","url":"https://www.pbgc.gov/workers-retirees","badge":"gov"}]},{"title":"Project your future","links":[{"name":"SSA Retirement Estimator","desc":"Includes Social Security in your full retirement projection","url":"https://www.ssa.gov/benefits/retirement/estimator.html","badge":"gov"},{"name":"Investor.gov Compound Calculator","desc":"Official SEC compound growth and withdrawal modeling tool","url":"https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator","badge":"gov"},{"name":"FIRECalc","desc":"Historical portfolio survival rate calculator for early retirement planning","url":"https://www.firecalc.com/","badge":"free"},{"name":"cFIREsim","desc":"Monte Carlo simulation for retirement portfolio sustainability","url":"https://www.cfiresim.com/","badge":"free"},{"name":"Vanguard Retirement Calculator","desc":"Income gap visualization and withdrawal sustainability modeling","url":"https://investor.vanguard.com/tools-calculators/retirement-income-calculator","badge":"tool"}]},{"title":"Tax-smart withdrawal strategies","links":[{"name":"IRS Publication 590-B","desc":"IRA distributions, RMD rules, and inherited account guidance","url":"https://www.irs.gov/publications/p590b","badge":"gov"},{"name":"IRS Roth Conversion Rules","desc":"When and how to convert — tax implications explained clearly","url":"https://www.irs.gov/retirement-plans/roth-iras","badge":"gov"},{"name":"Tax Foundation State Tax Maps","desc":"Compare retirement-friendly states by income and Social Security tax","url":"https://taxfoundation.org/data/all/state/state-income-tax-rates/","badge":"free"},{"name":"CFPB Retirement Savings Guidance","desc":"Consumer-level retirement planning guidance without jargon","url":"https://www.consumerfinance.gov/consumer-tools/retirement/","badge":"gov"}]},{"title":"Get advice you can trust","links":[{"name":"NAPFA Advisor Finder","desc":"Fee-only financial planners who don't earn product commissions","url":"https://www.napfa.org/","badge":"free"},{"name":"CFP Board Advisor Search","desc":"Verify certified financial planner credentials before you hire","url":"https://www.cfp.net/find-a-cfp-professional","badge":"free"},{"name":"FINRA BrokerCheck","desc":"Verify broker and advisor licensing and disciplinary history","url":"https://brokercheck.finra.org/","badge":"gov"}]}]},"change":{"orient":"Moving from one field to another. Research your destination before you commit to training, and build proof of your new skills before you apply — not after.","stages":[{"title":"Research the target role","links":[{"name":"O*NET Occupation Explorer","desc":"Full job profile: tasks, skills, pay, tools, and 10-year outlook","url":"https://www.onetonline.org/","badge":"gov"},{"name":"BLS Occupational Outlook Handbook","desc":"Growth projections and entry requirements by occupation","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"LinkedIn Salary","desc":"Real compensation by role, location, and years of experience","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"Lightcast Open Skills","desc":"Real-time job posting data — what employers actually require now","url":"https://lightcast.io/open-skills","badge":"tool"}]},{"title":"Map your transferable skills","links":[{"name":"O*NET Skills Transferability","desc":"Find occupations that match your existing skill set","url":"https://www.onetonline.org/skills/","badge":"gov"},{"name":"CareerOneStop Skills Matcher","desc":"Compare current and target role skill overlap side by side","url":"https://www.careeronestop.org/toolkit/skills/skills-matcher.aspx","badge":"gov"},{"name":"SkillScan","desc":"Structured transferable skills self-assessment and inventory","url":"https://www.skillscan.com/","badge":"tool"}]},{"title":"Fill the credential gap","links":[{"name":"CareerOneStop Training Finder","desc":"Local and online programs with cost and duration data","url":"https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx","badge":"gov"},{"name":"WIOA Training Funding","desc":"Federally funded retraining — may cover full tuition costs","url":"https://www.careeronestop.org/localhelp/wioa/","badge":"gov"},{"name":"Apprenticeship.gov","desc":"Earn while you learn in your new field with pay from day one","url":"https://www.apprenticeship.gov/","badge":"gov"},{"name":"Coursera / edX","desc":"Accredited certificates from top universities, fully online","url":"https://www.coursera.org/","badge":"tool"}]},{"title":"Build proof before you apply","links":[{"name":"GitHub","desc":"Build and host a public technical portfolio for employers to review","url":"https://github.com/","badge":"free"},{"name":"Behance","desc":"Creative portfolio hosting for design, media, and visual fields","url":"https://www.behance.net/","badge":"free"},{"name":"Volunteer Match","desc":"Get real experience in your target field through meaningful volunteering","url":"https://www.volunteermatch.org/","badge":"free"}]},{"title":"Execute the job search in your new field","links":[{"name":"American Job Centers","desc":"Free resume help and interview coaching through the DOL network","url":"https://www.careeronestop.org/localhelp/americanjobcenters/","badge":"gov"},{"name":"USAJOBS","desc":"Federal roles — strong culture of welcoming career changers","url":"https://www.usajobs.gov/","badge":"gov"},{"name":"Idealist","desc":"Mission-driven and nonprofit sector roles across the country","url":"https://www.idealist.org/","badge":"free"},{"name":"LinkedIn Jobs","desc":"Professional job board with alumni and network filters built in","url":"https://www.linkedin.com/jobs/","badge":"tool"},{"name":"Indeed","desc":"Highest job volume across all industries and experience levels","url":"https://www.indeed.com/","badge":"tool"}]}]},"compare":{"orient":"Comparing multiple paths at once. Run research in parallel for each option — this order helps you move from data to decision without getting stuck in analysis.","stages":[{"title":"Research all options simultaneously","links":[{"name":"O*NET Occupation Explorer","desc":"Side-by-side skill and task profiles for any occupation","url":"https://www.onetonline.org/","badge":"gov"},{"name":"BLS Occupational Outlook Handbook","desc":"10-year outlook and entry requirements — compare occupations directly","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"BLS Wages by Area and Occupation","desc":"Hyper-local salary data by occupation and metro area","url":"https://www.bls.gov/oes/","badge":"gov"},{"name":"LinkedIn Salary Insights","desc":"Compensation by title, metro area, and years of experience","url":"https://www.linkedin.com/salary/","badge":"tool"}]},{"title":"Understand what each path really costs","links":[{"name":"College Scorecard","desc":"Education cost and actual earnings outcomes by program and school","url":"https://collegescorecard.ed.gov/","badge":"gov"},{"name":"CareerOneStop Training Finder","desc":"Cost and duration of training programs for each path","url":"https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx","badge":"gov"},{"name":"MIT Living Wage Calculator","desc":"Minimum viable wage by metro area — does the path pay enough to live on?","url":"https://livingwage.mit.edu/","badge":"free"},{"name":"Credential Engine","desc":"Compare credential market value across competing options","url":"https://credentialengine.org/","badge":"tool"}]},{"title":"Assess fit, not just pay","links":[{"name":"O*NET Interest Profiler","desc":"Map your personality type to occupational environments","url":"https://www.onetonline.org/explore/interests/","badge":"gov"},{"name":"CliftonStrengths (Gallup)","desc":"Strengths-based career fit assessment with detailed work style guidance","url":"https://www.gallup.com/cliftonstrengths/","badge":"tool"},{"name":"SkillScan","desc":"Transferable skill inventory to stress-test readiness across all paths","url":"https://www.skillscan.com/","badge":"tool"},{"name":"16Personalities","desc":"Cognitive style and work environment fit assessment","url":"https://www.16personalities.com/","badge":"free"}]},{"title":"Validate with real people","links":[{"name":"LinkedIn Alumni Tool","desc":"Find people who made similar transitions from your exact background","url":"https://www.linkedin.com/alumni/","badge":"tool"},{"name":"Meetup","desc":"Find professional communities in each field before you commit to one","url":"https://www.meetup.com/","badge":"free"},{"name":"Reddit Career Communities","desc":"r/cscareerquestions, r/nonprofit — real practitioner candor","url":"https://www.reddit.com/","badge":"free"}]},{"title":"Make the decision with a framework","links":[{"name":"Pivot Method (Jenny Blake)","desc":"Scan, pilot, launch — structured framework for making career pivots","url":"https://pivotmethod.com/","badge":"free"},{"name":"MindTools Decision Matrix","desc":"Weighted comparison framework for multi-factor decisions","url":"https://www.mindtools.com/dz5ry0s","badge":"free"}]}]}};
+
 render();
-
 </script>
-
 </body>
 </html>
