@@ -787,7 +787,7 @@ function calc(){
       '<div id="brief-content" class="dpre">'+esc(makeBrief(mode,v,out))+'</div>'+
       '<div class="brow"><button class="btn-primary" onclick="copyBrief()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy brief</button><button onclick="downloadBrief()"><i class="ti ti-download" style="font-size:13px;vertical-align:-1px"></i> Download .txt</button></div></div>'+
       '<div class="card card-ai" style="margin-top:.875rem"><p class="sl sl-ai"><i class="ti ti-mail"></i>Email this brief <span style="font-size:10px;font-weight:400;color:var(--purple);text-transform:none;letter-spacing:0;margin-left:6px;background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:99px;padding:1px 7px">Premium</span></p>'+
-      '<p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Enter your email address and we'll send this brief directly to your inbox — useful for saving to your files, sharing with a coach, or reading on another device.</p>'+
+      '<p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Enter your email address and we\'ll send this brief directly to your inbox — useful for saving to your files, sharing with a coach, or reading on another device.</p>'+
       '<div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="export-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailBrief()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send brief</button></div>'+
       '<p id="email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p>'+
       '<p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver this brief and is not stored or shared. This is a premium feature — coming soon with receipts. Pro.</p>'+
@@ -1200,9 +1200,7 @@ function emailBrief(){
   statusEl.style.color='var(--text3)';statusEl.textContent='Opening your email client…';
   var subject='receipts. brief — '+new Date().toLocaleDateString();
   var body=briefEl.textContent||'';
-  var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body.substring(0,2000)+'
-
-[Full brief — paste from receipts. Export tab for complete version]');
+  var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body.substring(0,2000)+'\n\n[Full brief - paste from receipts. Export tab for complete version]');
   try{window.open(mailto,'_self');}catch(e){}
   setTimeout(function(){statusEl.style.color='var(--green)';statusEl.textContent='Email client opened. Full email delivery coming soon with receipts. Pro.';},600);
 }
