@@ -1215,9 +1215,7 @@ function emailBrief(){
   statusEl.style.color='var(--text3)';statusEl.textContent='Opening your email client...';
   var subject='receipts. brief - '+new Date().toLocaleDateString();
   var body=briefEl.textContent||'';
-  var bodyShort=body.substring(0,2000)+'
-
-[Full brief - paste from receipts. Export tab]';
+  var bodyShort=body.substring(0,2000)+'\n\n[Full brief - paste from receipts. Export tab]';
   var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(bodyShort);
   try{window.open(mailto,'_self');}catch(e){}
   setTimeout(function(){statusEl.style.color='var(--green)';statusEl.textContent='Email client opened. Full delivery coming soon with receipts. Pro.';},600);
