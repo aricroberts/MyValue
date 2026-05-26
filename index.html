@@ -4,7 +4,7 @@
 <meta name="grammarly-disable-extension" content="true">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>receipts. by AricCivicLabs.Org — Know Your Worth. Prove It. Use It.</title>
+<title>receipts. by AricCivicLabs.Org — Know Your Worth. Prove It.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
@@ -16,28 +16,27 @@
   --accent:#2C6E49;--accent2:#4A9E71;--accent-light:#E8F5EE;
   --gold:#C4860A;--gold-light:#FBF0DC;
   --blue:#1B4F8A;--blue-light:#E8F0FA;
-  --purple:#6030A0;--purple-light:#F0E8FA;
-  --teal:#0F7173;--teal-light:#E0F4F4;
   --red:#8A2020;--red-light:#FAE8E8;
   --text:#2A2420;--text2:#5C5248;--text3:#8C8278;
   --radius:12px;--radius-sm:6px;
   font-family:'DM Sans',system-ui,sans-serif;
 }
 
+/* grain overlay */
 body{background:var(--paper);color:var(--text);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6}
 
-/* NAV */
+/* nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--warm)}
-.nav-logo{font-family:'Lora',Georgia,serif;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.03em;display:flex;align-items:center;gap:8px;font-style:italic;text-decoration:none}
+.nav-logo{font-family:'Lora',Georgia,serif;font-size:24px;font-weight:700;color:var(--ink);letter-spacing:-.03em;display:flex;align-items:center;gap:8px;font-style:italic}
 .nav-logo span{font-style:italic;font-weight:400;color:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:1.25rem}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
 .nav-links a{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--text)}
 .nav-cta{font-size:13px;font-weight:600;color:var(--paper);background:var(--ink);padding:7px 18px;border-radius:99px;text-decoration:none;transition:all .2s}
 .nav-cta:hover{background:var(--accent);color:#fff}
 
-/* HERO */
+/* hero */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0}
 .hero-circle{position:absolute;border-radius:50%;opacity:.07}
@@ -45,7 +44,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 .hero-circle-2{width:400px;height:400px;background:var(--gold);bottom:-100px;left:-100px}
 
 .ticker-wrap{width:100%;overflow:hidden;margin-bottom:3rem;mask-image:linear-gradient(to right,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,black 10%,black 90%,transparent)}
-.ticker{display:flex;gap:3rem;white-space:nowrap;animation:tick 14s linear infinite}
+.ticker{display:flex;gap:3rem;white-space:nowrap;animation:tick 12s linear infinite}
 .ticker:hover{animation-play-state:paused}
 .ticker-item{font-size:13px;font-weight:500;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:.75rem;flex-shrink:0}
 .ticker-item::after{content:'·';color:var(--warm)}
@@ -56,6 +55,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 .hero-headline{font-family:'Lora',Georgia,serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:600;line-height:1.15;color:var(--ink);margin-bottom:1.5rem;letter-spacing:-.02em;opacity:0;animation:fadeUp .8s .4s ease forwards}
 .hero-headline em{font-style:italic;color:var(--accent)}
 .hero-sub{font-size:clamp(16px,2vw,19px);font-weight:300;color:var(--text2);line-height:1.7;max-width:560px;margin:0 auto 2.5rem;opacity:0;animation:fadeUp .8s .6s ease forwards}
+.hero-sub strong{font-weight:600;color:var(--text)}
 .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .8s ease forwards}
 .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:99px;text-decoration:none;transition:all .25s;border:2px solid var(--ink)}
 .btn-primary:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(44,110,73,.3)}
@@ -69,7 +69,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-/* SECTION BASE */
+/* quiz / router section */
 .section{padding:5rem 2rem;position:relative;z-index:1}
 .section-inner{max-width:960px;margin:0 auto}
 .section-label{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
@@ -79,75 +79,57 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 
 .divider{border:none;border-top:1px solid var(--warm);margin:0}
 
-/* PATHFINDER QUIZ */
+/* quiz */
 .quiz-wrap{background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:2.5rem;margin-top:2.5rem}
 .quiz-q{font-family:'Lora',Georgia,serif;font-size:1.4rem;font-weight:600;color:var(--ink);margin-bottom:1.5rem;text-align:center}
-.quiz-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem}
+.quiz-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
 .quiz-opt{background:var(--paper);border:2px solid var(--warm);border-radius:var(--radius);padding:1.25rem;cursor:pointer;transition:all .2s;text-align:center;text-decoration:none}
 .quiz-opt:hover{border-color:var(--accent);background:var(--accent-light);transform:translateY(-3px);box-shadow:0 6px 20px rgba(44,110,73,.15)}
-.quiz-opt-icon{font-size:1.75rem;display:block;text-align:center;margin-bottom:.625rem}
-.quiz-opt-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.375rem}
-.quiz-opt-desc{font-size:12px;font-weight:300;color:var(--text2);line-height:1.5}
+.quiz-opt-icon{display:flex;justify-content:center;margin-bottom:.875rem}
+.quiz-opt-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:.5rem}
+.quiz-opt-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.5}
 
-/* SIX OFFERINGS ECOSYSTEM */
-.ecosystem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2.5rem}
+/* versions grid */
+.versions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2.5rem}
+.version-card{background:var(--paper);border:1px solid var(--warm);border-radius:var(--radius);padding:2rem;position:relative;overflow:hidden;transition:all .25s}
+.version-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
+.version-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,20,16,.12)}
+.vc-v1::before{background:linear-gradient(135deg,var(--blue-light),transparent)}
+.vc-v2::before{background:linear-gradient(135deg,var(--gold-light),transparent)}
+.vc-v3::before{background:linear-gradient(135deg,var(--accent-light),transparent)}
+.vc-v4::before{background:linear-gradient(135deg,#f0e8fa,transparent)}
+.version-card:hover::before{opacity:1}
+.vc-tag{display:block;font-family:'Lora',Georgia,serif;font-size:1.4rem;font-weight:700;letter-spacing:-.02em;text-transform:none;padding:0;border-radius:0;margin-bottom:.25rem;background:transparent!important;color:var(--ink)}
+.vc-tag-v1{color:var(--blue)}
+.vc-tag-v2{color:var(--gold)}
+.vc-tag-v3{color:var(--accent)}
+.vc-tag-v4{color:#6030A0}
+.vc-tag-soon{background:var(--paper2);color:var(--text3)}
+.vc-title{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem;position:relative;z-index:1}
+.vc-subtitle{font-size:13px;font-weight:500;color:var(--text3);margin-bottom:1rem;position:relative;z-index:1}
+.vc-desc{font-size:14px;font-weight:300;color:var(--text2);line-height:1.6;margin-bottom:1.5rem;position:relative;z-index:1}
+.vc-features{list-style:none;margin-bottom:1.5rem;position:relative;z-index:1}
+.vc-features li{font-size:13px;color:var(--text2);padding:4px 0;padding-left:18px;position:relative}
+.vc-features li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:600}
+.vc-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:10px 20px;border-radius:99px;text-decoration:none;transition:all .2s;position:relative;z-index:1}
+.vc-btn-v1{background:var(--blue);color:#fff}
+.vc-btn-v1:hover{background:#163F70}
+.vc-btn-v2{background:var(--gold);color:#fff}
+.vc-btn-v2:hover{background:#A06E08}
+.vc-btn-v3{background:var(--accent);color:#fff}
+.vc-btn-v3:hover{background:#1E5035}
+.vc-btn-v4{background:#6030A0;color:#fff}
+.vc-btn-v4:hover{background:#4A2480}
+.vc-btn-disabled{background:var(--warm);color:var(--text3);cursor:default}
 
-.offering-card{background:var(--paper);border:1px solid var(--warm);border-radius:var(--radius);padding:1.75rem;position:relative;overflow:hidden;transition:all .25s}
-.offering-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,20,16,.1)}
-.offering-card-top{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
-.offering-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
-.offering-label-wrap{}
-.offering-name{font-family:'Lora',Georgia,serif;font-size:1.3rem;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:2px}
-.offering-tagline{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;opacity:.7}
-.offering-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.6;margin-bottom:1.25rem}
-.offering-links{display:flex;flex-wrap:wrap;gap:.5rem}
-.offering-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;text-decoration:none;transition:all .15s;border:1px solid}
-
-/* Per-offering color theming */
-.oc-receipts{border-top:3px solid var(--blue)}
-.oc-receipts .offering-icon{background:var(--blue-light);color:var(--blue)}
-.oc-receipts .offering-name{color:var(--blue)}
-.oc-receipts .offering-link{background:var(--blue-light);color:var(--blue);border-color:rgba(27,79,138,.2)}
-.oc-receipts .offering-link:hover{background:var(--blue);color:#fff}
-
-.oc-transitions{border-top:3px solid var(--accent)}
-.oc-transitions .offering-icon{background:var(--accent-light);color:var(--accent)}
-.oc-transitions .offering-name{color:var(--accent)}
-.oc-transitions .offering-link{background:var(--accent-light);color:var(--accent);border-color:rgba(44,110,73,.2)}
-.oc-transitions .offering-link:hover{background:var(--accent);color:#fff}
-
-.oc-voice{border-top:3px solid var(--purple)}
-.oc-voice .offering-icon{background:var(--purple-light);color:var(--purple)}
-.oc-voice .offering-name{color:var(--purple)}
-.oc-voice .offering-link{background:var(--purple-light);color:var(--purple);border-color:rgba(96,48,160,.2)}
-.oc-voice .offering-link:hover{background:var(--purple);color:#fff}
-
-.oc-decisions{border-top:3px solid var(--gold)}
-.oc-decisions .offering-icon{background:var(--gold-light);color:var(--gold)}
-.oc-decisions .offering-name{color:var(--gold)}
-.oc-decisions .offering-link{background:var(--gold-light);color:var(--gold);border-color:rgba(196,134,10,.2)}
-.oc-decisions .offering-link:hover{background:var(--gold);color:#fff}
-
-.oc-proof{border-top:3px solid var(--teal)}
-.oc-proof .offering-icon{background:var(--teal-light);color:var(--teal)}
-.oc-proof .offering-name{color:var(--teal)}
-.oc-proof .offering-link{background:var(--teal-light);color:var(--teal);border-color:rgba(15,113,115,.2)}
-.oc-proof .offering-link:hover{background:var(--teal);color:#fff}
-
-.oc-pathfinder{border-top:3px solid var(--red)}
-.oc-pathfinder .offering-icon{background:var(--red-light);color:var(--red)}
-.oc-pathfinder .offering-name{color:var(--red)}
-.oc-pathfinder .offering-link{background:var(--red-light);color:var(--red);border-color:rgba(138,32,32,.2)}
-.oc-pathfinder .offering-link:hover{background:var(--red);color:#fff}
-
-/* HOW IT WORKS */
+/* how it works */
 .hiw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-top:2.5rem}
 .hiw-step{position:relative;padding-top:1rem}
 .hiw-num{font-family:'Lora',Georgia,serif;font-size:3rem;font-weight:600;color:var(--warm);line-height:1;margin-bottom:.75rem}
 .hiw-title{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:.5rem}
 .hiw-desc{font-size:14px;font-weight:300;color:var(--text2);line-height:1.6}
 
-/* PHILOSOPHY */
+/* trust / philosophy */
 .philosophy{background:var(--ink);color:var(--paper);padding:6rem 2rem;position:relative;overflow:hidden}
 .philosophy::before{content:'"';font-family:'Lora',Georgia,serif;font-size:24rem;font-weight:600;color:rgba(255,255,255,.03);position:absolute;top:-4rem;left:1rem;line-height:1;pointer-events:none}
 .phil-inner{max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:1}
@@ -158,19 +140,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 .phil-pillar-title{font-size:14px;font-weight:600;color:var(--accent2);margin-bottom:.5rem;letter-spacing:.04em}
 .phil-pillar-desc{font-size:13px;font-weight:300;color:rgba(245,240,232,.65);line-height:1.7}
 
-/* PRIVACY STRIP */
+/* privacy strip */
 .privacy-strip{background:var(--accent-light);border-top:1px solid rgba(44,110,73,.15);border-bottom:1px solid rgba(44,110,73,.15);padding:1.5rem 2rem}
 .privacy-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:center}
 .privacy-item{display:flex;align-items:center;gap:.5rem;font-size:13px;font-weight:500;color:var(--accent)}
 .privacy-item svg{flex-shrink:0}
 
-/* PERSONAS */
+/* who it's for */
 .personas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-top:2.5rem}
 .persona{background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.5rem}
+.persona-emoji{display:flex;margin-bottom:.875rem}
 .persona-role{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:.25rem}
 .persona-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.5}
 
-/* BOTTOM CTA */
+/* CTA bottom */
 .cta-bottom{background:linear-gradient(135deg,var(--accent),#1B4F33);padding:6rem 2rem;text-align:center;color:#fff}
 .cta-bottom-heading{font-family:'Lora',Georgia,serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:600;line-height:1.2;margin-bottom:1rem;letter-spacing:-.02em}
 .cta-bottom-sub{font-size:17px;font-weight:300;opacity:.85;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6}
@@ -180,63 +163,55 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:fl
 .btn-outline-white{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:99px;text-decoration:none;transition:all .25s;border:2px solid rgba(255,255,255,.5)}
 .btn-outline-white:hover{border-color:#fff;background:rgba(255,255,255,.1)}
 
-/* FOOTER */
-footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
+/* footer */
+footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text-align:center}
 .footer-inner{max-width:960px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;margin-bottom:2rem}
-.footer-logo{font-family:'Lora',Georgia,serif;font-size:16px;font-weight:600;color:var(--paper);margin-bottom:.375rem;font-style:italic}
-.footer-tagline{font-size:13px;color:rgba(245,240,232,.45);line-height:1.5}
-.footer-nav{display:flex;gap:2rem;flex-wrap:wrap;justify-content:flex-end}
-.footer-nav-col{}
-.footer-nav-heading{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,232,.3);margin-bottom:.75rem}
-.footer-nav-links{display:flex;flex-direction:column;gap:.375rem}
-.footer-nav-links a{font-size:13px;color:rgba(245,240,232,.5);text-decoration:none;transition:color .2s}
-.footer-nav-links a:hover{color:var(--paper)}
-.footer-bottom{border-top:1px solid rgba(245,240,232,.08);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Lora',Georgia,serif;font-size:16px;font-weight:600;color:var(--paper);margin-bottom:.5rem}
+.footer-tagline{font-size:13px;margin-bottom:1.5rem}
+.footer-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.footer-links a{font-size:13px;color:rgba(245,240,232,.5);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--paper)}
 .footer-copy{font-size:12px}
-.footer-made{font-size:12px;color:rgba(245,240,232,.35)}
 
-/* SCROLL REVEAL */
+/* scroll reveal */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-/* QUOTES CAROUSEL */
-.quotes-carousel{position:relative;min-height:160px}
+/* mobile */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hero-stat-row{gap:1.5rem}
+  .quiz-options{grid-template-columns:1fr}
+  .phil-pillars{grid-template-columns:1fr}
+}
+
+.hero-tagline-block{text-align:center;padding:2.5rem 1rem 1rem;position:relative;z-index:2}
+.hero-brand{font-family:'Lora',Georgia,serif;font-size:clamp(2.8rem,7vw,5rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;color:var(--ink);margin:0 0 .5rem}
+.hero-brand em{font-style:italic;color:var(--accent)}
+.hero-brand .brand-sub{font-size:clamp(1.1rem,2.5vw,1.6rem);font-weight:400;font-style:normal;letter-spacing:.01em;color:var(--text2);display:block;margin-top:.25rem}
+.hero-tagline{font-family:'Lora',Georgia,serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:400;font-style:italic;line-height:1.4;letter-spacing:-.01em;color:var(--text2);margin:.5rem 0 0}
+
+.quotes-carousel{position:relative;min-height:180px}
 .quote-slide{display:none;animation:qfade .5s ease}
 .quote-slide.active{display:block}
 @keyframes qfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .quote-dots{display:flex;justify-content:center;gap:8px;margin-top:1.5rem}
 .qdot{width:8px;height:8px;border-radius:50%;background:rgba(245,240,232,.25);border:none;cursor:pointer;padding:0;transition:background .2s}
 .qdot.active{background:var(--accent2);width:24px;border-radius:4px}
-
-/* MOBILE */
-@media(max-width:640px){
-  .nav-links{display:none}
-  .hero-stat-row{gap:1.5rem}
-  .quiz-options{grid-template-columns:1fr 1fr}
-  .ecosystem-grid{grid-template-columns:1fr}
-  .footer-top{grid-template-columns:1fr}
-  .footer-nav{justify-content:flex-start}
-  .footer-bottom{flex-direction:column;align-items:flex-start}
-}
-@media(max-width:400px){
-  .quiz-options{grid-template-columns:1fr}
-}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-logo">receipts<span>.</span></a>
+  <div class="nav-logo">receipts<span style="color:var(--accent);font-style:normal">.</span></div>
   <div class="nav-links">
-    <a href="#ecosystem">Tools</a>
-    <a href="#pathfinder">Pathfinder</a>
     <a href="#how-it-works">How it works</a>
+    <a href="#versions">Tools</a>
     <a href="#who">Who it's for</a>
-    <a href="aricciviclabs.html">About</a>
+    <a href="#transitions">Transitions</a>
     <a href="#contact">Contact</a>
   </div>
-  <a href="#pathfinder" class="nav-cta">Find my tool →</a>
+  <a href="#quiz" class="nav-cta">Get started →</a>
 </nav>
 
 <!-- HERO -->
@@ -245,46 +220,61 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
     <div class="hero-circle hero-circle-1"></div>
     <div class="hero-circle hero-circle-2"></div>
   </div>
+
   <div class="ticker-wrap">
     <div class="ticker">
       <span class="ticker-item">Saved the company $2.3M</span>
       <span class="ticker-item">Trained 47 people</span>
       <span class="ticker-item">Restored 80 acres of wetland</span>
       <span class="ticker-item">Reduced churn by 18%</span>
-      <span class="ticker-item">Got the grant</span>
-      <span class="ticker-item">Kept the team together</span>
-      <span class="ticker-item">Closed the deal nobody else could</span>
       <span class="ticker-item">Hired the right person</span>
-      <span class="ticker-item">Built the case for the raise</span>
-      <span class="ticker-item">Launched the program that worked</span>
+      <span class="ticker-item">Closed the deal nobody else could</span>
+      <span class="ticker-item">Kept the team together</span>
+      <span class="ticker-item">Got the grant</span>
+      <span class="ticker-item">Automated 12 hours a week</span>
+      <span class="ticker-item">Served 1,400 families</span>
+      <span class="ticker-item">Built the thing that mattered</span>
+      <span class="ticker-item">Held the institutional memory</span>
+      <!-- duplicate for seamless loop -->
       <span class="ticker-item">Saved the company $2.3M</span>
       <span class="ticker-item">Trained 47 people</span>
       <span class="ticker-item">Restored 80 acres of wetland</span>
       <span class="ticker-item">Reduced churn by 18%</span>
-      <span class="ticker-item">Got the grant</span>
-      <span class="ticker-item">Kept the team together</span>
-      <span class="ticker-item">Closed the deal nobody else could</span>
       <span class="ticker-item">Hired the right person</span>
-      <span class="ticker-item">Built the case for the raise</span>
-      <span class="ticker-item">Launched the program that worked</span>
+      <span class="ticker-item">Closed the deal nobody else could</span>
+      <span class="ticker-item">Kept the team together</span>
+      <span class="ticker-item">Got the grant</span>
+      <span class="ticker-item">Automated 12 hours a week</span>
+      <span class="ticker-item">Served 1,400 families</span>
+      <span class="ticker-item">Built the thing that mattered</span>
+      <span class="ticker-item">Held the institutional memory</span>
     </div>
   </div>
+
+
+  <!-- TAGLINE -->
+  <div class="hero-tagline-block">
+    <p class="hero-brand">receipts<em>.</em><span class="brand-sub">An AI-powered product of <a href="https://aricciviclabs.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:2px">AricCivicLabs.Org</a></span></p>
+    <p class="hero-tagline">Know your worth. Prove it.</p>
+  </div>
+
   <div class="hero-content">
-    <p class="hero-eyebrow">AricCivicLabs.Org</p>
-    <h1 class="hero-headline">Know your worth.<br>Prove it. <em>Use it.</em></h1>
-    <p class="hero-sub">receipts. helps people and organizations <strong>prove the value they create</strong> — then turn that proof into raises, funding, recognition, and better decisions.</p>
+    <p class="hero-eyebrow">Free · Private · No account required</p>
+    <h1 class="hero-headline">
+      You create more value<br>than you've ever been able to <em>prove.</em>
+    </h1>
+    <p class="hero-sub">
+      receipts helps <strong>employees, founders, nonprofit leaders, and teams</strong> quantify their real impact — and turn it into documents that open doors, make cases, and change conversations. The <strong>Transitions</strong> suite adds eight tools for every career moment: entering, returning, changing fields, comparing paths, building equity, and planning your exit. The <strong>Transitions</strong> suite adds tools for every career moment: entering, returning, changing, comparing, building equity, and exiting.
+    </p>
     <div class="hero-actions">
-      <a href="#pathfinder" class="btn-primary">Find my tool →</a>
-      <a href="#ecosystem" class="btn-secondary">See all tools</a>
+      <a href="#quiz" class="btn-primary">Find my tool →</a>
+      <a href="#how-it-works" class="btn-secondary">See how it works</a>
     </div>
   </div>
+
   <div class="hero-stat-row">
     <div class="hero-stat">
-      <div class="hero-stat-num">6</div>
-      <div class="hero-stat-label">Connected offerings</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">13+</div>
+      <div class="hero-stat-num">12</div>
       <div class="hero-stat-label">Specialized tools</div>
     </div>
     <div class="hero-stat">
@@ -295,53 +285,61 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
       <div class="hero-stat-num">0</div>
       <div class="hero-stat-label">Data stored or shared</div>
     </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">∞</div>
+      <div class="hero-stat-label">Impact to document</div>
+    </div>
   </div>
 </section>
 
-<!-- PATHFINDER / QUIZ -->
-<section class="section" id="pathfinder" style="background:var(--paper2);border-top:1px solid var(--warm)">
+
+
+<!-- WHO IT'S FOR -->
+<section class="section" id="who">
   <div class="section-inner">
-    <p class="section-label reveal">Pathfinder</p>
-    <h2 class="section-heading reveal">Which best describes <em>you right now?</em></h2>
-    <p class="section-sub reveal">One click. No signup. We'll route you straight to the right tool.</p>
-    <div class="quiz-wrap reveal">
-      <p class="quiz-q">I'm here because I want to…</p>
-      <div class="quiz-options">
-        <a href="roi_v1_individual.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🙋</span>
-          <div class="quiz-opt-title">Prove my value at work</div>
-          <div class="quiz-opt-desc">Reviews, raises, credit for what I've built</div>
-        </a>
-        <a href="roi_v2_smallbusiness.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🧠</span>
-          <div class="quiz-opt-title">Make smarter people decisions</div>
-          <div class="quiz-opt-desc">Hire, retain, or choose between AI and human</div>
-        </a>
-        <a href="roi_v3_nonprofit.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🌍</span>
-          <div class="quiz-opt-title">Quantify my mission's impact</div>
-          <div class="quiz-opt-desc">Grants, donors, board packets, program proof</div>
-        </a>
-        <a href="roi_v4_teams.html" class="quiz-opt">
-          <span class="quiz-opt-icon">👥</span>
-          <div class="quiz-opt-title">Show what my team accomplishes</div>
-          <div class="quiz-opt-desc">Surface overlooked contributors, frame for leadership</div>
-        </a>
-        <a href="#transitions-section" class="quiz-opt">
-          <span class="quiz-opt-icon">🔄</span>
-          <div class="quiz-opt-title">Navigate a career moment</div>
-          <div class="quiz-opt-desc">Starting, returning, retiring, changing, comparing</div>
-        </a>
-        <a href="speaking_coach.html" class="quiz-opt">
-          <span class="quiz-opt-icon">🎤</span>
-          <div class="quiz-opt-title">Communicate my value clearly</div>
-          <div class="quiz-opt-desc">Pitch, present, negotiate, or say the hard thing</div>
-        </a>
-        <a href="#ecosystem" class="quiz-opt">
-          <span class="quiz-opt-icon">🧭</span>
-          <div class="quiz-opt-title">Find the right next step</div>
-          <div class="quiz-opt-desc">Not sure where to start — browse all six offerings</div>
-        </a>
+    <p class="section-label reveal">Who uses receipts.</p>
+    <h2 class="section-heading reveal">Built for anyone who creates<br>value that <em>goes unnoticed.</em></h2>
+    <p class="section-sub reveal">Whether you're 23 or 63, individual contributor or executive, your impact deserves to be counted.</p>
+    <div class="personas">
+      <div class="persona reveal">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">💼</span>
+        <div class="persona-role">The early-career professional</div>
+        <div class="persona-desc">Two years in, already carrying more than your title suggests. Time to prove it before review season.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.05s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">🏫</span>
+        <div class="persona-role">The quiet high-performer</div>
+        <div class="persona-desc">You do the work that holds everything together. You just haven't figured out how to say that in a meeting.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.1s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">📈</span>
+        <div class="persona-role">The mid-career negotiator</div>
+        <div class="persona-desc">Ready to ask for more — but want data, not feelings, when you walk into that conversation.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.15s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">🏪</span>
+        <div class="persona-role">The small business owner</div>
+        <div class="persona-desc">Making hard calls about people, projects, and AI every week. Want the ROI before you commit.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.2s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">🌍</span>
+        <div class="persona-role">The nonprofit leader</div>
+        <div class="persona-desc">Your mission matters. Now you can prove it in the language funders and boards actually speak.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.25s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">👨‍👩‍👧‍👦</span>
+        <div class="persona-role">The people manager</div>
+        <div class="persona-desc">Your team creates enormous value. receipts helps you surface it — and fight for the recognition they deserve.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.3s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">💻</span>
+        <div class="persona-role">The visionary founder</div>
+        <div class="persona-desc">Every hire is a bet. Every project has a cost. Know the ROI before you spend the runway.</div>
+      </div>
+      <div class="persona reveal" style="transition-delay:.35s">
+        <span class="persona-emoji" style="font-size:2rem;display:block;margin-bottom:.875rem">🎯</span>
+        <div class="persona-role">The C-suite leader</div>
+        <div class="persona-desc">Make the case for your division. Defend the headcount. Justify the investment. With math, not slides.</div>
       </div>
     </div>
   </div>
@@ -349,126 +347,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
 
 <hr class="divider"/>
 
-<!-- SIX OFFERINGS ECOSYSTEM -->
-<section class="section" id="ecosystem">
-  <div class="section-inner">
-    <p class="section-label reveal">The ecosystem</p>
-    <h2 class="section-heading reveal">Six ways to make your value <em>visible.</em></h2>
-    <p class="section-sub reveal">Every offering connects to the others. Use one or all six — depending on what you're proving, communicating, deciding, or navigating.</p>
-
-    <div class="ecosystem-grid" style="margin-top:2.5rem">
-
-      <!-- receipts. -->
-      <div class="offering-card oc-receipts reveal">
-        <div class="offering-card-top">
-          <div class="offering-icon">🧾</div>
-          <div class="offering-label-wrap">
-            <div class="offering-name">receipts.</div>
-            <div class="offering-tagline" style="color:var(--blue)">Prove value in dollars &amp; evidence</div>
-          </div>
-        </div>
-        <p class="offering-desc">Calculate ROI, document impact, and export letters, reports, grant narratives, and leadership-ready proof. Four versions — individual, small business, nonprofit, teams.</p>
-        <div class="offering-links">
-          <a href="roi_v1_individual.html" class="offering-link">Individual</a>
-          <a href="roi_v2_smallbusiness.html" class="offering-link">Small Business</a>
-          <a href="roi_v3_nonprofit.html" class="offering-link">Nonprofit</a>
-          <a href="roi_v4_teams.html" class="offering-link">Teams</a>
-        </div>
-      </div>
-
-      <!-- Transitions -->
-      <div class="offering-card oc-transitions reveal" id="transitions-section" style="transition-delay:.05s">
-        <div class="offering-card-top">
-          <div class="offering-icon">🔄</div>
-          <div class="offering-label-wrap">
-            <div class="offering-name">Transitions</div>
-            <div class="offering-tagline" style="color:var(--accent)">Navigate career &amp; workforce changes</div>
-          </div>
-        </div>
-        <p class="offering-desc">Plan career and workforce moments with data, resource libraries, and copyable briefs. Whether you're entering, re-entering, exiting, changing, comparing, or building equity.</p>
-        <div class="offering-links">
-          <a href="entry_tool.html" class="offering-link">Entry</a>
-          <a href="reentry_tool.html" class="offering-link">Re-entry</a>
-          <a href="exit_tool.html" class="offering-link">Exit</a>
-          <a href="equity_tool.html" class="offering-link">Equity</a>
-          <a href="change_tool.html" class="offering-link">Change</a>
-          <a href="compare_tool.html" class="offering-link">Compare</a>
-          <a href="motivation_coach.html" class="offering-link">Coach</a>
-        </div>
-      </div>
-
-      <!-- Voice -->
-      <div class="offering-card oc-voice reveal" style="transition-delay:.1s">
-        <div class="offering-card-top">
-          <div class="offering-icon">🎤</div>
-          <div class="offering-label-wrap">
-            <div class="offering-name">Voice</div>
-            <div class="offering-tagline" style="color:var(--purple)">Say the important thing clearly</div>
-          </div>
-        </div>
-        <p class="offering-desc">Turn your evidence into conversations, presentations, scripts, letters, and asks. Speaking coach, negotiation language, grant narratives, manager letters, and leadership briefs.</p>
-        <div class="offering-links">
-          <a href="speaking_coach.html" class="offering-link">Speaking Coach</a>
-          <a href="roi_v1_individual.html" class="offering-link">Negotiation exports</a>
-          <a href="roi_v3_nonprofit.html" class="offering-link">Grant narratives</a>
-          <a href="roi_v4_teams.html" class="offering-link">Leadership briefs</a>
-        </div>
-      </div>
-
-      <!-- Decisions -->
-      <div class="offering-card oc-decisions reveal" style="transition-delay:.15s">
-        <div class="offering-card-top">
-          <div class="offering-icon">⚖️</div>
-          <div class="offering-label-wrap">
-            <div class="offering-name">Decisions</div>
-            <div class="offering-tagline" style="color:var(--gold)">Compare options before you commit</div>
-          </div>
-        </div>
-        <p class="offering-desc">Model tradeoffs before making expensive choices about people, programs, projects, funding, or career paths. AI vs. human, hiring ROI, expansion cases, career comparisons.</p>
-        <div class="offering-links">
-          <a href="roi_v2_smallbusiness.html" class="offering-link">Biz decisions</a>
-          <a href="roi_v3_nonprofit.html" class="offering-link">Nonprofit expansion</a>
-          <a href="roi_v4_teams.html" class="offering-link">Headcount defense</a>
-          <a href="compare_tool.html" class="offering-link">Career comparison</a>
-        </div>
-      </div>
-
-      <!-- Proof -->
-      <div class="offering-card oc-proof reveal" style="transition-delay:.2s">
-        <div class="offering-card-top">
-          <div class="offering-icon">📋</div>
-          <div class="offering-label-wrap">
-            <div class="offering-name">Proof</div>
-            <div class="offering-tagline" style="color:var(--teal)">Capture wins before memory erases them</div>
-          </div>
-        </div>
-        <p class="offering-desc">Capture wins, impact streams, contribution evidence, and value before memory erases the trail. Achievement ledgers, team contribution logs, nonprofit impact streams — all exportable.</p>
-        <div class="offering-links">
-          <a href="roi_v1_individual.html" class="offering-link">Achievement ledger</a>
-          <a href="roi_v4_teams.html" class="offering-link">Team ledger</a>
-          <a href="roi_v3_nonprofit.html" class="offering-link">Impact streams</a>
-        </div>
-      </div>
-
-      <!-- Pathfinder -->
-      <div class="offering-card oc-pathfinder reveal" style="transition-delay:.25s">
-        <div class="offering-card-top">
-          <div class="offering-icon">🧭</div>
-          <div class="offering-label-wrap">
-            <div class="offering-name">Pathfinder</div>
-            <div class="offering-tagline" style="color:var(--red)">Find the right tool or next step</div>
-          </div>
-        </div>
-        <p class="offering-desc">Not sure where to start? The Pathfinder quiz routes you to the right tool, resource, or outside directory based on what you need to prove, decide, change, or say.</p>
-        <div class="offering-links">
-          <a href="#pathfinder" class="offering-link">Take the quiz</a>
-        </div>
-        <p style="font-size:12px;color:var(--text3);margin-top:.875rem;line-height:1.5">Resource libraries embedded in each tool. Career, money, communication, nonprofit funding, and more.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
+<!-- VERSIONS -->
 
 <hr class="divider"/>
 
@@ -491,7 +370,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
       <div class="hiw-step reveal" style="transition-delay:.2s">
         <div class="hiw-num">03</div>
         <div class="hiw-title">Get documents that open doors</div>
-        <div class="hiw-desc">Export ready-to-use reports, letters, grant narratives, and proposals. Refined with an AI coach that asks one question at a time.</div>
+        <div class="hiw-desc">Export ready-to-use reports, letters, grant narratives, and proposals. Use the Transitions suite to navigate every career moment — entering, returning, changing, or exiting. Refined with an AI coach that asks one question at a time.</div>
       </div>
       <div class="hiw-step reveal" style="transition-delay:.3s">
         <div class="hiw-num">04</div>
@@ -501,6 +380,8 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
     </div>
   </div>
 </section>
+
+<!-- PRIVACY STRIP -->
 
 <!-- PRIVACY STRIP -->
 <div class="privacy-strip">
@@ -527,57 +408,259 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
 <hr class="divider"/>
 
 <!-- WHO IT'S FOR -->
-<section class="section" id="who">
+
+<hr class="divider"/>
+
+<!-- QUIZ / ROUTER -->
+<section class="section" id="quiz">
   <div class="section-inner">
-    <p class="section-label reveal">Who uses receipts.</p>
-    <h2 class="section-heading reveal">Built for anyone who creates<br>value that <em>goes unnoticed.</em></h2>
-    <p class="section-sub reveal">Whether you're 23 or 63, individual contributor or executive, your impact deserves to be counted.</p>
-    <div class="personas">
-      <div class="persona reveal">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">💼</span>
-        <div class="persona-role">The early-career professional</div>
-        <div class="persona-desc">Two years in, already carrying more than your title suggests. Time to prove it before review season.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.05s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">🏫</span>
-        <div class="persona-role">The quiet high-performer</div>
-        <div class="persona-desc">You do the work that holds everything together. You just haven't figured out how to say that in a meeting.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.1s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">📈</span>
-        <div class="persona-role">The mid-career negotiator</div>
-        <div class="persona-desc">Ready to ask for more — but want data, not feelings, when you walk into that conversation.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.15s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">🏪</span>
-        <div class="persona-role">The small business owner</div>
-        <div class="persona-desc">Making hard calls about people, projects, and AI every week. Want the ROI before you commit.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.2s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">🌍</span>
-        <div class="persona-role">The nonprofit leader</div>
-        <div class="persona-desc">Your mission matters. Now you can prove it in the language funders and boards actually speak.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.25s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">👨‍👩‍👧‍👦</span>
-        <div class="persona-role">The people manager</div>
-        <div class="persona-desc">Your team creates enormous value. receipts helps you surface it — and fight for the recognition they deserve.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.3s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">💻</span>
-        <div class="persona-role">The visionary founder</div>
-        <div class="persona-desc">Every hire is a bet. Every project has a cost. Know the ROI before you spend the runway.</div>
-      </div>
-      <div class="persona reveal" style="transition-delay:.35s">
-        <span style="font-size:2rem;display:block;margin-bottom:.875rem">🎯</span>
-        <div class="persona-role">The C-suite leader</div>
-        <div class="persona-desc">Make the case for your division. Defend the headcount. Justify the investment. With math, not slides.</div>
+    <p class="section-label reveal">Find your tool</p>
+    <h2 class="section-heading reveal">Which best describes <em>you?</em></h2>
+    <p class="section-sub reveal">One question. We'll send you straight to the right tool — no forms, no signup.</p>
+    <div class="quiz-wrap reveal">
+      <p class="quiz-q">I'm here because I want to...</p>
+      <div class="quiz-options">
+        <a href="roi_v1_individual.html" class="quiz-opt">
+          <span class="quiz-opt-icon" style="font-size:2rem;display:block;text-align:center;margin-bottom:.5rem">🙋</span>
+          <div class="quiz-opt-title">Prove my value at work</div>
+          <div class="quiz-opt-desc">Prepare for a review, negotiate pay, or make sure I get credit for what I've done</div>
+        </a>
+        <a href="roi_v2_smallbusiness.html" class="quiz-opt">
+          <span class="quiz-opt-icon" style="font-size:2rem;display:block;text-align:center;margin-bottom:.5rem">🧠</span>
+          <div class="quiz-opt-title">Make smarter people decisions</div>
+          <div class="quiz-opt-desc">Assess a role, retain key talent, justify a hire, or decide between AI and a human</div>
+        </a>
+        <a href="roi_v3_nonprofit.html" class="quiz-opt">
+          <span class="quiz-opt-icon" style="font-size:2rem;display:block;text-align:center;margin-bottom:.5rem">🌍</span>
+          <div class="quiz-opt-title">Quantify my mission's impact</div>
+          <div class="quiz-opt-desc">Build donor cases, write grant narratives, or prove my nonprofit's programs work</div>
+        </a>
+        <a href="roi_v4_teams.html" class="quiz-opt">
+          <span class="quiz-opt-icon" style="font-size:2rem;display:block;text-align:center;margin-bottom:.5rem">👨‍👩‍👧‍👦</span>
+          <div class="quiz-opt-title">Show what my team accomplishes</div>
+          <div class="quiz-opt-desc">Aggregate team impact, surface unrecognized contributors, and frame it for leadership</div>
+        </a>
+        <a href="#transitions" class="quiz-opt">
+          <span class="quiz-opt-icon" style="font-size:2rem;display:block;text-align:center;margin-bottom:.5rem">🔄</span>
+          <div class="quiz-opt-title">Navigate a career moment</div>
+          <div class="quiz-opt-desc">Starting out, returning after a gap, planning retirement, changing fields, or comparing paths</div>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PHILOSOPHY / QUOTES -->
+<hr class="divider"/>
+
+<!-- ═══ TRANSITIONS
+
+<hr class="divider"/>
+
+<!-- VERSIONS -->
+<section class="section" id="versions">
+  <div class="section-inner">
+    <p class="section-label reveal">The tools</p>
+    <h2 class="section-heading reveal">Four ROI versions. Eight transition tools.<br><em>One mission: make your value visible.</em></h2>
+    <div class="versions-grid">
+
+      <div class="version-card vc-v1 reveal">
+        <div style="font-size:2rem;margin-bottom:.875rem">🧾</div>
+        <span class="vc-tag vc-tag-v1">Individual</span>
+        <div class="vc-title">receipts. v1</div>
+        <div class="vc-subtitle">For employees &amp; professionals</div>
+        <div class="vc-desc">Calculate your break-even, document your achievements across every impact type, benchmark your salary, and generate letters that make the compensation case for you.</div>
+        <ul class="vc-features">
+          <li>Break-even vs. industry average</li>
+          <li>Multi-stream achievement ledger</li>
+          <li>Live salary benchmarks</li>
+          <li>3 export documents + AI coach</li>
+          <li>Counter-offer calculator</li>
+        </ul>
+        <a href="roi_v1_individual.html" class="vc-btn vc-btn-v1">Open receipts. v1 →</a>
+      </div>
+
+      <div class="version-card vc-v2 reveal" style="transition-delay:.1s">
+        <div style="font-size:2rem;margin-bottom:.875rem">🏢</div>
+        <span class="vc-tag vc-tag-v2">Small Business</span>
+        <div class="vc-title">receipts. v2</div>
+        <div class="vc-subtitle">For founders &amp; managers</div>
+        <div class="vc-desc">Assess any role, model retention costs, justify projects, and run AI vs. human comparisons — before making decisions that are expensive to reverse.</div>
+        <ul class="vc-features">
+          <li>Role ROI assessment</li>
+          <li>Retention financial case</li>
+          <li>Project &amp; initiative ROI</li>
+          <li>AI vs. human crossover model</li>
+          <li>4 export documents + AI coach</li>
+        </ul>
+        <a href="roi_v2_smallbusiness.html" class="vc-btn vc-btn-v2">Open receipts. v2 →</a>
+      </div>
+
+      <div class="version-card vc-v3 reveal" style="transition-delay:.2s">
+        <div style="font-size:2rem;margin-bottom:.875rem">🌍</div>
+        <span class="vc-tag vc-tag-v3">Nonprofit</span>
+        <div class="vc-title">receipts. v3</div>
+        <div class="vc-subtitle">For mission-driven organizations</div>
+        <div class="vc-desc">Translate programs into SROI dollar values, find matched funding opportunities, model expansions, and generate grant narratives and donor letters — powered by live data.</div>
+        <ul class="vc-features">
+          <li>7 SROI impact stream types</li>
+          <li>Live grant opportunity search</li>
+          <li>Expansion scenario model</li>
+          <li>Grant narrative + donor letter</li>
+          <li>AI mission coach (4 modes)</li>
+        </ul>
+        <a href="roi_v3_nonprofit.html" class="vc-btn vc-btn-v3">Open receipts. v3 →</a>
+      </div>
+
+      <div class="version-card vc-v4 reveal" style="transition-delay:.3s">
+        <div style="font-size:2rem;margin-bottom:.875rem">👨‍👩‍👧‍👦</div>
+        <span class="vc-tag vc-tag-v4">Teams</span>
+        <div class="vc-title">receipts. v4</div>
+        <div class="vc-subtitle">For teams &amp; departments</div>
+        <div class="vc-desc">Aggregate individual contributions into collective team impact. Surface overlooked contributors. Frame the whole team's ROI for leadership, budget conversations, and headcount defense.</div>
+        <ul class="vc-features">
+          <li>Multi-member team ledger</li>
+          <li>Collective impact aggregation</li>
+          <li>Underrecognized contributor lens</li>
+          <li>Leadership-facing team report</li>
+          <li>AI team coach (4 modes)</li>
+        </ul>
+        <a href="roi_v4_teams.html" class="vc-btn vc-btn-v4">Open receipts. v4 →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+
+<hr class="divider"/>
+
+<!-- ═══ TRANSITIONS ══════════════════════════════════════════════════════════ -->
+<section class="section" id="transitions" style="background:var(--paper2)">
+  <div class="section-inner">
+    <p class="section-label reveal" style="color:var(--accent)">Transitions</p>
+    <h2 class="section-heading reveal">Tools for every<br><em>career moment.</em></h2>
+    <p class="section-sub reveal">Whether you're starting out, switching paths, stepping back, or building toward retirement — these tools help you navigate with data, not guesswork. Free · Private · No account required.</p>
+
+    <div class="versions-grid" style="margin-top:2.5rem">
+
+      <a href="entry_tool.html" class="version-card vc-v1 reveal" style="text-decoration:none;display:block">
+        <div style="font-size:2rem;margin-bottom:.875rem">🚀</div>
+        <span class="vc-tag vc-tag-v1">Entering the workforce</span>
+        <div class="vc-title">First-job launchpad</div>
+        <div class="vc-desc">Turn an offer or early salary into take-home pay, stability targets, a first 90-day plan, and a financial foundation checklist.</div>
+        <ul class="vc-features">
+          <li>Take-home pay calculator</li>
+          <li>Emergency fund runway</li>
+          <li>90-day action plan</li>
+          <li>25 resources across 5 stages</li>
+        </ul>
+        <span class="vc-btn vc-btn-v1" style="display:inline-flex;align-items:center;gap:6px">Open entry tool →</span>
+      </a>
+
+      <a href="reentry_tool.html" class="version-card vc-v3 reveal" style="text-decoration:none;display:block;transition-delay:.05s">
+        <div style="font-size:2rem;margin-bottom:.875rem">🔄</div>
+        <span class="vc-tag vc-tag-v3">Re-entering the workforce</span>
+        <div class="vc-title">Return planner</div>
+        <div class="vc-desc">Translate a work gap — caregiving, health, layoff, or pause — into readiness evidence, runway math, and a structured job-search system.</div>
+        <ul class="vc-features">
+          <li>Runway and income gap model</li>
+          <li>Readiness score tracker</li>
+          <li>Gap framing and positioning</li>
+          <li>23 resources across 5 stages</li>
+        </ul>
+        <span class="vc-btn vc-btn-v3" style="display:inline-flex;align-items:center;gap:6px">Open re-entry tool →</span>
+      </a>
+
+      <a href="exit_tool.html" class="version-card vc-v2 reveal" style="text-decoration:none;display:block;transition-delay:.1s">
+        <div style="font-size:2rem;margin-bottom:.875rem">🌅</div>
+        <span class="vc-tag vc-tag-v2">Exiting the workforce</span>
+        <div class="vc-title">Retirement planner</div>
+        <div class="vc-desc">Compare income streams, living costs, healthcare timelines, and care exposure before leaving paid work — before you give notice.</div>
+        <ul class="vc-features">
+          <li>Social Security + pension model</li>
+          <li>Monthly income gap calculation</li>
+          <li>Healthcare bridge planning</li>
+          <li>24 resources across 5 stages</li>
+        </ul>
+        <span class="vc-btn vc-btn-v2" style="display:inline-flex;align-items:center;gap:6px">Open exit tool →</span>
+      </a>
+
+      <a href="equity_tool.html" class="version-card vc-v4 reveal" style="text-decoration:none;display:block;transition-delay:.15s">
+        <div style="font-size:2rem;margin-bottom:.875rem">📈</div>
+        <span class="vc-tag vc-tag-v4">Building equity</span>
+        <div class="vc-title">Retirement builder</div>
+        <div class="vc-desc">Model compound growth, capture employer match value, calculate the cost of delay, and compare contribution scenarios across decades.</div>
+        <ul class="vc-features">
+          <li>Compound growth projector</li>
+          <li>Employer match value capture</li>
+          <li>5-year delay cost calculator</li>
+          <li>21 resources across 5 stages</li>
+        </ul>
+        <span class="vc-btn vc-btn-v4" style="display:inline-flex;align-items:center;gap:6px">Open equity tool →</span>
+      </a>
+
+      <a href="change_tool.html" class="version-card vc-v3 reveal" style="text-decoration:none;display:block;transition-delay:.2s">
+        <div style="font-size:2rem;margin-bottom:.875rem">🗺️</div>
+        <span class="vc-tag vc-tag-v3">Career change</span>
+        <div class="vc-title">Transition planner</div>
+        <div class="vc-desc">Compare the cost, time, risk, and pay upside of moving from one career track to another — with a month-by-month action plan built in.</div>
+        <ul class="vc-features">
+          <li>Pay upside and payback period</li>
+          <li>Training cost amortization</li>
+          <li>Readiness score projection</li>
+          <li>23 resources across 5 stages</li>
+        </ul>
+        <span class="vc-btn vc-btn-v3" style="display:inline-flex;align-items:center;gap:6px">Open change tool →</span>
+      </a>
+
+      <a href="compare_tool.html" class="version-card vc-v1 reveal" style="text-decoration:none;display:block;transition-delay:.25s">
+        <div style="font-size:2rem;margin-bottom:.875rem">⚖️</div>
+        <span class="vc-tag vc-tag-v1">Career comparison</span>
+        <div class="vc-title">Path readiness checker</div>
+        <div class="vc-desc">Score and rank three career paths at once by pay, fit, skills, demand, training time, and readiness — so you move with clarity, not anxiety.</div>
+        <ul class="vc-features">
+          <li>Three-way path scoring</li>
+          <li>Fit + skills + demand weighting</li>
+          <li>Best path recommendation</li>
+          <li>20 resources across 5 stages</li>
+        </ul>
+        <span class="vc-btn vc-btn-v1" style="display:inline-flex;align-items:center;gap:6px">Open compare tool →</span>
+      </a>
+
+      <a href="motivation_coach.html" class="version-card reveal" style="text-decoration:none;display:block;transition-delay:.3s;border-top:3px solid var(--accent)">
+        <div style="font-size:2rem;margin-bottom:.875rem">☀️</div>
+        <span class="vc-tag" style="color:var(--accent);font-family:'Lora',Georgia,serif;font-size:1.4rem;font-weight:700;letter-spacing:-.02em;display:block;margin-bottom:.25rem">AI coach</span>
+        <div class="vc-title">Motivation coach</div>
+        <div class="vc-desc">When you're stuck, burned out, or losing sight of why you started — this AI coach helps you reframe, refocus, and build a next-step plan.</div>
+        <ul class="vc-features">
+          <li>Positive reframing</li>
+          <li>Unstuck action plans</li>
+          <li>Confidence rebuilding</li>
+          <li>Energy reset sessions</li>
+        </ul>
+        <span class="vc-btn vc-btn-v3" style="display:inline-flex;align-items:center;gap:6px">Open motivation coach →</span>
+      </a>
+
+      <a href="speaking_coach.html" class="version-card reveal" style="text-decoration:none;display:block;transition-delay:.35s;border-top:3px solid #6030A0">
+        <div style="font-size:2rem;margin-bottom:.875rem">🎤</div>
+        <span class="vc-tag" style="color:#6030A0;font-family:'Lora',Georgia,serif;font-size:1.4rem;font-weight:700;letter-spacing:-.02em;display:block;margin-bottom:.25rem">AI coach</span>
+        <div class="vc-title">Speaking &amp; influence coach</div>
+        <div class="vc-desc">Build your voice, structure your pitch, practice under pressure, and learn ethical influence framing — for interviews, presentations, and high-stakes meetings.</div>
+        <ul class="vc-features">
+          <li>Presentation structure</li>
+          <li>Interview polish</li>
+          <li>Ethical influence framing</li>
+          <li>Live practice drills</li>
+        </ul>
+        <span class="vc-btn vc-btn-v4" style="display:inline-flex;align-items:center;gap:6px">Open speaking coach →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
 <section class="philosophy">
   <div class="phil-inner">
     <div class="quotes-carousel">
@@ -587,7 +670,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
       </div>
       <div class="quote-slide">
         <p class="phil-quote">"Many of us struggle to communicate the value we bring to different arenas of life. receipts helps give you that voice."</p>
-        <p class="phil-author">— Aric Roberts, creator &amp; founder, <strong style="color:var(--accent2)"><a href="aricciviclabs.html" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor">AricCivicLabs.Org</a></strong></p>
+        <p class="phil-author">— Aric Roberts, creator &amp; founder, <strong style="color:var(--accent2)"><a href="https://aricciviclabs.org" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor">AricCivicLabs.Org</a></strong></p>
       </div>
       <div class="quote-slide">
         <p class="phil-quote">"It is easy to be focused on staying afloat versus getting ahead. receipts helps you stop and take that breather to get your bearings."</p>
@@ -611,7 +694,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
       </div>
       <div class="reveal" style="transition-delay:.1s">
         <div class="phil-pillar-title">Private by default</div>
-        <div class="phil-pillar-desc">No servers. No database. No account. Your data lives only in your browser tab — destroyed the moment you close it.</div>
+        <div class="phil-pillar-desc">No servers. No database. No account. Your compensation and your organization's finances live only in your browser tab — destroyed the moment you close it.</div>
       </div>
       <div class="reveal" style="transition-delay:.2s">
         <div class="phil-pillar-title">Human across generations</div>
@@ -622,43 +705,61 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
 </section>
 
 <!-- BOTTOM CTA -->
+
+<!-- BOTTOM CTA -->
 <section class="cta-bottom">
-  <h2 class="cta-bottom-heading">Your value is real.<br>Now make it visible.</h2>
-  <p class="cta-bottom-sub">Pick your tool, fill in what you know, and walk out with documents that change conversations.</p>
-  <div class="cta-bottom-actions">
-    <a href="#pathfinder" class="btn-white">Find my tool →</a>
-    <a href="#ecosystem" class="btn-outline-white">Browse all six offerings</a>
+  <h2 class="cta-bottom-heading reveal">Your value is real.<br>Now make it visible.</h2>
+  <p class="cta-bottom-sub reveal">Pick your tool, fill in what you know, and walk out with documents that change conversations.</p>
+  <div class="cta-bottom-actions reveal">
+    <a href="#quiz" class="btn-white">Find my tool →</a>
+    <a href="#transitions" class="btn-outline-white">Explore Transitions</a>
   </div>
 </section>
 
-<!-- DISCLOSURE -->
+
+<!-- ═══ TRANSITIONS
+
+
+<!-- ═══ DISCLOSURE ════════════════════════════════════════════════════════ -->
 <section class="section" id="disclosure" style="background:var(--paper);border-top:1px solid var(--warm)">
   <div class="section-inner" style="max-width:760px">
     <p class="section-label reveal">Important disclosure</p>
     <h2 class="section-heading reveal" style="font-size:clamp(1.3rem,2.5vw,1.75rem);margin-bottom:1.25rem">Directional tools, not professional advice</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:1.5rem">
       <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
-        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Estimates, not guarantees</div>
-        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">All calculations are based on self-reported inputs and publicly available benchmarks. Results are directional estimates intended to support your thinking — not certified valuations or guarantees.</p>
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Estimates, not guarantees
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">All calculations are based on self-reported inputs and publicly available benchmarks. Results are directional estimates intended to support your thinking — not certified valuations, financial projections, or guarantees of outcome.</p>
       </div>
       <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
-        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Not professional advice</div>
-        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">receipts. is not a substitute for licensed financial, legal, accounting, or career counseling. Before major decisions, consult a qualified professional who can review your specific situation.</p>
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Not professional advice
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">receipts. is not a substitute for licensed financial, legal, accounting, or career counseling. Before making major compensation, hiring, investment, or retirement decisions, consult a qualified professional who can review your specific situation.</p>
       </div>
       <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
-        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Verify with reality</div>
-        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">AI-generated outputs may not match your local market, employer, or funder. Always cross-check results against current, authoritative sources before using them in high-stakes conversations.</p>
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          Verify with reality
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">AI-generated outputs — including salary benchmarks, grant language, negotiation scripts, and impact narratives — reflect patterns in training data and may not match your local market, employer, or funder. Always cross-check results against current, authoritative sources.</p>
       </div>
       <div style="background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem">
-        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem">Your data stays with you</div>
-        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">Nothing you enter is stored, transmitted, or logged. All inputs live only in your browser tab and are destroyed when you leave. Exports are generated entirely on your device.</p>
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Your data stays with you
+        </div>
+        <p style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6">Nothing you enter is stored, transmitted, or logged. All inputs live only in your browser tab and are destroyed when you leave. Any exported files contain only your own self-reported data and are generated entirely on your device.</p>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--text3);margin-top:1.5rem;line-height:1.6;text-align:center">By using receipts., you acknowledge that outputs are for planning and preparation only. AricCivicLabs assumes no liability for decisions made based on these tools.</p>
+    <p style="font-size:12px;color:var(--text3);margin-top:1.5rem;line-height:1.6;text-align:center">By using receipts., you acknowledge that outputs are for planning and preparation purposes only. AricCivicLabs assumes no liability for decisions made based on these tools. Use receipts. as a starting point — then do your reality check.</p>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ═══ CONTACT ════════════════════════════════════════════════════════ -->
 <section class="section" id="contact" style="background:var(--paper2);border-top:1px solid var(--warm)">
   <div class="section-inner" style="max-width:560px">
     <p class="section-label reveal">Say hello</p>
@@ -687,55 +788,6 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem}
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-logo">receipts.</div>
-        <div class="footer-tagline">Know your worth. Prove it. Use it.<br>Built by <a href="aricciviclabs.html" style="color:rgba(245,240,232,.5);text-decoration:none;border-bottom:1px solid rgba(245,240,232,.2)">AricCivicLabs.Org</a></div>
-      </div>
-      <div class="footer-nav">
-        <div class="footer-nav-col">
-          <div class="footer-nav-heading">receipts.</div>
-          <div class="footer-nav-links">
-            <a href="roi_v1_individual.html">Individual</a>
-            <a href="roi_v2_smallbusiness.html">Small Business</a>
-            <a href="roi_v3_nonprofit.html">Nonprofit</a>
-            <a href="roi_v4_teams.html">Teams</a>
-          </div>
-        </div>
-        <div class="footer-nav-col">
-          <div class="footer-nav-heading">Transitions</div>
-          <div class="footer-nav-links">
-            <a href="entry_tool.html">Entry</a>
-            <a href="reentry_tool.html">Re-entry</a>
-            <a href="exit_tool.html">Exit</a>
-            <a href="equity_tool.html">Equity</a>
-            <a href="change_tool.html">Change</a>
-            <a href="compare_tool.html">Compare</a>
-            <a href="motivation_coach.html">Motivation Coach</a>
-          </div>
-        </div>
-        <div class="footer-nav-col">
-          <div class="footer-nav-heading">Voice &amp; More</div>
-          <div class="footer-nav-links">
-            <a href="speaking_coach.html">Speaking Coach</a>
-            <a href="#pathfinder">Pathfinder Quiz</a>
-            <a href="#ecosystem">All Offerings</a>
-            <a href="aricciviclabs.html">About ACL</a>
-            <a href="#contact">Contact</a>
-            <a href="#disclosure">Disclosure</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2025 AricCivicLabs.Org — Free to use. No data collected. No account required.</div>
-      <div class="footer-made">Civic technology for everyday people.</div>
-    </div>
-  </div>
-</footer>
 
 <script>
 function submitContact(e){
@@ -748,7 +800,7 @@ function submitContact(e){
     .then(function(r){
       if(r.ok){
         status.style.color='var(--accent)';
-        status.textContent='✓ Message sent! We\'ll be in touch.';
+        status.textContent='✓ Message sent! We’ll be in touch.';
         document.getElementById('contact-form').reset();
       }else{
         status.style.color='var(--red)';
@@ -762,7 +814,9 @@ function submitContact(e){
       btn.textContent='Send message →';btn.disabled=false;
     });
 }
+</script>
 
+<script>
 // Scroll reveal
 var reveals=document.querySelectorAll('.reveal');
 var observer=new IntersectionObserver(function(entries){
@@ -772,15 +826,16 @@ var observer=new IntersectionObserver(function(entries){
 },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
 reveals.forEach(function(el){observer.observe(el);});
 
-// Smooth scroll
+// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
     var target=document.querySelector(this.getAttribute('href'));
     if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
   });
 });
+</script>
 
-// Quotes carousel
+<script>
 var _qi=0,_qt=null;
 function goQuote(i){
   var slides=document.querySelectorAll('.quote-slide');
