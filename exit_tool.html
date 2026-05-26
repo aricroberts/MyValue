@@ -782,7 +782,16 @@ function calc(){
   // Export tab
   var p5=byId('p5');
   if(p5){
-    p5.innerHTML='<div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Copyable brief</p><div id="brief-content" class="dpre">'+esc(makeBrief(mode,v,out))+'</div><div class="brow"><button class="btn-primary" onclick="copyBrief()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy brief</button><button onclick="downloadBrief()"><i class="ti ti-download" style="font-size:13px;vertical-align:-1px"></i> Download .txt</button></div></div>';
+    p5.innerHTML=
+      '<div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Copyable brief</p>'+
+      '<div id="brief-content" class="dpre">'+esc(makeBrief(mode,v,out))+'</div>'+
+      '<div class="brow"><button class="btn-primary" onclick="copyBrief()"><i class="ti ti-copy" style="font-size:13px;vertical-align:-1px"></i> Copy brief</button><button onclick="downloadBrief()"><i class="ti ti-download" style="font-size:13px;vertical-align:-1px"></i> Download .txt</button></div></div>'+
+      '<div class="card card-ai" style="margin-top:.875rem"><p class="sl sl-ai"><i class="ti ti-mail"></i>Email this brief <span style="font-size:10px;font-weight:400;color:var(--purple);text-transform:none;letter-spacing:0;margin-left:6px;background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:99px;padding:1px 7px">Premium</span></p>'+
+      '<p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Enter your email address and we'll send this brief directly to your inbox — useful for saving to your files, sharing with a coach, or reading on another device.</p>'+
+      '<div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="export-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailBrief()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send brief</button></div>'+
+      '<p id="email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p>'+
+      '<p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver this brief and is not stored or shared. This is a premium feature — coming soon with receipts. Pro.</p>'+
+      '</div>';
   }
 
   // Render tool-specific extras
@@ -843,9 +852,38 @@ function renderSkillsSection(v){
 
     // Gap resources
     if(need.length>0){
-      html+='<div style="margin-top:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--amber-b);border-radius:var(--radius-sm);">';
-      html+='<p class="sl sl-warn" style="margin-bottom:6px"><i class="ti ti-books"></i>Resources for your gaps</p>';
-      html+='<p style="font-size:12px;color:var(--text2);line-height:1.6">Focus on: <strong style="color:var(--text)">'+esc(need.slice(0,3).map(function(s){return s.name}).join(', ')+(need.length>3?' + '+(need.length-3)+' more':''))+'</strong>. Check O*NET for official skill definitions, CareerOneStop Training Finder for programs, and LinkedIn Learning or Coursera for self-paced options. Each tab in Resources has targeted links for each gap category.</p>';
+      html+='<div style="margin-top:14px">';
+      html+='<p class="sl sl-warn" style="margin-bottom:8px"><i class="ti ti-books"></i>Useful links for your skill gaps</p>';
+      var focusSkills=need.slice(0,5);
+      html+='<p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px">Building: <strong style="color:var(--text)">'+esc(focusSkills.map(function(s){return s.name}).join(', ')+(need.length>5?' + '+(need.length-5)+' more':''))+'</strong></p>';
+      var skillResources=[
+        {name:'O*NET — Skill Definitions',desc:'Official importance ratings, tasks, and work context for any skill by occupation.',url:'https://www.onetonline.org/skills/'},
+        {name:'CareerOneStop Training Finder',desc:'Find local and online programs by subject — filter by cost, duration, and credential type.',url:'https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx'},
+        {name:'Coursera',desc:'University-backed certificates for most in-demand professional and technical skills.',url:'https://www.coursera.org/'},
+        {name:'LinkedIn Learning',desc:'Short, focused skill courses — completions show directly on your LinkedIn profile.',url:'https://www.linkedin.com/learning/'},
+        {name:'edX',desc:'Accredited micro-credentials and degree pathways from MIT, Harvard, and 250+ institutions.',url:'https://www.edx.org/'},
+        {name:'WIOA Training Funding',desc:'Federally funded retraining — may cover full tuition for eligible workers.',url:'https://www.careeronestop.org/localhelp/wioa/'}
+      ];
+      html+='<div class="res-grid" style="grid-template-columns:repeat(2,1fr);gap:8px">';
+      skillResources.forEach(function(r){
+        html+='<a class="res-card" href="'+esc(r.url)+'" target="_blank" rel="noopener"><div class="res-card-name"><i class="ti ti-external-link" style="font-size:12px;color:var(--text3);flex-shrink:0"></i>'+esc(r.name)+'</div><div class="res-card-desc">'+esc(r.desc)+'</div><div class="res-card-url">'+esc(r.url.replace('https://','').replace(/\/$/,''))+'</div></a>';
+      });
+      html+='</div>';
+      if(focusSkills.length>0){
+        html+='<div style="margin-top:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--teal-b);border-radius:var(--radius-sm)">';
+        html+='<p style="font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px"><i class="ti ti-search" style="font-size:11px;vertical-align:-1px"></i> Search these skills directly</p>';
+        focusSkills.forEach(function(s){
+          var q=encodeURIComponent(s.name+' training');
+          var onet=encodeURIComponent(s.name);
+          html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center">';
+          html+='<span style="font-size:12px;color:var(--text);font-weight:500;min-width:120px">'+esc(s.name)+'</span>';
+          html+='<a href="https://www.google.com/search?q='+q+'+course" target="_blank" rel="noopener" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:99px;background:var(--surface2);color:var(--text2);text-decoration:none">Google courses</a>';
+          html+='<a href="https://www.coursera.org/search?query='+onet+'" target="_blank" rel="noopener" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:99px;background:var(--surface2);color:var(--text2);text-decoration:none">Coursera</a>';
+          html+='<a href="https://www.onetonline.org/search/fnc/?f=4&s='+onet+'" target="_blank" rel="noopener" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:99px;background:var(--surface2);color:var(--text2);text-decoration:none">O*NET</a>';
+          html+='</div>';
+        });
+        html+='</div>';
+      }
       html+='</div>';
     }
 
@@ -1027,25 +1065,147 @@ function buildResources(mode){
 
 // ── Export ────────────────────────────────────────────────────────────────────
 function makeBrief(mode,v,out){
-  var lines=[mode.title,'Generated: '+new Date().toLocaleDateString(),''];
-  mode.fields.forEach(function(f){lines.push(f[1]+': '+v[f[0]])});
-  lines.push('','Key metrics:');
-  mode.metrics.forEach(function(m,i){lines.push('- '+m+': '+out.metrics[i])});
-  if(out.narrative){lines.push('','Analysis:',out.narrative.replace(/<[^>]+>/g,''))}
-  lines.push('','Action plan:');
-  (out.plan||[]).forEach(function(p){lines.push('- '+p.label+': '+p.text)});
-  if(window.TOOLKIT_MODE==='reentry'&&reentryROIOutput){lines.push('','Gap ROI Assessment:',reentryROIOutput)}
+  var lines=[
+    '════════════════════════════════════════════════════',
+    '  receipts.  |  '+mode.title,
+    '  Generated: '+new Date().toLocaleDateString(),
+    '════════════════════════════════════════════════════',
+    ''
+  ];
+
+  lines.push('── INPUTS ──────────────────────────────────────────');
+  if(window.TOOLKIT_MODE==='compare'){
+    var cNames=['Career A','Career B','Career C'];
+    var cKeys=[['aName','aPay','aFit','aSkill','aDemand','aTrain'],['bName','bPay','bFit','bSkill','bDemand','bTrain'],['cName','cPay','cFit','cSkill','cDemand','cTrain']];
+    cKeys.forEach(function(keys,ci){
+      var cVal=v[keys[0]];
+      if(!cVal&&ci===2)return;
+      lines.push('');
+      lines.push('  '+'─'.repeat(44));
+      lines.push('  '+cNames[ci].toUpperCase()+(ci===2?' (Optional)':''));
+      lines.push('  '+'─'.repeat(44));
+      mode.fields.forEach(function(f){
+        if(keys.indexOf(f[0])!==-1)lines.push('  '+f[1]+': '+(v[f[0]]||''));
+      });
+    });
+  }else{
+    mode.fields.forEach(function(f){
+      if(f[0]==='state'&&!v[f[0]])return;
+      lines.push('  '+f[1]+': '+v[f[0]]);
+    });
+  }
+  lines.push('');
+
+  lines.push('── KEY METRICS ─────────────────────────────────────');
+  mode.metrics.forEach(function(m,i){lines.push('  '+m+': '+out.metrics[i])});
+  lines.push('');
+
+  if(out.narrative){
+    lines.push('── ANALYSIS ────────────────────────────────────────');
+    lines.push('  '+out.narrative.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim());
+    lines.push('');
+  }
+
+  lines.push('── ACTION PLAN ─────────────────────────────────────');
+  (out.plan||[]).forEach(function(p){
+    lines.push('  '+p.label);
+    lines.push('  '+p.text);
+    lines.push('');
+  });
+
+  if(window.TOOLKIT_MODE==='compare'&&out.tableRows){
+    lines.push('── CAREER COMPARISON ───────────────────────────────');
+    lines.push('');
+    out.tableRows.forEach(function(r,i){
+      lines.push('  '+'─'.repeat(44));
+      lines.push('  '+(i+1)+'. '+r.name.toUpperCase()+(r.winner?' ★ TOP PICK':''));
+      lines.push('  '+'─'.repeat(44));
+      lines.push('  Annual pay:       '+r.pay);
+      lines.push('  Overall score:    '+r.score+'/100');
+      lines.push('  Fit score:        '+r.fit);
+      lines.push('  Skill match:      '+r.skill);
+      lines.push('  Market demand:    '+r.demand);
+      lines.push('  Training needed:  '+r.train+' months');
+      lines.push('');
+    });
+  }
+
+  if(window.TOOLKIT_MODE==='reentry'&&reentryROIOutput){
+    lines.push('── GAP CHAPTER ROI ─────────────────────────────────');
+    lines.push(reentryROIOutput);
+    lines.push('');
+  }
   if(window.TOOLKIT_MODE==='change'&&changeSkillsLoaded){
     var gaps=changeSkills.filter(function(s){return!s.checked}).map(function(s){return s.name});
     var have=changeSkills.filter(function(s){return s.checked}).map(function(s){return s.name});
-    if(have.length)lines.push('','Skills confirmed: '+have.join(', '));
-    if(gaps.length)lines.push('Skills to build: '+gaps.join(', '));
+    lines.push('── SKILLS READINESS ────────────────────────────────');
+    if(have.length){lines.push('  Skills you have:');have.forEach(function(n){lines.push('    • '+n)});}
+    lines.push('');
+    if(gaps.length){
+      lines.push('  Skills to build:');
+      gaps.forEach(function(n){lines.push('    • '+n)});
+      lines.push('');
+      lines.push('  SKILL-SPECIFIC RESOURCES');
+      lines.push('  '+'─'.repeat(44));
+      lines.push('  • O*NET Occupation Explorer — onetonline.org');
+      lines.push('    Find skill definitions, importance ratings, and which roles need each skill.');
+      lines.push('');
+      lines.push('  • CareerOneStop Training Finder — careeronestop.org/Toolkit/Training/find-local-training.aspx');
+      lines.push('    Search for local or online training programs by skill or subject area.');
+      lines.push('');
+      lines.push('  • Coursera / edX — coursera.org');
+      lines.push('    Self-paced certificates from top universities for most in-demand skills.');
+      lines.push('');
+      lines.push('  • LinkedIn Learning — linkedin.com/learning');
+      lines.push('    Short skill courses with completions that show on your profile.');
+      lines.push('');
+      lines.push('  • YouTube — youtube.com');
+      lines.push('    Free tutorials for almost every technical skill.');
+      lines.push('');
+    }
+    lines.push('');
   }
-  lines.push('','Note: Planning estimate only. Not tax, legal, investment, or medical advice.');
+  // Include resource links
+  var key=window.TOOLKIT_MODE||'entry';
+  var resData=RESOURCE_DATA[key];
+  if(resData&&resData.stages){
+    lines.push('── HELPFUL LINKS ───────────────────────────────────');
+    resData.stages.forEach(function(stage,si){
+      lines.push('');
+      lines.push('  '+stage.title.toUpperCase());
+      stage.links.forEach(function(lk){
+        lines.push('');
+        lines.push('  • '+lk.name);
+        lines.push('    '+lk.url);
+        lines.push('    '+lk.desc);
+      });
+    });
+    lines.push('');
+  }
+
+  lines.push('── NOTE ────────────────────────────────────────────');
+  lines.push('  Planning estimate only. Not tax, legal, investment,');
+  lines.push('  or financial advice. All figures are self-reported.');
   return lines.join('\n');
 }
 function copyBrief(){var e=byId('brief-content');if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline=''},1200)}
 function downloadBrief(){var e=byId('brief-content');if(!e)return;var blob=new Blob([e.textContent||''],{type:'text/plain'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='receipts-brief-'+new Date().toISOString().slice(0,10)+'.txt';a.click();URL.revokeObjectURL(url)}
+function emailBrief(){
+  var emailEl=byId('export-email');
+  var statusEl=byId('email-status');
+  var briefEl=byId('brief-content');
+  if(!emailEl||!statusEl||!briefEl)return;
+  var email=(emailEl.value||'').trim();
+  if(!email||!email.includes('@')){statusEl.style.color='var(--amber)';statusEl.textContent='Please enter a valid email address.';return;}
+  statusEl.style.color='var(--text3)';statusEl.textContent='Opening your email client…';
+  var subject='receipts. brief — '+new Date().toLocaleDateString();
+  var body=briefEl.textContent||'';
+  var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body.substring(0,2000)+'
+
+[Full brief — paste from receipts. Export tab for complete version]');
+  try{window.open(mailto,'_self');}catch(e){}
+  setTimeout(function(){statusEl.style.color='var(--green)';statusEl.textContent='Email client opened. Full email delivery coming soon with receipts. Pro.';},600);
+}
 
 // ── Resource data ─────────────────────────────────────────────────────────────
 var RESOURCE_DATA={"entry":{"orient":"Starting your career. These resources are ordered by what you need to figure out first — understand the landscape before you apply, and get your finances in place before you accept an offer.","stages":[{"title":"Understand the landscape","links":[{"name":"BLS Occupational Outlook Handbook","desc":"Pay, growth outlook, and education requirements for 900+ jobs","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"O*NET OnLine","desc":"Skills, tasks, and work context by occupation","url":"https://www.onetonline.org/","badge":"gov"},{"name":"MyNextMove","desc":"Plain-language career exploration by interest or keyword","url":"https://www.mynextmove.org/","badge":"free"},{"name":"LinkedIn Salary","desc":"Real compensation by title, location, and experience level","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"CareerOneStop Occupation Profile","desc":"Local wages and employment data by role","url":"https://www.careeronestop.org/toolkit/careers/explore-careers.aspx","badge":"gov"}]},{"title":"Know your rights and benefits","links":[{"name":"DOL Wage & Hour Division","desc":"Minimum wage, overtime rules, and youth labor protections","url":"https://www.dol.gov/agencies/whd","badge":"gov"},{"name":"EEOC Know Your Rights","desc":"Discrimination protections and how to file a complaint","url":"https://www.eeoc.gov/know-your-rights","badge":"gov"},{"name":"IRS W-4 Withholding Estimator","desc":"Set your first paycheck up right — avoid over- or under-withholding","url":"https://www.irs.gov/individuals/tax-withholding-estimator","badge":"gov"},{"name":"Benefits.gov","desc":"Federal benefit eligibility finder across all programs","url":"https://www.benefits.gov/","badge":"gov"},{"name":"Healthcare.gov Plan Finder","desc":"Marketplace coverage if your employer doesn't offer insurance","url":"https://www.healthcare.gov/see-plans/","badge":"gov"}]},{"title":"Build credentials","links":[{"name":"Federal Student Aid (FAFSA)","desc":"Grants, loans, and work-study eligibility","url":"https://studentaid.gov/h/apply-for-aid/fafsa","badge":"gov"},{"name":"College Scorecard","desc":"Cost, graduation rates, and earnings outcomes by school","url":"https://collegescorecard.ed.gov/","badge":"gov"},{"name":"Apprenticeship.gov","desc":"Paid earn-while-you-learn pathways into real careers","url":"https://www.apprenticeship.gov/","badge":"gov"},{"name":"Google Career Certificates","desc":"Job-ready certificates in tech fields in about 6 months","url":"https://grow.google/certificates/","badge":"free"},{"name":"Coursera / edX","desc":"Accredited certificates and degrees from top universities","url":"https://www.coursera.org/","badge":"tool"}]},{"title":"Build your job search infrastructure","links":[{"name":"USAJOBS","desc":"Every federal government job opening in one place","url":"https://www.usajobs.gov/","badge":"gov"},{"name":"Handshake","desc":"Entry-level roles and campus recruiting partnerships","url":"https://joinhandshake.com/","badge":"tool"},{"name":"Idealist","desc":"Nonprofit and mission-driven job board","url":"https://www.idealist.org/","badge":"free"},{"name":"Indeed","desc":"Largest general-purpose job board by volume","url":"https://www.indeed.com/","badge":"tool"},{"name":"CareerOneStop Job Finder","desc":"Government-curated openings with local filters","url":"https://www.careeronestop.org/toolkit/jobs/find-jobs.aspx","badge":"gov"}]},{"title":"Set up your financial foundation","links":[{"name":"CFPB Budgeting Worksheets","desc":"Free federal financial planning tools and templates","url":"https://www.consumerfinance.gov/consumer-tools/budget/","badge":"gov"},{"name":"Student Loan Simulator","desc":"Income-driven repayment planning for federal loans","url":"https://studentaid.gov/loan-simulator/","badge":"gov"},{"name":"IRS Free File","desc":"File federal taxes for free if income is under the threshold","url":"https://www.irs.gov/filing/free-file-do-your-federal-taxes-for-free","badge":"gov"},{"name":"MyMoney.gov","desc":"FDIC-backed financial literacy hub and planning guides","url":"https://www.mymoney.gov/","badge":"gov"}]}]},"reentry":{"orient":"Returning to work after a gap. Each stage reflects the real sequence — your financial runway affects which opportunities you can pursue, so understand it before you narrow your search.","stages":[{"title":"Assess where you stand","links":[{"name":"CareerOneStop Skills Matcher","desc":"Map past experience to current in-demand jobs","url":"https://www.careeronestop.org/toolkit/skills/skills-matcher.aspx","badge":"gov"},{"name":"O*NET Skills Search","desc":"Identify transferable skill sets across occupations","url":"https://www.onetonline.org/skills/","badge":"gov"},{"name":"AARP Job Search","desc":"Gap-friendly employers and 50+ focused resources","url":"https://www.aarp.org/work/job-search/","badge":"free"},{"name":"Encore.org","desc":"Second-act careers and experienced worker programs","url":"https://encore.org/","badge":"free"},{"name":"BLS Occupational Outlook Handbook","desc":"Check whether your field grew or contracted during your gap","url":"https://www.bls.gov/ooh/","badge":"gov"}]},{"title":"Bridge the gap — training and retraining","links":[{"name":"American Job Centers","desc":"Free job search help, resume coaching, training referrals","url":"https://www.careeronestop.org/localhelp/americanjobcenters/","badge":"gov"},{"name":"WIOA Retraining Funding","desc":"Federally funded career retraining for eligible workers","url":"https://www.careeronestop.org/localhelp/wioa/","badge":"gov"},{"name":"Per Scholas","desc":"Free tech training specifically for returning workers","url":"https://perscholas.org/","badge":"free"},{"name":"Goodwill Career Services","desc":"Employment programs with wraparound support nationwide","url":"https://www.goodwill.org/jobs-training/","badge":"free"},{"name":"Trade Adjustment Assistance","desc":"If your job was lost to trade, outsourcing, or automation","url":"https://www.dol.gov/agencies/eta/tradeact/","badge":"gov"}]},{"title":"Financial lifeline during re-entry","links":[{"name":"Benefits.gov","desc":"Find every assistance program you may qualify for","url":"https://www.benefits.gov/","badge":"gov"},{"name":"211.org","desc":"Local social services, food, housing, and utilities by zip code","url":"https://www.211.org/","badge":"free"},{"name":"SNAP Pre-Screener","desc":"Food assistance eligibility check before applying","url":"https://snap-screener.fns.usda.gov/snap-screener/","badge":"gov"},{"name":"Child Care Aware","desc":"Childcare subsidy finder for working parents returning to work","url":"https://www.childcareaware.org/","badge":"free"},{"name":"NCOA BenefitsCheckUp","desc":"Benefits finder for adults 55+ across 2,500+ programs","url":"https://www.benefitscheckup.org/","badge":"free"}]},{"title":"Navigate re-entry logistics","links":[{"name":"LinkedIn Career Break Feature","desc":"Officially acknowledge your gap professionally on your profile","url":"https://www.linkedin.com/help/linkedin/","badge":"tool"},{"name":"Ban the Box Employer Map","desc":"Find employers with gap-friendly hiring policies by location","url":"https://bantheboxcampaign.org/","badge":"free"},{"name":"DOL Reentry Employment Opportunities","desc":"Federally funded programs specifically for returning citizens","url":"https://www.dol.gov/agencies/eta/reentry/","badge":"gov"},{"name":"National H.I.R.E. Network","desc":"Hiring resources and employer connections for returning citizens","url":"https://www.hirenetwork.org/","badge":"free"}]},{"title":"Healthcare during the gap","links":[{"name":"Healthcare.gov Special Enrollment","desc":"Job loss triggers a special enrollment window — act within 60 days","url":"https://www.healthcare.gov/glossary/special-enrollment-period/","badge":"gov"},{"name":"Medicaid & CHIP","desc":"Healthcare coverage during income gap periods","url":"https://www.medicaid.gov/","badge":"gov"},{"name":"VA Health Benefits","desc":"Veterans returning to civilian work may still qualify","url":"https://www.va.gov/health-care/apply/","badge":"gov"}]}]},"exit":{"orient":"Retiring or leaving paid work. Work through these stages before you give notice — healthcare and income gaps are much harder to fix after the fact.","stages":[{"title":"Know your income picture","links":[{"name":"My Social Security Account","desc":"Full earnings history and personalized benefit estimates","url":"https://www.ssa.gov/myaccount/","badge":"gov"},{"name":"SSA Retirement Estimator","desc":"Explore how claiming age affects your monthly benefit","url":"https://www.ssa.gov/benefits/retirement/estimator.html","badge":"gov"},{"name":"Pension Rights Center","desc":"Understand your defined-benefit rights and protections","url":"https://www.pensionrights.org/","badge":"free"},{"name":"PBGC Pension Lookup","desc":"If your employer pension is at risk, find your coverage","url":"https://www.pbgc.gov/","badge":"gov"},{"name":"IRS Retirement Topics","desc":"RMD rules, account types, and withdrawal rules in plain language","url":"https://www.irs.gov/retirement-plans","badge":"gov"}]},{"title":"Sort out healthcare before and after Medicare","links":[{"name":"Medicare Plan Finder","desc":"Compare Part D and Medicare Advantage plans side by side","url":"https://www.medicare.gov/plan-compare/","badge":"gov"},{"name":"SHIP Medicare Counseling","desc":"Free personalized Medicare counseling available in every state","url":"https://www.shiphelp.org/","badge":"gov"},{"name":"Healthcare.gov for Early Retirees","desc":"Marketplace coverage for those who retire before age 65","url":"https://www.healthcare.gov/","badge":"gov"},{"name":"NCOA Medicare Savings Programs","desc":"Help paying premiums, deductibles, and out-of-pocket costs","url":"https://www.ncoa.org/medicare/medicare-savings-programs/","badge":"free"}]},{"title":"Plan withdrawals and investments","links":[{"name":"Investor.gov Compound Calculator","desc":"SEC-maintained growth and withdrawal modeling tool","url":"https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator","badge":"gov"},{"name":"FINRA BrokerCheck","desc":"Verify your financial advisor's credentials and complaint history","url":"https://brokercheck.finra.org/","badge":"gov"},{"name":"IRS RMD Worksheets","desc":"Required minimum distributions — rules and calculations","url":"https://www.irs.gov/publications/p590b","badge":"gov"},{"name":"Bogleheads Wiki","desc":"Evidence-based retirement planning — no products, no sales pitch","url":"https://www.bogleheads.org/wiki/Main_Page","badge":"free"}]},{"title":"Legal and estate readiness","links":[{"name":"Five Wishes Advance Directive","desc":"Plain-language living will recognized in most states","url":"https://www.agingwithdignity.org/five-wishes/","badge":"free"},{"name":"USA.gov Estate Planning","desc":"Official federal starting point for estate planning basics","url":"https://www.usa.gov/wills-and-estates","badge":"gov"},{"name":"ABA Elder Law Resources","desc":"Find elder law attorneys in your state via the Bar Association","url":"https://www.americanbar.org/groups/law_aging/","badge":"free"},{"name":"CaringInfo State Directives","desc":"Download your state's official advance directive forms","url":"https://www.nhpco.org/patients-and-caregivers/advance-care-planning/advance-directives/","badge":"free"}]},{"title":"Care, community, and daily life","links":[{"name":"Eldercare Locator","desc":"Find aging services and local support by zip code","url":"https://eldercare.acl.gov/","badge":"gov"},{"name":"Medicare Care Compare","desc":"Compare nursing homes, home health agencies, and facilities","url":"https://www.medicare.gov/care-compare/","badge":"gov"},{"name":"SCSEP Work After Retirement","desc":"Federally funded jobs program for older adults who want to keep working","url":"https://www.doleta.gov/seniors/","badge":"gov"}]}]},"equity":{"orient":"Building retirement savings over time. Start by understanding your account types, then stack the tax advantages in order before projecting growth — the sequence matters more than the total.","stages":[{"title":"Understand your account types","links":[{"name":"IRS Retirement Plan Types","desc":"401k, IRA, Roth, SEP, SIMPLE — how each works and who qualifies","url":"https://www.irs.gov/retirement-plans/plan-sponsor/types-of-retirement-plans","badge":"gov"},{"name":"IRS IRA Contribution Limits","desc":"Current year limits by account type and income level","url":"https://www.irs.gov/retirement-plans/ira-contribution-limits","badge":"gov"},{"name":"DOL 401k Fee Disclosure","desc":"How to read your plan's expense ratios and find hidden fees","url":"https://www.dol.gov/agencies/ebsa/","badge":"gov"},{"name":"FINRA Fund Analyzer","desc":"Compare investment fees across mutual funds and ETFs side by side","url":"https://tools.finra.org/fund_analyzer/","badge":"gov"}]},{"title":"Maximize employer benefits","links":[{"name":"DOL 401k Resources","desc":"Employer match rules, vesting schedules, and your plan rights","url":"https://www.dol.gov/general/topic/retirement/401ksavingsplans","badge":"gov"},{"name":"IRS HSA Rules","desc":"Triple-tax-advantaged account that bridges healthcare and retirement","url":"https://www.irs.gov/publications/p969","badge":"gov"},{"name":"PBGC My Pension Benefit","desc":"Look up defined-benefit plan status and insurance coverage","url":"https://www.pbgc.gov/workers-retirees","badge":"gov"}]},{"title":"Project your future","links":[{"name":"SSA Retirement Estimator","desc":"Includes Social Security in your full retirement projection","url":"https://www.ssa.gov/benefits/retirement/estimator.html","badge":"gov"},{"name":"Investor.gov Compound Calculator","desc":"Official SEC compound growth and withdrawal modeling tool","url":"https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator","badge":"gov"},{"name":"FIRECalc","desc":"Historical portfolio survival rate calculator for early retirement planning","url":"https://www.firecalc.com/","badge":"free"},{"name":"cFIREsim","desc":"Monte Carlo simulation for retirement portfolio sustainability","url":"https://www.cfiresim.com/","badge":"free"},{"name":"Vanguard Retirement Calculator","desc":"Income gap visualization and withdrawal sustainability modeling","url":"https://investor.vanguard.com/tools-calculators/retirement-income-calculator","badge":"tool"}]},{"title":"Tax-smart withdrawal strategies","links":[{"name":"IRS Publication 590-B","desc":"IRA distributions, RMD rules, and inherited account guidance","url":"https://www.irs.gov/publications/p590b","badge":"gov"},{"name":"IRS Roth Conversion Rules","desc":"When and how to convert — tax implications explained clearly","url":"https://www.irs.gov/retirement-plans/roth-iras","badge":"gov"},{"name":"Tax Foundation State Tax Maps","desc":"Compare retirement-friendly states by income and Social Security tax","url":"https://taxfoundation.org/data/all/state/state-income-tax-rates/","badge":"free"},{"name":"CFPB Retirement Savings Guidance","desc":"Consumer-level retirement planning guidance without jargon","url":"https://www.consumerfinance.gov/consumer-tools/retirement/","badge":"gov"}]},{"title":"Get advice you can trust","links":[{"name":"NAPFA Advisor Finder","desc":"Fee-only financial planners who don't earn product commissions","url":"https://www.napfa.org/","badge":"free"},{"name":"CFP Board Advisor Search","desc":"Verify certified financial planner credentials before you hire","url":"https://www.cfp.net/find-a-cfp-professional","badge":"free"},{"name":"FINRA BrokerCheck","desc":"Verify broker and advisor licensing and disciplinary history","url":"https://brokercheck.finra.org/","badge":"gov"}]}]},"change":{"orient":"Moving from one field to another. Research your destination before you commit to training, and build proof of your new skills before you apply — not after.","stages":[{"title":"Research the target role","links":[{"name":"O*NET Occupation Explorer","desc":"Full job profile: tasks, skills, pay, tools, and 10-year outlook","url":"https://www.onetonline.org/","badge":"gov"},{"name":"BLS Occupational Outlook Handbook","desc":"Growth projections and entry requirements by occupation","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"LinkedIn Salary","desc":"Real compensation by role, location, and years of experience","url":"https://www.linkedin.com/salary/","badge":"tool"},{"name":"Lightcast Open Skills","desc":"Real-time job posting data — what employers actually require now","url":"https://lightcast.io/open-skills","badge":"tool"}]},{"title":"Map your transferable skills","links":[{"name":"O*NET Skills Transferability","desc":"Find occupations that match your existing skill set","url":"https://www.onetonline.org/skills/","badge":"gov"},{"name":"CareerOneStop Skills Matcher","desc":"Compare current and target role skill overlap side by side","url":"https://www.careeronestop.org/toolkit/skills/skills-matcher.aspx","badge":"gov"},{"name":"SkillScan","desc":"Structured transferable skills self-assessment and inventory","url":"https://www.skillscan.com/","badge":"tool"}]},{"title":"Fill the credential gap","links":[{"name":"CareerOneStop Training Finder","desc":"Local and online programs with cost and duration data","url":"https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx","badge":"gov"},{"name":"WIOA Training Funding","desc":"Federally funded retraining — may cover full tuition costs","url":"https://www.careeronestop.org/localhelp/wioa/","badge":"gov"},{"name":"Apprenticeship.gov","desc":"Earn while you learn in your new field with pay from day one","url":"https://www.apprenticeship.gov/","badge":"gov"},{"name":"Coursera / edX","desc":"Accredited certificates from top universities, fully online","url":"https://www.coursera.org/","badge":"tool"}]},{"title":"Build proof before you apply","links":[{"name":"GitHub","desc":"Build and host a public technical portfolio for employers to review","url":"https://github.com/","badge":"free"},{"name":"Behance","desc":"Creative portfolio hosting for design, media, and visual fields","url":"https://www.behance.net/","badge":"free"},{"name":"Volunteer Match","desc":"Get real experience in your target field through meaningful volunteering","url":"https://www.volunteermatch.org/","badge":"free"}]},{"title":"Execute the job search in your new field","links":[{"name":"American Job Centers","desc":"Free resume help and interview coaching through the DOL network","url":"https://www.careeronestop.org/localhelp/americanjobcenters/","badge":"gov"},{"name":"USAJOBS","desc":"Federal roles — strong culture of welcoming career changers","url":"https://www.usajobs.gov/","badge":"gov"},{"name":"Idealist","desc":"Mission-driven and nonprofit sector roles across the country","url":"https://www.idealist.org/","badge":"free"},{"name":"LinkedIn Jobs","desc":"Professional job board with alumni and network filters built in","url":"https://www.linkedin.com/jobs/","badge":"tool"},{"name":"Indeed","desc":"Highest job volume across all industries and experience levels","url":"https://www.indeed.com/","badge":"tool"}]}]},"compare":{"orient":"Comparing multiple paths at once. Run research in parallel for each option — this order helps you move from data to decision without getting stuck in analysis.","stages":[{"title":"Research all options simultaneously","links":[{"name":"O*NET Occupation Explorer","desc":"Side-by-side skill and task profiles for any occupation","url":"https://www.onetonline.org/","badge":"gov"},{"name":"BLS Occupational Outlook Handbook","desc":"10-year outlook and entry requirements — compare occupations directly","url":"https://www.bls.gov/ooh/","badge":"gov"},{"name":"BLS Wages by Area and Occupation","desc":"Hyper-local salary data by occupation and metro area","url":"https://www.bls.gov/oes/","badge":"gov"},{"name":"LinkedIn Salary Insights","desc":"Compensation by title, metro area, and years of experience","url":"https://www.linkedin.com/salary/","badge":"tool"}]},{"title":"Understand what each path really costs","links":[{"name":"College Scorecard","desc":"Education cost and actual earnings outcomes by program and school","url":"https://collegescorecard.ed.gov/","badge":"gov"},{"name":"CareerOneStop Training Finder","desc":"Cost and duration of training programs for each path","url":"https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx","badge":"gov"},{"name":"MIT Living Wage Calculator","desc":"Minimum viable wage by metro area — does the path pay enough to live on?","url":"https://livingwage.mit.edu/","badge":"free"},{"name":"Credential Engine","desc":"Compare credential market value across competing options","url":"https://credentialengine.org/","badge":"tool"}]},{"title":"Assess fit, not just pay","links":[{"name":"O*NET Interest Profiler","desc":"Map your personality type to occupational environments","url":"https://www.onetonline.org/explore/interests/","badge":"gov"},{"name":"CliftonStrengths (Gallup)","desc":"Strengths-based career fit assessment with detailed work style guidance","url":"https://www.gallup.com/cliftonstrengths/","badge":"tool"},{"name":"SkillScan","desc":"Transferable skill inventory to stress-test readiness across all paths","url":"https://www.skillscan.com/","badge":"tool"},{"name":"16Personalities","desc":"Cognitive style and work environment fit assessment","url":"https://www.16personalities.com/","badge":"free"}]},{"title":"Validate with real people","links":[{"name":"LinkedIn Alumni Tool","desc":"Find people who made similar transitions from your exact background","url":"https://www.linkedin.com/alumni/","badge":"tool"},{"name":"Meetup","desc":"Find professional communities in each field before you commit to one","url":"https://www.meetup.com/","badge":"free"},{"name":"Reddit Career Communities","desc":"r/cscareerquestions, r/nonprofit — real practitioner candor","url":"https://www.reddit.com/","badge":"free"}]},{"title":"Make the decision with a framework","links":[{"name":"Pivot Method (Jenny Blake)","desc":"Scan, pilot, launch — structured framework for making career pivots","url":"https://pivotmethod.com/","badge":"free"},{"name":"MindTools Decision Matrix","desc":"Weighted comparison framework for multi-factor decisions","url":"https://www.mindtools.com/dz5ry0s","badge":"free"}]}]}};
