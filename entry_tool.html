@@ -211,6 +211,60 @@ function career(name,pay,fit,skill,demand,train){
 function exJSON(txt){
   try{var clean=txt.replace(/```json/g,'').replace(/```/g,'').trim();var m=clean.match(/\{[\s\S]*\}/);return m?JSON.parse(m[0]):{}}catch(e){return{}}
 }
+
+// ── State income tax lookup (marginal top rate for working-class bracket) ────
+var STATE_TAX={
+  'AL':5,'AK':0,'AZ':2.5,'AR':4.9,'CA':6,'CO':4.4,'CT':5,'DE':6.6,'FL':0,'GA':5.75,
+  'HI':7.2,'ID':5.8,'IL':4.95,'IN':3.15,'IA':4.4,'KS':5.7,'KY':4.5,'LA':3,'ME':7.15,
+  'MD':5.75,'MA':5,'MI':4.25,'MN':6.8,'MS':4.7,'MO':4.95,'MT':6.75,'NE':5.84,'NV':0,
+  'NH':0,'NJ':5.525,'NM':4.9,'NY':6.85,'NC':4.75,'ND':2.5,'OH':3.688,'OK':4.75,'OR':8.75,
+  'PA':3.07,'RI':4.75,'SC':6.5,'SD':0,'TN':0,'TX':0,'UT':4.95,'VT':6.6,'VA':5.75,
+  'WA':0,'WV':6.5,'WI':5.3,'WY':0,'DC':8.5
+};
+var STATE_NAMES={
+  'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA','colorado':'CO',
+  'connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID',
+  'illinois':'IL','indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA',
+  'maine':'ME','maryland':'MD','massachusetts':'MA','michigan':'MI','minnesota':'MN',
+  'mississippi':'MS','missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV',
+  'new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY',
+  'north carolina':'NC','north dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR',
+  'pennsylvania':'PA','rhode island':'RI','south carolina':'SC','south dakota':'SD',
+  'tennessee':'TN','texas':'TX','utah':'UT','vermont':'VT','virginia':'VA',
+  'washington':'WA','west virginia':'WV','wisconsin':'WI','wyoming':'WY',
+  'district of columbia':'DC','dc':'DC','d.c.':'DC'
+};
+
+function fedRateForIncome(income){
+  // 2024 single filer marginal rates (approximate for planning)
+  if(income<=11600)return 10;
+  if(income<=47150)return 12;
+  if(income<=100525)return 22;
+  if(income<=191950)return 24;
+  return 32;
+}
+
+function lookupStateTax(){
+  var stateEl=byId('state');
+  var taxEl=byId('tax');
+  if(!stateEl||!taxEl)return;
+  var raw=stateEl.value.trim().toUpperCase();
+  var stateCode=STATE_TAX[raw]!==undefined?raw:(STATE_NAMES[stateEl.value.trim().toLowerCase()]||null);
+  if(!stateCode)return;
+  var stateTax=STATE_TAX[stateCode]||0;
+  var incomeEl=byId('income');
+  var income=incomeEl?parseFloat(incomeEl.value)||42000:42000;
+  var fedRate=fedRateForIncome(income);
+  // FICA: 7.65% (SS 6.2% + Medicare 1.45%)
+  var fica=7.65;
+  var total=Math.round(fedRate+stateTax+fica);
+  taxEl.value=total;
+  // Show a hint below the tax field
+  var hint=byId('tax-hint');
+  if(hint){hint.textContent=stateCode+': ~'+stateTax+'% state + ~'+fedRate+'% federal + 7.65% FICA ≈ '+total+'% total. Adjust if your situation differs.';}
+  calc();
+}
+
 async function callClaude(messages,systemPrompt,useSearch){
   var body={model:'claude-sonnet-4-20250514',max_tokens:800,system:systemPrompt,messages:messages};
   if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
@@ -243,7 +297,9 @@ entry:{
   fields:[
     ['role','Target role','text','Program assistant'],
     ['income','Gross annual pay','number','42000'],
-    ['tax','Tax + payroll estimate %','number','18'],
+    ['add_income','Additional income / yr (side work, benefits, etc.)','number','0'],
+    ['state','State (enter to auto-fill tax rate below)','text','','lookupStateTax()'],
+    ['tax','Tax + payroll estimate % (auto-filled or enter manually)','number','18','','show'],
     ['rent','Rent / housing / mo','number','950'],
     ['debt','Debt payments / mo','number','120'],
     ['basics','Food, transit, phone, basics / mo','number','780'],
@@ -252,7 +308,8 @@ entry:{
   ],
   metrics:['Take-home / mo','Monthly cushion','Savings rate','Emergency runway'],
   calc:function(v){
-    var take=v.income*(1-v.tax/100)/12;
+    var totalIncome=(v.income||0)+(v.add_income||0);
+    var take=totalIncome*(1-v.tax/100)/12;
     var costs=v.rent+v.debt+v.basics+v.save;
     var net=take-costs;
     var rate=take>0?v.save/take*100:0;
@@ -725,7 +782,11 @@ function buildSnapshot(mode){
 }
 
 function fieldHtml(f){
-  return '<div class="fg"><label for="'+f[0]+'">'+esc(f[1])+'</label><input id="'+f[0]+'" type="'+f[2]+'" value="'+esc(f[3])+'" oninput="calc()"></div>';
+  var extra=f[4]&&f[4]!=='show'?f[4]:'';
+  var showHint=f[4]==='show';
+  var placeholder=(f[2]==='text'&&f[0]==='state')?'placeholder="e.g. CA or California"':'';
+  var hintEl=showHint?'<div id="'+f[0]+'-hint" class="hint" style="margin-top:3px;color:var(--teal);min-height:14px"></div>':'';
+  return '<div class="fg"><label for="'+f[0]+'">'+esc(f[1])+'</label><input id="'+f[0]+'" type="'+f[2]+'" value="'+esc(f[3])+'" '+placeholder+' oninput="calc()'+(extra?';'+extra:'')+'">'+(hintEl||'')+'</div>';
 }
 
 function calc(){
@@ -1027,21 +1088,73 @@ function buildResources(mode){
 
 // ── Export ────────────────────────────────────────────────────────────────────
 function makeBrief(mode,v,out){
-  var lines=[mode.title,'Generated: '+new Date().toLocaleDateString(),''];
-  mode.fields.forEach(function(f){lines.push(f[1]+': '+v[f[0]])});
-  lines.push('','Key metrics:');
-  mode.metrics.forEach(function(m,i){lines.push('- '+m+': '+out.metrics[i])});
-  if(out.narrative){lines.push('','Analysis:',out.narrative.replace(/<[^>]+>/g,''))}
-  lines.push('','Action plan:');
-  (out.plan||[]).forEach(function(p){lines.push('- '+p.label+': '+p.text)});
-  if(window.TOOLKIT_MODE==='reentry'&&reentryROIOutput){lines.push('','Gap ROI Assessment:',reentryROIOutput)}
+  var div='─'.repeat(50);
+  var lines=[
+    '════════════════════════════════════════════════════',
+    '  receipts.  |  '+mode.title,
+    '  Generated: '+new Date().toLocaleDateString(),
+    '════════════════════════════════════════════════════',
+    ''
+  ];
+
+  lines.push('── INPUTS ──────────────────────────────────────────');
+  mode.fields.forEach(function(f){
+    if(f[0]==='state'&&!v[f[0]])return; // skip blank state
+    lines.push('  '+f[1]+': '+v[f[0]]);
+  });
+  lines.push('');
+
+  lines.push('── KEY METRICS ─────────────────────────────────────');
+  mode.metrics.forEach(function(m,i){lines.push('  '+m+': '+out.metrics[i])});
+  lines.push('');
+
+  if(out.narrative){
+    lines.push('── ANALYSIS ────────────────────────────────────────');
+    lines.push('  '+out.narrative.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim());
+    lines.push('');
+  }
+
+  lines.push('── ACTION PLAN ─────────────────────────────────────');
+  (out.plan||[]).forEach(function(p){
+    lines.push('  '+p.label);
+    lines.push('  '+p.text);
+    lines.push('');
+  });
+
+  if(window.TOOLKIT_MODE==='reentry'&&reentryROIOutput){
+    lines.push('── GAP CHAPTER ROI ─────────────────────────────────');
+    lines.push(reentryROIOutput);
+    lines.push('');
+  }
+
   if(window.TOOLKIT_MODE==='change'&&changeSkillsLoaded){
     var gaps=changeSkills.filter(function(s){return!s.checked}).map(function(s){return s.name});
     var have=changeSkills.filter(function(s){return s.checked}).map(function(s){return s.name});
-    if(have.length)lines.push('','Skills confirmed: '+have.join(', '));
-    if(gaps.length)lines.push('Skills to build: '+gaps.join(', '));
+    lines.push('── SKILLS ──────────────────────────────────────────');
+    if(have.length)lines.push('  Have: '+have.join(', '));
+    if(gaps.length)lines.push('  Need: '+gaps.join(', '));
+    lines.push('');
   }
-  lines.push('','Note: Planning estimate only. Not tax, legal, investment, or medical advice.');
+
+  // Include resource links
+  var key=window.TOOLKIT_MODE||'entry';
+  var resData=RESOURCE_DATA[key];
+  if(resData&&resData.stages){
+    lines.push('── HELPFUL LINKS ───────────────────────────────────');
+    resData.stages.forEach(function(stage){
+      lines.push('');
+      lines.push('  '+stage.title.toUpperCase());
+      stage.links.forEach(function(lk){
+        lines.push('  • '+lk.name+' — '+lk.url);
+        lines.push('    '+lk.desc);
+      });
+    });
+    lines.push('');
+  }
+
+  lines.push('── NOTE ────────────────────────────────────────────');
+  lines.push('  Planning estimate only. Not tax, legal, investment,');
+  lines.push('  or financial advice. All figures are self-reported.');
   return lines.join('\n');
 }
 function copyBrief(){var e=byId('brief-content');if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline=''},1200)}
