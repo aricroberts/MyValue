@@ -218,7 +218,7 @@ function renderCoach(){
     '<div class="card '+APP.tone+'"><p class="sl sl-ok"><i class="ti '+APP.icon+'"></i>'+APP.title+'</p><p class="lede">'+APP.lede+'</p></div>'+
     '<div class="g2" style="margin-bottom:1rem">'+APP.modes.map(function(m){return '<button class="coach-mode" data-mode="'+m[0]+'" onclick="startCoach(this.dataset.mode)"><i class="ti '+m[1]+'" style="color:var(--teal)"></i><span>'+m[2]+'</span><span>'+m[3]+'</span></button>'}).join('')+'</div>'+
     '<div id="coach-idle" class="card" style="text-align:center;color:var(--text2);font-size:13px">Choose a coaching mode above to begin.</div>'+
-    '<div id="coach-session" style="display:none"><div id="coach-msgs" style="margin-bottom:8px"></div><div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here..." style="min-height:80px"></textarea></div><div style="display:flex;gap:7px"><button class="btn-primary" onclick="sendCoach()" style="flex:1"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px"></i> Send</button><button onclick="endCoach()">End session</button></div><div id="coach-result" style="display:none;margin-top:.875rem"><div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p><div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div><div class="brow"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div></div></div></div>'+
+    '<div id="coach-session" style="display:none"><div id="coach-msgs" style="margin-bottom:8px"></div><div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here..." style="min-height:80px"></textarea></div><div style="display:flex;gap:7px"><button class="btn-primary" onclick="sendCoach()" style="flex:1"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px"></i> Send</button><button onclick="endCoach()">End session</button></div><div id="coach-result" style="display:none;margin-top:.875rem"><div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p><div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div><div class="brow"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div></div></div><div id="chat-export" style="display:none;margin-top:.875rem"><div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Export chat log</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px">Save or share the full coaching conversation for your records, a career coach, or future reference.</p><div class="brow"><button class="btn-primary" onclick="copyCoachLog()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy chat log</button><button onclick="downloadCoachLog()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download .txt</button></div></div><div class="card card-ai" style="margin-top:.875rem"><p class="sl sl-ai"><i class="ti ti-mail"></i>Email chat log <span style="font-size:10px;font-weight:400;color:var(--purple);text-transform:none;letter-spacing:0;margin-left:6px;background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:99px;padding:1px 7px">Premium</span></p><p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send this coaching session to your inbox to save it, share with a coach, or revisit your action items.</p><div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="coach-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailCoachLog()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send log</button></div><p id="coach-email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p><p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver this log and is not stored or shared. Full delivery coming soon with receipts. Pro.</p></div></div></div>'+
     '<div class="card" style="margin-top:.875rem"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p><div class="resource-grid">'+APP.resources.map(function(r){return '<a class="resource" href="'+r[2]+'" target="_blank" rel="noopener"><strong>'+esc(r[0])+'</strong><span>'+esc(r[1])+'</span></a>'}).join('')+'</div></div>'+
   '</div>';
 }
@@ -254,6 +254,7 @@ async function sendCoach(){
     cHist.push({role:'assistant',content:txt});
     var ct=byId('ctyping');if(ct)ct.remove();
     handleCoachText(txt,msgs);
+    var ce=byId('chat-export');if(ce)ce.style.display='block';
   }catch(e){
     var ct2=byId('ctyping');if(ct2)ct2.remove();
     var hist=cHist.map(function(m){return (m.role==='user'?'You: ':'Coach: ')+m.content}).join('\n\n');
@@ -272,8 +273,82 @@ function handleCoachText(txt,msgs){
   if(!out)out=htmlText(conversational+'\n\n'+raw);
   byId('coach-result').style.display='block';byId('coach-out').innerHTML=out;
 }
-function endCoach(){byId('coach-session').style.display='none';byId('coach-idle').style.display='block';byId('coach-result').style.display='none';cMode=null;cHist=[]}
-function cpCoach(){var t=byId('coach-out');navigator.clipboard.writeText(t.textContent||'').catch(function(){});t.style.outline='1px solid var(--green)';setTimeout(function(){t.style.outline=''},1200)}
+function endCoach(){
+  byId('coach-session').style.display='none';
+  byId('coach-idle').style.display='block';
+  byId('coach-result').style.display='none';
+  byId('chat-export').style.display='none';
+  cMode=null;cHist=[];
+}
+function cpCoach(){
+  var t=byId('coach-out');
+  navigator.clipboard.writeText(t.textContent||'').catch(function(){});
+  t.style.outline='1px solid var(--green)';
+  setTimeout(function(){t.style.outline=''},1200);
+}
+function makeCoachLog(){
+  var mode=cMode||'session';
+  var lines=[
+    '================================================',
+    '  receipts.  |  Coaching Session Log',
+    '  Mode: '+mode,
+    '  Generated: '+new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString(),
+    '================================================',
+    ''
+  ];
+  var userTurns=0;
+  cHist.forEach(function(m){
+    if(m.role==='user'&&m.content==='Begin.')return;
+    var label=m.role==='user'?'YOU':'COACH';
+    lines.push('-- '+label+' '+'-'.repeat(44-label.length));
+    lines.push(m.content);
+    lines.push('');
+    if(m.role==='user')userTurns++;
+  });
+  lines.push('================================================');
+  lines.push('  Note: AI coaching session. Not professional career,');
+  lines.push('  legal, medical, or financial advice.');
+  lines.push('================================================');
+  return lines.join('\n');
+}
+function copyCoachLog(){
+  var log=makeCoachLog();
+  navigator.clipboard.writeText(log).catch(function(){});
+  var btn=byId('chat-export');
+  if(btn){btn.style.outline='1px solid var(--green)';setTimeout(function(){btn.style.outline=''},1400);}
+}
+function downloadCoachLog(){
+  var log=makeCoachLog();
+  var blob=new Blob([log],{type:'text/plain'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='receipts-coaching-'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function emailCoachLog(){
+  var emailEl=byId('coach-email');
+  var statusEl=byId('coach-email-status');
+  if(!emailEl||!statusEl)return;
+  var email=(emailEl.value||'').trim();
+  if(!email||!email.includes('@')){
+    statusEl.style.color='var(--amber)';
+    statusEl.textContent='Please enter a valid email address.';
+    return;
+  }
+  statusEl.style.color='var(--text3)';
+  statusEl.textContent='Opening your email client...';
+  var log=makeCoachLog();
+  var subject='receipts. coaching session - '+new Date().toLocaleDateString();
+  var bodyShort=log.substring(0,2000)+'\n\n[Full log - paste from receipts. Export for complete version]';
+  var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(bodyShort);
+  try{window.open(mailto,'_self');}catch(e){}
+  setTimeout(function(){
+    statusEl.style.color='var(--green)';
+    statusEl.textContent='Email client opened. Full delivery coming soon with receipts. Pro.';
+  },600);
+}
 renderCoach();
 
 </script>
