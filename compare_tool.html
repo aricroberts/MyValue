@@ -1227,65 +1227,7 @@ var RESOURCE_DATA={"entry":{"orient":"Starting your career. These resources are 
 render();
 
 
-/* -- Browser session persistence -- */
-var TOOL_KEY = 'rcpts_compare';
-var _saveTimer = null;
-
-function _lsSave() {
-  try {
-    var inp = {};
-    document.querySelectorAll('input:not([type=radio]):not([type=hidden]),select,textarea').forEach(function(el) {
-      if (el.id && el.id !== 'coach-input') { inp[el.id] = el.value; }
-    });
-    localStorage.setItem(TOOL_KEY + '_inputs', JSON.stringify(inp));
-    localStorage.setItem(TOOL_KEY + '_ts', new Date().toISOString());
-  } catch(e) {}
-}
-function _lsSchedule() { clearTimeout(_saveTimer); _saveTimer = setTimeout(_lsSave, 700); }
-
-function _lsRestore() {
-  try {
-    var raw = localStorage.getItem(TOOL_KEY + '_inputs');
-    if (!raw) return;
-    var inp = JSON.parse(raw); var n = 0;
-    Object.keys(inp).forEach(function(id) {
-      var el = document.getElementById(id); if (!el) return;
-      el.value = inp[id]; n++;
-    });
-    if (n > 0) {
-      var ts = localStorage.getItem(TOOL_KEY + '_ts');
-      if (ts) _lsBanner(_lsAgo(new Date(ts)));
-      calc();
-    }
-  } catch(e) {}
-}
-function _lsAgo(d) {
-  var m = Math.round((Date.now()-d.getTime())/60000);
-  if (m < 2) return 'just now';
-  if (m < 60) return m + ' min ago';
-  var h = Math.round(m/60); if (h < 24) return h + (h===1?' hr':' hrs') + ' ago';
-  var dy = Math.round(h/24); return dy + (dy===1?' day':' days') + ' ago';
-}
-function _lsDismiss() { var b=document.getElementById('ls-banner'); if(b)b.remove(); }
-function _lsBanner(ago) {
-  var app = document.getElementById('app'); if (!app) return;
-  if (document.getElementById('ls-banner')) return;
-  var b = document.createElement('div'); b.id = 'ls-banner';
-  b.style.cssText = 'background:#162320;border:1px solid #22C4B044;border-radius:6px;padding:8px 12px;font-size:12px;color:#7AA097;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:.875rem;flex-wrap:wrap';
-  var span = document.createElement('span'); span.textContent = 'Session restored from ' + ago + ' -- your inputs are back.';
-  var btn = document.createElement('button'); btn.onclick = _lsDismiss; btn.textContent = 'x';
-  btn.style.cssText = 'background:none;border:none;color:#3D6056;cursor:pointer;font-size:18px;line-height:1;padding:0 4px';
-  b.appendChild(span); b.appendChild(btn);
-  app.insertBefore(b, app.firstChild);
-}
-function _lsClear() {
-  try { localStorage.removeItem(TOOL_KEY+'_inputs'); localStorage.removeItem(TOOL_KEY+'_ts'); } catch(e) {}
-  var b = document.getElementById('ls-banner'); if (b) b.remove();
-}
-
-document.addEventListener('input', _lsSchedule);
-document.addEventListener('change', _lsSchedule);
-setTimeout(_lsRestore, 150);
+/* -- Privacy model: all data in JS memory only, no persistence -- */
 
 </script>
 </body>
