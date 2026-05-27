@@ -1226,8 +1226,8 @@ var RESOURCE_DATA={"entry":{"orient":"Starting your career. These resources are 
 
 render();
 
-/* ── Browser session persistence ─────────────────────────────────────────── */
-var TOOL_KEY = 'rcpts_change';
+
+/* -- Browser session persistence -- */
 var _saveTimer = null;
 
 function _lsSave() {
@@ -1265,12 +1265,16 @@ function _lsAgo(d) {
   var h = Math.round(m/60); if (h < 24) return h + (h===1?' hr':' hrs') + ' ago';
   var dy = Math.round(h/24); return dy + (dy===1?' day':' days') + ' ago';
 }
+function _lsDismiss() { var b=document.getElementById('ls-banner'); if(b)b.remove(); }
 function _lsBanner(ago) {
   var app = document.getElementById('app'); if (!app) return;
   if (document.getElementById('ls-banner')) return;
   var b = document.createElement('div'); b.id = 'ls-banner';
   b.style.cssText = 'background:#162320;border:1px solid #22C4B044;border-radius:6px;padding:8px 12px;font-size:12px;color:#7AA097;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:.875rem;flex-wrap:wrap';
-  b.innerHTML = '<span>Session restored from ' + ago + ' — your inputs are back.</span><button onclick="document.getElementById('ls-banner').remove()" style="background:none;border:none;color:#3D6056;cursor:pointer;font-size:18px;line-height:1;padding:0 4px">&times;</button>';
+  var span = document.createElement('span'); span.textContent = 'Session restored from ' + ago + ' -- your inputs are back.';
+  var btn = document.createElement('button'); btn.onclick = _lsDismiss; btn.textContent = 'x';
+  btn.style.cssText = 'background:none;border:none;color:#3D6056;cursor:pointer;font-size:18px;line-height:1;padding:0 4px';
+  b.appendChild(span); b.appendChild(btn);
   app.insertBefore(b, app.firstChild);
 }
 function _lsClear() {
