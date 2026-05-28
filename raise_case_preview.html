@@ -565,6 +565,19 @@ function refresh() {
 se('m-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
 se('s-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
 refresh();
+
+/* Auto-unlock if returning from Stripe */
+if (window.location.search.indexOf('unlocked=true') !== -1) {
+  document.getElementById('pay-gate').style.display = 'none';
+  document.getElementById('print-block').style.display = 'block';
+  var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
+  if (g) g.style.display = 'none';
+  if (b) b.classList.remove('gate-blur');
+  /* Clean the URL without reloading */
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
 </script>
 </body>
 </html>
