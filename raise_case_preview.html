@@ -245,10 +245,9 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
   </div>
 
   <div id="print-block" style="display:none">
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:.625rem"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:3px;color:var(--amber)"></i><strong style="color:var(--text)">Preview mode — no email sent.</strong> In production, Stripe processes payment and the PDF arrives in your inbox. For now, print below.</div>
-    <button class="btn btn-accent" onclick="window.print()"><i class="ti ti-printer" style="font-size:13px"></i> Print / Save as PDF</button>
+    <div style="background:var(--green-dim);border:1px solid #1A4A2A;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#A0E8C8;line-height:1.5;margin-bottom:.625rem"><i class="ti ti-check" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i><strong style="color:#fff">Payment confirmed.</strong> Your raise case is ready. Click below, then choose <strong>Save as PDF</strong> in the print dialog.</div>
+    <button class="btn btn-accent" onclick="window.print()"><i class="ti ti-download" style="font-size:13px"></i> Download raise case PDF</button>
     <button class="btn btn-ghost" onclick="resetGate()"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to preview</button>
-    <p style="font-size:9px;color:var(--text3);margin-top:.375rem;line-height:1.4">In the print dialog choose <strong style="color:var(--text2)">Save as PDF</strong> as destination.</p>
   </div>
 
 </aside>
@@ -415,8 +414,8 @@ function doCheckout() {
   var em = (gv('pay-email') || '').trim();
   if (!em || em.indexOf('@') < 0) { alert('Please enter your email — the PDF will be sent there.'); document.getElementById('pay-email').focus(); return; }
   var stripeUrl = priceMode === 'one'
-    ? 'https://buy.stripe.com/test_4gMeVe8IabLIfin8W77N601'
-    : 'https://buy.stripe.com/test_9B600k0bE7vs8TZfkv7N600';
+    ? 'https://buy.stripe.com/4gMeVe8IabLIfin8W77N601'
+    : 'https://buy.stripe.com/28E9AUbUm9DAeejfkv7N602';
   window.location = stripeUrl + '?prefilled_email=' + encodeURIComponent(em);
   document.getElementById('pay-gate').style.display = 'none';
   document.getElementById('print-block').style.display = 'block';

@@ -1290,8 +1290,8 @@ function handlePgCheckout() {
   var em = (document.getElementById('pg-email').value || '').trim();
   if (!em || em.indexOf('@') < 0) { alert('Please enter your email address — the PDF will be delivered there.'); document.getElementById('pg-email').focus(); return; }
   var stripeUrl = _prevPgMode === 'one'
-    ? 'https://buy.stripe.com/test_4gMeVe8IabLIfin8W77N601'
-    : 'https://buy.stripe.com/test_9B600k0bE7vs8TZfkv7N600';
+    ? 'https://buy.stripe.com/4gMeVe8IabLIfin8W77N601'
+    : 'https://buy.stripe.com/28E9AUbUm9DAeejfkv7N602';
   window.location = stripeUrl + '?prefilled_email=' + encodeURIComponent(em);
   var paywall = document.getElementById('prev-paywall');
   if (paywall) paywall.innerHTML = '<div class="card-info" style="border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--blue-border);background:var(--blue-dim);font-size:11px;color:var(--text2);line-height:1.5"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:4px;color:var(--blue)"></i><strong style="color:var(--text)">Preview mode — no email sent.</strong> In production, Stripe processes payment and the PDF arrives in your inbox. For now, use Print → Save as PDF below.</div>';
