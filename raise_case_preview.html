@@ -242,13 +242,21 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
       <div class="popt sel" id="po-one" onclick="selPrice('one')"><div class="amt">$19</div><div class="desc">One report</div></div>
       <div class="popt" id="po-mo" onclick="selPrice('mo')"><div class="amt">$19<span style="font-size:10px;font-weight:400">/mo</span></div><div class="desc">All tools</div></div>
     </div>
-    <input class="email-inp" type="email" id="pay-email" placeholder="your@email.com — PDF sent here"/>
+    <input class="email-inp" type="email" id="pay-email" placeholder="your@email.com — receipt sent here"/>
     <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i><span id="pay-lbl">Get raise case PDF — $19</span></button>
-    <p style="font-size:9px;color:var(--text3);line-height:1.4;margin-top:.375rem">Stripe checkout. Your data never leaves your browser — only your email is sent. Refunds within 48 hours.</p>
+    <p style="font-size:9px;color:var(--text3);line-height:1.4;margin-top:.375rem">Stripe checkout opens in a new tab. Your data never leaves your browser. Refunds within 48 hours.</p>
+  </div>
+
+  <!-- PENDING STATE — shown after Stripe tab opens, before confirmed -->
+  <div id="pay-pending" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+    <p style="font-size:12px;font-weight:700;margin-bottom:.375rem;display:flex;align-items:center;gap:5px"><i class="ti ti-external-link" style="font-size:13px;color:var(--accent)"></i> Stripe checkout opened</p>
+    <p style="font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:.75rem">Complete payment in the new tab. Your letters are waiting here — they won't be lost. Come back and click below once you're done.</p>
+    <button class="btn btn-accent" onclick="doUnlock()"><i class="ti ti-check" style="font-size:12px"></i> I've paid — unlock my letters</button>
+    <button class="btn btn-ghost" onclick="resetGate()" style="margin-top:3px"><i class="ti ti-arrow-left" style="font-size:11px"></i> Cancel</button>
   </div>
 
   <div id="print-block" style="display:none">
-    <div style="background:var(--green-dim);border:1px solid #1A4A2A;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#A0E8C8;line-height:1.5;margin-bottom:.625rem"><i class="ti ti-check" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i><strong style="color:#fff">Payment confirmed.</strong> Your raise case is ready. Click below, then choose <strong>Save as PDF</strong> in the print dialog.</div>
+    <div style="background:var(--green-dim);border:1px solid #1A4A2A;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#A0E8C8;line-height:1.5;margin-bottom:.625rem"><i class="ti ti-check" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i><strong style="color:#fff">Unlocked.</strong> Click below, then choose <strong>Save as PDF</strong> in the print dialog.</div>
     <button class="btn btn-accent" onclick="window.print()"><i class="ti ti-download" style="font-size:13px"></i> Download raise case PDF</button>
     <button class="btn btn-ghost" onclick="resetGate()"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to preview</button>
   </div>
@@ -425,20 +433,39 @@ function selPrice(p) {
 
 function doCheckout() {
   var em = (gv('pay-email') || '').trim();
-  if (!em || em.indexOf('@') < 0) { alert('Please enter your email — the PDF will be sent there.'); document.getElementById('pay-email').focus(); return; }
+  if (!em || em.indexOf('@') < 0) { alert('Please enter your email — your receipt will be sent there.'); document.getElementById('pay-email').focus(); return; }
   var stripeUrl = priceMode === 'one'
     ? 'https://buy.stripe.com/4gMeVe8IabLIfin8W77N601'
     : 'https://buy.stripe.com/28E9AUbUm9DAeejfkv7N602';
-  window.location = stripeUrl + '?prefilled_email=' + encodeURIComponent(em);
+  /* Open Stripe in a new tab so user's data stays intact here */
+  window.open(stripeUrl + '?prefilled_email=' + encodeURIComponent(em), '_blank');
+  /* Show pending state — do NOT unlock yet */
   document.getElementById('pay-gate').style.display = 'none';
+  document.getElementById('pay-pending').style.display = 'block';
+}
+
+function doUnlock() {
+  document.getElementById('pay-pending').style.display = 'none';
   document.getElementById('print-block').style.display = 'block';
   var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
   if (g) g.style.display = 'none';
   if (b) b.classList.remove('gate-blur');
+  var mg = document.getElementById('m-gate');
+  if (mg) mg.style.display = 'none';
+  var mwrap = mg ? mg.parentNode : null;
+  if (mwrap) { mwrap.style.maxHeight = 'none'; mwrap.style.overflow = 'visible'; }
+  document.querySelectorAll('.bottom-blur').forEach(function(el){ el.style.maxHeight='none'; el.style.overflow='visible'; });
+  /* Also unlock the in-preview paywall if present */
+  var pgb = document.getElementById('prev-paywall'), ppb = document.getElementById('prev-print-block');
+  if (pgb) pgb.style.display = 'none';
+  if (ppb) ppb.style.display = 'block';
+  var pgo = document.getElementById('prev-gate-s');
+  if (pgo) pgo.style.display = 'none';
 }
 
 function resetGate() {
   document.getElementById('pay-gate').style.display = 'block';
+  document.getElementById('pay-pending').style.display = 'none';
   document.getElementById('print-block').style.display = 'none';
   var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
   if (g) g.style.display = 'flex';
@@ -578,22 +605,9 @@ se('m-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long'
 se('s-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
 refresh();
 
-/* Auto-unlock if returning from Stripe */
+/* Auto-unlock if returning from Stripe success URL */
 if (window.location.search.indexOf('unlocked=true') !== -1) {
-  document.getElementById('pay-gate').style.display = 'none';
-  document.getElementById('print-block').style.display = 'block';
-  /* Unlock skip-level whole doc */
-  var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
-  if (g) g.style.display = 'none';
-  if (b) b.classList.remove('gate-blur');
-  /* Unlock manager letter bottom */
-  var mg = document.getElementById('m-gate');
-  if (mg) mg.style.display = 'none';
-  /* Remove overflow clipping on all fade sections */
-  document.querySelectorAll('.bottom-blur,[id="m-gate"]+*').forEach(function(el){ el.style.maxHeight='none'; el.style.overflow='visible'; });
-  var mwrap = document.querySelector('#m-gate') ? document.getElementById('m-gate').parentNode : null;
-  if (mwrap) { mwrap.style.maxHeight = 'none'; mwrap.style.overflow = 'visible'; }
-  document.querySelectorAll('.bottom-blur').forEach(function(el){ el.style.maxHeight='none'; el.style.overflow='visible'; });
+  doUnlock();
   if (window.history && window.history.replaceState) {
     window.history.replaceState({}, '', window.location.pathname);
   }
