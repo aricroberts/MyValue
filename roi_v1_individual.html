@@ -180,8 +180,8 @@ button:hover{background:var(--surface2)}
   input[type=radio]{display:none!important}
   .tab-panel{display:none!important}
   #p6{display:block!important}
-  #no-exp{display:none!important}
-  #exp-block{display:block!important}
+  #pr-m-gate,#pr-s-gate{display:none!important}
+  #pr-m-gate-wrap,#pr-s-gate-wrap{max-height:none!important;overflow:visible!important}
   .card,.ecard,.sband,.ccband,.beband,.step-banner,.card-ai,.prev-tab-row,.prev-logo-zone,#prev-paywall,#prev-print-block,.brow,.add-ach-btn,.addbtn,button,a[href*="http"]{display:none!important}
   .prev-doc-blur{filter:none!important}
   .prev-gate{display:none!important}
@@ -456,9 +456,14 @@ button:hover{background:var(--surface2)}
             <p id="pr-m-p1"></p>
             <div class="prev-stats"><div class="pstat"><div class="pstat-lb">ROI Generated</div><div class="pstat-vl pos" id="pr-m-s1">—</div></div><div class="pstat"><div class="pstat-lb">vs. Break-even</div><div class="pstat-vl" id="pr-m-s2">—</div></div><div class="pstat"><div class="pstat-lb">Coverage</div><div class="pstat-vl" id="pr-m-s3">—</div></div></div>
             <table class="prev-ledger"><thead><tr><th style="width:55%">Achievement</th><th style="width:25%">Category</th><th>ROI</th></tr></thead><tbody id="pr-m-rows"></tbody><tfoot><tr><td colspan="2">Total verified ROI offset</td><td id="pr-m-tot">—</td></tr></tfoot></table>
-            <p id="pr-m-p2"></p>
-            <p id="pr-m-p3"></p>
-            <div class="prev-sig"><div class="prev-sig-name" id="pr-m-sn">[Name]</div><div class="prev-sig-role" id="pr-m-sr">[Title · Company]</div></div>
+            <div id="pr-m-gate-wrap" style="position:relative;overflow:hidden;max-height:80px">
+              <p id="pr-m-p2"></p>
+              <p id="pr-m-p3"></p>
+              <div class="prev-sig"><div class="prev-sig-name" id="pr-m-sn">[Name]</div><div class="prev-sig-role" id="pr-m-sr">[Title · Company]</div></div>
+              <div id="pr-m-gate" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0.1) 0%,rgba(255,255,255,1) 50%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px">
+                <div style="background:#1A1A1A;color:#E4FF3D;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:6px 14px;border-radius:99px;display:flex;align-items:center;gap:5px"><i class="ti ti-lock" style="font-size:11px"></i> Unlock to read full letter</div>
+              </div>
+            </div>
             <div class="prev-footer"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
           </div>
         </div>
@@ -475,10 +480,15 @@ button:hover{background:var(--surface2)}
             <p id="pr-s-p1"></p>
             <div class="prev-stats"><div class="pstat"><div class="pstat-lb">Cost to Company</div><div class="pstat-vl" id="pr-s-s1">—</div></div><div class="pstat"><div class="pstat-lb">Return Multiple</div><div class="pstat-vl pos" id="pr-s-s2">—</div></div><div class="pstat"><div class="pstat-lb">Est. Replacement Cost</div><div class="pstat-vl" id="pr-s-s3">—</div></div></div>
             <table class="prev-ledger"><thead><tr><th style="width:60%">Achievement</th><th style="width:20%">Category</th><th>Value</th></tr></thead><tbody id="pr-s-rows"></tbody><tfoot><tr><td colspan="2">Total ROI</td><td id="pr-s-tot">—</td></tr></tfoot></table>
-            <p id="pr-s-p2"></p>
-            <p id="pr-s-p3"></p>
-            <p id="pr-s-p4"></p>
-            <div class="prev-sig"><div class="prev-sig-name" id="pr-s-sn">[Name]</div><div class="prev-sig-role" id="pr-s-sr">[Title · Company]</div></div>
+            <div id="pr-s-gate-wrap" style="position:relative;overflow:hidden;max-height:80px">
+              <p id="pr-s-p2"></p>
+              <p id="pr-s-p3"></p>
+              <p id="pr-s-p4"></p>
+              <div class="prev-sig"><div class="prev-sig-name" id="pr-s-sn">[Name]</div><div class="prev-sig-role" id="pr-s-sr">[Title · Company]</div></div>
+              <div id="pr-s-gate" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0.1) 0%,rgba(255,255,255,1) 50%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px">
+                <div style="background:#1A1A1A;color:#E4FF3D;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:6px 14px;border-radius:99px;display:flex;align-items:center;gap:5px"><i class="ti ti-lock" style="font-size:11px"></i> Unlock skip-level letter</div>
+              </div>
+            </div>
             <div class="prev-footer"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
           </div>
           <div class="prev-gate" id="prev-gate-s">
@@ -1296,10 +1306,19 @@ function handlePgCheckout() {
   var paywall = document.getElementById('prev-paywall');
   if (paywall) paywall.innerHTML = '<div class="card-info" style="border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--blue-border);background:var(--blue-dim);font-size:11px;color:var(--text2);line-height:1.5"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:4px;color:var(--blue)"></i><strong style="color:var(--text)">Preview mode — no email sent.</strong> In production, Stripe processes payment and the PDF arrives in your inbox. For now, use Print → Save as PDF below.</div>';
   document.getElementById('prev-print-block').style.display = 'block';
+  /* Unlock skip-level whole doc */
   var gate = document.getElementById('prev-gate-s');
   var blur = document.getElementById('prev-doc-s');
   if (gate) gate.style.display = 'none';
   if (blur) blur.classList.remove('prev-doc-blur');
+  /* Unlock manager letter bottom */
+  var mw = document.getElementById('pr-m-gate-wrap'), mg = document.getElementById('pr-m-gate');
+  if (mw) { mw.style.maxHeight = 'none'; mw.style.overflow = 'visible'; }
+  if (mg) mg.style.display = 'none';
+  /* Unlock skip-level bottom */
+  var sw = document.getElementById('pr-s-gate-wrap'), sg = document.getElementById('pr-s-gate');
+  if (sw) { sw.style.maxHeight = 'none'; sw.style.overflow = 'visible'; }
+  if (sg) sg.style.display = 'none';
 }
 function _unlockPreview() {
   document.getElementById('prev-paywall').style.display = 'none';
