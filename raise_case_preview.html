@@ -131,7 +131,9 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
   .doc:last-child{page-break-after:auto}
   .gate-blur{filter:none!important}
   .gate-overlay{display:none!important}
-  .bottom-blur{filter:none!important;pointer-events:auto!important}
+  .bottom-blur{filter:none!important;pointer-events:auto!important;user-select:auto!important}
+  #m-bottom{filter:none!important;pointer-events:auto!important;user-select:auto!important}
+  #m-gate{display:none!important}
 }
 @media(max-width:860px){
   .shell{grid-template-columns:1fr}
@@ -283,10 +285,15 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
           <div class="dstat"><div class="dstat-lbl">Coverage</div><div class="dstat-val" id="m-s3">—</div></div>
         </div>
         <table class="doc-ledger"><thead><tr><th style="width:55%">Achievement</th><th style="width:25%">Category</th><th>ROI</th></tr></thead><tbody id="m-rows"></tbody><tfoot><tr><td colspan="2">Total verified ROI offset</td><td id="m-tot">—</td></tr></tfoot></table>
-        <div class="bottom-blur" style="filter:blur(4px);pointer-events:none;user-select:none">
-        <p id="m-p2"></p>
-        <p id="m-p3"></p>
-        <div class="doc-sig"><div class="sig-name" id="m-sn"></div><div class="sig-role" id="m-sr"></div></div>
+        <div style="position:relative">
+          <div id="m-bottom" style="filter:blur(4px);pointer-events:none;user-select:none">
+            <p id="m-p2"></p>
+            <p id="m-p3"></p>
+            <div class="doc-sig"><div class="sig-name" id="m-sn"></div><div class="sig-role" id="m-sr"></div></div>
+          </div>
+          <div id="m-gate" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0.92) 40%);pointer-events:none">
+            <div style="background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:8px 16px;border-radius:99px;display:flex;align-items:center;gap:6px;pointer-events:auto"><i class="ti ti-lock" style="font-size:12px"></i> Unlock to read full letter</div>
+          </div>
         </div>
       </div>
       <div class="doc-footer-bar"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
@@ -577,10 +584,11 @@ if (window.location.search.indexOf('unlocked=true') !== -1) {
   var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
   if (g) g.style.display = 'none';
   if (b) b.classList.remove('gate-blur');
+  var mb = document.getElementById('m-bottom'), mg = document.getElementById('m-gate');
+  if (mb) { mb.style.filter = 'none'; mb.style.pointerEvents = 'auto'; mb.style.userSelect = 'auto'; }
+  if (mg) mg.style.display = 'none';
   document.querySelectorAll('.bottom-blur').forEach(function(el) {
-    el.style.filter = 'none';
-    el.style.pointerEvents = 'auto';
-    el.style.userSelect = 'auto';
+    el.style.filter = 'none'; el.style.pointerEvents = 'auto'; el.style.userSelect = 'auto';
   });
   if (window.history && window.history.replaceState) {
     window.history.replaceState({}, '', window.location.pathname);
