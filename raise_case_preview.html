@@ -130,10 +130,10 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
   .doc{box-shadow:none;border-radius:0;page-break-after:always}
   .doc:last-child{page-break-after:auto}
   .gate-blur{filter:none!important}
-  .gate-overlay{display:none!important}
-  .bottom-blur{filter:none!important;pointer-events:auto!important;user-select:auto!important}
-  #m-bottom{filter:none!important;pointer-events:auto!important;user-select:auto!important}
+  .gate-overlay,.bottom-blur > div{display:none!important}
   #m-gate{display:none!important}
+  .bottom-blur,#m-gate ~ *{max-height:none!important;overflow:visible!important}
+  [style*="max-height:90px"]{max-height:none!important;overflow:visible!important}
 }
 @media(max-width:860px){
   .shell{grid-template-columns:1fr}
@@ -285,14 +285,12 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
           <div class="dstat"><div class="dstat-lbl">Coverage</div><div class="dstat-val" id="m-s3">—</div></div>
         </div>
         <table class="doc-ledger"><thead><tr><th style="width:55%">Achievement</th><th style="width:25%">Category</th><th>ROI</th></tr></thead><tbody id="m-rows"></tbody><tfoot><tr><td colspan="2">Total verified ROI offset</td><td id="m-tot">—</td></tr></tfoot></table>
-        <div style="position:relative;min-height:180px">
-          <div id="m-bottom" style="filter:blur(4px);pointer-events:none;user-select:none;min-height:180px">
-            <p id="m-p2">During this period, the total cost to the company was established against the industry break-even benchmark. The confidence-weighted ROI contribution — drawn from publicly available data and adjusted for attribution — yields a net surplus and coverage ratio that demonstrates the return multiple generated above the break-even threshold for this review period.</p>
-            <p id="m-p3">With respect to market compensation, current benchmarks for this role and location place the fair range within the documented market data. Based on both the ROI evidence above and prevailing market data, a base salary adjustment is respectfully requested. A conversation to discuss timing and next steps would be welcomed at the earliest convenience.</p>
-            <div class="doc-sig"><div class="sig-name" id="m-sn">Your Name</div><div class="sig-role" id="m-sr">Your Title · Company</div></div>
-          </div>
-          <div id="m-gate" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0.95) 35%);pointer-events:none">
-            <div style="margin-top:60px;background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:8px 16px;border-radius:99px;display:flex;align-items:center;gap:6px"><i class="ti ti-lock" style="font-size:12px"></i> Unlock to read full letter</div>
+        <div style="position:relative;overflow:hidden;max-height:90px">
+          <p id="m-p2" style="color:#2A2A2A;margin-bottom:16px"></p>
+          <p id="m-p3" style="color:#2A2A2A;margin-bottom:16px"></p>
+          <div class="doc-sig"><div class="sig-name" id="m-sn"></div><div class="sig-role" id="m-sr"></div></div>
+          <div id="m-gate" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0.1) 0%,rgba(255,255,255,1) 55%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px">
+            <div style="background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:8px 16px;border-radius:99px;display:flex;align-items:center;gap:6px"><i class="ti ti-lock" style="font-size:12px"></i> Unlock to read full letter</div>
           </div>
         </div>
       </div>
@@ -320,11 +318,14 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
             <div class="dstat"><div class="dstat-lbl">Est. Replacement Cost</div><div class="dstat-val" id="s-s3">—</div></div>
           </div>
           <table class="doc-ledger"><thead><tr><th style="width:60%">Achievement</th><th style="width:20%">Category</th><th>Value</th></tr></thead><tbody id="s-rows"></tbody><tfoot><tr><td colspan="2">Total ROI</td><td id="s-tot">—</td></tr></tfoot></table>
-          <div class="bottom-blur" style="filter:blur(4px);pointer-events:none;user-select:none;min-height:220px">
-          <p id="s-p2">During this period, the documented confidence-weighted ROI was generated against the total cost to the company — a return multiple that exceeds the industry break-even benchmark by a meaningful surplus, representing strong coverage above the threshold. All figures are confidence-weighted estimates drawn from publicly available data only.</p>
-          <p id="s-p3">For additional context, the fully-loaded cost to backfill this role — covering recruitment, onboarding, and the typical ramp to productivity — is generally estimated at a significant multiple of annual compensation. Retaining a producing role at a competitive market rate is, in most cases, the more economical decision by a meaningful margin.</p>
-          <p id="s-p4">Current market data for this role and location places fair value within the documented benchmark range. An adjustment consistent with both the demonstrated ROI and current market positioning is requested. The full achievement ledger is included above for reference.</p>
-          <div class="doc-sig"><div class="sig-name" id="s-sn">Your Name</div><div class="sig-role" id="s-sr">Your Title · Company</div></div>
+          <div class="bottom-blur" style="position:relative;overflow:hidden;max-height:90px">
+          <p id="s-p2" style="color:#2A2A2A;margin-bottom:16px"></p>
+          <p id="s-p3" style="color:#2A2A2A;margin-bottom:16px"></p>
+          <p id="s-p4" style="color:#2A2A2A;margin-bottom:16px"></p>
+          <div class="doc-sig"><div class="sig-name" id="s-sn"></div><div class="sig-role" id="s-sr"></div></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0.1) 0%,rgba(255,255,255,1) 55%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px">
+            <div style="background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:8px 16px;border-radius:99px;display:flex;align-items:center;gap:6px"><i class="ti ti-lock" style="font-size:12px"></i> Unlock skip-level letter</div>
+          </div>
           </div>
         </div>
         <div class="doc-footer-bar"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
@@ -581,15 +582,18 @@ refresh();
 if (window.location.search.indexOf('unlocked=true') !== -1) {
   document.getElementById('pay-gate').style.display = 'none';
   document.getElementById('print-block').style.display = 'block';
+  /* Unlock skip-level whole doc */
   var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
   if (g) g.style.display = 'none';
   if (b) b.classList.remove('gate-blur');
-  var mb = document.getElementById('m-bottom'), mg = document.getElementById('m-gate');
-  if (mb) { mb.style.filter = 'none'; mb.style.pointerEvents = 'auto'; mb.style.userSelect = 'auto'; }
+  /* Unlock manager letter bottom */
+  var mg = document.getElementById('m-gate');
   if (mg) mg.style.display = 'none';
-  document.querySelectorAll('.bottom-blur').forEach(function(el) {
-    el.style.filter = 'none'; el.style.pointerEvents = 'auto'; el.style.userSelect = 'auto';
-  });
+  /* Remove overflow clipping on all fade sections */
+  document.querySelectorAll('.bottom-blur,[id="m-gate"]+*').forEach(function(el){ el.style.maxHeight='none'; el.style.overflow='visible'; });
+  var mwrap = document.querySelector('#m-gate') ? document.getElementById('m-gate').parentNode : null;
+  if (mwrap) { mwrap.style.maxHeight = 'none'; mwrap.style.overflow = 'visible'; }
+  document.querySelectorAll('.bottom-blur').forEach(function(el){ el.style.maxHeight='none'; el.style.overflow='visible'; });
   if (window.history && window.history.replaceState) {
     window.history.replaceState({}, '', window.location.pathname);
   }
