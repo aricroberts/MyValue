@@ -134,6 +134,60 @@ button:hover{background:var(--surface2)}
 .back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
 .back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
 .back-nav label:hover{background:var(--border);color:var(--text)}
+
+/* ── EXPORTS PREVIEW ── */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+.prev-logo-zone{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;background:var(--surface2)}
+.prev-logo-zone:hover{border-color:var(--blue);background:var(--blue-dim)}
+.prev-tab-row{display:flex;gap:6px;margin-bottom:12px}
+.prev-tab{font-size:12px;font-weight:500;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all .15s;font-family:inherit}
+.prev-tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.prev-doc-wrap{position:relative;margin-bottom:.5rem}
+.prev-doc{background:#fff;border-radius:4px;padding:36px 40px 44px;color:#1A1A1A;font-family:'EB Garamond',Georgia,serif;font-size:13.5px;line-height:1.8;border:1px solid #E0DDD8}
+.prev-doc-blur{filter:blur(4px);pointer-events:none;user-select:none}
+.prev-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(15,17,23,.7);backdrop-filter:blur(2px);border-radius:4px}
+.prev-gate-badge{background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:8px 18px;font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.prev-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;padding-bottom:14px;border-bottom:1.5px solid #1A1A1A}
+.prev-doc-name{font-size:22px;font-weight:400;letter-spacing:-.015em;color:#1A1A1A;margin-bottom:2px}
+.prev-doc-meta{font-family:'DM Sans',system-ui,sans-serif;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#999}
+.prev-logo-img{max-height:52px;max-width:160px;object-fit:contain;display:none}
+.prev-logo-img.show{display:block}
+.prev-addr{font-family:'DM Sans',system-ui,sans-serif;font-size:11px;color:#666;line-height:1.9;margin-bottom:16px}
+.prev-addr strong{color:#1A1A1A}
+.prev-subj{font-family:'DM Sans',system-ui,sans-serif;font-size:11px;font-weight:800;color:#1A1A1A;padding:9px 13px;background:#F5F2EC;border-left:3px solid #1A1A1A;border-radius:0 3px 3px 0;margin-bottom:18px}
+.prev-doc p{margin-bottom:14px;color:#2A2A2A}
+.prev-doc p:last-of-type{margin-bottom:0}
+.prev-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E5E3DF;border:1px solid #E5E3DF;border-radius:4px;overflow:hidden;margin:14px 0;font-family:'DM Sans',system-ui,sans-serif}
+.pstat{background:#fff;padding:9px 11px}
+.pstat-lb{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:3px}
+.pstat-vl{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:#1A1A1A}
+.pstat-vl.pos{color:#166534}.pstat-vl.neg{color:#991B1B}
+.prev-ledger{width:100%;border-collapse:collapse;margin:14px 0;font-family:'DM Sans',system-ui,sans-serif}
+.prev-ledger thead tr{border-bottom:1.5px solid #1A1A1A}
+.prev-ledger th{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#999;padding:0 0 6px;text-align:left}
+.prev-ledger th:last-child{text-align:right}
+.prev-ledger td{font-size:11px;padding:7px 0;border-bottom:1px solid #ECEAE6;vertical-align:top;color:#2A2A2A}
+.prev-ledger td:last-child{text-align:right;font-family:'DM Mono',monospace;font-weight:500;color:#1A1A1A}
+.prev-ledger tfoot td{font-weight:800;padding:7px 0 0;border-top:1.5px solid #1A1A1A;border-bottom:none;font-size:11px}
+.prev-sig{margin-top:22px;padding-top:14px;border-top:1px solid #E5E3DF}
+.prev-sig-name{font-size:20px;font-style:italic;color:#1A1A1A;font-family:'EB Garamond',Georgia,serif;margin-bottom:3px}
+.prev-sig-role{font-family:'DM Sans',system-ui,sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.04em}
+.prev-footer{margin-top:18px;padding-top:8px;border-top:1px solid #ECEAE6;font-family:'DM Sans',system-ui,sans-serif;font-size:9px;color:#C0BCBA;display:flex;justify-content:space-between}
+.pgopt{flex:1;padding:9px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;text-align:center;background:var(--surface2);transition:all .15s}
+.pgopt.sel,.pgopt:hover{border-color:var(--blue);background:var(--blue-dim)}
+@media print{
+  .topbar,.tab-nav{display:none!important}
+  input[type=radio]{display:none!important}
+  .tab-panel{display:none!important}
+  #p6{display:block!important}
+  #no-exp{display:none!important}
+  #exp-block{display:block!important}
+  .card,.ecard,.sband,.ccband,.beband,.step-banner,.card-ai,.prev-tab-row,.prev-logo-zone,#prev-paywall,#prev-print-block,.brow,.add-ach-btn,.addbtn,button,a[href*="http"]{display:none!important}
+  .prev-doc-blur{filter:none!important}
+  .prev-gate{display:none!important}
+  .prev-doc-wrap{margin:0}
+  .prev-doc{box-shadow:none;border:none;padding:0;page-break-after:always}
+}
 </style>
 </head>
 <body>
@@ -356,10 +410,109 @@ button:hover{background:var(--surface2)}
   <div class="tab-panel" id="p6">
     <div id="no-exp" style="text-align:center;padding:2rem;color:var(--text2);font-size:13px">Complete your ledger on tab 4 first — exports appear here automatically.</div>
     <div id="exp-block" style="display:none">
-      <div class="card card-ok" style="margin-bottom:.875rem">
-        <p class="sl sl-ok"><i class="ti ti-check"></i> All documents generated</p>
-        <p style="font-size:12px;color:#A0E8C8;margin:0">Copy any document below, or use "Refine with Claude" to improve the language.</p>
+
+      <!-- Back link -->
+      <div style="margin-bottom:.875rem;display:flex;align-items:center;justify-content:space-between">
+        <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);text-decoration:none;padding:5px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2)"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to receipts.</a>
+        <span style="font-size:11px;color:var(--text3)">Preview updates from your data above</span>
       </div>
+
+      <!-- Preview card -->
+      <div class="card" style="margin-bottom:.875rem">
+        <p class="sl"><i class="ti ti-file-text"></i> Raise case letters</p>
+
+        <!-- Recipient names + logo -->
+        <div class="fr3" style="margin-bottom:10px">
+          <div class="fg"><label>Manager's name</label><input id="exp-mgr" placeholder="e.g. Sarah" oninput="refreshPreview()"/></div>
+          <div class="fg"><label>Skip-level name</label><input id="exp-skip" placeholder="e.g. Michael" oninput="refreshPreview()"/></div>
+          <div class="fg">
+            <label>Company logo (optional)</label>
+            <div class="prev-logo-zone" onclick="document.getElementById('exp-logo-input').click()">
+              <i class="ti ti-photo" style="font-size:13px;color:var(--text3)"></i>
+              <span id="exp-logo-lbl" style="font-size:11px;color:var(--text3)">Upload logo</span>
+              <input type="file" id="exp-logo-input" accept="image/*" style="display:none" onchange="handleExpLogo(event)"/>
+            </div>
+            <div id="exp-logo-rm" style="display:none;margin-top:4px">
+              <button onclick="removeExpLogo()" style="font-size:10px;padding:3px 9px;background:none;border:1px solid var(--border);border-radius:99px;color:var(--text3);cursor:pointer;font-family:inherit">× Remove logo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab switcher -->
+        <div class="prev-tab-row">
+          <button id="ptab-m" class="prev-tab on" onclick="switchPrevTab('m')"><i class="ti ti-mail" style="font-size:11px;vertical-align:-1px"></i> To manager</button>
+          <button id="ptab-s" class="prev-tab" onclick="switchPrevTab('s')"><i class="ti ti-mail-forward" style="font-size:11px;vertical-align:-1px"></i> To skip-level</button>
+        </div>
+
+        <!-- Manager letter preview -->
+        <div class="prev-doc-wrap" id="prev-wrap-m">
+          <div class="prev-doc" id="prev-doc-m">
+            <div class="prev-hdr">
+              <div><div class="prev-doc-meta" id="pr-m-meta">COMPENSATION REVIEW</div><div class="prev-doc-name" id="pr-m-name">[Your Name]</div><div class="prev-doc-meta" id="pr-m-role">[Title · Company · Location]</div></div>
+              <img class="prev-logo-img" id="pr-m-logo" src="" alt=""/>
+            </div>
+            <div class="prev-addr" id="pr-m-addr"><strong id="pr-m-date"></strong><br/>To: <strong id="pr-m-to">[Manager]</strong><br/>From: <strong id="pr-m-from">[Your Name]</strong>, <span id="pr-m-ft">[Title]</span></div>
+            <div class="prev-subj" id="pr-m-subj">Re: Compensation review and raise request</div>
+            <p id="pr-m-p1"></p>
+            <div class="prev-stats"><div class="pstat"><div class="pstat-lb">ROI Generated</div><div class="pstat-vl pos" id="pr-m-s1">—</div></div><div class="pstat"><div class="pstat-lb">vs. Break-even</div><div class="pstat-vl" id="pr-m-s2">—</div></div><div class="pstat"><div class="pstat-lb">Coverage</div><div class="pstat-vl" id="pr-m-s3">—</div></div></div>
+            <table class="prev-ledger"><thead><tr><th style="width:55%">Achievement</th><th style="width:25%">Category</th><th>ROI</th></tr></thead><tbody id="pr-m-rows"></tbody><tfoot><tr><td colspan="2">Total verified ROI offset</td><td id="pr-m-tot">—</td></tr></tfoot></table>
+            <p id="pr-m-p2"></p>
+            <p id="pr-m-p3"></p>
+            <div class="prev-sig"><div class="prev-sig-name" id="pr-m-sn">[Name]</div><div class="prev-sig-role" id="pr-m-sr">[Title · Company]</div></div>
+            <div class="prev-footer"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
+          </div>
+        </div>
+
+        <!-- Skip-level preview (gated) -->
+        <div class="prev-doc-wrap" id="prev-wrap-s" style="display:none">
+          <div class="prev-doc prev-doc-blur" id="prev-doc-s">
+            <div class="prev-hdr">
+              <div><div class="prev-doc-meta" id="pr-s-meta">STRATEGIC IMPACT OVERVIEW</div><div class="prev-doc-name" id="pr-s-name">[Your Name]</div><div class="prev-doc-meta" id="pr-s-role">[Title · Company]</div></div>
+              <img class="prev-logo-img" id="pr-s-logo" src="" alt=""/>
+            </div>
+            <div class="prev-addr" id="pr-s-addr"><strong id="pr-s-date"></strong><br/>To: <strong id="pr-s-to">[Skip-Level]</strong><br/>From: <strong id="pr-s-from">[Your Name]</strong>, <span id="pr-s-ft">[Title]</span></div>
+            <div class="prev-subj" id="pr-s-subj">Re: Strategic value summary and compensation alignment</div>
+            <p id="pr-s-p1"></p>
+            <div class="prev-stats"><div class="pstat"><div class="pstat-lb">Cost to Company</div><div class="pstat-vl" id="pr-s-s1">—</div></div><div class="pstat"><div class="pstat-lb">Return Multiple</div><div class="pstat-vl pos" id="pr-s-s2">—</div></div><div class="pstat"><div class="pstat-lb">Est. Replacement Cost</div><div class="pstat-vl" id="pr-s-s3">—</div></div></div>
+            <table class="prev-ledger"><thead><tr><th style="width:60%">Achievement</th><th style="width:20%">Category</th><th>Value</th></tr></thead><tbody id="pr-s-rows"></tbody><tfoot><tr><td colspan="2">Total ROI</td><td id="pr-s-tot">—</td></tr></tfoot></table>
+            <p id="pr-s-p2"></p>
+            <p id="pr-s-p3"></p>
+            <p id="pr-s-p4"></p>
+            <div class="prev-sig"><div class="prev-sig-name" id="pr-s-sn">[Name]</div><div class="prev-sig-role" id="pr-s-sr">[Title · Company]</div></div>
+            <div class="prev-footer"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
+          </div>
+          <div class="prev-gate" id="prev-gate-s">
+            <div class="prev-gate-badge"><i class="ti ti-lock" style="font-size:12px"></i> Unlock skip-level letter</div>
+            <p style="font-size:11px;color:var(--text2);margin-top:5px">Available with your raise case purchase</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paywall gate -->
+      <div class="card card-info" id="prev-paywall">
+        <p class="sl sl-info"><i class="ti ti-lock-open"></i> Unlock your raise case PDF</p>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Download both letters as a polished, print-ready PDF — formatted to hand directly to your manager or paste into an email.</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <div class="pgopt sel" id="pg-one" onclick="selPg('one')"><div style="font-size:17px;font-weight:700;font-family:'DM Mono',monospace">$19</div><div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-top:2px">one report</div></div>
+          <div class="pgopt" id="pg-mo" onclick="selPg('mo')"><div style="font-size:17px;font-weight:700;font-family:'DM Mono',monospace">$19<span style="font-size:10px;font-weight:400">/mo</span></div><div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-top:2px">all tools</div></div>
+        </div>
+        <div class="fr" style="align-items:flex-end;gap:8px;margin-bottom:8px">
+          <div class="fg" style="flex:1"><label>Email — PDF delivered here</label><input id="pg-email" type="email" placeholder="you@email.com" style="width:100%"/></div>
+          <button id="pg-btn" onclick="handlePgCheckout()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end;background:var(--blue);border-color:var(--blue);color:#fff"><i class="ti ti-lock-open" style="font-size:12px;vertical-align:-1px"></i> Get PDF — $19</button>
+        </div>
+        <p style="font-size:10px;color:var(--text3);line-height:1.5">Stripe checkout. Your data never leaves your browser — only your email is sent. Refunds within 48 hours, no questions asked.</p>
+      </div>
+
+      <!-- Post-unlock print block -->
+      <div id="prev-print-block" style="display:none" class="card card-ok">
+        <p class="sl sl-ok"><i class="ti ti-printer"></i> Ready to save as PDF</p>
+        <p style="font-size:12px;color:#A0E8C8;margin-bottom:10px;line-height:1.6">In the print dialog, choose <strong>Save as PDF</strong> as the destination. Both letters will print on separate pages.</p>
+        <button onclick="window.print()" style="background:var(--green-dim);border:1px solid var(--green-border);color:var(--green);font-weight:600;width:100%;border-radius:var(--radius-sm);padding:9px;cursor:pointer;font-size:13px;font-family:inherit"><i class="ti ti-printer" style="font-size:13px;vertical-align:-1px"></i> Print / Save as PDF</button>
+      </div>
+
+      <div style="height:1px;background:var(--border);margin:1rem 0"></div>
+      <p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.75rem">Free tier — plain text copies</p>
+
       <div class="ecard">
         <h3><i class="ti ti-calendar-stats" style="font-size:14px;color:var(--blue)"></i> Annual performance self-review</h3>
         <p>Break-even + achievement ledger + salary benchmarking. Safe to share with HR or your manager.</p>
@@ -394,8 +547,8 @@ button:hover{background:var(--surface2)}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
         <a href="https://www.linkedin.com/learning/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-certificate" style="font-size:14px;color:var(--blue)"></i> LinkedIn Learning</a>
         <a href="https://www.levels.fyi/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-chart-bar" style="font-size:14px;color:var(--green)"></i> Salary benchmarks</a>
-        <a href="https://www.glassdoor.com/Salaries/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-building" style="font-size:14px;color:var(--amber)"></i> Glassdoor salaries</a>
-        <a href="https://coachfederation.org/find-a-coach" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-user-check" style="font-size:14px;color:var(--green)"></i> Find a career coach</a>
+        <a href="https://www.linkedin.com/salary/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-building" style="font-size:14px;color:var(--amber)"></i> LinkedIn Salary</a>
+        <a href="https://www.icf.org/coaching-tools/find-a-coach" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);text-decoration:none"><i class="ti ti-user-check" style="font-size:14px;color:var(--green)"></i> Find a career coach</a>
       </div>
       <p style="font-size:10px;color:var(--text3);margin-top:.5rem">External links open in a new tab. receipts. has no affiliation with these services.</p>
     </div>
@@ -1095,6 +1248,151 @@ function genDocs(){
   var db2=document.getElementById('doc-boss2');if(db2)db2.textContent=boss2;
   document.getElementById('no-exp').style.display='none';
   document.getElementById('exp-block').style.display='block';
+  refreshPreview();
+}
+
+/* ── EXPORTS PREVIEW ─────────────────────────────────────────────────────── */
+var _expLogo = null;
+var _prevPgMode = 'one';
+
+function handleExpLogo(evt) {
+  var f = evt.target.files[0]; if (!f) return;
+  var r = new FileReader();
+  r.onload = function(e) {
+    _expLogo = e.target.result;
+    document.getElementById('exp-logo-lbl').textContent = f.name.substring(0,20);
+    document.getElementById('exp-logo-rm').style.display = 'block';
+    refreshPreview();
+  };
+  r.readAsDataURL(f);
+}
+function removeExpLogo() {
+  _expLogo = null;
+  document.getElementById('exp-logo-lbl').textContent = 'Upload logo';
+  document.getElementById('exp-logo-rm').style.display = 'none';
+  document.getElementById('exp-logo-input').value = '';
+  refreshPreview();
+}
+function switchPrevTab(t) {
+  document.getElementById('prev-wrap-m').style.display = t==='m' ? 'block' : 'none';
+  document.getElementById('prev-wrap-s').style.display = t==='s' ? 'block' : 'none';
+  document.getElementById('ptab-m').className = 'prev-tab' + (t==='m' ? ' on' : '');
+  document.getElementById('ptab-s').className = 'prev-tab' + (t==='s' ? ' on' : '');
+}
+function selPg(p) {
+  _prevPgMode = p;
+  document.getElementById('pg-one').className = 'pgopt' + (p==='one' ? ' sel' : '');
+  document.getElementById('pg-mo').className = 'pgopt' + (p==='mo' ? ' sel' : '');
+  var btn = document.getElementById('pg-btn');
+  if (btn) btn.innerHTML = '<i class="ti ti-lock-open" style="font-size:12px;vertical-align:-1px"></i> ' + (p==='one' ? 'Get PDF — $19' : 'Start Pro — $19/mo');
+}
+function handlePgCheckout() {
+  var em = (document.getElementById('pg-email').value || '').trim();
+  if (!em || em.indexOf('@') < 0) { alert('Please enter your email address — the PDF will be delivered there.'); document.getElementById('pg-email').focus(); return; }
+  var stripeUrl = _prevPgMode === 'one'
+    ? 'https://buy.stripe.com/test_4gMeVe8IabLIfin8W77N601'
+    : 'https://buy.stripe.com/test_9B600k0bE7vs8TZfkv7N600';
+  window.location = stripeUrl + '?prefilled_email=' + encodeURIComponent(em);
+  var paywall = document.getElementById('prev-paywall');
+  if (paywall) paywall.innerHTML = '<div class="card-info" style="border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--blue-border);background:var(--blue-dim);font-size:11px;color:var(--text2);line-height:1.5"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:4px;color:var(--blue)"></i><strong style="color:var(--text)">Preview mode — no email sent.</strong> In production, Stripe processes payment and the PDF arrives in your inbox. For now, use Print → Save as PDF below.</div>';
+  document.getElementById('prev-print-block').style.display = 'block';
+  var gate = document.getElementById('prev-gate-s');
+  var blur = document.getElementById('prev-doc-s');
+  if (gate) gate.style.display = 'none';
+  if (blur) blur.classList.remove('prev-doc-blur');
+}
+function _unlockPreview() {
+  document.getElementById('prev-paywall').style.display = 'none';
+  document.getElementById('prev-print-block').style.display = 'block';
+  var gate = document.getElementById('prev-gate-s');
+  var blur = document.getElementById('prev-doc-s');
+  if (gate) gate.style.display = 'none';
+  if (blur) blur.classList.remove('prev-doc-blur');
+}
+function _setEl(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+function _setHtml(id, h) { var e = document.getElementById(id); if (e) e.innerHTML = h; }
+function _applyLogo(ids) {
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.src = _expLogo || ''; el.className = 'prev-logo-img' + (_expLogo ? ' show' : ''); }
+  });
+}
+function refreshPreview() {
+  if (!S || !S.tc) return;
+  var name = gv('fname') || '[Your Name]';
+  var title = gv('jtitle') || '[Your Title]';
+  var co = gv('coname') || '[Company]';
+  var loc = gv('loc') || '[Location]';
+  var mgr = gv('exp-mgr') || '[Manager Name]';
+  var skipName = gv('exp-skip') || '[Senior Leader]';
+  var tc = S.tc, be = S.beTarget, obligation = S.obligation || be;
+  var roi = S.totalRoi || 0, net = S.net || (roi - obligation);
+  var cov = obligation > 0 ? (roi / obligation * 100) : 0;
+  var mult = tc > 0 ? (roi / tc) : 0;
+  var salLo = S.salLo || 0, salHi = S.salHi || 0;
+  var months = S.months || 12;
+  var period = months === 12 ? 'this year' : months < 12 ? 'the last ' + months + ' months' : 'the last ' + (months/12).toFixed(1) + ' years';
+  var today = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  var surplus = net >= 0;
+
+  _applyLogo(['pr-m-logo','pr-s-logo']);
+
+  /* ledger rows */
+  var achs = S.achs || [];
+  var rows = '';
+  if (achs.length) {
+    for (var i = 0; i < achs.length; i++) {
+      var a = achs[i];
+      var stypes = [];
+      if (a.streams) { for (var j = 0; j < a.streams.length; j++) { var sl2 = a.streams[j].label || a.streams[j].type || ''; if (sl2 && stypes.indexOf(sl2) < 0) stypes.push(sl2); } }
+      rows += '<tr><td><strong style="font-family:\'DM Sans\',sans-serif;font-size:11px;font-weight:700">' + (a.title||'').replace(/</g,'&lt;') + '</strong>' + (a.desc ? '<br/><span style="font-size:10px;color:#888;font-family:\'DM Sans\',sans-serif">' + (a.desc||'').replace(/</g,'&lt;') + '</span>' : '') + '</td><td style="font-family:\'DM Sans\',sans-serif;font-size:10px;color:#888">' + (stypes.join(', ')||'—') + '</td><td>' + fmt(a.totalRoi) + '</td></tr>';
+    }
+  } else {
+    rows = '<tr><td colspan="3" style="color:#AAA;font-family:\'DM Sans\',sans-serif;font-size:11px;padding:10px 0">Add achievements on the Achievements tab to populate this ledger.</td></tr>';
+  }
+  _setHtml('pr-m-rows', rows);
+  _setHtml('pr-s-rows', rows);
+  _setEl('pr-m-tot', roi ? fmt(roi) : '—');
+  _setEl('pr-s-tot', roi ? fmt(roi) : '—');
+
+  /* ── Manager letter ── */
+  _setEl('pr-m-meta', 'COMPENSATION REVIEW — ' + period.toUpperCase());
+  _setEl('pr-m-name', name);
+  _setEl('pr-m-role', title + (co ? ' · ' + co : '') + (loc ? ' · ' + loc : ''));
+  _setEl('pr-m-date', today); _setEl('pr-m-to', mgr); _setEl('pr-m-from', name); _setEl('pr-m-ft', title);
+  _setEl('pr-m-subj', 'Re: Compensation review and raise request — ' + period);
+  _setEl('pr-m-sn', name); _setEl('pr-m-sr', title + (co ? ' · ' + co : ''));
+  _setEl('pr-m-s1', roi ? fmt(roi) : '—');
+  var ms2 = document.getElementById('pr-m-s2');
+  if (ms2) { ms2.textContent = (roi && be) ? (net >= 0 ? '+' : '') + fmt(net) : '—'; ms2.className = 'pstat-vl' + (net > 0 ? ' pos' : net < 0 ? ' neg' : ''); }
+  _setEl('pr-m-s3', cov ? Math.round(cov) + '%' : '—');
+  _setEl('pr-m-p1', 'I am writing to request a structured conversation regarding my compensation as we approach the close of ' + period + '. Enclosed is a data-supported analysis of my contributions and their estimated financial impact — prepared to provide a transparent, evidence-based foundation for our discussion.');
+  _setEl('pr-m-p2', surplus
+    ? 'During ' + period + ', my total cost to ' + co + ' was ' + fmt(tc) + ', establishing a break-even obligation of ' + fmt(obligation) + ' for this review period. My confidence-weighted ROI contribution — drawn entirely from publicly available data and adjusted for attribution — is ' + fmt(roi) + ', yielding a net surplus of ' + fmt(net) + ' and a break-even coverage ratio of ' + Math.round(cov) + '%. In practical terms, the value I have generated represents approximately ' + (mult > 0 ? mult.toFixed(1) + '×' : '—') + ' my total cost to the organization.'
+    : 'During ' + period + ', my total cost to ' + co + ' was ' + fmt(tc) + ', establishing a break-even obligation of ' + fmt(obligation) + ' for this period. My current ROI contribution is ' + fmt(roi) + '. I want to be candid about where I stand relative to that threshold, and the achievement summary below includes the specific initiatives through which I plan to close the gap.');
+  _setEl('pr-m-p3', (salLo && salHi)
+    ? 'With respect to market compensation, current benchmarks for my role in ' + loc + ' place the fair range between ' + fmt(salLo) + ' and ' + fmt(salHi) + '. Based on both the ROI evidence above and prevailing market data, I am respectfully requesting a base salary adjustment' + (S.salTgt ? ' to ' + fmt(S.salTgt) : '') + '. I welcome the opportunity to discuss timing and next steps at your earliest convenience.'
+    : 'I would welcome the opportunity to discuss this analysis in detail. Thank you for your time and for your continued investment in my development at ' + co + '.');
+
+  /* ── Skip-level letter ── */
+  var replLo = fmt(Math.round(tc * 0.5));
+  var replHi = fmt(Math.round(tc * 1.4));
+  _setEl('pr-s-meta', 'RETENTION & COMPENSATION CASE — ' + period.toUpperCase());
+  _setEl('pr-s-name', name); _setEl('pr-s-role', title + (co ? ' · ' + co : ''));
+  _setEl('pr-s-date', today); _setEl('pr-s-to', skipName); _setEl('pr-s-from', name); _setEl('pr-s-ft', title);
+  _setEl('pr-s-subj', 'Re: Compensation adjustment — economic case and market data — ' + period);
+  _setEl('pr-s-sn', name); _setEl('pr-s-sr', title + (co ? ' · ' + co : ''));
+  _setEl('pr-s-s1', tc ? fmt(tc) : '—');
+  _setEl('pr-s-s2', mult > 0 ? mult.toFixed(1) + '×' : '—');
+  _setEl('pr-s-s3', tc ? (replLo + '–' + replHi) : '—');
+  _setEl('pr-s-p1', 'I am sharing this summary directly with you, in the interest of full transparency, ahead of compensation review discussions. What follows is an economic case, not a personal request — the numbers speak to a straightforward retention and investment decision.');
+  _setEl('pr-s-p2', surplus
+    ? 'During ' + period + ', I generated ' + fmt(roi) + ' in documented, confidence-weighted ROI against a total cost to ' + co + ' of ' + fmt(tc) + ' — a return multiple of ' + (mult > 0 ? mult.toFixed(1) + '×' : '—') + '. The industry break-even benchmark for this role is ' + fmt(be) + '; my contribution exceeds that threshold by ' + fmt(net) + ', representing ' + Math.round(cov) + '% coverage.'
+    : 'During ' + period + ', my total cost to ' + co + ' was ' + fmt(tc) + ' against an industry break-even benchmark of ' + fmt(be) + '. My current ROI contribution is ' + fmt(roi) + '. I am sharing this candidly because I believe the path to closing the gap is clear, and the investment case for doing so is materially stronger than the alternative.');
+  _setEl('pr-s-p3', 'For additional context: the fully-loaded cost to backfill this role — covering recruitment, onboarding, and the typical three-to-six-month ramp to productivity — is generally estimated between ' + replLo + ' and ' + replHi + '. Retaining a producing role at a competitive market rate is, in most cases, the more economical decision by a meaningful margin.');
+  _setEl('pr-s-p4', (salLo && salHi)
+    ? 'Current market data for this role in ' + loc + ' places fair value between ' + fmt(salLo) + ' and ' + fmt(salHi) + (S.salTgt ? '. I am requesting ' + fmt(S.salTgt) + ', which sits within that range and is consistent with the documented ROI above' : '. An adjustment to within that range is consistent with the documented ROI above') + '. The full achievement ledger is included below for reference. I appreciate your consideration.'
+    : 'An adjustment to current market rate is consistent with the documented ROI above. The full achievement ledger is included below for reference. I appreciate your consideration.');
 }
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}

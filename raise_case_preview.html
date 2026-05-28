@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>receipts. — Raise Case Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090B;--surface:#111113;--surface2:#18181B;--border:#27272A;
+  --text:#FAFAFA;--text2:#A1A1AA;--text3:#52525B;
+  --accent:#E4FF3D;--accent-dim:#1A1E07;--accent-border:#E4FF3D33;
+  --green:#4ADE80;--green-dim:#0D2318;--amber:#FBBF24;--red:#F87171;
+  --blue:#4A9EFF;--blue-dim:#162040;--blue-border:#4A9EFF44;
+  --radius:12px;--radius-sm:7px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-serif;min-height:100vh}
+.shell{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 1.125rem;display:flex;flex-direction:column;gap:1rem;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+.wordmark{font-size:17px;font-weight:800;letter-spacing:-.04em}
+.sl-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:99px;padding:2px 8px}
+.sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.375rem}
+.divider{height:1px;background:var(--border)}
+.fg{display:flex;flex-direction:column;gap:3px;margin-bottom:.5rem}
+.fg label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3)}
+.fg input,.fg select{width:100%;font-size:12px;font-family:'Syne',sans-serif;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 9px;color:var(--text);transition:border-color .15s}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--accent)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.logo-zone{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:8px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.logo-zone:hover{border-color:var(--accent);background:var(--accent-dim)}
+.logo-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.logo-inner{display:flex;align-items:center;gap:7px;pointer-events:none;font-size:11px;color:var(--text3)}
+.mc{background:var(--surface2);border-radius:var(--radius-sm);padding:8px 10px}
+.mc .lb{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.mc .vl{font-size:15px;font-weight:700;font-family:'DM Mono',monospace}
+.pos{color:#4ADE80!important}.neg{color:var(--red)!important}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pay-gate{background:linear-gradient(145deg,var(--accent-dim),var(--surface2));border:1px solid var(--accent-border);border-radius:var(--radius);padding:1rem}
+.pay-gate h3{font-size:13px;font-weight:800;margin-bottom:.25rem}
+.pay-gate p{font-size:11px;color:var(--text2);margin-bottom:.75rem;line-height:1.5}
+.price-row{display:flex;gap:7px;margin-bottom:.625rem}
+.popt{flex:1;padding:8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);cursor:pointer;text-align:center;background:var(--surface);transition:all .15s}
+.popt.sel,.popt:hover{border-color:var(--accent);background:var(--accent-dim)}
+.popt .amt{font-size:17px;font-weight:800;font-family:'DM Mono',monospace}
+.popt .desc{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-top:2px}
+.popt.sel .desc{color:var(--accent)}
+.email-inp{width:100%;font-size:12px;font-family:'Syne',sans-serif;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);margin-bottom:.5rem}
+.email-inp:focus{outline:none;border-color:var(--accent)}
+.btn{width:100%;padding:9px 14px;border-radius:var(--radius-sm);font-size:12px;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:.3rem}
+.btn-accent{background:var(--accent);color:#09090B}
+.btn-accent:hover{opacity:.88}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--border)}
+.ach-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-size:11px;margin-bottom:5px}
+.ach-title{font-weight:700;color:var(--text);margin-bottom:2px}
+.ach-meta{color:var(--text3);font-family:'DM Mono',monospace;font-size:10px}
+.ach-actions{display:flex;gap:4px;margin-top:5px}
+.ach-btn{font-size:10px;padding:2px 8px;border-radius:99px;border:1px solid var(--border);background:none;color:var(--text3);cursor:pointer;font-family:'Syne',sans-serif;font-weight:700}
+.ach-btn:hover{color:var(--text);background:var(--surface)}
+.add-ach{width:100%;border:1.5px dashed var(--border);background:transparent;color:var(--text3);border-radius:var(--radius-sm);padding:7px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:all .15s}
+.add-ach:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);transition:all .15s}
+.back-link:hover{color:var(--text);background:var(--border)}
+
+/* PREVIEW PANE */
+.preview-pane{background:#E9E5DC;padding:2.5rem 2rem;display:flex;flex-direction:column;align-items:center;gap:2rem;min-height:100vh}
+.preview-bar{width:100%;max-width:660px;display:flex;align-items:center;justify-content:space-between}
+.preview-lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888}
+.tab-grp{display:flex;background:#D9D5CC;border-radius:8px;padding:3px;gap:2px}
+.ptab{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:6px;cursor:pointer;border:none;background:transparent;color:#888;transition:all .15s}
+.ptab.on{background:#fff;color:#1A1A1A;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.doc-outer{width:100%;max-width:660px;position:relative}
+.doc-type-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:8px}
+
+/* DOCUMENT */
+.doc{background:#fff;border-radius:3px;box-shadow:0 4px 24px rgba(0,0,0,.1),0 1px 4px rgba(0,0,0,.07);overflow:hidden}
+.doc-body{padding:48px 52px 54px;font-family:'EB Garamond',Georgia,serif;color:#1C1C1C;font-size:14px;line-height:1.8}
+.doc-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px}
+.doc-name{font-size:26px;font-weight:400;letter-spacing:-.015em;line-height:1.15;color:#1A1A1A;margin-bottom:3px}
+.doc-meta{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:4px}
+.doc-role{font-family:'Syne',sans-serif;font-size:11px;font-weight:500;color:#888}
+.doc-logo{max-height:60px;max-width:180px;object-fit:contain;flex-shrink:0;display:none}
+.doc-logo.show{display:block}
+.doc-rule{height:1.5px;background:#1A1A1A;margin:0 0 24px}
+.doc-addr{font-family:'Syne',sans-serif;font-size:11px;font-weight:500;color:#666;line-height:1.9;margin-bottom:20px}
+.doc-addr strong{color:#1A1A1A}
+.doc-subj{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:800;color:#1A1A1A;padding:10px 14px;background:#F5F2EC;border-left:3px solid #1A1A1A;border-radius:0 3px 3px 0;margin-bottom:22px}
+.doc-body p{margin-bottom:16px;color:#2A2A2A}
+.doc-body p:last-of-type{margin-bottom:0}
+.doc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E5E3DF;border:1px solid #E5E3DF;border-radius:5px;overflow:hidden;margin:20px 0;font-family:'Syne',sans-serif}
+.dstat{background:#fff;padding:11px 13px}
+.dstat-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:3px}
+.dstat-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:#1A1A1A}
+.dstat-pos{color:#166534!important}.dstat-neg{color:#991B1B!important}
+.doc-ledger{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Syne',sans-serif}
+.doc-ledger thead tr{border-bottom:1.5px solid #1A1A1A}
+.doc-ledger th{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#999;padding:0 0 7px;text-align:left}
+.doc-ledger th:last-child{text-align:right}
+.doc-ledger td{font-size:11.5px;color:#2A2A2A;padding:8px 0;border-bottom:1px solid #ECEAE6;vertical-align:top}
+.doc-ledger td:last-child{text-align:right;font-family:'DM Mono',monospace;font-weight:500;color:#1A1A1A}
+.doc-ledger tfoot td{font-weight:800;padding:8px 0 0;border-top:1.5px solid #1A1A1A;border-bottom:none;font-size:12px}
+.doc-sig{margin-top:28px;padding-top:16px;border-top:1px solid #E5E3DF}
+.sig-name{font-size:22px;font-style:italic;color:#1A1A1A;font-family:'EB Garamond',Georgia,serif;margin-bottom:3px}
+.sig-role{font-family:'Syne',sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.04em}
+.doc-footer-bar{padding:10px 52px;border-top:1px solid #ECEAE6;background:#F9F7F3;display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-size:9px;color:#C0BCBA}
+
+/* Paywall overlay */
+.gate-wrap{position:relative}
+.gate-blur{filter:blur(4px);pointer-events:none;user-select:none}
+.gate-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(233,229,220,.72);backdrop-filter:blur(2px);border-radius:3px}
+.gate-badge{background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:9px 18px;border-radius:99px;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.gate-hint{font-family:'Syne',sans-serif;font-size:11px;color:#666}
+
+/* PRINT */
+@media print{
+  body{background:#fff}
+  .shell{display:block}
+  .sidebar{display:none}
+  .preview-pane{background:none;padding:0;gap:0}
+  .preview-bar,.doc-type-lbl{display:none}
+  .doc-outer{max-width:none;display:block!important}
+  .doc{box-shadow:none;border-radius:0;page-break-after:always}
+  .doc:last-child{page-break-after:auto}
+  .gate-blur{filter:none!important}
+  .gate-overlay{display:none!important}
+}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{height:auto;position:static}
+  .preview-pane{padding:1.5rem 1rem}
+  .doc-body{padding:28px 24px 36px}
+  .doc-footer-bar{padding:8px 24px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="wordmark">receipts.</span>
+      <span class="sl-badge">Raise Case</span>
+    </div>
+    <a href="index.html" class="back-link"><i class="ti ti-arrow-left" style="font-size:11px"></i> Home</a>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Company logo</p>
+    <div class="logo-zone" onclick="document.getElementById('logo-file').click()">
+      <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="onLogoUpload(event)"/>
+      <div class="logo-inner"><i class="ti ti-upload" style="font-size:14px"></i><span id="logo-txt">Upload your company logo</span></div>
+    </div>
+    <div id="logo-rm" style="display:none;margin-top:4px">
+      <button class="btn btn-ghost" style="padding:5px 10px;font-size:10px;margin:0" onclick="removeLogo()"><i class="ti ti-x" style="font-size:11px"></i> Remove</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Your profile</p>
+    <div class="fg"><label>Full name</label><input id="f-name" placeholder="e.g. Jordan Lee" oninput="refresh()"/></div>
+    <div class="fr2">
+      <div class="fg"><label>Job title</label><input id="f-title" placeholder="Senior PM" oninput="refresh()"/></div>
+      <div class="fg"><label>Location</label><input id="f-loc" placeholder="Austin, TX" oninput="refresh()"/></div>
+    </div>
+    <div class="fg"><label>Company</label><input id="f-co" placeholder="Acme Corp" oninput="refresh()"/></div>
+    <div class="fr2">
+      <div class="fg"><label>Manager name</label><input id="f-mgr" placeholder="e.g. Sarah" oninput="refresh()"/></div>
+      <div class="fg"><label>Skip-level</label><input id="f-skip" placeholder="e.g. Michael" oninput="refresh()"/></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Your numbers</p>
+    <div class="fr2">
+      <div class="fg"><label>Cost to co. ($)</label><input type="number" id="f-tc" placeholder="120000" oninput="refresh()"/></div>
+      <div class="fg"><label>Break-even ($)</label><input id="f-be" placeholder="220000" oninput="refresh()"/></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label>Total ROI ($)</label><input type="number" id="f-roi" placeholder="380000" oninput="refresh()"/></div>
+      <div class="fg"><label>Salary ask ($)</label><input type="number" id="f-ask" placeholder="105000" oninput="refresh()"/></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label>Market low ($)</label><input type="number" id="f-mlo" placeholder="90000" oninput="refresh()"/></div>
+      <div class="fg"><label>Market high ($)</label><input type="number" id="f-mhi" placeholder="125000" oninput="refresh()"/></div>
+    </div>
+    <div class="fg"><label>Review period</label>
+      <select id="f-period" onchange="refresh()">
+        <option value="this year">This year</option>
+        <option value="the last 12 months">The last 12 months</option>
+        <option value="the last 6 months">The last 6 months</option>
+        <option value="the last 18 months">The last 18 months</option>
+        <option value="the last 2 years">The last 2 years</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Achievements <span id="ach-n" style="color:var(--text3)">0</span></p>
+    <div id="ach-list"></div>
+    <button class="add-ach" onclick="openModal()"><i class="ti ti-plus" style="font-size:11px;vertical-align:-1px"></i> Add achievement</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Snapshot</p>
+    <div class="metric-grid">
+      <div class="mc" style="color:var(--accent)"><div class="lb">Total ROI</div><div class="vl" id="sn-roi">—</div></div>
+      <div class="mc" id="sn-net-box"><div class="lb">vs. Break-even</div><div class="vl" id="sn-net">—</div></div>
+      <div class="mc"><div class="lb">Coverage</div><div class="vl" id="sn-cov">—</div></div>
+      <div class="mc"><div class="lb">Salary ask</div><div class="vl" id="sn-ask">—</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pay-gate" id="pay-gate">
+    <h3>Unlock your raise case</h3>
+    <p>Download both letters as a polished, print-ready PDF — formatted to hand directly to your manager.</p>
+    <div class="price-row">
+      <div class="popt sel" id="po-one" onclick="selPrice('one')"><div class="amt">$19</div><div class="desc">One report</div></div>
+      <div class="popt" id="po-mo" onclick="selPrice('mo')"><div class="amt">$19<span style="font-size:10px;font-weight:400">/mo</span></div><div class="desc">All tools</div></div>
+    </div>
+    <input class="email-inp" type="email" id="pay-email" placeholder="your@email.com — PDF sent here"/>
+    <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i><span id="pay-lbl">Get raise case PDF — $19</span></button>
+    <p style="font-size:9px;color:var(--text3);line-height:1.4;margin-top:.375rem">Stripe checkout. Your data never leaves your browser — only your email is sent. Refunds within 48 hours.</p>
+  </div>
+
+  <div id="print-block" style="display:none">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:.625rem"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:3px;color:var(--amber)"></i><strong style="color:var(--text)">Preview mode — no email sent.</strong> In production, Stripe processes payment and the PDF arrives in your inbox. For now, print below.</div>
+    <button class="btn btn-accent" onclick="window.print()"><i class="ti ti-printer" style="font-size:13px"></i> Print / Save as PDF</button>
+    <button class="btn btn-ghost" onclick="resetGate()"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to preview</button>
+    <p style="font-size:9px;color:var(--text3);margin-top:.375rem;line-height:1.4">In the print dialog choose <strong style="color:var(--text2)">Save as PDF</strong> as destination.</p>
+  </div>
+
+</aside>
+
+<!-- PREVIEW PANE -->
+<main class="preview-pane">
+
+  <div class="preview-bar">
+    <span class="preview-lbl">Live preview</span>
+    <div class="tab-grp">
+      <button class="ptab on" id="tab-m" onclick="switchTab('m')">To manager</button>
+      <button class="ptab" id="tab-s" onclick="switchTab('s')">To skip-level</button>
+    </div>
+  </div>
+
+  <!-- LETTER 1 — MANAGER -->
+  <div class="doc-outer" id="wrap-m">
+    <div class="doc-type-lbl">Letter 1 of 2 — Direct Manager</div>
+    <div class="doc">
+      <div class="doc-body">
+        <div class="doc-hdr">
+          <div><div class="doc-meta" id="m-meta">COMPENSATION REVIEW</div><div class="doc-name" id="m-name">[Your Name]</div><div class="doc-role" id="m-role"></div></div>
+          <img class="doc-logo" id="m-logo" src="" alt=""/>
+        </div>
+        <div class="doc-rule"></div>
+        <div class="doc-addr"><strong id="m-date"></strong><br/>To: <strong id="m-to">[Manager]</strong><br/>From: <strong id="m-from">[Your Name]</strong>, <span id="m-ft"></span></div>
+        <div class="doc-subj" id="m-subj">Re: Compensation review and raise request</div>
+        <p id="m-p1"></p>
+        <div class="doc-stats">
+          <div class="dstat"><div class="dstat-lbl">ROI Generated</div><div class="dstat-val" id="m-s1">—</div></div>
+          <div class="dstat"><div class="dstat-lbl">vs. Break-even</div><div class="dstat-val" id="m-s2">—</div></div>
+          <div class="dstat"><div class="dstat-lbl">Coverage</div><div class="dstat-val" id="m-s3">—</div></div>
+        </div>
+        <table class="doc-ledger"><thead><tr><th style="width:55%">Achievement</th><th style="width:25%">Category</th><th>ROI</th></tr></thead><tbody id="m-rows"></tbody><tfoot><tr><td colspan="2">Total verified ROI offset</td><td id="m-tot">—</td></tr></tfoot></table>
+        <p id="m-p2"></p>
+        <p id="m-p3"></p>
+        <div class="doc-sig"><div class="sig-name" id="m-sn"></div><div class="sig-role" id="m-sr"></div></div>
+      </div>
+      <div class="doc-footer-bar"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
+    </div>
+  </div>
+
+  <!-- LETTER 2 — SKIP-LEVEL (gated) -->
+  <div class="doc-outer" id="wrap-s" style="display:none">
+    <div class="doc-type-lbl">Letter 2 of 2 — Skip-Level / Senior Leader</div>
+    <div class="gate-wrap">
+      <div class="doc gate-blur" id="doc-s">
+        <div class="doc-body">
+          <div class="doc-hdr">
+            <div><div class="doc-meta" id="s-meta">RETENTION & COMPENSATION CASE</div><div class="doc-name" id="s-name">[Your Name]</div><div class="doc-role" id="s-role"></div></div>
+            <img class="doc-logo" id="s-logo" src="" alt=""/>
+          </div>
+          <div class="doc-rule"></div>
+          <div class="doc-addr"><strong id="s-date"></strong><br/>To: <strong id="s-to">[Skip-Level]</strong><br/>From: <strong id="s-from">[Your Name]</strong>, <span id="s-ft"></span></div>
+          <div class="doc-subj" id="s-subj">Re: Compensation adjustment — economic case and market data</div>
+          <p id="s-p1"></p>
+          <div class="doc-stats">
+            <div class="dstat"><div class="dstat-lbl">Cost to Company</div><div class="dstat-val" id="s-s1">—</div></div>
+            <div class="dstat"><div class="dstat-lbl">Return Multiple</div><div class="dstat-val" id="s-s2">—</div></div>
+            <div class="dstat"><div class="dstat-lbl">Est. Replacement Cost</div><div class="dstat-val" id="s-s3">—</div></div>
+          </div>
+          <table class="doc-ledger"><thead><tr><th style="width:60%">Achievement</th><th style="width:20%">Category</th><th>Value</th></tr></thead><tbody id="s-rows"></tbody><tfoot><tr><td colspan="2">Total ROI</td><td id="s-tot">—</td></tr></tfoot></table>
+          <p id="s-p2"></p>
+          <p id="s-p3"></p>
+          <p id="s-p4"></p>
+          <div class="doc-sig"><div class="sig-name" id="s-sn"></div><div class="sig-role" id="s-sr"></div></div>
+        </div>
+        <div class="doc-footer-bar"><span>receipts. · receipts.pro</span><span>Self-reported estimates and publicly available data only. Not professional advice.</span></div>
+      </div>
+      <div class="gate-overlay" id="gate-over">
+        <div class="gate-badge"><i class="ti ti-lock" style="font-size:13px"></i> Unlock skip-level letter</div>
+        <div class="gate-hint">Available with your raise case purchase</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- ACHIEVEMENT MODAL -->
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:1rem">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;max-width:400px;width:100%">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <p style="font-size:14px;font-weight:800" id="modal-title">Add achievement</p>
+      <button onclick="closeModal()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;line-height:1">×</button>
+    </div>
+    <div class="fg"><label>Title</label><input id="ma-t" placeholder="e.g. Redesigned onboarding flow"/></div>
+    <div class="fg"><label>One-sentence description</label><input id="ma-d" placeholder="e.g. Reduced time-to-value by 40% for new users."/></div>
+    <div class="fr2">
+      <div class="fg"><label>Category</label>
+        <select id="ma-c"><option>Efficiency gain</option><option>Revenue generated</option><option>Cost savings</option><option>Risk averted</option><option>Strategic / other</option></select>
+      </div>
+      <div class="fg"><label>ROI ($)</label><input type="number" id="ma-r" placeholder="85000"/></div>
+    </div>
+    <input type="hidden" id="ma-idx" value="-1"/>
+    <div style="display:flex;gap:7px;margin-top:.5rem">
+      <button class="btn btn-accent" style="flex:1" onclick="saveAch()"><i class="ti ti-check" style="font-size:12px"></i> Save</button>
+      <button class="btn btn-ghost" style="width:auto;padding:9px 14px" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var achs = [];
+var logoSrc = null;
+var curTab = 'm';
+var priceMode = 'one';
+
+function fmt(n) {
+  if (!n || isNaN(n)) return '—';
+  var a = Math.abs(n), s = n < 0 ? '-' : '';
+  if (a >= 1e9) return s + '$' + (a / 1e9).toFixed(2) + 'B';
+  if (a >= 1e6) return s + '$' + (a / 1e6).toFixed(1) + 'M';
+  if (a >= 1000) return s + '$' + Math.round(a).toLocaleString();
+  return s + '$' + Math.round(a);
+}
+function gv(id) { var e = document.getElementById(id); return e ? e.value : ''; }
+function gn(id) { return parseFloat(gv(id)) || 0; }
+function se(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+function sh(id, h) { var e = document.getElementById(id); if (e) e.innerHTML = h; }
+function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+function onLogoUpload(evt) {
+  var f = evt.target.files[0]; if (!f) return;
+  var r = new FileReader();
+  r.onload = function(e) {
+    logoSrc = e.target.result;
+    document.getElementById('logo-txt').textContent = f.name.substring(0, 20);
+    document.getElementById('logo-rm').style.display = 'block';
+    applyLogo(); refresh();
+  };
+  r.readAsDataURL(f);
+}
+function applyLogo() {
+  ['m-logo', 's-logo'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.src = logoSrc || ''; el.className = 'doc-logo' + (logoSrc ? ' show' : ''); }
+  });
+}
+function removeLogo() {
+  logoSrc = null;
+  document.getElementById('logo-txt').textContent = 'Upload your company logo';
+  document.getElementById('logo-rm').style.display = 'none';
+  document.getElementById('logo-file').value = '';
+  applyLogo();
+}
+
+function switchTab(t) {
+  curTab = t;
+  document.getElementById('wrap-m').style.display = t === 'm' ? 'block' : 'none';
+  document.getElementById('wrap-s').style.display = t === 's' ? 'block' : 'none';
+  document.getElementById('tab-m').className = 'ptab' + (t === 'm' ? ' on' : '');
+  document.getElementById('tab-s').className = 'ptab' + (t === 's' ? ' on' : '');
+}
+
+function selPrice(p) {
+  priceMode = p;
+  document.getElementById('po-one').className = 'popt' + (p === 'one' ? ' sel' : '');
+  document.getElementById('po-mo').className = 'popt' + (p === 'mo' ? ' sel' : '');
+  se('pay-lbl', p === 'one' ? 'Get raise case PDF — $19' : 'Start Pro — $19/month');
+}
+
+function doCheckout() {
+  var em = (gv('pay-email') || '').trim();
+  if (!em || em.indexOf('@') < 0) { alert('Please enter your email — the PDF will be sent there.'); document.getElementById('pay-email').focus(); return; }
+  var stripeUrl = priceMode === 'one'
+    ? 'https://buy.stripe.com/test_4gMeVe8IabLIfin8W77N601'
+    : 'https://buy.stripe.com/test_9B600k0bE7vs8TZfkv7N600';
+  window.location = stripeUrl + '?prefilled_email=' + encodeURIComponent(em);
+  document.getElementById('pay-gate').style.display = 'none';
+  document.getElementById('print-block').style.display = 'block';
+  var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
+  if (g) g.style.display = 'none';
+  if (b) b.classList.remove('gate-blur');
+}
+
+function resetGate() {
+  document.getElementById('pay-gate').style.display = 'block';
+  document.getElementById('print-block').style.display = 'none';
+  var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
+  if (g) g.style.display = 'flex';
+  if (b) b.classList.add('gate-blur');
+}
+
+function openModal() {
+  document.getElementById('ma-idx').value = '-1';
+  document.getElementById('ma-t').value = '';
+  document.getElementById('ma-d').value = '';
+  document.getElementById('ma-c').value = 'Efficiency gain';
+  document.getElementById('ma-r').value = '';
+  se('modal-title', 'Add achievement');
+  document.getElementById('modal').style.display = 'flex';
+}
+function editAch(i) {
+  var a = achs[i];
+  document.getElementById('ma-idx').value = i;
+  document.getElementById('ma-t').value = a.t;
+  document.getElementById('ma-d').value = a.d;
+  document.getElementById('ma-c').value = a.c;
+  document.getElementById('ma-r').value = a.r;
+  se('modal-title', 'Edit achievement');
+  document.getElementById('modal').style.display = 'flex';
+}
+function delAch(i) { achs.splice(i, 1); renderAchs(); refresh(); }
+function saveAch() {
+  var t = (gv('ma-t') || '').trim(); if (!t) { alert('Add a title.'); return; }
+  var obj = { t: t, d: gv('ma-d'), c: gv('ma-c'), r: parseFloat(gv('ma-r')) || 0 };
+  var idx = parseInt(gv('ma-idx'));
+  if (idx >= 0) achs[idx] = obj; else achs.push(obj);
+  closeModal(); renderAchs(); refresh();
+}
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+function renderAchs() {
+  var el = document.getElementById('ach-list');
+  se('ach-n', achs.length);
+  if (!el) return;
+  if (!achs.length) { el.innerHTML = '<p style="font-size:11px;color:var(--text3)">No achievements yet.</p>'; return; }
+  el.innerHTML = achs.map(function(a, i) {
+    return '<div class="ach-item"><div class="ach-title">' + esc(a.t) + '</div>'
+      + '<div class="ach-meta">' + esc(a.c) + (a.r ? ' · ' + fmt(a.r) : '') + '</div>'
+      + '<div class="ach-actions">'
+      + '<button class="ach-btn" onclick="editAch(' + i + ')"><i class="ti ti-pencil" style="font-size:10px;vertical-align:-1px"></i> Edit</button>'
+      + '<button class="ach-btn" onclick="delAch(' + i + ')" style="color:var(--red)"><i class="ti ti-trash" style="font-size:10px;vertical-align:-1px"></i></button>'
+      + '</div></div>';
+  }).join('');
+}
+
+function buildRows() {
+  if (!achs.length) return '<tr><td colspan="3" style="color:#AAA;font-family:\'Syne\',sans-serif;font-size:11px;padding:10px 0">Add achievements in the sidebar to populate this ledger.</td></tr>';
+  return achs.map(function(a) {
+    return '<tr><td><strong style="font-family:\'Syne\',sans-serif;font-size:11px;font-weight:700">' + esc(a.t) + '</strong>'
+      + (a.d ? '<br/><span style="font-size:10.5px;color:#888;font-family:\'Syne\',sans-serif">' + esc(a.d) + '</span>' : '') + '</td>'
+      + '<td style="font-family:\'Syne\',sans-serif;font-size:10.5px;color:#888">' + esc(a.c) + '</td>'
+      + '<td>' + (a.r ? fmt(a.r) : '—') + '</td></tr>';
+  }).join('');
+}
+
+function refresh() {
+  var name  = gv('f-name')  || '[Your Name]';
+  var title = gv('f-title') || '[Your Title]';
+  var loc   = gv('f-loc')   || '[Location]';
+  var co    = gv('f-co')    || '[Company]';
+  var mgr   = gv('f-mgr')   || '[Manager Name]';
+  var skip  = gv('f-skip')  || '[Senior Leader]';
+  var tc    = gn('f-tc');
+  var be    = gn('f-be');
+  var roi   = gn('f-roi');
+  var ask   = gn('f-ask');
+  var mlo   = gn('f-mlo');
+  var mhi   = gn('f-mhi');
+  var net   = roi - be;
+  var cov   = be > 0 ? (roi / be * 100) : 0;
+  var mult  = tc > 0 ? (roi / tc) : 0;
+  var period = gv('f-period') || 'this year';
+  var today  = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  var surplus = net >= 0;
+
+  /* snapshot */
+  se('sn-roi', roi ? fmt(roi) : '—');
+  se('sn-net', (roi && be) ? (net >= 0 ? '+' : '') + fmt(net) : '—');
+  se('sn-cov', cov ? Math.round(cov) + '%' : '—');
+  se('sn-ask', ask ? fmt(ask) : '—');
+  var nb = document.getElementById('sn-net-box');
+  if (nb) nb.className = 'mc' + (net > 0 ? ' pos' : net < 0 ? ' neg' : '');
+
+  var rows = buildRows();
+  sh('m-rows', rows); sh('s-rows', rows);
+  se('m-tot', roi ? fmt(roi) : '—'); se('s-tot', roi ? fmt(roi) : '—');
+
+  /* ── MANAGER LETTER ── */
+  se('m-meta', 'COMPENSATION REVIEW — ' + period.toUpperCase());
+  se('m-name', name);
+  se('m-role', title + (co ? ' · ' + co : '') + (loc ? ' · ' + loc : ''));
+  se('m-date', today); se('m-to', mgr); se('m-from', name); se('m-ft', title);
+  se('m-subj', 'Re: Compensation review and raise request — ' + period);
+  se('m-sn', name); se('m-sr', title + (co ? ' · ' + co : ''));
+
+  var ms2 = document.getElementById('m-s2');
+  se('m-s1', roi ? fmt(roi) : '—');
+  if (ms2) { ms2.textContent = (roi && be) ? (net >= 0 ? '+' : '') + fmt(net) : '—'; ms2.className = 'dstat-val' + (net > 0 ? ' dstat-pos' : net < 0 ? ' dstat-neg' : ''); }
+  se('m-s3', cov ? Math.round(cov) + '%' : '—');
+
+  se('m-p1', 'I am writing to request a structured conversation regarding my compensation as we approach the close of ' + period + '. Enclosed is a data-supported analysis of my contributions and their estimated financial impact — prepared to provide a transparent, evidence-based foundation for our discussion.');
+  se('m-p2', surplus
+    ? 'During ' + period + ', my total cost to ' + co + ' was ' + fmt(tc) + ', establishing a break-even obligation of ' + fmt(be) + ' for this review period. My confidence-weighted ROI contribution — drawn entirely from publicly available data and adjusted for attribution — is ' + fmt(roi) + ', yielding a net surplus of ' + fmt(net) + ' and a break-even coverage ratio of ' + Math.round(cov) + '%. In practical terms, the value I have generated represents approximately ' + (mult > 0 ? mult.toFixed(1) + '×' : '—') + ' my total cost to the organization.'
+    : 'During ' + period + ', my total cost to ' + co + ' was ' + fmt(tc) + ', establishing a break-even obligation of ' + fmt(be) + ' for this period. My current ROI contribution is ' + fmt(roi) + '. I want to be candid about where I stand relative to that threshold, and the achievement summary below includes the specific initiatives through which I plan to close the gap.');
+  se('m-p3', (mlo && mhi)
+    ? 'With respect to market compensation, current benchmarks for my role in ' + loc + ' place the fair range between ' + fmt(mlo) + ' and ' + fmt(mhi) + '. Based on both the ROI evidence above and prevailing market data, I am respectfully requesting a base salary adjustment' + (ask ? ' to ' + fmt(ask) : '') + '. I welcome the opportunity to discuss timing and next steps at your earliest convenience.'
+    : 'I would welcome the opportunity to discuss this analysis and explore what a compensation adjustment might look like. Thank you for your time and for your continued investment in my development.');
+
+  /* ── SKIP-LEVEL LETTER ── */
+  var replLo = fmt(Math.round(tc * 0.5));
+  var replHi = fmt(Math.round(tc * 1.4));
+  se('s-meta', 'RETENTION & COMPENSATION CASE — ' + period.toUpperCase());
+  se('s-name', name); se('s-role', title + (co ? ' · ' + co : ''));
+  se('s-date', today); se('s-to', skip); se('s-from', name); se('s-ft', title);
+  se('s-subj', 'Re: Compensation adjustment — economic case and market data — ' + period);
+  se('s-sn', name); se('s-sr', title + (co ? ' · ' + co : ''));
+  se('s-s1', tc ? fmt(tc) : '—');
+  se('s-s2', mult > 0 ? mult.toFixed(1) + '×' : '—');
+  se('s-s3', tc ? (replLo + '–' + replHi) : '—');
+
+  se('s-p1', 'I am sharing this summary directly with you, in the interest of full transparency, ahead of compensation review discussions. What follows is an economic case, not a personal request — the numbers speak to a straightforward retention and investment decision.');
+  se('s-p2', surplus
+    ? 'During ' + period + ', I generated ' + fmt(roi) + ' in documented, confidence-weighted ROI against a total cost to ' + co + ' of ' + fmt(tc) + ' — a return multiple of ' + (mult > 0 ? mult.toFixed(1) + '×' : '—') + '. The industry break-even benchmark for this role is ' + fmt(be) + '; my contribution exceeds that threshold by ' + fmt(net) + ', representing ' + Math.round(cov) + '% coverage.'
+    : 'During ' + period + ', my total cost to ' + co + ' was ' + fmt(tc) + ' against an industry break-even benchmark of ' + fmt(be) + '. My current ROI contribution is ' + fmt(roi) + '. I am sharing this candidly because I believe the path to closing the gap is clear, and the investment case for doing so is materially stronger than the alternative.');
+  se('s-p3', 'For additional context: the fully-loaded cost to backfill this role — covering recruitment, onboarding, and the typical three-to-six-month ramp to productivity — is generally estimated between ' + replLo + ' and ' + replHi + '. Retaining a producing role at a competitive market rate is, in most cases, the more economical decision by a meaningful margin.');
+  se('s-p4', (mlo && mhi)
+    ? 'Current market data for this role in ' + loc + ' places fair value between ' + fmt(mlo) + ' and ' + fmt(mhi) + (ask ? '. I am requesting ' + fmt(ask) + ', which sits within that range and is consistent with the documented ROI above' : '. An adjustment to within that range is consistent with the documented ROI above') + '. The full achievement ledger is included below for reference. I appreciate your consideration.'
+    : 'An adjustment to current market rate is consistent with the documented ROI above. The full achievement ledger is included below for reference. I appreciate your consideration.');
+}
+
+se('m-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
+se('s-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
+refresh();
+</script>
+</body>
+</html>
