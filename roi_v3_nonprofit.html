@@ -664,10 +664,10 @@ button:hover{background:var(--surface2)}
       <div id="bundle-cta" class="premium-strip" style="margin-bottom:.875rem">
         <i class="ti ti-package ps-icon"></i>
         <div class="ps-text">
-          <p class="ps-title">All 3 premium docs + PDF downloads — save $38</p>
-          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked. $19 bundle vs. $57 if purchased separately.</p>
+          <p class="ps-title">All 3 premium docs + PDF downloads — save $32</p>
+          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked. $25 bundle vs. $57 if purchased separately.</p>
         </div>
-        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $19 (save $38) ↗</button>
+        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $25 (save $32) ↗</button>
       </div>
       <div class="paywall-gate" id="gate-grant">
         <div class="ecard">
@@ -686,7 +686,7 @@ button:hover{background:var(--surface2)}
             <li><i class="ti ti-check"></i> Aggregate impact + beneficiary reach</li>
             <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
           </ul>
-          <span class="pw-price">$19 one-time · or $9 in the bundle</span>
+          <span class="pw-price">$19 one-time · or $8 in the bundle</span>
           <button class="pw-unlock" onclick="unlockExport('grant')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('grant')">Preview first 3 lines free</button>
         </div>
@@ -708,7 +708,7 @@ button:hover{background:var(--surface2)}
             <li><i class="ti ti-check"></i> Strategic ask with impact justification</li>
             <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
           </ul>
-          <span class="pw-price">$19 one-time · or $9 in the bundle</span>
+          <span class="pw-price">$19 one-time · or $8 in the bundle</span>
           <button class="pw-unlock" onclick="unlockExport('board')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('board')">Preview first 3 lines free</button>
         </div>
@@ -730,7 +730,7 @@ button:hover{background:var(--surface2)}
             <li><i class="ti ti-check"></i> Tone that balances data and gratitude</li>
             <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
           </ul>
-          <span class="pw-price">$19 one-time · or $9 in the bundle</span>
+          <span class="pw-price">$19 one-time · or $8 in the bundle</span>
           <button class="pw-unlock" onclick="unlockExport('community')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('community')">Preview first 3 lines free</button>
         </div>
@@ -1400,20 +1400,24 @@ function refine(type){
  *     - (or per-doc links, see STRIPE_LINKS below)
  *  3. Paste your Payment Link URL(s) below
  *
- *  BUNDLE link (all 3 premium docs for $19):
- *    Success URL: [your-page-url]?unlocked=grant,board,community
+ *  BUNDLE link (all 3 premium docs for $25):
+ *    https://buy.stripe.com/14A28s8Iag1Y8TZa0b7N605
+ *    Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=bundle
  *
- *  PER-DOC links ($19 each):
- *    grant  → Success URL: [your-page-url]?unlocked=grant
- *    board  → Success URL: [your-page-url]?unlocked=board
- *    community → Success URL: [your-page-url]?unlocked=community
+ *  PER-DOC links ($19 each) — LIVE:
+ *    grant     → https://buy.stripe.com/00waEY9MedTQ5HN2xJ7N603
+ *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=grant
+ *    board     → https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600
+ *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=board
+ *    community → https://buy.stripe.com/cNifZi7E6cPMdaffkv7N604
+ *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=community
  *
  * ─────────────────────────────────────────────────────────────────────────── */
 var STRIPE_LINKS = {
-  grant:     'https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600',
+  grant:     'https://buy.stripe.com/00waEY9MedTQ5HN2xJ7N603',
   board:     'https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600',
-  community: 'https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600',
-  bundle:    'https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600'
+  community: 'https://buy.stripe.com/cNifZi7E6cPMdaffkv7N604',
+  bundle:    'https://buy.stripe.com/14A28s8Iag1Y8TZa0b7N605'
 };
 
 /* Prefill Stripe email if we have it */
@@ -1536,13 +1540,13 @@ function unlockExport(type) {
     grant: 'Funder-ready outcomes language, SROI methodology framing, and a program-by-program breakdown — ready to paste into any grant application.',
     board: 'Leadership-ready executive summary with your leverage ratio, program highlights, and a data-grounded strategic ask.',
     community: 'Warm, data-grounded acknowledgment letter for volunteers, partners, and stakeholders.',
-    bundle: 'All three premium documents unlocked at once — the same price as buying one.'
+    bundle: 'All three premium documents unlocked at once — $25 vs. $57 if purchased separately.'
   };
   var features = {
     grant: ['✓ Program-by-program outcome summary', '✓ SROI methodology statement', '✓ Aggregate impact + beneficiary reach', '✓ Copy · Refine with AI · Download PDF'],
     board: ['✓ ROI framing for business-minded boards', '✓ Program highlights + leverage ratio', '✓ Strategic ask with impact justification', '✓ Copy · Refine with AI · Download PDF'],
     community: ['✓ Named program accomplishments', '✓ Volunteer + partner acknowledgment', '✓ Data-grounded, warm tone', '✓ Copy · Refine with AI · Download PDF'],
-    bundle: ['✓ Grant Outcomes Narrative', '✓ Board One-Pager', '✓ Community Impact Letter', '✓ PDF downloads for all three — save $38 vs. buying separately']
+    bundle: ['✓ Grant Outcomes Narrative', '✓ Board One-Pager', '✓ Community Impact Letter', '✓ PDF downloads for all three — save $32 vs. buying separately']
   };
   var sh2 = document.getElementById('cm-title');
   var sd2 = document.getElementById('cm-desc');
@@ -1554,9 +1558,9 @@ function unlockExport(type) {
   if (sh2) sh2.textContent = titles[type] || 'Premium Document';
   if (sd2) sd2.textContent = descs[type] || '';
   if (sf) sf.innerHTML = (features[type] || []).map(function(f){ return '<div>'+f+'</div>'; }).join('');
-  if (sp) sp.textContent = type === 'bundle' ? '$19' : '$19';
-  if (spl) spl.textContent = type === 'bundle' ? 'All 3 docs · saves $38' : 'One-time · no subscription';
-  if (scb) scb.textContent = type === 'bundle' ? 'Pay $19 → Unlock all 3 + PDF downloads' : 'Pay $19 → Unlock + Download PDF';
+  if (sp) sp.textContent = type === 'bundle' ? '$25' : '$19';
+  if (spl) spl.textContent = type === 'bundle' ? 'All 3 docs · saves $32' : 'One-time · no subscription';
+  if (scb) scb.textContent = type === 'bundle' ? 'Pay $25 → Unlock all 3 + PDF downloads' : 'Pay $19 → Unlock + Download PDF';
   if (sbb) sbb.style.display = type === 'bundle' ? 'none' : 'block';
   if (_checkoutEmail) {
     var emailInput = document.getElementById('cm-email');
@@ -1595,7 +1599,7 @@ function _buildCheckoutModal() {
     '    <p style="font-size:11px;color:var(--text3);margin-top:3px;line-height:1.4"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Used only for your receipt. Never stored or shared.</p>',
     '  </div>',
     '  <input type="hidden" id="cm-doc-type" value=""/>',
-    '  <button onclick="proceedBundle()" id="cm-bundle-btn" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px;transition:all .15s">Get all 3 docs for $19 (save $38) ↗</button>',
+    '  <button onclick="proceedBundle()" id="cm-bundle-btn" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px;transition:all .15s">Get all 3 docs for $25 (save $32) ↗</button>',
     '  <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">After payment you\'ll be returned here with your document unlocked.<br>Questions? <a href="mailto:hello@aricciviclabs.org" style="color:var(--teal)">hello@aricciviclabs.org</a></p>',
     '</div>'
   ].join('');
