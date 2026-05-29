@@ -194,19 +194,35 @@ button:hover{background:var(--surface2)}
 
 /* ── Paywall gate ── */
 .paywall-gate{position:relative;border-radius:var(--radius);overflow:hidden}
-.paywall-gate .ecard{filter:blur(3px);pointer-events:none;user-select:none;opacity:.45}
-.paywall-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(8,16,15,.82);backdrop-filter:blur(2px);border-radius:var(--radius);border:1px solid var(--gold-b);padding:1.5rem;text-align:center;z-index:10}
-.paywall-overlay .pw-icon{font-size:28px;color:var(--gold)}
-.paywall-overlay .pw-title{font-size:14px;font-weight:600;color:var(--text);margin:0}
-.paywall-overlay .pw-sub{font-size:12px;color:var(--text2);margin:0;line-height:1.5;max-width:280px}
-.paywall-overlay .pw-price{font-size:11px;font-weight:600;color:var(--gold);background:var(--gold-dim);border:1px solid var(--gold-b);border-radius:99px;padding:3px 12px}
-.paywall-overlay .pw-unlock{background:var(--gold);border:none;border-radius:99px;color:#1a0e00;font-weight:700;font-size:13px;padding:9px 22px;cursor:pointer;transition:all .15s}
-.paywall-overlay .pw-unlock:hover{opacity:.88;transform:translateY(-1px)}
-.paywall-overlay .pw-free{font-size:11px;color:var(--text3);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0}
-.paywall-overlay .pw-free:hover{color:var(--text2)}
-.paywall-overlay .pw-checklist{list-style:none;text-align:left;width:100%;max-width:270px;margin:2px 0 0;padding:0}
-.paywall-overlay .pw-checklist li{font-size:11.5px;color:var(--sage);padding:2px 0;display:flex;align-items:center;gap:6px;line-height:1.4}
-.paywall-overlay .pw-checklist li i{color:var(--green);font-size:11px;flex-shrink:0}
+
+/* Styled document preview + fade gate */
+.dpre-gate-wrap{position:relative;margin-bottom:7px;max-height:720px;overflow:hidden;border-radius:var(--radius-sm)}
+.dpre-gate-fade{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.97) 60%);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;padding-bottom:12px;pointer-events:none}
+.dpre-gate-fade button,.dpre-gate-fade span{pointer-events:auto}
+.dpre-lock-pill{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:#1a0e00;font-size:11px;font-weight:700;padding:8px 20px;border-radius:99px;cursor:pointer;border:none;font-family:'DM Sans',system-ui,sans-serif;transition:all .15s;white-space:nowrap;box-shadow:0 2px 12px rgba(232,168,68,.35)}
+.dpre-lock-pill:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(232,168,68,.45)}
+.dpre-lock-price{font-size:10px;color:#888;font-family:'DM Sans',system-ui,sans-serif}
+
+/* Styled doc preview shell */
+.doc-preview{background:#fff;border-radius:var(--radius-sm);overflow:hidden;border:1px solid #E4DFD8;font-family:'DM Sans',system-ui,sans-serif}
+.doc-preview.placeholder{display:flex;align-items:center;justify-content:center;min-height:100px;font-size:12px;color:#AAA;font-style:italic}
+.dp-hdr{background:#162820;padding:14px 16px}
+.dp-type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.dp-org{font-size:14px;font-weight:600;color:#fff;line-height:1.2;margin:0}
+.dp-sub{font-size:11px;color:rgba(255,255,255,.45);margin:3px 0 0}
+.dp-stats{display:grid;grid-template-columns:repeat(3,1fr);background:#FAFAF8;border-bottom:1px solid #ECEAE6}
+.dp-stat{padding:8px 12px;border-right:1px solid #ECEAE6}
+.dp-stat:last-child{border-right:none}
+.dp-stat-lbl{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#AAA;margin-bottom:2px}
+.dp-stat-val{font-size:13px;font-weight:600;color:#1C2822;font-family:'DM Mono',monospace}
+.dp-body{padding:14px 16px;color:#2A2A2A;font-size:12px;line-height:1.7}
+.dp-body p{margin-bottom:8px}
+.dp-section{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#AAA;margin:10px 0 5px}
+.dp-section:first-child{margin-top:0}
+.dp-prog{margin-bottom:8px}
+.dp-prog-title{font-weight:600;color:#1A1A1A;font-size:12px}
+.dp-prog-desc{color:#666;font-size:11.5px;line-height:1.5}
+.dp-prog-val{font-size:11px;color:#1A7A55;font-weight:600;margin-top:2px}
 .btn-pdf{background:var(--teal-dim);border:1px solid var(--teal-b);color:var(--teal);font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:500}
 .btn-pdf:hover{background:var(--teal);color:#08100F;border-color:var(--teal)}
 
@@ -673,66 +689,65 @@ button:hover{background:var(--surface2)}
         <div class="ecard">
           <h3><i class="ti ti-file-certificate" style="font-size:14px;color:var(--sage)"></i> Grant outcomes narrative</h3>
           <p>Program-by-program outcomes with methodology and funder-facing language.</p>
-          <div class="dpre" id="doc-grant">—</div>
+          <div class="dpre-gate-wrap" id="dpre-gate-grant">
+            <div class="doc-preview placeholder" id="preview-grant">Complete your impact ledger to see a preview</div>
+            <div class="dpre" id="doc-grant" style="display:none">—</div>
+            <div class="dpre-gate-fade">
+              <button class="dpre-lock-pill" onclick="unlockExport('grant')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Grant Narrative → $19</button>
+              <span class="dpre-lock-price">One-time · or $8 in the $25 bundle</span>
+            </div>
+          </div>
           <div class="brow"><button onclick="cpDoc('doc-grant')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('grant')">Refine ↗</button></div>
-        </div>
-        <div class="paywall-overlay" id="overlay-grant">
-          <i class="ti ti-file-certificate pw-icon"></i>
-          <p class="pw-title">Grant Outcomes Narrative</p>
-          <p class="pw-sub">Funder-facing language with SROI methodology and a program-by-program breakdown — ready to paste into any grant application.</p>
-          <ul class="pw-checklist">
-            <li><i class="ti ti-check"></i> Program-by-program outcome summary</li>
-            <li><i class="ti ti-check"></i> SROI methodology statement for funders</li>
-            <li><i class="ti ti-check"></i> Aggregate impact + beneficiary reach</li>
-            <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
-          </ul>
-          <span class="pw-price">$19 one-time · or $8 in the bundle</span>
-          <button class="pw-unlock" onclick="unlockExport('grant')">Unlock → $19</button>
-          <button class="pw-free" onclick="previewFree('grant')">Preview first 3 lines free</button>
         </div>
       </div>
       <div class="paywall-gate" id="gate-board">
         <div class="ecard">
           <h3><i class="ti ti-presentation" style="font-size:14px;color:#6030A0"></i> Board one-pager</h3>
           <p>Executive summary for board presentations — leverage ratio, program highlights, and strategic ask in one page.</p>
-          <div class="dpre" id="doc-board">—</div>
+          <div class="dpre-gate-wrap" id="dpre-gate-board">
+            <div class="doc-preview placeholder" id="preview-board">Complete your impact ledger to see a preview</div>
+            <div class="dpre" id="doc-board" style="display:none">—</div>
+            <div class="dpre-gate-fade">
+              <button class="dpre-lock-pill" onclick="unlockExport('board')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Board One-Pager → $19</button>
+              <span class="dpre-lock-price">One-time · or $8 in the $25 bundle</span>
+            </div>
+          </div>
           <div class="brow"><button onclick="cpDoc('doc-board')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('board')">Refine ↗</button></div>
-        </div>
-        <div class="paywall-overlay" id="overlay-board">
-          <i class="ti ti-presentation pw-icon"></i>
-          <p class="pw-title">Board One-Pager</p>
-          <p class="pw-sub">Executive summary formatted for board review — leverage ratio, program highlights, and a data-grounded strategic ask in one page.</p>
-          <ul class="pw-checklist">
-            <li><i class="ti ti-check"></i> ROI framing for business-minded boards</li>
-            <li><i class="ti ti-check"></i> Top program highlights + leverage ratio</li>
-            <li><i class="ti ti-check"></i> Strategic ask with impact justification</li>
-            <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
-          </ul>
-          <span class="pw-price">$19 one-time · or $8 in the bundle</span>
-          <button class="pw-unlock" onclick="unlockExport('board')">Unlock → $19</button>
-          <button class="pw-free" onclick="previewFree('board')">Preview first 3 lines free</button>
         </div>
       </div>
       <div class="paywall-gate" id="gate-community">
         <div class="ecard">
           <h3><i class="ti ti-users" style="font-size:14px;color:var(--teal)"></i> Community impact letter</h3>
-          <p>Warm, data-grounded letter for volunteers, community partners, and stakeholders — acknowledges their contribution, shares impact numbers.</p>
-          <div class="dpre" id="doc-community">—</div>
+          <p>A personalized letter addressed to a specific donor, volunteer group, partner, or funder — opens with their name and contribution, closes with language tailored to their relationship. The free report is a data file. This is a letter someone will actually feel.</p>
+          <div style="background:var(--teal-dim);border:1px solid var(--teal-b);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:10px">
+            <p style="font-size:11px;font-weight:600;color:var(--teal);margin-bottom:8px"><i class="ti ti-pencil" style="font-size:12px;vertical-align:-1px"></i> Personalize — preview updates live as you type</p>
+            <div class="fr">
+              <div class="fg"><label>Recipient name</label><input id="comm-recipient" placeholder="e.g. Sarah &amp; the Rodriguez Foundation" oninput="refreshCommunity()"/></div>
+              <div class="fg"><label>Relationship type</label>
+                <select id="comm-rel" onchange="refreshCommunity()">
+                  <option value="donor">Major donor</option>
+                  <option value="volunteer">Volunteer group</option>
+                  <option value="partner">Corporate / community partner</option>
+                  <option value="board">Board member</option>
+                  <option value="grant">Grant funder</option>
+                  <option value="general">All supporters</option>
+                </select>
+              </div>
+            </div>
+            <div class="fr">
+              <div class="fg"><label>Their specific contribution</label><input id="comm-contribution" placeholder="e.g. $5,000 gift · 200 volunteer hours · in-kind software" oninput="refreshCommunity()"/></div>
+              <div class="fg"><label>Personal note <span style="font-weight:400;color:var(--text3)">(optional)</span></label><input id="comm-note" placeholder="e.g. Your support made our youth STEM lab possible." oninput="refreshCommunity()"/></div>
+            </div>
+          </div>
+          <div class="dpre-gate-wrap" id="dpre-gate-community">
+            <div class="doc-preview placeholder" id="preview-community">Complete your impact ledger to see a preview</div>
+            <div class="dpre" id="doc-community" style="display:none">—</div>
+            <div class="dpre-gate-fade">
+              <button class="dpre-lock-pill" onclick="unlockExport('community')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Community Letter → $19</button>
+              <span class="dpre-lock-price">One-time · or $8 in the $25 bundle</span>
+            </div>
+          </div>
           <div class="brow"><button onclick="cpDoc('doc-community')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('community')">Refine ↗</button></div>
-        </div>
-        <div class="paywall-overlay" id="overlay-community">
-          <i class="ti ti-users pw-icon"></i>
-          <p class="pw-title">Community Impact Letter</p>
-          <p class="pw-sub">Warm, data-grounded acknowledgment letter for volunteers, partners, and stakeholders — with real numbers that make people feel the impact of their contribution.</p>
-          <ul class="pw-checklist">
-            <li><i class="ti ti-check"></i> Named program accomplishments + totals</li>
-            <li><i class="ti ti-check"></i> Volunteer + partner acknowledgment language</li>
-            <li><i class="ti ti-check"></i> Tone that balances data and gratitude</li>
-            <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
-          </ul>
-          <span class="pw-price">$19 one-time · or $8 in the bundle</span>
-          <button class="pw-unlock" onclick="unlockExport('community')">Unlock → $19</button>
-          <button class="pw-free" onclick="previewFree('community')">Preview first 3 lines free</button>
         </div>
       </div>
 
@@ -1360,16 +1375,176 @@ function genDocs(){
   var strategicAsk=budget>0?'a budget investment of '+fmt(budget*(1.2)):fmt(totalImpact*0.1)+' in unrestricted capacity funding';
   var boardDoc=dt+'\n\nBOARD IMPACT ONE-PAGER — '+pStr.toUpperCase()+'\n'+org+' | '+statusLabel+'\nPrepared by: '+contact+' | '+loc+'\n'+'─'.repeat(54)+'\n\nOUR MISSION IN NUMBERS\n\nFor every $1 invested in '+org+', we generate $'+lev.toFixed(2)+' in documented mission value.\n\n• Total investment this period: '+fmt(budget)+'\n• Total documented mission impact: '+fmt(totalImpact)+'\n• Mission leverage ratio: '+lev.toFixed(2)+'×'+(cpb>0?'\n• Cost per direct beneficiary: '+fmt(cpb):'')+'\n• Direct lives touched: '+(direct>0?direct.toLocaleString():'—')+(indirect>0?'\n• Community reach: '+indirect.toLocaleString():'')+'\n\nPROGRAM HIGHLIGHTS\n'+topProgs.map(function(p,i){return(i+1)+'. '+p.title+'\n   '+p.desc+'\n   Documented value: '+fmt(p.totalVal);}).join('\n\n')+'\n\nSTRATEGIC ASK\nTo sustain and grow this impact, we are requesting board support for '+strategicAsk+'. This investment is projected to maintain our leverage ratio of '+lev.toFixed(2)+'× and expand services to an additional '+(direct>0?Math.round(direct*0.25).toLocaleString():'[N]')+' beneficiaries.\n\nWHY NOW\n'+mission+' is a growing need in '+loc+'. Our track record demonstrates that we can convert investment into documented, measurable change. The data above represents conservative, confidence-weighted estimates — the real impact is broader.\n\nPrepared: '+dt+' | Data: Self-reported estimates and public benchmarks.';
 
-  /* Community impact letter */
-  var communityDoc=dt+'\n\nCOMMUNITY IMPACT LETTER\n\nDear Friend, Partner, and Volunteer,\n\nBecause of you, '+org+'\'s work in '+loc+' made a measurable difference in '+pStr+'.\n\nHere is what we accomplished together:\n\n'+pShort+'\nCombined, our programs created approximately '+fmt(totalImpact)+' in documented community value — a leverage ratio of '+(lev>=1?lev.toFixed(2)+'×':'"less than 1×" by conservative estimate, though the real impact extends far beyond any model can measure')+'.'+(direct>0?' We reached '+direct.toLocaleString()+' people directly'+(indirect>0?', with ripple effects touching an estimated '+indirect.toLocaleString()+' more':'')+'.':'')+'\n\nNone of this is possible without the people who show up — to volunteer, to give, to partner, to spread the word, and to believe that '+mission+' is work worth doing.\n\nThank you for being part of this.\n\nWith gratitude,\n'+contact+'\n'+org+'\n\n—\nAll figures are confidence-weighted estimates from program data. Our commitment is to honest accounting of our impact.';
-
   var db=document.getElementById('doc-board');if(db)db.textContent=boardDoc;
-  var dc2=document.getElementById('doc-community');if(dc2)dc2.textContent=communityDoc;
+
+  /* Render styled preview shells for grant + board; community handled by refreshCommunity */
+  genDocPreviews();
+  refreshCommunity();
 
   /* Show premium CTAs now that data is available */
   var pg=document.getElementById('pcta-grant');if(pg&&!window._unlockedGrant)pg.style.display='flex';
   var pb=document.getElementById('pcta-board');if(pb&&!window._unlockedBoard)pb.style.display='flex';
   var pc=document.getElementById('pcta-community');if(pc&&!_unlockedDocs['community'])pc.style.display='flex';
+}
+
+function genDocPreviews(){
+  var org=gv('org-name')||'[Organization]';
+  var contact=gv('org-contact')||'[Contact]';
+  var loc=gv('org-loc')||'';
+  var mission=gv('org-mission')||'[mission]';
+  var budget=S.budget||0,totalImpact=S.totalImpact||0,lev=S.lev||0,cpb=S.cpb||0;
+  var direct=S.direct||0,indirect=S.indirect||0,progs=S.progs||[];
+  var months=S.months||12;
+  var yr=new Date().getFullYear();
+  var pStr=months===12?String(yr):months<12?'Last '+months+' months':'Last '+(months/12).toFixed(1)+' years';
+  var levStr=lev>=1?lev.toFixed(2)+'×':'<1×';
+
+  /* Helper */
+  function e2(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function stats(s1l,s1v,s2l,s2v,s3l,s3v){
+    return '<div class="dp-stats">'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">'+s1l+'</div><div class="dp-stat-val">'+s1v+'</div></div>'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">'+s2l+'</div><div class="dp-stat-val">'+s2v+'</div></div>'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">'+s3l+'</div><div class="dp-stat-val">'+s3v+'</div></div>'+
+      '</div>';
+  }
+
+  /* ── Grant Outcomes Narrative ── */
+  var grantHTML=
+    '<div class="dp-hdr">'+
+      '<div class="dp-type">Grant Outcomes Narrative</div>'+
+      '<div class="dp-org">'+e2(org)+'</div>'+
+      '<div class="dp-sub">Reporting period: '+pStr+(loc?' &nbsp;·&nbsp; '+e2(loc):'')+' &nbsp;·&nbsp; SROI Methodology</div>'+
+    '</div>'+
+    stats('Total SROI Value',fmt(totalImpact),'Mission Leverage',levStr,'Direct Beneficiaries',direct>0?direct.toLocaleString():'—')+
+    '<div class="dp-body">'+
+      '<div class="dp-section">Section: Program Outcomes and Impact</div>'+
+      '<p>During '+pStr.toLowerCase()+', '+e2(org)+' implemented '+(progs.length>0?progs.length+' core program'+(progs.length>1?'s':'')+' in support of its mission to advance '+e2(mission):e2(mission)+' programs')+'. Each program\'s outcomes are documented below using confidence-weighted SROI methodology.</p>'+
+      (progs.length>0?'<div class="dp-prog"><div class="dp-prog-title">1. '+e2(progs[0].title)+'</div><div class="dp-prog-desc">'+e2(progs[0].desc)+'</div><div class="dp-prog-val">↑ Documented impact value: '+fmt(progs[0].totalVal)+'</div></div>':'')+
+      (progs.length>1?'<div class="dp-prog"><div class="dp-prog-title">2. '+e2(progs[1].title)+'</div><div class="dp-prog-desc">'+e2(progs[1].desc)+'</div><div class="dp-prog-val">↑ Documented impact value: '+fmt(progs[1].totalVal)+'</div></div>':'')+
+      '<div class="dp-section">Aggregate Impact</div>'+
+      '<p>Total documented mission value: <strong>'+fmt(totalImpact)+'</strong>&emsp;Mission leverage ratio: <strong>'+levStr+'</strong>'+(direct>0?'&emsp;Direct beneficiaries: <strong>'+direct.toLocaleString()+'</strong>':'')+' </p>'+
+    '</div>';
+
+  /* ── Board One-Pager ── */
+  var boardHTML=
+    '<div class="dp-hdr">'+
+      '<div class="dp-type">Board Impact One-Pager</div>'+
+      '<div class="dp-org">'+e2(org)+'</div>'+
+      '<div class="dp-sub">Prepared by: '+e2(contact)+(loc?' &nbsp;·&nbsp; '+e2(loc):'')+' &nbsp;·&nbsp; '+pStr+'</div>'+
+    '</div>'+
+    stats('Mission Leverage',levStr,'Total Investment',fmt(budget),'Lives Touched',direct>0?direct.toLocaleString():'—')+
+    '<div class="dp-body">'+
+      '<div class="dp-section">Our Mission in Numbers</div>'+
+      '<p style="font-size:13px;font-weight:600;color:#1A1A1A;line-height:1.5">For every $1 invested in '+e2(org)+', we generate <span style="color:#1A7A55">$'+lev.toFixed(2)+'</span> in documented mission value.</p>'+
+      '<p style="color:#555">Total investment: <strong style="color:#222">'+fmt(budget)+'</strong>&emsp;Total impact: <strong style="color:#1A7A55">'+fmt(totalImpact)+'</strong>'+(cpb>0?'&emsp;Cost per beneficiary: <strong style="color:#222">'+fmt(cpb)+'</strong>':'')+' </p>'+
+      '<div class="dp-section">Program Highlights</div>'+
+      (progs.length>0?'<div class="dp-prog"><div class="dp-prog-title">1. '+e2(progs[0].title)+'</div><div class="dp-prog-desc">'+e2(progs[0].desc)+'</div><div class="dp-prog-val">Documented value: '+fmt(progs[0].totalVal)+(progs[0].progBudget>0?' · Leverage: '+(progs[0].totalVal/progs[0].progBudget).toFixed(2)+'×':'')+' </div></div>':'')+
+      (progs.length>1?'<div class="dp-prog"><div class="dp-prog-title">2. '+e2(progs[1].title)+'</div><div class="dp-prog-desc">'+e2(progs[1].desc)+'</div><div class="dp-prog-val">Documented value: '+fmt(progs[1].totalVal)+'</div></div>':'')+
+    '</div>';
+
+  /* ── Community Impact Letter ── handled by refreshCommunity() */
+
+  var gp=document.getElementById('preview-grant');
+  if(gp){gp.className='doc-preview';gp.innerHTML=grantHTML;}
+  var bp=document.getElementById('preview-board');
+  if(bp){bp.className='doc-preview';bp.innerHTML=boardHTML;}
+}
+
+function refreshCommunity(){
+  var org=gv('org-name')||'[Organization]',contact=gv('org-contact')||'[Contact]';
+  var loc=gv('org-loc')||'',mission=gv('org-mission')||'[mission]';
+  var totalImpact=S.totalImpact||0,lev=S.lev||0,direct=S.direct||0,indirect=S.indirect||0;
+  var progs=S.progs||[],months=S.months||12;
+  var yr=new Date().getFullYear();
+  var pStr=months===12?String(yr):months<12?'last '+months+' months':'last '+(months/12).toFixed(1)+' years';
+  var levStr=lev>=1?lev.toFixed(2)+'×':'"less than 1×" by our conservative estimate';
+  var levDisp=lev>=1?lev.toFixed(2)+'×':'<1×';
+
+  var recipient=gv('comm-recipient')||'Friend, Partner, and Volunteer';
+  var rel=gv('comm-rel')||'general';
+  var contribution=gv('comm-contribution')||'';
+  var note=gv('comm-note')||'';
+
+  /* Contribution opening sentence — changes by relationship type */
+  var contribOpeners={
+    donor:'Your generous gift — '+contribution+' — made it possible for us to advance',
+    volunteer:'The time you dedicated — '+contribution+' — is the commitment that drives',
+    partner:'Your partnership and '+contribution+' extend our reach in advancing',
+    board:'Your leadership and '+contribution+' have directly shaped our work advancing',
+    grant:'The '+contribution+' directly funded our mission to advance',
+    general:'Your support — '+contribution+' — helps advance'
+  };
+  var contribLine=contribution?((contribOpeners[rel]||contribOpeners.general)+' '+mission+(loc?' in '+loc:'')+'. \n\n'):'';
+
+  /* Closing paragraph — changes by relationship type */
+  var closings={
+    donor:'Your investment is what makes this work financially possible. We are honored by your trust and committed to earning it every day.',
+    volunteer:'Your time is the most generous gift of all. Every hour you gave created ripple effects we can see in the numbers above — and many we cannot measure.',
+    partner:'Partnerships like ours multiply what either of us could do alone. We are proud to work alongside you and grateful for every way you have shown up for this mission.',
+    board:'Thank you for your governance, your counsel, and your belief in this work. The numbers above are a direct reflection of the strategy you helped shape.',
+    grant:'Grant support like yours allows us to plan with confidence and serve more people. We look forward to continuing to demonstrate impact worthy of your investment.',
+    general:'None of this is possible without the people who show up — to give, to volunteer, to partner, and to believe that '+mission+' is work worth doing.'
+  };
+  var closing=(note?note+'\n\n':'')+( closings[rel]||closings.general);
+
+  /* Program summary lines */
+  var pShort='';for(var i=0;i<progs.length;i++)pShort+='• '+progs[i].title+' — '+fmt(progs[i].totalVal)+'\n';
+  var dt=new Date().toLocaleDateString();
+
+  /* ── Build plain-text doc (used by copy / PDF / refine) ── */
+  var communityDoc=dt+'\n\nCOMMUNITY IMPACT LETTER\n\nDear '+recipient+',\n\n'+
+    contribLine+
+    'Because of you, '+org+(loc?'\'s work in '+loc:'\'s work')+' made a measurable difference in '+pStr+'.\n\n'+
+    'Here is what we accomplished together:\n\n'+pShort+
+    '\nCombined, our programs created approximately '+fmt(totalImpact)+' in documented community value — a leverage ratio of '+levStr+'.'+
+    (direct>0?' We reached '+direct.toLocaleString()+' people directly'+(indirect>0?', with ripple effects touching an estimated '+indirect.toLocaleString()+' more':'')+'.':'')+
+    '\n\n'+closing+
+    '\n\nWith gratitude,\n'+contact+'\n'+org+
+    '\n\n—\nAll figures are confidence-weighted estimates from program data. Our commitment is to honest accounting of our impact.';
+  var dc=document.getElementById('doc-community');if(dc)dc.textContent=communityDoc;
+
+  /* ── Build styled preview (shown in the paywall gate) ── */
+  if(!totalImpact)return;
+  function e2(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  var relLabels={donor:'Major Donor Letter',volunteer:'Volunteer Appreciation Letter',partner:'Partner Acknowledgment',board:'Board Member Letter',grant:'Grant Funder Report',general:'Community Impact Letter'};
+  var contribDisplays={
+    donor:'Your generous gift — <strong>'+e2(contribution)+'</strong> — made it possible for us to advance',
+    volunteer:'The time you dedicated — <strong>'+e2(contribution)+'</strong> — drives',
+    partner:'Your partnership and <strong>'+e2(contribution)+'</strong> extend our reach in advancing',
+    board:'Your leadership and <strong>'+e2(contribution)+'</strong> shaped our work advancing',
+    grant:'The <strong>'+e2(contribution)+'</strong> directly funded our mission to advance',
+    general:'Your support — <strong>'+e2(contribution)+'</strong> — advances'
+  };
+
+  var communityHTML=
+    '<div class="dp-hdr">'+
+      '<div class="dp-type">'+(relLabels[rel]||'Community Impact Letter')+'</div>'+
+      '<div class="dp-org">'+e2(org)+'</div>'+
+      '<div class="dp-sub">'+(loc?e2(loc)+' &nbsp;·&nbsp; ':'')+pStr+'</div>'+
+    '</div>'+
+    '<div class="dp-stats">'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">Community Impact</div><div class="dp-stat-val">'+fmt(totalImpact)+'</div></div>'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">People Reached</div><div class="dp-stat-val">'+(direct>0?direct.toLocaleString():'—')+'</div></div>'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">Mission Leverage</div><div class="dp-stat-val">'+levDisp+'</div></div>'+
+    '</div>'+
+    '<div class="dp-body">'+
+      '<p>Dear <strong>'+e2(recipient)+'</strong>,</p>'+
+      (contribution?'<p>'+(contribDisplays[rel]||contribDisplays.general)+' '+e2(mission)+(loc?' in '+e2(loc):'')+'. </p>':'')+
+      '<p>Because of you, '+e2(org)+(loc?'\'s work in '+e2(loc)+' ':' ')+'made a measurable difference in '+pStr+'.</p>'+
+      '<div class="dp-section">What We Accomplished Together</div>'+
+      (progs.length>0?'<div class="dp-prog"><div class="dp-prog-title">• '+e2(progs[0].title)+'</div><div class="dp-prog-desc">'+e2(progs[0].desc)+'</div><div class="dp-prog-val">'+fmt(progs[0].totalVal)+' in documented community value</div></div>':'')+
+      (progs.length>1?'<div class="dp-prog"><div class="dp-prog-title">• '+e2(progs[1].title)+'</div><div class="dp-prog-desc">'+e2(progs[1].desc)+'</div><div class="dp-prog-val">'+fmt(progs[1].totalVal)+' in documented community value</div></div>':'')+
+      (progs.length>2?'<div class="dp-prog"><div class="dp-prog-title">• '+e2(progs[2].title)+'</div><div class="dp-prog-val">'+fmt(progs[2].totalVal)+' in documented community value</div></div>':'')+
+      '<p>Combined, our programs created approximately <strong>'+fmt(totalImpact)+'</strong> in documented community value — a leverage ratio of <strong>'+levDisp+'</strong>.'+(direct>0?' We reached <strong>'+direct.toLocaleString()+'</strong> people directly'+(indirect>0?', with ripple effects touching an estimated <strong>'+indirect.toLocaleString()+'</strong> more':'')+'.':'')+' </p>'+
+      '<div class="dp-section">Closing</div>'+
+      (note?'<p style="font-style:italic;color:#444">'+e2(note)+'</p>':'')+
+      '<p>'+e2((closings[rel]||closings.general).split('\n\n')[0])+'</p>'+
+      '<p style="margin-top:12px;color:#888">With gratitude,<br><strong style="color:#1A1A1A">'+e2(contact)+'</strong><br>'+e2(org)+'</p>'+
+    '</div>';
+
+  var cp=document.getElementById('preview-community');
+  if(cp){cp.className='doc-preview';cp.innerHTML=communityHTML;}
 }
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
@@ -1464,12 +1639,14 @@ function _applyUnlock(type, showBadge) {
   for (var ti = 0; ti < typesToUnlock.length; ti++) {
     var t = typesToUnlock[ti];
     _unlockedDocs[t] = true;
-    var overlay = document.getElementById('overlay-' + t);
     var gate = document.getElementById('gate-' + t);
-    if (overlay) overlay.style.display = 'none';
-    if (gate) {
-      var ec = gate.querySelector('.ecard');
-      if (ec) { ec.style.filter = 'none'; ec.style.pointerEvents = ''; ec.style.opacity = '1'; }
+    /* Expand the styled preview — remove height clip and hide the fade */
+    var dpg = document.getElementById('dpre-gate-' + t);
+    if (dpg) {
+      dpg.style.maxHeight = 'none';
+      dpg.style.overflow = 'visible';
+      var fade = dpg.querySelector('.dpre-gate-fade');
+      if (fade) fade.style.display = 'none';
     }
     var strip = document.getElementById('pcta-' + t);
     if (strip) strip.style.display = 'none';
@@ -1647,16 +1824,8 @@ function proceedBundle() {
   window.location.href = url;
 }
 
-function previewFree(type) {
-  var docId = { grant: 'doc-grant', board: 'doc-board', community: 'doc-community' }[type];
-  var el = docId ? document.getElementById(docId) : null;
-  if (!el || !el.textContent || el.textContent === '—') {
-    alert('Complete your impact ledger first — documents are generated automatically when you calculate.');
-    return;
-  }
-  var lines = el.textContent.split('\n').slice(0, 6).join('\n');
-  alert('Preview (first 6 lines):\n\n' + lines + '\n\n[Unlock the full document for $19]');
-}
+
+
 
 /* ── Application tracker ── */
 var _trackedGrants=[];
