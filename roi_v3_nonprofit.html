@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>receipts. v3 — AI-Powered Impact — Nonprofit — Aric Civic Labs</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -203,6 +204,11 @@ button:hover{background:var(--surface2)}
 .paywall-overlay .pw-unlock:hover{opacity:.88;transform:translateY(-1px)}
 .paywall-overlay .pw-free{font-size:11px;color:var(--text3);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0}
 .paywall-overlay .pw-free:hover{color:var(--text2)}
+.paywall-overlay .pw-checklist{list-style:none;text-align:left;width:100%;max-width:270px;margin:2px 0 0;padding:0}
+.paywall-overlay .pw-checklist li{font-size:11.5px;color:var(--sage);padding:2px 0;display:flex;align-items:center;gap:6px;line-height:1.4}
+.paywall-overlay .pw-checklist li i{color:var(--green);font-size:11px;flex-shrink:0}
+.btn-pdf{background:var(--teal-dim);border:1px solid var(--teal-b);color:var(--teal);font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:500}
+.btn-pdf:hover{background:var(--teal);color:#08100F;border-color:var(--teal)}
 
 /* ── Grant match bar ── */
 .grant-match-bar{margin:7px 0 4px}
@@ -652,13 +658,13 @@ button:hover{background:var(--surface2)}
         <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--green)"></i> Impact &amp; outcomes report</h3>
         <p>Full program ledger, leverage ratio, cost-per-beneficiary, and mission ROI. Suitable for grant reports and annual reviews.</p>
         <div class="dpre" id="doc-impact">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-impact')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('impact')">Refine ↗</button></div>
+        <div class="brow"><button onclick="cpDoc('doc-impact')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('impact')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('impact')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
       </div>
       <div class="ecard">
         <h3><i class="ti ti-heart" style="font-size:14px;color:var(--gold)"></i> Donor stewardship letter</h3>
         <p>Personalized thank-you + impact evidence letter. Data-grounded but warm.</p>
         <div class="dpre" id="doc-donor">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-donor')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('donor')">Refine ↗</button></div>
+        <div class="brow"><button onclick="cpDoc('doc-donor')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('donor')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('donor')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
       </div>
       <div class="paywall-gate" id="gate-grant">
         <div class="ecard">
@@ -670,9 +676,15 @@ button:hover{background:var(--surface2)}
         <div class="paywall-overlay" id="overlay-grant">
           <i class="ti ti-file-certificate pw-icon"></i>
           <p class="pw-title">Grant Outcomes Narrative</p>
-          <p class="pw-sub">Funder-facing language, SROI methodology framing, and outcome-by-outcome breakdown — ready to paste into any grant report.</p>
-          <span class="pw-price">$19 one-time · or included in Pro</span>
-          <button class="pw-unlock" onclick="unlockExport('grant')">Unlock this document</button>
+          <p class="pw-sub">Funder-facing language with SROI methodology and a program-by-program breakdown — ready to paste into any grant application.</p>
+          <ul class="pw-checklist">
+            <li><i class="ti ti-check"></i> Program-by-program outcome summary</li>
+            <li><i class="ti ti-check"></i> SROI methodology statement for funders</li>
+            <li><i class="ti ti-check"></i> Aggregate impact + beneficiary reach</li>
+            <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
+          </ul>
+          <span class="pw-price">$19 one-time · or $9 in the bundle</span>
+          <button class="pw-unlock" onclick="unlockExport('grant')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('grant')">Preview first 3 lines free</button>
         </div>
       </div>
@@ -680,7 +692,7 @@ button:hover{background:var(--surface2)}
         <h3><i class="ti ti-rocket" style="font-size:14px;color:var(--purple)"></i> Expansion proposal brief</h3>
         <p>Board-ready one-pager for the expansion scenario modeled on tab 6.</p>
         <div class="dpre" id="doc-expansion-copy">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-expansion-copy')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button></div>
+        <div class="brow"><button onclick="cpDoc('doc-expansion-copy')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('expansion')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
       </div>
       <div class="paywall-gate" id="gate-board">
         <div class="ecard">
@@ -692,9 +704,15 @@ button:hover{background:var(--surface2)}
         <div class="paywall-overlay" id="overlay-board">
           <i class="ti ti-presentation pw-icon"></i>
           <p class="pw-title">Board One-Pager</p>
-          <p class="pw-sub">Leadership-ready executive summary with your leverage ratio, program highlights, and a data-grounded strategic ask — formatted for board review.</p>
-          <span class="pw-price">$19 one-time · or included in Pro</span>
-          <button class="pw-unlock" onclick="unlockExport('board')">Unlock this document</button>
+          <p class="pw-sub">Executive summary formatted for board review — leverage ratio, program highlights, and a data-grounded strategic ask in one page.</p>
+          <ul class="pw-checklist">
+            <li><i class="ti ti-check"></i> ROI framing for business-minded boards</li>
+            <li><i class="ti ti-check"></i> Top program highlights + leverage ratio</li>
+            <li><i class="ti ti-check"></i> Strategic ask with impact justification</li>
+            <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
+          </ul>
+          <span class="pw-price">$19 one-time · or $9 in the bundle</span>
+          <button class="pw-unlock" onclick="unlockExport('board')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('board')">Preview first 3 lines free</button>
         </div>
       </div>
@@ -709,8 +727,14 @@ button:hover{background:var(--surface2)}
           <i class="ti ti-users pw-icon"></i>
           <p class="pw-title">Community Impact Letter</p>
           <p class="pw-sub">Warm, data-grounded acknowledgment letter for volunteers, partners, and stakeholders — with real numbers that make people feel the impact of their contribution.</p>
-          <span class="pw-price">$19 one-time · or included in Pro</span>
-          <button class="pw-unlock" onclick="unlockExport('community')">Unlock this document</button>
+          <ul class="pw-checklist">
+            <li><i class="ti ti-check"></i> Named program accomplishments + totals</li>
+            <li><i class="ti ti-check"></i> Volunteer + partner acknowledgment language</li>
+            <li><i class="ti ti-check"></i> Tone that balances data and gratitude</li>
+            <li><i class="ti ti-file-type-pdf"></i> Copy · Refine with AI · Download PDF</li>
+          </ul>
+          <span class="pw-price">$19 one-time · or $9 in the bundle</span>
+          <button class="pw-unlock" onclick="unlockExport('community')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('community')">Preview first 3 lines free</button>
         </div>
       </div>
@@ -718,10 +742,10 @@ button:hover{background:var(--surface2)}
       <div id="bundle-cta" class="premium-strip" style="margin-top:.875rem">
         <i class="ti ti-package ps-icon"></i>
         <div class="ps-text">
-          <p class="ps-title">Get all 3 premium docs — one payment</p>
-          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked for $19.</p>
+          <p class="ps-title">All 3 premium docs + PDF downloads — save $38</p>
+          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked. $19 bundle vs. $57 if purchased separately.</p>
         </div>
-        <button class="ps-btn" onclick="unlockExport('bundle')">Unlock bundle → $19</button>
+        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $19 (save $38) ↗</button>
       </div>
       <div class="card card-ai" style="margin-top:.875rem">
         <p class="sl sl-ai"><i class="ti ti-mail"></i>Email all documents <span style="font-size:10px;font-weight:400;color:var(--green);text-transform:none;letter-spacing:0;margin-left:6px;background:rgba(46,204,138,.1);border:1px solid rgba(46,204,138,.3);border-radius:99px;padding:1px 7px">Premium</span></p>
@@ -1408,7 +1432,7 @@ var _unlockedDocs = {};
           var banner = document.createElement('div');
           banner.className = 'card card-ok';
           banner.style.cssText = 'margin-bottom:.875rem';
-          banner.innerHTML = '<p class="sl sl-ok"><i class="ti ti-check"></i> Documents unlocked</p><p style="font-size:13px;color:#A0E8C8;margin:0;line-height:1.6">Thank you! Your premium documents are ready. Copy them below or use the Refine button to polish with Claude.</p>';
+          banner.innerHTML = '<p class="sl sl-ok"><i class="ti ti-check"></i> Documents unlocked</p><p style="font-size:13px;color:#A0E8C8;margin:0;line-height:1.6">Thank you! Your premium documents are ready below. Copy them, refine with AI, or use the <strong>Download PDF</strong> button to save a branded, print-ready PDF.</p>';
           eb.insertBefore(banner, eb.firstChild);
         }
       }, 200);
@@ -1418,24 +1442,43 @@ var _unlockedDocs = {};
 
 function _applyUnlock(type, showBadge) {
   _unlockedDocs[type] = true;
-  var overlay = document.getElementById('overlay-' + type);
-  var gate = document.getElementById('gate-' + type);
-  if (overlay) overlay.style.display = 'none';
-  if (gate) {
-    var ec = gate.querySelector('.ecard');
-    if (ec) { ec.style.filter = 'none'; ec.style.pointerEvents = ''; ec.style.opacity = '1'; }
-  }
-  var strip = document.getElementById('pcta-' + type);
-  if (strip) strip.style.display = 'none';
-  if (showBadge !== false) {
-    var ecard2 = gate ? gate.querySelector('.ecard') : null;
-    if (ecard2 && !ecard2.querySelector('.unlocked-badge')) {
-      var badge = document.createElement('span');
-      badge.className = 'unlocked-badge';
-      badge.style.cssText = 'margin-bottom:8px;display:inline-flex';
-      badge.innerHTML = '<i class="ti ti-check" style="font-size:11px"></i> Unlocked';
-      ecard2.insertBefore(badge, ecard2.firstChild);
+  var typesToUnlock = (type === 'bundle') ? ['grant','board','community'] : [type];
+  for (var ti = 0; ti < typesToUnlock.length; ti++) {
+    var t = typesToUnlock[ti];
+    _unlockedDocs[t] = true;
+    var overlay = document.getElementById('overlay-' + t);
+    var gate = document.getElementById('gate-' + t);
+    if (overlay) overlay.style.display = 'none';
+    if (gate) {
+      var ec = gate.querySelector('.ecard');
+      if (ec) { ec.style.filter = 'none'; ec.style.pointerEvents = ''; ec.style.opacity = '1'; }
     }
+    var strip = document.getElementById('pcta-' + t);
+    if (strip) strip.style.display = 'none';
+    if (showBadge !== false) {
+      var ecard2 = gate ? gate.querySelector('.ecard') : null;
+      if (ecard2 && !ecard2.querySelector('.unlocked-badge')) {
+        var badge = document.createElement('span');
+        badge.className = 'unlocked-badge';
+        badge.style.cssText = 'margin-bottom:8px;display:inline-flex';
+        badge.innerHTML = '<i class="ti ti-check" style="font-size:11px"></i> Unlocked';
+        ecard2.insertBefore(badge, ecard2.firstChild);
+      }
+      /* Add PDF download button to the .brow of the unlocked doc */
+      var brow = ecard2 ? ecard2.querySelector('.brow') : null;
+      if (brow && !brow.querySelector('.btn-pdf')) {
+        var pdfBtn = document.createElement('button');
+        pdfBtn.className = 'btn-pdf';
+        pdfBtn.setAttribute('onclick', 'generatePDF("'+t+'")');
+        pdfBtn.innerHTML = '<i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF';
+        brow.appendChild(pdfBtn);
+      }
+    }
+  }
+  /* Hide bundle CTA if all three are unlocked */
+  if (_unlockedDocs['grant'] && _unlockedDocs['board'] && _unlockedDocs['community']) {
+    var bc = document.getElementById('bundle-cta');
+    if (bc) bc.style.display = 'none';
   }
 }
 
@@ -1467,12 +1510,28 @@ function unlockExport(type) {
     grant: 'Funder-ready outcomes language, SROI methodology framing, and a program-by-program breakdown — ready to paste into any grant application.',
     board: 'Leadership-ready executive summary with your leverage ratio, program highlights, and a data-grounded strategic ask.',
     community: 'Warm, data-grounded acknowledgment letter for volunteers, partners, and stakeholders.',
-    bundle: 'All three premium documents: Grant Outcomes Narrative, Board One-Pager, and Community Impact Letter.'
+    bundle: 'All three premium documents unlocked at once — the same price as buying one.'
+  };
+  var features = {
+    grant: ['✓ Program-by-program outcome summary', '✓ SROI methodology statement', '✓ Aggregate impact + beneficiary reach', '✓ Copy · Refine with AI · Download PDF'],
+    board: ['✓ ROI framing for business-minded boards', '✓ Program highlights + leverage ratio', '✓ Strategic ask with impact justification', '✓ Copy · Refine with AI · Download PDF'],
+    community: ['✓ Named program accomplishments', '✓ Volunteer + partner acknowledgment', '✓ Data-grounded, warm tone', '✓ Copy · Refine with AI · Download PDF'],
+    bundle: ['✓ Grant Outcomes Narrative', '✓ Board One-Pager', '✓ Community Impact Letter', '✓ PDF downloads for all three — save $38 vs. buying separately']
   };
   var sh2 = document.getElementById('cm-title');
   var sd2 = document.getElementById('cm-desc');
+  var sf = document.getElementById('cm-features');
+  var sp = document.getElementById('cm-price');
+  var spl = document.getElementById('cm-price-label');
+  var scb = document.getElementById('cm-checkout-btn');
+  var sbb = document.getElementById('cm-bundle-btn');
   if (sh2) sh2.textContent = titles[type] || 'Premium Document';
   if (sd2) sd2.textContent = descs[type] || '';
+  if (sf) sf.innerHTML = (features[type] || []).map(function(f){ return '<div>'+f+'</div>'; }).join('');
+  if (sp) sp.textContent = type === 'bundle' ? '$19' : '$19';
+  if (spl) spl.textContent = type === 'bundle' ? 'All 3 docs · saves $38' : 'One-time · no subscription';
+  if (scb) scb.textContent = type === 'bundle' ? 'Pay $19 → Unlock all 3 + PDF downloads' : 'Pay $19 → Unlock + Download PDF';
+  if (sbb) sbb.style.display = type === 'bundle' ? 'none' : 'block';
   if (_checkoutEmail) {
     var emailInput = document.getElementById('cm-email');
     if (emailInput) emailInput.value = _checkoutEmail;
@@ -1486,29 +1545,31 @@ function _buildCheckoutModal() {
   el.id = 'checkout-modal';
   el.style.cssText = 'display:none;opacity:0;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(8,16,15,.88);backdrop-filter:blur(4px);transition:opacity .2s;padding:1rem';
   el.innerHTML = [
-    '<div style="background:var(--surface);border:1px solid var(--gold-b);border-radius:var(--radius);max-width:420px;width:100%;padding:1.5rem;position:relative">',
+    '<div style="background:var(--surface);border:1px solid var(--gold-b);border-radius:var(--radius);max-width:440px;width:100%;padding:1.5rem;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5)">',
     '  <button onclick="closeCheckout()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px" aria-label="Close"><i class="ti ti-x"></i></button>',
-    '  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">',
-    '    <span style="font-size:24px;color:var(--gold)"><i class="ti ti-file-certificate"></i></span>',
+    '  <div style="display:flex;align-items:center;gap:10px;margin-bottom:.875rem">',
+    '    <span style="font-size:26px;color:var(--gold)"><i class="ti ti-file-certificate"></i></span>',
     '    <div><p style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin:0">Premium document</p>',
     '    <p id="cm-title" style="font-size:15px;font-weight:600;color:var(--text);margin:0"></p></div>',
     '  </div>',
-    '  <p id="cm-desc" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:1.25rem"></p>',
-    '  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem">',
-    '    <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">',
-    '      <span style="color:var(--text2)">One-time download</span>',
-    '      <span style="font-size:20px;font-weight:600;color:var(--gold);font-family:\'DM Mono\',monospace">$19</span>',
-    '    </div>',
-    '    <p style="font-size:11px;color:var(--text3);margin:4px 0 0">Immediate access. No subscription. Secure checkout via Stripe.</p>',
+    '  <p id="cm-desc" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:.875rem"></p>',
+    '  <div id="cm-features-wrap" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:.875rem">',
+    '    <p style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin:0 0 6px">What\'s included</p>',
+    '    <div id="cm-features" style="font-size:12px;color:var(--text2);line-height:1.8"></div>',
     '  </div>',
-    '  <div style="margin-bottom:1rem">',
-    '    <label style="font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px">Your email (for receipt)</label>',
+    '  <div style="background:linear-gradient(135deg,var(--gold-dim),rgba(42,30,8,.8));border:1px solid var(--gold-b);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:.875rem;display:flex;justify-content:space-between;align-items:center">',
+    '    <div><p id="cm-price-label" style="font-size:12px;color:var(--text2);margin:0">One-time · no subscription</p>',
+    '    <p style="font-size:9px;color:var(--text3);margin:2px 0 0">Secure checkout via Stripe · Immediate access</p></div>',
+    '    <span id="cm-price" style="font-size:24px;font-weight:700;color:var(--gold);font-family:\'DM Mono\',monospace">$19</span>',
+    '  </div>',
+    '  <div style="margin-bottom:.875rem">',
+    '    <label style="font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px">Your email — for Stripe receipt</label>',
     '    <input id="cm-email" type="email" placeholder="you@organization.org" style="width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);font-family:inherit"/>',
-    '    <p style="font-size:11px;color:var(--text3);margin-top:3px;line-height:1.4"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Used only for your Stripe receipt. Not stored.</p>',
+    '    <p style="font-size:11px;color:var(--text3);margin-top:3px;line-height:1.4"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Used only for your receipt. Never stored or shared.</p>',
     '  </div>',
     '  <input type="hidden" id="cm-doc-type" value=""/>',
-    '  <button onclick="proceedCheckout()" style="width:100%;background:var(--gold);border:none;border-radius:99px;color:#1a0e00;font-weight:700;font-size:14px;padding:11px;cursor:pointer;margin-bottom:8px">Pay $19 → Unlock document</button>',
-    '  <button onclick="proceedBundle()" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px">Get all 3 premium docs for $19 (bundle) ↗</button>',
+    '  <button onclick="proceedCheckout()" id="cm-checkout-btn" style="width:100%;background:var(--gold);border:none;border-radius:99px;color:#1a0e00;font-weight:700;font-size:14px;padding:11px;cursor:pointer;margin-bottom:8px;transition:opacity .15s">Pay $19 → Unlock + Download PDF</button>',
+    '  <button onclick="proceedBundle()" id="cm-bundle-btn" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px;transition:all .15s">Get all 3 docs for $19 (save $38) ↗</button>',
     '  <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">After payment you\'ll be returned here with your document unlocked.<br>Questions? <a href="mailto:hello@aricciviclabs.org" style="color:var(--teal)">hello@aricciviclabs.org</a></p>',
     '</div>'
   ].join('');
@@ -1793,6 +1854,132 @@ function emailExports(){
       if(btnEl){btnEl.disabled=false;btnEl.innerHTML='<i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send documents';}
     });
 }
+/* ── PDF generation ── */
+function generatePDF(docType) {
+  if (!window.jspdf) { alert('PDF library not loaded. Please refresh and try again.'); return; }
+  var jsPDF = window.jspdf.jsPDF;
+
+  var docIdMap = {
+    impact: 'doc-impact', donor: 'doc-donor', grant: 'doc-grant',
+    board: 'doc-board', community: 'doc-community', expansion: 'doc-expansion-copy'
+  };
+  var docTitles = {
+    impact: 'Impact & Outcomes Report', donor: 'Donor Stewardship Letter',
+    grant: 'Grant Outcomes Narrative', board: 'Board Impact One-Pager',
+    community: 'Community Impact Letter', expansion: 'Expansion Proposal Brief'
+  };
+  var docEl = document.getElementById(docIdMap[docType] || docType);
+  if (!docEl || !docEl.textContent || docEl.textContent === '—') {
+    alert('Document not generated yet — complete your impact ledger on tab 3 first.');
+    return;
+  }
+
+  var content = docEl.textContent;
+  var org = gv('org-name') || 'Organization';
+  var mission = gv('org-mission') || '';
+  var docTitle = docTitles[docType] || 'Impact Document';
+
+  var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  var pageW = 210, pageH = 297, margin = 18, contentW = pageW - margin * 2;
+
+  function addHeader() {
+    /* Dark header bar */
+    doc.setFillColor(8, 16, 15);
+    doc.rect(0, 0, pageW, 26, 'F');
+    /* Left: receipts. wordmark */
+    doc.setTextColor(52, 201, 138);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('receipts.', margin, 11);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(122, 160, 151);
+    doc.text('v3 · Nonprofit Impact', margin, 17);
+    /* Right: org name + date */
+    doc.setTextColor(223, 240, 235);
+    doc.setFontSize(8.5);
+    doc.setFont('helvetica', 'bold');
+    doc.text(org, pageW - margin, 10, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(122, 160, 151);
+    doc.text(new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }), pageW - margin, 16.5, { align: 'right' });
+    /* Green accent line under header */
+    doc.setDrawColor(52, 201, 138);
+    doc.setLineWidth(0.6);
+    doc.line(0, 26, pageW, 26);
+  }
+
+  function addFooter(pageNum, totalPages) {
+    doc.setFillColor(242, 238, 228);
+    doc.rect(0, pageH - 12, pageW, 12, 'F');
+    doc.setDrawColor(212, 201, 176);
+    doc.setLineWidth(0.3);
+    doc.line(0, pageH - 12, pageW, pageH - 12);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(140, 130, 120);
+    doc.text('receipts. by AricCivicLabs.Org · Self-reported estimates only · Not professional financial or legal advice', margin, pageH - 5);
+    doc.text('Page ' + pageNum + ' of ' + totalPages, pageW - margin, pageH - 5, { align: 'right' });
+  }
+
+  addHeader();
+  var y = 34;
+
+  var lines = content.split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    /* Page break check */
+    if (y > pageH - 18) {
+      doc.addPage();
+      addHeader();
+      y = 34;
+    }
+    /* Divider lines */
+    if (/^[─═\-]{4,}/.test(line.trim())) {
+      doc.setDrawColor(200, 200, 190);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      y += 4;
+      continue;
+    }
+    /* Empty line */
+    if (!line.trim()) { y += 3; continue; }
+    /* Detect ALL-CAPS section headers */
+    var isHeader = (line === line.toUpperCase() && line.trim().length > 4 && !/^\$|^•|^\d\./.test(line.trim()));
+    if (isHeader) {
+      if (y > 38) y += 1.5;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(34, 196, 176); /* --teal */
+    } else if (/^•|^-\s/.test(line.trim())) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(60, 60, 60);
+    } else {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(40, 40, 40);
+    }
+    var wrapped = doc.splitTextToSize(line, contentW);
+    for (var wi = 0; wi < wrapped.length; wi++) {
+      if (y > pageH - 18) { doc.addPage(); addHeader(); y = 34; }
+      doc.text(wrapped[wi], margin, y);
+      y += 5;
+    }
+  }
+
+  /* Add footers to all pages */
+  var totalPages = doc.internal.getNumberOfPages();
+  for (var p = 1; p <= totalPages; p++) {
+    doc.setPage(p);
+    addFooter(p, totalPages);
+  }
+
+  var safeOrg = org.replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 30);
+  doc.save('receipts-v3-' + docType + '-' + safeOrg + '-' + new Date().toISOString().slice(0, 10) + '.pdf');
+}
+
 function exportTXT(){
   try{
     var lines=[];
