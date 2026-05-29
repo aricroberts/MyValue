@@ -29,10 +29,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .version-badge,.privacy-pill{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500;border:1px solid}
 .version-badge{background:var(--blue-dim);color:var(--blue);border-color:var(--blue-b)}
 .privacy-pill{display:flex;align-items:center;gap:5px;color:var(--teal);background:var(--teal-dim);border-color:var(--teal-b);white-space:nowrap}
-.tab-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
-.tab-nav button{padding:6px 13px;font-size:12px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2)}
-.tab-nav button.active{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
-.tab-panel{display:none}.tab-panel.active{display:block}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
 .card-ok{background:var(--green-dim);border-color:var(--green-b)}
 .card-warn{background:var(--amber-dim);border-color:var(--amber-b)}
@@ -42,7 +38,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .sl-ok{color:var(--green)}.sl-warn{color:var(--amber)}.sl-ai{color:var(--purple)}.sl-teal{color:var(--teal)}
 .lede{font-size:13px;line-height:1.65;color:var(--text2);max-width:760px}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.fr3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
 .fg{display:flex;flex-direction:column;gap:3px}
 .fg label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
 .fg input,.fg select,.fg textarea{width:100%;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit}
@@ -85,31 +80,97 @@ button:hover{background:var(--surface2)}
 .back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
 .back-nav a{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none}
 .back-nav a:hover{background:var(--border);color:var(--text)}
-@media(max-width:680px){.fr,.fr3,.g2,.g3,.g4,.plan-grid,.resource-grid{grid-template-columns:1fr}.app{padding:1rem}.privacy-pill{display:none}}
+
+/* ── Paywall card ── */
+.paywall-card{background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:var(--radius);padding:1.25rem 1.375rem;margin-top:.875rem}
+.paywall-card .pw-title{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}
+.paywall-card .pw-sub{font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 14px}
+.paywall-features{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:5px}
+.paywall-features li{font-size:13px;color:#C4B8FF;display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.paywall-features li i{color:var(--purple);font-size:13px;flex-shrink:0;margin-top:1px}
+.paywall-price{font-size:22px;font-weight:700;color:var(--text);font-family:'DM Mono',monospace;margin:0 0 3px}
+.paywall-price span{font-size:13px;font-weight:400;color:var(--text2);margin-left:4px}
+.paywall-note{font-size:11px;color:var(--text3);line-height:1.5;margin:0 0 16px}
+.btn-unlock{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600;font-size:14px;padding:10px 22px;width:100%;justify-content:center;display:flex;align-items:center;gap:7px}
+.btn-unlock:hover{background:#8a78f0}
+.pw-divider{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:11px;color:var(--text3)}
+.pw-divider::before,.pw-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.turns-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500;border:1px solid;margin-bottom:.75rem}
+.turns-free{background:var(--green-dim);color:var(--green);border-color:var(--green-b)}
+.turns-used{background:var(--amber-dim);color:var(--amber);border-color:var(--amber-b)}
+
+@media(max-width:680px){.fr,.g2,.g3,.g4,.plan-grid,.resource-grid{grid-template-columns:1fr}.app{padding:1rem}.privacy-pill{display:none}}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
 
-
-/* ── API routing ─────────────────────────────────────────────────────────────
+/* ── STRIPE CONFIGURATION ────────────────────────────────────────────────────
  *
- *  HOW THIS WORKS:
- *  - Inside claude.ai  → direct Anthropic call, key auto-injected, works fine
- *  - On your deployed site → goes through PROXY_URL (your own proxy-server.js)
- *
- *  TO FIX 401/CORS ON YOUR DEPLOYED SITE:
- *  1. Deploy proxy-server.js on Render.com with your ANTHROPIC_API_KEY set
- *  2. Change PROXY_URL below to your Render URL, e.g.:
- *       https://receipts-proxy.onrender.com/api/messages
- *  3. Re-upload this file. Done.
+ *  To go live:
+ *  1. Create a Product in Stripe Dashboard (Products → Add product)
+ *     - Name: "receipts. Speaking Coach — Session Unlock"
+ *     - Price: $9 one-time (or $19 — your call)
+ *  2. Create a Payment Link
+ *     - Set Success URL to:
+ *       https://receipts.aricciviclabs.org/speaking_coach.html?unlocked=true
+ *  3. Paste your Payment Link URL below
  *
  * ─────────────────────────────────────────────────────────────────────────── */
-var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← your proxy URL here
+var STRIPE_LINK = 'https://buy.stripe.com/fZueVegaC1745HN4FR7N607';
 
+/* ── Unlock state ─────────────────────────────────────────────────────────── */
+var _scUnlocked = false;
+var FREE_TURNS  = 2;      // turns before paywall
+
+/* ── Restore turn count from localStorage (24hr expiry) ──────────────────── */
+var _turnCount = (function() {
+  try {
+    var stored = localStorage.getItem('sc_turns');
+    var storedTs = localStorage.getItem('sc_turns_ts');
+    var expired = !storedTs || (Date.now() - parseInt(storedTs, 10)) > 86400000;
+    if (expired) {
+      localStorage.removeItem('sc_turns');
+      localStorage.removeItem('sc_turns_ts');
+      return 0;
+    }
+    return stored ? parseInt(stored, 10) : 0;
+  } catch(e) { return 0; }
+})();
+
+function _persistTurns() {
+  try {
+    localStorage.setItem('sc_turns', String(_turnCount));
+    /* Only write timestamp on first turn so the 24hr window starts from turn 1 */
+    if (!localStorage.getItem('sc_turns_ts')) {
+      localStorage.setItem('sc_turns_ts', String(Date.now()));
+    }
+  } catch(e) {}
+}
+
+function _clearTurns() {
+  try {
+    localStorage.removeItem('sc_turns');
+    localStorage.removeItem('sc_turns_ts');
+  } catch(e) {}
+}
+
+/* ── Check for Stripe success return ──────────────────────────────────────── */
+(function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('unlocked') === 'true') {
+      _scUnlocked = true;
+      _clearTurns(); // reset so a future session starts fresh
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+    }
+  } catch(e) {}
+})();
+
+/* ── API routing ───────────────────────────────────────────────────────────── */
+var PROXY_URL = 'https://myvalue.onrender.com/api/messages';
 var _DIRECT   = 'https://api.anthropic.com/v1/messages';
-
 var _isWidget = (function() {
   try {
     var h = window.location.hostname || '';
@@ -117,20 +178,14 @@ var _isWidget = (function() {
   } catch(e) { return false; }
 })();
 
-async function apiCall(payload, useSearch) {
-  /* Pick endpoint */
+async function apiCall(payload) {
   var url = _isWidget ? _DIRECT : PROXY_URL;
-
-  /* Headers — only needed for direct calls (proxy adds its own) */
   var headers = { 'Content-Type': 'application/json' };
   if (_isWidget) {
     headers['anthropic-version'] = '2023-06-01';
     headers['anthropic-dangerous-direct-browser-access'] = 'true';
-    if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
   }
-
   var r = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
-
   if (!r.ok) {
     var eb = await r.json().catch(function(){ return {}; });
     var e = new Error('http ' + r.status);
@@ -138,16 +193,14 @@ async function apiCall(payload, useSearch) {
     e.apiErr  = eb.error || eb;
     throw e;
   }
-
   var d = await r.json();
   if (d.error) { var e2 = new Error('api'); e2.apiErr = d.error; throw e2; }
   return d;
 }
 
-window.COACH_KIND='speaking';
-// ── Proxy URL ────────────────────────────────────────────────────────────────
-// ── Inline toolkit JS ───────────────────────────────────────────────────────
-var COACHES={
+window.COACH_KIND = 'speaking';
+
+var COACHES = {
 motivation:{
   icon:'ti-sun-high',badge:'v1 · Motivational Conversation',title:'Motivational Conversation',tone:'card-ok',
   lede:'Turn whatever someone brings in into a useful positive: a next step, a kinder frame, and a few psychology-grounded ways to feel more willing to move.',
@@ -207,103 +260,296 @@ speaking:{
   outputLabels:{summary:'Coaching takeaway',voice_focus:'Voice focus',drill:'Drill',line_to_practice:'Line to practice',core_message:'Core message',structure:'Structure',stronger_opening:'Stronger opening',audience_need:'Audience need',influence_move:'Influence move',ethical_guardrail:'Ethical guardrail',timing:'Timing',self_review_prompt:'Self-review'}
 }};
 
-var APP=COACHES[window.COACH_KIND]||COACHES.motivation;
-var cMode=null,cHist=[];
-function byId(id){return document.getElementById(id)}
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function htmlText(s){return esc(s).replace(/\n/g,'<br>')}
-function renderCoach(){
-  byId('app').innerHTML='<div class="app">'+
-    '<div class="topbar"><div class="logo"><img src="receipts_wordmark.png" alt="receipts." style="height:26px;display:block;flex-shrink:0"><span class="version-badge">'+ APP.badge +'</span></div><div style="display:flex;align-items:center;gap:8px"><span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span><a href="index.html#transitions" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-arrow-left" style="font-size:12px"></i> Transitions</a><a href="https://receipts.aricciviclabs.org/index.html" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-home" style="font-size:12px"></i> receipts. home</a></div></div>'+
-    '<div class="card '+APP.tone+'"><p class="sl sl-ok"><i class="ti '+APP.icon+'"></i>'+APP.title+'</p><p class="lede">'+APP.lede+'</p></div>'+
-    '<div class="g2" style="margin-bottom:1rem">'+APP.modes.map(function(m){return '<button class="coach-mode" data-mode="'+m[0]+'" onclick="startCoach(this.dataset.mode)"><i class="ti '+m[1]+'" style="color:var(--teal)"></i><span>'+m[2]+'</span><span>'+m[3]+'</span></button>'}).join('')+'</div>'+
-    '<div id="coach-idle" class="card" style="text-align:center;color:var(--text2);font-size:13px">Choose a coaching mode above to begin.</div>'+
-    '<div id="coach-session" style="display:none"><div id="coach-msgs" style="margin-bottom:8px"></div><div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here..." style="min-height:80px"></textarea></div><div style="display:flex;gap:7px"><button class="btn-primary" onclick="sendCoach()" style="flex:1"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px"></i> Send</button><button onclick="endCoach()">End session</button></div><div id="coach-result" style="display:none;margin-top:.875rem"><div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p><div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div><div class="brow"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div></div></div><div id="chat-export" style="display:none;margin-top:.875rem"><div class="card"><p class="sl sl-ai"><i class="ti ti-file-export"></i>Export chat log</p><p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px">Save or share the full coaching conversation for your records, a career coach, or future reference.</p><div class="brow"><button class="btn-primary" onclick="copyCoachLog()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy chat log</button><button onclick="downloadCoachLog()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download .txt</button></div></div><div class="card card-ai" style="margin-top:.875rem"><p class="sl sl-ai"><i class="ti ti-mail"></i>Email chat log <span style="font-size:10px;font-weight:400;color:var(--purple);text-transform:none;letter-spacing:0;margin-left:6px;background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:99px;padding:1px 7px">Premium</span></p><p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send this coaching session to your inbox to save it, share with a coach, or revisit your action items.</p><div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="coach-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailCoachLog()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send log</button></div><p id="coach-email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p><p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver this log and is not stored or shared. Full delivery coming soon with receipts. Pro.</p></div></div></div>'+
-    '<div class="card" style="margin-top:.875rem"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p><div class="resource-grid">'+APP.resources.map(function(r){return '<a class="resource" href="'+r[2]+'" target="_blank" rel="noopener"><strong>'+esc(r[0])+'</strong><span>'+esc(r[1])+'</span></a>'}).join('')+'</div></div>'+
-  '</div>';
-}
-async function callClaude(body){
-  var d=await apiCall(body, false);
-  if(d.error)throw new Error('api');
-  return (d.content||[]).map(function(b){return b.type==='text'?b.text:''}).join('').trim();
-}
-async function startCoach(mode){
-  cMode=mode;cHist=[];
-  byId('coach-idle').style.display='none';byId('coach-session').style.display='block';byId('coach-result').style.display='none';
-  byId('coach-msgs').innerHTML='<div class="cmsg cmai"><span class="spin"></span>Starting session...</div>';
-  try{
-    var txt=await callClaude({model:'claude-sonnet-4-6',max_tokens:180,system:APP.systems[mode],messages:[{role:'user',content:'Begin the coaching session.'}]});
-    if(!txt)throw new Error('empty');
-    cHist=[{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
-    byId('coach-msgs').innerHTML='<div class="cmsg cmai">'+htmlText(txt)+'</div>';
-  }catch(e){
-    var op=APP.openers[mode];
-    cHist=[{role:'assistant',content:op}];
-    byId('coach-msgs').innerHTML='<div class="cmsg cmai">'+htmlText(op)+'</div>';
+var APP  = COACHES[window.COACH_KIND] || COACHES.motivation;
+var cMode = null, cHist = [];
+
+function byId(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function htmlText(s) { return esc(s).replace(/\n/g,'<br>'); }
+
+/* ── Turn counter badge ──────────────────────────────────────────────────── */
+function updateTurnsBadge() {
+  var el = byId('turns-badge');
+  if (!el) return;
+  if (_scUnlocked) {
+    el.className = 'turns-badge turns-free';
+    el.innerHTML = '<i class="ti ti-infinity" style="font-size:11px"></i> Unlimited turns unlocked';
+  } else {
+    var left = Math.max(0, FREE_TURNS - _turnCount);
+    if (left > 0) {
+      el.className = 'turns-badge turns-free';
+      el.innerHTML = '<i class="ti ti-message" style="font-size:11px"></i> ' + left + ' free turn' + (left === 1 ? '' : 's') + ' remaining';
+    } else {
+      el.className = 'turns-badge turns-used';
+      el.innerHTML = '<i class="ti ti-lock" style="font-size:11px"></i> Free turns used';
+    }
   }
 }
-async function sendCoach(){
-  var input=byId('coach-input').value.trim();if(!input||!cMode)return;
-  byId('coach-input').value='';
-  var msgs=byId('coach-msgs');
-  msgs.innerHTML+='<div class="cmsg">'+htmlText(input)+'</div><div class="cmsg cmai" id="ctyping"><span class="spin"></span>Thinking...</div>';
-  cHist.push({role:'user',content:input});
-  try{
-    var txt=await callClaude({model:'claude-sonnet-4-6',max_tokens:750,system:APP.systems[cMode],messages:cHist});
-    if(!txt)throw new Error('empty');
-    cHist.push({role:'assistant',content:txt});
-    var ct=byId('ctyping');if(ct)ct.remove();
-    handleCoachText(txt,msgs);
-    var ce=byId('chat-export');if(ce)ce.style.display='block';
-  }catch(e){
-    var ct2=byId('ctyping');if(ct2)ct2.remove();
-    var hist=cHist.map(function(m){return (m.role==='user'?'You: ':'Coach: ')+m.content}).join('\n\n');
-    var prompt='I am using a '+APP.title+' tool. Continue this coaching conversation in the same style. Ask one question at a time unless you have enough information to give a concise coaching output.\n\n'+hist;
-    msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--gold-dim);border-color:var(--gold-b);color:#F5D79E">API unavailable. Copy this fallback prompt and paste it into Claude.ai.</div><div class="dpre">'+esc(prompt)+'</div>';
+
+/* ── Paywall card HTML ───────────────────────────────────────────────────── */
+function paywallHTML() {
+  var stripeHref = STRIPE_LINK;
+  var isPlaceholder = stripeHref.indexOf('YOUR_LINK_HERE') !== -1;
+  return '<div class="paywall-card" id="paywall-block">' +
+    '<p class="sl sl-ai"><i class="ti ti-sparkles"></i> Unlock full coaching session</p>' +
+    '<p class="pw-title">You\'ve used your 2 free coaching turns.</p>' +
+    '<p class="pw-sub">Unlock this session to keep going and get your full structured coaching output.</p>' +
+    '<ul class="paywall-features">' +
+      '<li><i class="ti ti-check"></i> Unlimited coach turns in this session</li>' +
+      '<li><i class="ti ti-check"></i> Full structured Coach Output with drill, script, or action plan</li>' +
+      '<li><i class="ti ti-check"></i> Download complete session log (.txt)</li>' +
+      '<li><i class="ti ti-check"></i> Email session log to yourself or a coach</li>' +
+    '</ul>' +
+    '<p class="paywall-price">$9 <span>one-time session unlock</span></p>' +
+    '<p class="paywall-note"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your inputs are never stored. This session lives in your browser only.</p>' +
+    (isPlaceholder
+      ? '<button class="btn-unlock" style="opacity:.5;cursor:not-allowed" disabled><i class="ti ti-lock" style="font-size:14px"></i> Stripe link not configured yet</button>' +
+        '<p style="font-size:11px;color:var(--amber);margin-top:8px;text-align:center"><i class="ti ti-alert-circle" style="font-size:11px;vertical-align:-1px"></i> Replace STRIPE_LINK in the source to go live</p>'
+      : '<a href="' + esc(stripeHref) + '" class="btn-unlock" style="text-decoration:none;border-radius:var(--radius-sm);border:none"><i class="ti ti-lock-open" style="font-size:14px"></i> Unlock this session — $9</a>'
+    ) +
+    '<div class="pw-divider">or</div>' +
+    '<button onclick="showFallbackPrompt()" style="width:100%;font-size:12px;color:var(--text2);text-align:center">Continue in Claude.ai (free) →</button>' +
+    '</div>';
+}
+
+/* ── Show paywall in session area ────────────────────────────────────────── */
+function showPaywall() {
+  var existing = byId('paywall-block');
+  if (existing) return; // already showing
+  var session = byId('coach-session');
+  if (!session) return;
+  session.insertAdjacentHTML('beforeend', paywallHTML());
+  /* Disable input */
+  var inp = byId('coach-input');
+  var sendBtn = byId('send-btn');
+  if (inp) { inp.disabled = true; inp.placeholder = 'Unlock to continue...'; }
+  if (sendBtn) { sendBtn.disabled = true; sendBtn.style.opacity = '.4'; }
+  updateTurnsBadge();
+}
+
+/* ── Fallback: surface conversation as a paste-into-Claude.ai prompt ─────── */
+function showFallbackPrompt() {
+  var hist = cHist.map(function(m){ return (m.role === 'user' ? 'You: ' : 'Coach: ') + m.content; }).join('\n\n');
+  var prompt = 'I am using a receipts. ' + APP.title + ' tool. Continue this coaching conversation in the same style. Ask one question at a time unless you have enough information to give a structured coaching output with actionable steps.\n\n' + hist;
+  alert('Copy this prompt and paste it into Claude.ai to continue for free:\n\n' + prompt);
+}
+
+/* ── Apply unlock ────────────────────────────────────────────────────────── */
+function applyUnlock() {
+  _scUnlocked = true;
+  var pw = byId('paywall-block');
+  if (pw) pw.remove();
+  var inp = byId('coach-input');
+  var sendBtn = byId('send-btn');
+  if (inp) { inp.disabled = false; inp.placeholder = 'Type your response here...'; }
+  if (sendBtn) { sendBtn.disabled = false; sendBtn.style.opacity = ''; }
+  updateTurnsBadge();
+  /* Show unlock success banner */
+  var msgs = byId('coach-msgs');
+  if (msgs) {
+    msgs.insertAdjacentHTML('beforeend', '<div class="cmsg" style="background:var(--green-dim);border-color:var(--green-b);color:#A0E8C8"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px"></i> Session unlocked — unlimited turns and full exports available.</div>');
   }
 }
-function handleCoachText(txt,msgs){
-  var clean=txt.replace(/\*\*COACH OUTPUT:\*\*/gi,'COACH OUTPUT:');
-  if(clean.indexOf('COACH OUTPUT:')<0){msgs.innerHTML+='<div class="cmsg cmai">'+htmlText(txt)+'</div>';return;}
-  var parts=clean.split(/COACH OUTPUT:/i), conversational=parts[0].trim(), raw=parts.slice(1).join('COACH OUTPUT:').trim(), parsed={};
-  try{var jm=raw.match(/\{[\s\S]*\}/);if(jm)parsed=JSON.parse(jm[0]);}catch(e){parsed={};}
-  msgs.innerHTML+='<div class="cmsg cmai">'+htmlText(parsed.summary||conversational||raw)+'</div>';
-  var out='';
-  Object.keys(APP.outputLabels).forEach(function(k){if(parsed[k])out+='<strong>'+APP.outputLabels[k]+':</strong> '+esc(parsed[k])+'<br>';});
-  if(!out)out=htmlText(conversational+'\n\n'+raw);
-  byId('coach-result').style.display='block';byId('coach-out').innerHTML=out;
+
+/* ── Render ──────────────────────────────────────────────────────────────── */
+function renderCoach() {
+  byId('app').innerHTML =
+    '<div class="app">' +
+    '<div class="topbar"><div class="logo"><img src="receipts_wordmark.png" alt="receipts." style="height:26px;display:block;flex-shrink:0"><span class="version-badge">' + APP.badge + '</span></div>' +
+    '<div style="display:flex;align-items:center;gap:8px"><span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span>' +
+    '<a href="index.html#transitions" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-arrow-left" style="font-size:12px"></i> Transitions</a>' +
+    '<a href="https://receipts.aricciviclabs.org/index.html" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-home" style="font-size:12px"></i> receipts. home</a></div></div>' +
+
+    '<div class="card ' + APP.tone + '"><p class="sl sl-ok"><i class="ti ' + APP.icon + '"></i>' + APP.title + '</p><p class="lede">' + APP.lede + '</p></div>' +
+
+    '<div class="g2" style="margin-bottom:1rem">' +
+    APP.modes.map(function(m){ return '<button class="coach-mode" data-mode="' + m[0] + '" onclick="startCoach(this.dataset.mode)"><i class="ti ' + m[1] + '" style="color:var(--teal)"></i><span>' + m[2] + '</span><span>' + m[3] + '</span></button>'; }).join('') +
+    '</div>' +
+
+    '<div id="turns-badge" class="turns-badge turns-free" style="margin-bottom:.75rem"><i class="ti ti-message" style="font-size:11px"></i> 2 free turns included</div>' +
+
+    '<div id="coach-idle" class="card" style="text-align:center;color:var(--text2);font-size:13px">Choose a coaching mode above to begin.</div>' +
+
+    '<div id="coach-session" style="display:none">' +
+      '<div id="coach-msgs" style="margin-bottom:8px"></div>' +
+      '<div class="fg" style="margin-bottom:7px"><textarea id="coach-input" placeholder="Type your response here..." style="min-height:80px"></textarea></div>' +
+      '<div style="display:flex;gap:7px">' +
+        '<button id="send-btn" class="btn-primary" onclick="sendCoach()" style="flex:1"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px"></i> Send</button>' +
+        '<button onclick="endCoach()">End session</button>' +
+      '</div>' +
+      '<div id="coach-result" style="display:none;margin-top:.875rem">' +
+        '<div class="card card-ok"><p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p><div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>' +
+        '<div class="brow"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div id="chat-export" style="display:none;margin-top:.875rem">' +
+      '<div class="card">' +
+        '<p class="sl sl-ai"><i class="ti ti-file-export"></i> Export session log</p>' +
+        '<p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px">Save or share the full coaching conversation for your records, a career coach, or future reference.</p>' +
+        '<div class="brow">' +
+          '<button class="btn-primary" onclick="copyCoachLog()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy log</button>' +
+          '<button id="dl-btn" onclick="handleDownload()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download .txt</button>' +
+        '</div>' +
+        '<p id="dl-gate-hint" style="font-size:11px;color:var(--amber);margin-top:6px;display:none"><i class="ti ti-lock" style="font-size:11px;vertical-align:-1px"></i> Unlock session to download. Copy is always free.</p>' +
+      '</div>' +
+      '<div class="card card-ai" style="margin-top:.875rem">' +
+        '<p class="sl sl-ai"><i class="ti ti-mail"></i> Email session log <span style="font-size:10px;font-weight:400;color:var(--purple);text-transform:none;letter-spacing:0;margin-left:6px;background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:99px;padding:1px 7px">Unlocked</span></p>' +
+        '<p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send this coaching session to your inbox to save it, share with a coach, or revisit your action items.</p>' +
+        '<div class="fr" style="align-items:flex-end;gap:8px">' +
+          '<div class="fg" style="flex:1"><label>Your email address</label><input id="coach-email" type="email" placeholder="you@example.com" style="width:100%"/></div>' +
+          '<button onclick="emailCoachLog()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send log</button>' +
+        '</div>' +
+        '<p id="coach-email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p>' +
+        '<p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver this log and is not stored or shared.</p>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="card" style="margin-top:.875rem"><p class="sl sl-teal"><i class="ti ti-link"></i>Helpful links</p>' +
+    '<div class="resource-grid">' +
+    APP.resources.map(function(r){ return '<a class="resource" href="' + r[2] + '" target="_blank" rel="noopener"><strong>' + esc(r[0]) + '</strong><span>' + esc(r[1]) + '</span></a>'; }).join('') +
+    '</div></div>' +
+
+    '</div>';
+
+  /* If returning from Stripe, apply unlock immediately */
+  if (_scUnlocked) { applyUnlock(); }
+  updateTurnsBadge();
 }
-function endCoach(){
-  byId('coach-session').style.display='none';
-  byId('coach-idle').style.display='block';
-  byId('coach-result').style.display='none';
-  byId('chat-export').style.display='none';
-  cMode=null;cHist=[];
+
+/* ── Coach flow ─────────────────────────────────────────────────────────── */
+async function callClaude(body) {
+  var d = await apiCall(body);
+  if (d.error) throw new Error('api');
+  return (d.content || []).map(function(b){ return b.type === 'text' ? b.text : ''; }).join('').trim();
 }
-function cpCoach(){
-  var t=byId('coach-out');
-  navigator.clipboard.writeText(t.textContent||'').catch(function(){});
-  t.style.outline='1px solid var(--green)';
-  setTimeout(function(){t.style.outline=''},1200);
+
+async function startCoach(mode) {
+  cMode = mode; cHist = [];
+  byId('coach-idle').style.display = 'none';
+  byId('coach-session').style.display = 'block';
+  byId('coach-result').style.display = 'none';
+  byId('chat-export').style.display = 'none';
+  /* Remove any existing paywall */
+  var pw = byId('paywall-block'); if (pw) pw.remove();
+  /* Re-enable input */
+  var inp = byId('coach-input'); var sendBtn = byId('send-btn');
+  if (inp) { inp.disabled = false; inp.placeholder = 'Type your response here...'; }
+  if (sendBtn) { sendBtn.disabled = false; sendBtn.style.opacity = ''; }
+  updateTurnsBadge();
+
+  /* Gate immediately if turns already used up */
+  if (!_scUnlocked && _turnCount >= FREE_TURNS) {
+    byId('coach-msgs').innerHTML = '';
+    showPaywall();
+    return;
+  }
+
+  byId('coach-msgs').innerHTML = '<div class="cmsg cmai"><span class="spin"></span>Starting session...</div>';
+  try {
+    var txt = await callClaude({model:'claude-sonnet-4-6',max_tokens:180,system:APP.systems[mode],messages:[{role:'user',content:'Begin the coaching session.'}]});
+    if (!txt) throw new Error('empty');
+    cHist = [{role:'user',content:'Begin.'},{role:'assistant',content:txt}];
+    byId('coach-msgs').innerHTML = '<div class="cmsg cmai">' + htmlText(txt) + '</div>';
+  } catch(e) {
+    var op = APP.openers[mode];
+    cHist = [{role:'assistant',content:op}];
+    byId('coach-msgs').innerHTML = '<div class="cmsg cmai">' + htmlText(op) + '</div>';
+  }
 }
-function makeCoachLog(){
-  var mode=cMode||'session';
-  var lines=[
+
+async function sendCoach() {
+  var input = byId('coach-input');
+  var val = (input ? input.value : '').trim();
+  if (!val || !cMode) return;
+
+  /* Check paywall — intercept if limit hit and not unlocked */
+  if (!_scUnlocked && _turnCount >= FREE_TURNS) {
+    showPaywall();
+    return;
+  }
+
+  if (input) input.value = '';
+  var msgs = byId('coach-msgs');
+  msgs.innerHTML += '<div class="cmsg">' + htmlText(val) + '</div><div class="cmsg cmai" id="ctyping"><span class="spin"></span>Thinking...</div>';
+  cHist.push({role:'user', content:val});
+
+  try {
+    var txt = await callClaude({model:'claude-sonnet-4-6',max_tokens:750,system:APP.systems[cMode],messages:cHist});
+    if (!txt) throw new Error('empty');
+    cHist.push({role:'assistant', content:txt});
+    var ct = byId('ctyping'); if (ct) ct.remove();
+    _turnCount++;
+    _persistTurns();
+    updateTurnsBadge();
+    handleCoachText(txt, msgs);
+    var ce = byId('chat-export'); if (ce) ce.style.display = 'block';
+    /* Show paywall after the turn completes if limit now reached */
+    if (!_scUnlocked && _turnCount >= FREE_TURNS) {
+      showPaywall();
+    }
+  } catch(e) {
+    var ct2 = byId('ctyping'); if (ct2) ct2.remove();
+    var hist = cHist.map(function(m){ return (m.role === 'user' ? 'You: ' : 'Coach: ') + m.content; }).join('\n\n');
+    var prompt = 'I am using a receipts. ' + APP.title + ' tool. Continue this coaching conversation in the same style. Ask one question at a time unless you have enough information to give a concise coaching output.\n\n' + hist;
+    msgs.innerHTML += '<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E">API unavailable. Copy this fallback prompt and paste it into Claude.ai.</div><div class="dpre">' + esc(prompt) + '</div>';
+  }
+}
+
+function handleCoachText(txt, msgs) {
+  var clean = txt.replace(/\*\*COACH OUTPUT:\*\*/gi, 'COACH OUTPUT:');
+  if (clean.indexOf('COACH OUTPUT:') < 0) { msgs.innerHTML += '<div class="cmsg cmai">' + htmlText(txt) + '</div>'; return; }
+  var parts = clean.split(/COACH OUTPUT:/i);
+  var conversational = parts[0].trim();
+  var raw = parts.slice(1).join('COACH OUTPUT:').trim();
+  var parsed = {};
+  try { var jm = raw.match(/\{[\s\S]*\}/); if (jm) parsed = JSON.parse(jm[0]); } catch(e) { parsed = {}; }
+  msgs.innerHTML += '<div class="cmsg cmai">' + htmlText(parsed.summary || conversational || raw) + '</div>';
+  /* Only show full structured output if unlocked */
+  if (_scUnlocked) {
+    var out = '';
+    Object.keys(APP.outputLabels).forEach(function(k){ if (parsed[k]) out += '<strong>' + APP.outputLabels[k] + ':</strong> ' + esc(parsed[k]) + '<br>'; });
+    if (!out) out = htmlText(conversational + '\n\n' + raw);
+    byId('coach-result').style.display = 'block';
+    byId('coach-out').innerHTML = out;
+  }
+}
+
+function endCoach() {
+  byId('coach-session').style.display = 'none';
+  byId('coach-idle').style.display = 'block';
+  byId('coach-result').style.display = 'none';
+  byId('chat-export').style.display = 'none';
+  var pw = byId('paywall-block'); if (pw) pw.remove();
+  cMode = null; cHist = []; _turnCount = 0;
+  _clearTurns();
+  updateTurnsBadge();
+}
+
+function cpCoach() {
+  var t = byId('coach-out');
+  navigator.clipboard.writeText(t.textContent || '').catch(function(){});
+  t.style.outline = '1px solid var(--green)';
+  setTimeout(function(){ t.style.outline = ''; }, 1200);
+}
+
+function makeCoachLog() {
+  var mode = cMode || 'session';
+  var lines = [
     '================================================',
     '  receipts.  |  Coaching Session Log',
-    '  Mode: '+mode,
-    '  Generated: '+new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString(),
+    '  Mode: ' + mode,
+    '  Generated: ' + new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
     '================================================',
     ''
   ];
-  var userTurns=0;
-  cHist.forEach(function(m){
-    if(m.role==='user'&&m.content==='Begin.')return;
-    var label=m.role==='user'?'YOU':'COACH';
-    lines.push('-- '+label+' '+'-'.repeat(44-label.length));
+  cHist.forEach(function(m) {
+    if (m.role === 'user' && m.content === 'Begin.') return;
+    var label = m.role === 'user' ? 'YOU' : 'COACH';
+    lines.push('-- ' + label + ' ' + '-'.repeat(44 - label.length));
     lines.push(m.content);
     lines.push('');
-    if(m.role==='user')userTurns++;
   });
   lines.push('================================================');
   lines.push('  Note: AI coaching session. Not professional career,');
@@ -311,47 +557,67 @@ function makeCoachLog(){
   lines.push('================================================');
   return lines.join('\n');
 }
-function copyCoachLog(){
-  var log=makeCoachLog();
+
+function copyCoachLog() {
+  var log = makeCoachLog();
   navigator.clipboard.writeText(log).catch(function(){});
-  var btn=byId('chat-export');
-  if(btn){btn.style.outline='1px solid var(--green)';setTimeout(function(){btn.style.outline=''},1400);}
+  var btn = byId('chat-export');
+  if (btn) { btn.style.outline = '1px solid var(--green)'; setTimeout(function(){ btn.style.outline = ''; }, 1400); }
 }
-function downloadCoachLog(){
-  var log=makeCoachLog();
-  var blob=new Blob([log],{type:'text/plain'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;
-  a.download='receipts-coaching-'+new Date().toISOString().slice(0,10)+'.txt';
+
+function handleDownload() {
+  if (!_scUnlocked) {
+    /* Show hint and paywall */
+    var hint = byId('dl-gate-hint');
+    if (hint) hint.style.display = 'block';
+    showPaywall();
+    return;
+  }
+  downloadCoachLog();
+}
+
+function downloadCoachLog() {
+  var log = makeCoachLog();
+  var blob = new Blob([log], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'receipts-coaching-' + new Date().toISOString().slice(0,10) + '.txt';
   a.click();
   URL.revokeObjectURL(url);
 }
-function emailCoachLog(){
-  var emailEl=byId('coach-email');
-  var statusEl=byId('coach-email-status');
-  if(!emailEl||!statusEl)return;
-  var email=(emailEl.value||'').trim();
-  if(!email||!email.includes('@')){
-    statusEl.style.color='var(--amber)';
-    statusEl.textContent='Please enter a valid email address.';
+
+function emailCoachLog() {
+  var emailEl = byId('coach-email');
+  var statusEl = byId('coach-email-status');
+  if (!emailEl || !statusEl) return;
+  var email = (emailEl.value || '').trim();
+  if (!email || !email.includes('@')) {
+    statusEl.style.color = 'var(--amber)';
+    statusEl.textContent = 'Please enter a valid email address.';
     return;
   }
-  statusEl.style.color='var(--text3)';
-  statusEl.textContent='Opening your email client...';
-  var log=makeCoachLog();
-  var subject='receipts. coaching session - '+new Date().toLocaleDateString();
-  var bodyShort=log.substring(0,2000)+'\n\n[Full log - paste from receipts. Export for complete version]';
-  var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(bodyShort);
-  try{window.open(mailto,'_self');}catch(e){}
+  if (!_scUnlocked) {
+    statusEl.style.color = 'var(--amber)';
+    statusEl.textContent = 'Unlock your session to use email delivery.';
+    showPaywall();
+    return;
+  }
+  statusEl.style.color = 'var(--text3)';
+  statusEl.textContent = 'Opening your email client...';
+  var log = makeCoachLog();
+  var subject = 'receipts. coaching session - ' + new Date().toLocaleDateString();
+  var bodyShort = log.substring(0,2000) + '\n\n[Full log — paste from receipts. export for complete version]';
+  var mailto = 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyShort);
+  try { window.open(mailto, '_self'); } catch(e) {}
   setTimeout(function(){
-    statusEl.style.color='var(--green)';
-    statusEl.textContent='Email client opened. Full delivery coming soon with receipts. Pro.';
-  },600);
+    statusEl.style.color = 'var(--green)';
+    statusEl.textContent = 'Email client opened.';
+  }, 600);
 }
+
 renderCoach();
 
 </script>
-
 </body>
 </html>
