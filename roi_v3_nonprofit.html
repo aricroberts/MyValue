@@ -436,6 +436,14 @@ button:hover{background:var(--surface2)}
           </div>
           <button class="ps-btn" onclick="unlockExport('board')">Unlock Board Packet → $19</button>
         </div>
+        <div class="premium-strip" id="pcta-community">
+          <i class="ti ti-users ps-icon"></i>
+          <div class="ps-text">
+            <p class="ps-title">Create a community impact letter</p>
+            <p class="ps-sub">Warm, data-grounded letter for volunteers, partners, and stakeholders.</p>
+          </div>
+          <button class="ps-btn" onclick="unlockExport('community')">Unlock Community Letter → $19</button>
+        </div>
       </div>
       <div class="g3" style="margin-top:.875rem">
         <label for="t5" style="display:block"><span class="btn-teal" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Find funding →</span></label>
@@ -654,17 +662,16 @@ button:hover{background:var(--surface2)}
         <p class="sl sl-ok"><i class="ti ti-check"></i> All documents generated</p>
         <p style="font-size:12px;color:#A0E8C8;margin:0">Copy any document below or click "Refine" to get improvement suggestions from Claude.</p>
       </div>
-      <div class="ecard">
-        <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--green)"></i> Impact &amp; outcomes report</h3>
-        <p>Full program ledger, leverage ratio, cost-per-beneficiary, and mission ROI. Suitable for grant reports and annual reviews.</p>
-        <div class="dpre" id="doc-impact">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-impact')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('impact')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('impact')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
-      </div>
-      <div class="ecard">
-        <h3><i class="ti ti-heart" style="font-size:14px;color:var(--gold)"></i> Donor stewardship letter</h3>
-        <p>Personalized thank-you + impact evidence letter. Data-grounded but warm.</p>
-        <div class="dpre" id="doc-donor">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-donor')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('donor')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('donor')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
+
+      <!-- ── PREMIUM DOCS (top) ── -->
+      <!-- Bundle CTA -->
+      <div id="bundle-cta" class="premium-strip" style="margin-bottom:.875rem">
+        <i class="ti ti-package ps-icon"></i>
+        <div class="ps-text">
+          <p class="ps-title">All 3 premium docs + PDF downloads — save $38</p>
+          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked. $19 bundle vs. $57 if purchased separately.</p>
+        </div>
+        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $19 (save $38) ↗</button>
       </div>
       <div class="paywall-gate" id="gate-grant">
         <div class="ecard">
@@ -687,12 +694,6 @@ button:hover{background:var(--surface2)}
           <button class="pw-unlock" onclick="unlockExport('grant')">Unlock → $19</button>
           <button class="pw-free" onclick="previewFree('grant')">Preview first 3 lines free</button>
         </div>
-      </div>
-      <div class="ecard" id="exp-export-card" style="display:none">
-        <h3><i class="ti ti-rocket" style="font-size:14px;color:var(--purple)"></i> Expansion proposal brief</h3>
-        <p>Board-ready one-pager for the expansion scenario modeled on tab 6.</p>
-        <div class="dpre" id="doc-expansion-copy">—</div>
-        <div class="brow"><button onclick="cpDoc('doc-expansion-copy')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('expansion')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
       </div>
       <div class="paywall-gate" id="gate-board">
         <div class="ecard">
@@ -738,15 +739,32 @@ button:hover{background:var(--surface2)}
           <button class="pw-free" onclick="previewFree('community')">Preview first 3 lines free</button>
         </div>
       </div>
-      <!-- Bundle CTA -->
-      <div id="bundle-cta" class="premium-strip" style="margin-top:.875rem">
-        <i class="ti ti-package ps-icon"></i>
-        <div class="ps-text">
-          <p class="ps-title">All 3 premium docs + PDF downloads — save $38</p>
-          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked. $19 bundle vs. $57 if purchased separately.</p>
-        </div>
-        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $19 (save $38) ↗</button>
+
+      <!-- ── FREE DOCS (below) ── -->
+      <div style="display:flex;align-items:center;gap:10px;margin:1.25rem 0 .875rem">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <span style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap">Free documents</span>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
       </div>
+      <div class="ecard">
+        <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--green)"></i> Impact &amp; outcomes report</h3>
+        <p>Full program ledger, leverage ratio, cost-per-beneficiary, and mission ROI. Suitable for grant reports and annual reviews.</p>
+        <div class="dpre" id="doc-impact">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-impact')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('impact')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('impact')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
+      </div>
+      <div class="ecard">
+        <h3><i class="ti ti-heart" style="font-size:14px;color:var(--gold)"></i> Donor stewardship letter</h3>
+        <p>Personalized thank-you + impact evidence letter. Data-grounded but warm.</p>
+        <div class="dpre" id="doc-donor">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-donor')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('donor')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('donor')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
+      </div>
+      <div class="ecard" id="exp-export-card" style="display:none">
+        <h3><i class="ti ti-rocket" style="font-size:14px;color:var(--purple)"></i> Expansion proposal brief</h3>
+        <p>Board-ready one-pager for the expansion scenario modeled on tab 6.</p>
+        <div class="dpre" id="doc-expansion-copy">—</div>
+        <div class="brow"><button onclick="cpDoc('doc-expansion-copy')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('expansion')">Refine ↗</button><button class="btn-pdf" onclick="generatePDF('expansion')"><i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF</button></div>
+      </div>
+
       <div class="card card-ai" style="margin-top:.875rem">
         <p class="sl sl-ai"><i class="ti ti-mail"></i>Email all documents <span style="font-size:10px;font-weight:400;color:var(--green);text-transform:none;letter-spacing:0;margin-left:6px;background:rgba(46,204,138,.1);border:1px solid rgba(46,204,138,.3);border-radius:99px;padding:1px 7px">Premium</span></p>
         <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send all generated documents to your inbox — useful for sharing with board members, grant writers, or development staff before a funding deadline.</p>
@@ -754,10 +772,9 @@ button:hover{background:var(--surface2)}
         <p id="email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p>
         <p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver these documents and is not stored or shared.</p>
       </div>
-            <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
+      <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportTXT()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download summary (.txt)</button>
-        
-                <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
+        <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
     </div>
   </div>
@@ -1356,6 +1373,7 @@ function genDocs(){
   /* Show premium CTAs now that data is available */
   var pg=document.getElementById('pcta-grant');if(pg&&!window._unlockedGrant)pg.style.display='flex';
   var pb=document.getElementById('pcta-board');if(pb&&!window._unlockedBoard)pb.style.display='flex';
+  var pc=document.getElementById('pcta-community');if(pc&&!_unlockedDocs['community'])pc.style.display='flex';
 }
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
