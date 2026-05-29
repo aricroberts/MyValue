@@ -1263,7 +1263,6 @@ function genDocs(){
 
 /* ── EXPORTS PREVIEW ─────────────────────────────────────────────────────── */
 var _expLogo = null;
-var _prevPgMode = 'one';
 
 function handleExpLogo(evt) {
   var f = evt.target.files[0]; if (!f) return;
@@ -1288,13 +1287,6 @@ function switchPrevTab(t) {
   document.getElementById('prev-wrap-s').style.display = t==='s' ? 'block' : 'none';
   document.getElementById('ptab-m').className = 'prev-tab' + (t==='m' ? ' on' : '');
   document.getElementById('ptab-s').className = 'prev-tab' + (t==='s' ? ' on' : '');
-}
-function selPg(p) {
-  _prevPgMode = p;
-  document.getElementById('pg-one').className = 'pgopt' + (p==='one' ? ' sel' : '');
-  document.getElementById('pg-mo').className = 'pgopt' + (p==='mo' ? ' sel' : '');
-  var btn = document.getElementById('pg-btn');
-  if (btn) btn.innerHTML = '<i class="ti ti-lock-open" style="font-size:12px;vertical-align:-1px"></i> ' + (p==='one' ? 'Get PDF — $19' : 'Start Pro — $19/mo');
 }
 function openRaiseCasePage() {
   if (!S || !S.tc) { alert('Please complete your calculation first — click "Calculate my break-even" on the ledger tab.'); return; }

@@ -236,11 +236,10 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
     <h3>Unlock your raise case</h3>
     <p>Download both letters as a polished, print-ready PDF — formatted to hand directly to your manager.</p>
     <div class="price-row">
-      <div class="popt sel" id="po-one" onclick="selPrice('one')"><div class="amt">$19</div><div class="desc">One report</div></div>
-      <div class="popt" id="po-mo" onclick="selPrice('mo')"><div class="amt">$19<span style="font-size:10px;font-weight:400">/mo</span></div><div class="desc">All tools</div></div>
+      <div class="popt sel" id="po-one"><div class="amt">$19</div><div class="desc">One report</div></div>
     </div>
     <input class="email-inp" type="email" id="pay-email" placeholder="your@email.com — receipt sent here"/>
-    <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i><span id="pay-lbl">Get raise case PDF — $19</span></button>
+    <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i> Get raise case PDF — $19</button>
     <p style="font-size:9px;color:var(--text3);line-height:1.4;margin-top:.375rem">Stripe checkout opens in a new tab. Your data never leaves your browser. Refunds within 48 hours.</p>
   </div>
 
@@ -372,7 +371,6 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
 var achs = [];
 var logoSrc = null;
 var curTab = 'm';
-var priceMode = 'one';
 
 function fmt(n) {
   if (!n || isNaN(n)) return '—';
@@ -421,22 +419,11 @@ function switchTab(t) {
   document.getElementById('tab-s').className = 'ptab' + (t === 's' ? ' on' : '');
 }
 
-function selPrice(p) {
-  priceMode = p;
-  document.getElementById('po-one').className = 'popt' + (p === 'one' ? ' sel' : '');
-  document.getElementById('po-mo').className = 'popt' + (p === 'mo' ? ' sel' : '');
-  se('pay-lbl', p === 'one' ? 'Get raise case PDF — $19' : 'Start Pro — $19/month');
-}
-
 function doCheckout() {
   var em = (gv('pay-email') || '').trim();
   if (!em || em.indexOf('@') < 0) { alert('Please enter your email — your receipt will be sent there.'); document.getElementById('pay-email').focus(); return; }
-  var stripeUrl = priceMode === 'one'
-    ? 'https://buy.stripe.com/4gMeVe8IabLIfin8W77N601'
-    : 'https://buy.stripe.com/28E9AUbUm9DAeejfkv7N602';
-  /* Open Stripe in a new tab so user's data stays intact here */
+  var stripeUrl = 'https://buy.stripe.com/4gMeVe8IabLIfin8W77N601';
   window.open(stripeUrl + '?prefilled_email=' + encodeURIComponent(em), '_blank');
-  /* Show pending state — do NOT unlock yet */
   document.getElementById('pay-gate').style.display = 'none';
   document.getElementById('pay-pending').style.display = 'block';
 }
