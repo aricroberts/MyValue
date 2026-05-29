@@ -131,7 +131,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .ecard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1.125rem;margin-bottom:.625rem}
 .ecard h3{font-size:13px;font-weight:600;margin:0 0 4px;display:flex;align-items:center;gap:7px;color:var(--text)}
 .ecard p{font-size:12px;color:var(--text2);margin:0 0 7px}
-.dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:180px;overflow-y:auto;margin-bottom:7px;color:var(--text)}
+.dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:360px;overflow-y:auto;margin-bottom:7px;color:var(--text)}
 .brow{display:flex;gap:7px;flex-wrap:wrap}
 .step-banner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;margin-bottom:.875rem}
 
@@ -165,7 +165,7 @@ button:hover{background:var(--surface2)}
 .back-nav label:hover{background:var(--border);color:var(--text)}
 
 /* ── Paywall ── */
-.ecard.gated .dpre{max-height:88px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,black 30%,transparent 100%);mask-image:linear-gradient(to bottom,black 30%,transparent 100%);pointer-events:none;user-select:none}
+.ecard.gated .dpre{max-height:176px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,black 30%,transparent 100%);mask-image:linear-gradient(to bottom,black 30%,transparent 100%);pointer-events:none;user-select:none}
 .ecard.gated .brow{display:none}
 .doc-paywall{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.875rem 1rem;margin-top:8px}
 .doc-paywall .pw-head{font-size:13px;font-weight:600;color:var(--text);margin:0 0 3px;display:flex;align-items:center;gap:6px}
@@ -449,18 +449,16 @@ button:hover{background:var(--surface2)}
         <div class="dpre" id="doc-individual">—</div>
         <div class="brow"><button onclick="cpDoc('doc-individual')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('individual')">Refine ↗</button></div>
       </div>
-      <div class="card card-ai" style="margin-top:.875rem">
-        <p class="sl sl-ai"><i class="ti ti-mail"></i>Email all documents <span style="font-size:10px;font-weight:400;color:var(--purple);text-transform:none;letter-spacing:0;margin-left:6px;background:rgba(155,139,248,.12);border:1px solid rgba(155,139,248,.3);border-radius:99px;padding:1px 7px">Premium</span></p>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send all team documents to your inbox — useful for sharing with HR, leadership, or individual contributors before a quarterly review.</p>
-        <div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="export-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailExports()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send documents</button></div>
+      <div class="card" style="background:var(--surface2);border-color:var(--border);margin-top:.875rem">
+        <p class="sl"><i class="ti ti-mail"></i> Email all documents — free</p>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send all your team documents to your inbox — useful for sharing with HR, leadership, or individual contributors before a quarterly review. No account required.</p>
+        <div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="export-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailExports()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end;background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send documents</button></div>
         <p id="email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p>
-        <p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver these documents and is not stored or shared. Full delivery coming soon with receipts. Pro.</p>
+        <p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Opens your email client. Your address is used only to address the email — nothing is stored or transmitted to our servers.</p>
       </div>
-            <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
-        <button onclick="exportTXT()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download summary (.txt)</button>
-                <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
+      <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
+        <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
       </div>
-      <p style="font-size:11px;color:var(--text3);margin:.5rem 0 0">Text export contains only self-reported estimates. No confidential HR or salary data included.</p>
     </div>
   </div>
 
@@ -575,9 +573,9 @@ function _v4GateHTML(type) {
     '<p class="pw-sub">Get the complete ' + meta.title + ' — formatted, structured, and ready to share with leadership, HR, or your team.</p>' +
     '<div class="pw-btns">' +
     (isPro ? '' : '<a href="' + proLink + '" class="btn-pro"><i class="ti ti-crown" style="font-size:12px"></i> Session Pro — $79 · All docs + coaching</a>') +
-    (isDoc ? '<button class="btn-unlock-doc" disabled style="opacity:.45;cursor:not-allowed"><i class="ti ti-lock"></i> ' + meta.price + ' — link not configured</button>'
-           : '<a href="' + docLink + '" class="btn-unlock-doc" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2)"><i class="ti ti-lock-open" style="font-size:12px"></i> This doc — ' + meta.price + '</a>') +
     (isBundle ? '' : '<a href="' + bundleLink + '" class="btn-unlock-bundle btn-unlock-doc"><i class="ti ti-stack" style="font-size:12px"></i> ' + meta.bundleLabel + '</a>') +
+    (isDoc ? '<button class="btn-unlock-doc" disabled style="opacity:.45;cursor:not-allowed;background:var(--surface2);border:1px solid var(--border);color:var(--text2)"><i class="ti ti-lock"></i> ' + meta.price + ' — link not configured</button>'
+           : '<a href="' + docLink + '" class="btn-unlock-doc" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2)"><i class="ti ti-lock-open" style="font-size:12px"></i> This doc only — ' + meta.price + '</a>') +
     '</div></div>';
 }
 
@@ -1280,7 +1278,7 @@ function emailExports(){
   var subject='receipts. — Team ROI Documents · '+new Date().toLocaleDateString();
   var mailto='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body.substring(0,2000)+'\n\n[Full documents — paste from receipts. Export tab for complete version]');
   try{window.open(mailto,'_self');}catch(e){}
-  setTimeout(function(){statusEl.style.color='var(--green)';statusEl.textContent='Email client opened. Full delivery coming soon with receipts. Pro.';},600);
+  setTimeout(function(){statusEl.style.color='var(--green)';statusEl.textContent='Email client opened — check your email app to review and send.';},600);
 }
 function exportTXT(){
   try{
