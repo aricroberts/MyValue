@@ -104,6 +104,17 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .ecard p{font-size:12px;color:var(--text2);margin:0 0 6px}
 .dpre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:'DM Mono',monospace;max-height:180px;overflow-y:auto;margin-bottom:7px;color:var(--text)}
 .brow{display:flex;gap:6px;flex-wrap:wrap}
+.ecard.gated .dpre{max-height:88px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,black 30%,transparent 100%);mask-image:linear-gradient(to bottom,black 30%,transparent 100%);pointer-events:none;user-select:none}
+.ecard.gated .brow{display:none}
+.doc-paywall{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.875rem 1rem;margin-top:8px}
+.doc-paywall .pw-head{font-size:13px;font-weight:600;color:var(--text);margin:0 0 3px;display:flex;align-items:center;gap:6px}
+.doc-paywall .pw-sub{font-size:12px;color:var(--text2);line-height:1.55;margin:0 0 10px}
+.doc-paywall .pw-btns{display:flex;gap:7px;flex-wrap:wrap}
+.btn-unlock-doc{font-family:inherit;font-size:12px;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--teal);color:#061C1A}
+.btn-unlock-doc:hover{background:#1bc0b4}
+.btn-unlock-bundle{background:var(--purple);color:#fff}
+.btn-unlock-bundle:hover{background:#8a78f0}
+.unlock-success{background:var(--green-dim);border:1px solid var(--green-b);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:#A0E8C8;margin-top:8px;display:flex;align-items:center;gap:6px}
 .step-banner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;margin-bottom:.875rem}
 .ai-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:.875rem}
 .ai-col{border-radius:var(--radius);padding:1rem;border:1px solid}
@@ -415,8 +426,7 @@ button:hover{background:var(--surface2)}
         <p class="sl sl-ok"><i class="ti ti-check"></i> All documents generated</p>
         <p style="font-size:12px;color:#A0E8C8;margin:0">Copy any document below or click "Refine" to get improvement suggestions.</p>
       </div>
-      <div class="ecard">
-        <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--blue)"></i> ROI assessment report</h3>
+      <div class="ecard" id="exp-report">
         <p>Full analysis with value streams, break-even, and recommendation.</p>
         <div class="dpre" id="doc-report">—</div>
         <div class="brow"><button onclick="cpDoc('doc-report')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('report')">Refine ↗</button></div>
@@ -472,6 +482,131 @@ button:hover{background:var(--surface2)}
  *
  * ─────────────────────────────────────────────────────────────────────────── */
 var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← your proxy URL here
+
+/* ── STRIPE CONFIGURATION v2 ─────────────────────────────────────────────────
+ *
+ *  To go live:
+ *  1. Create products in Stripe Dashboard, one per document type.
+ *  2. Create Payment Links. Set success URLs as shown below.
+ *  3. Paste your Payment Link URLs into STRIPE_V2 below.
+ *
+ *  Suggested pricing:
+ *    report  — ROI assessment report        — $15
+ *    ret     — Retention conversation brief — $25
+ *    hire    — Hiring justification memo    — $19
+ *    ai      — AI vs. human decision brief  — $19
+ *    bundle  — All documents (session)      — $35
+ *
+ *  Success URL pattern (swap doc type):
+ *    https://receipts.aricciviclabs.org/roi_v2_smallbusiness.html?unlocked=report
+ *    https://receipts.aricciviclabs.org/roi_v2_smallbusiness.html?unlocked=ret
+ *    https://receipts.aricciviclabs.org/roi_v2_smallbusiness.html?unlocked=hire
+ *    https://receipts.aricciviclabs.org/roi_v2_smallbusiness.html?unlocked=ai
+ *    https://receipts.aricciviclabs.org/roi_v2_smallbusiness.html?unlocked=bundle
+ *
+ * ─────────────────────────────────────────────────────────────────────────── */
+var STRIPE_V2 = {
+  report: 'https://buy.stripe.com/4gM6oI0bE3fc2vB4FR7N60c',
+  ret:    'https://buy.stripe.com/5kQ3cwf6y8zwfinb4f7N60b',
+  hire:   'https://buy.stripe.com/cNibJ21fIg1Y9Y3b4f7N60a',
+  ai:     'https://buy.stripe.com/fZu5kE1fI8zwb27fkv7N609',
+  bundle: 'https://buy.stripe.com/8x2cN62jM7vs3zFdcn7N608'
+};
+
+/* Doc metadata: title, price label, bundle eligibility */
+var V2_DOCS = {
+  report: { title: 'ROI assessment report',        price: '$15', bundleLabel: 'All documents — $35' },
+  ret:    { title: 'Retention conversation brief',  price: '$25', bundleLabel: 'All documents — $35' },
+  hire:   { title: 'Hiring justification memo',     price: '$19', bundleLabel: 'All documents — $35' },
+  ai:     { title: 'AI vs. human decision brief',   price: '$19', bundleLabel: 'All documents — $35' }
+};
+
+/* Unlock state — persists in JS memory for the session */
+var _v2Unlocked = {};
+
+/* ── Apply unlock from Stripe success URL ─────────────────────────────────── */
+(function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var unlocked = params.get('unlocked');
+    if (unlocked) {
+      var types = unlocked === 'bundle'
+        ? ['report','ret','hire','ai']
+        : unlocked.split(',');
+      for (var i = 0; i < types.length; i++) {
+        var t = types[i].trim();
+        if (t) _v2Unlocked[t] = true;
+      }
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+      /* If docs are already generated, apply unlock visuals now */
+      setTimeout(function() {
+        for (var k in _v2Unlocked) { if (_v2Unlocked[k]) _applyV2Unlock(k, false); }
+      }, 200);
+    }
+  } catch(e) {}
+})();
+
+/* ── Unlock a document ────────────────────────────────────────────────────── */
+function _applyV2Unlock(type, showBanner) {
+  _v2Unlocked[type] = true;
+  var ecardId = { report:'exp-report', ret:'exp-ret', hire:'exp-hire', ai:'exp-ai' }[type];
+  if (!ecardId) return;
+  var ecard = document.getElementById(ecardId);
+  if (!ecard) return;
+  ecard.classList.remove('gated');
+  var gate = ecard.querySelector('.doc-paywall');
+  if (gate) gate.remove();
+  if (showBanner !== false) {
+    var banner = document.createElement('div');
+    banner.className = 'unlock-success';
+    banner.innerHTML = '<i class="ti ti-check" style="font-size:13px"></i> Document unlocked — copy or refine below.';
+    var brow = ecard.querySelector('.brow');
+    if (brow) brow.parentNode.insertBefore(banner, brow);
+    setTimeout(function() { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4000);
+  }
+}
+
+/* ── Build paywall gate for a doc ─────────────────────────────────────────── */
+function _v2GateHTML(type) {
+  var meta = V2_DOCS[type] || { title: 'document', price: '$19', bundleLabel: 'All documents — $35' };
+  var docLink = STRIPE_V2[type] || '';
+  var bundleLink = STRIPE_V2.bundle || '';
+  var isPlaceholder = docLink.indexOf('YOUR_') !== -1;
+  var isBundlePlaceholder = bundleLink.indexOf('YOUR_') !== -1;
+  return '<div class="doc-paywall">' +
+    '<p class="pw-head"><i class="ti ti-lock" style="font-size:13px;color:var(--teal)"></i> Unlock to access full document</p>' +
+    '<p class="pw-sub">See the complete ' + meta.title + ' — formatted, structured, and ready to copy or share.</p>' +
+    '<div class="pw-btns">' +
+    (isPlaceholder
+      ? '<button class="btn-unlock-doc" disabled style="opacity:.45;cursor:not-allowed"><i class="ti ti-lock" style="font-size:12px"></i> ' + meta.price + ' — link not configured</button>'
+      : '<a href="' + docLink + '" class="btn-unlock-doc"><i class="ti ti-lock-open" style="font-size:12px"></i> Unlock this doc — ' + meta.price + '</a>'
+    ) +
+    (isBundlePlaceholder
+      ? ''
+      : '<a href="' + bundleLink + '" class="btn-unlock-doc btn-unlock-bundle"><i class="ti ti-stack" style="font-size:12px"></i> ' + meta.bundleLabel + '</a>'
+    ) +
+    '</div></div>';
+}
+
+/* ── Apply paywalls after docs are generated ──────────────────────────────── */
+function _setupV2Paywalls() {
+  var types = ['report','ret','hire','ai'];
+  for (var i = 0; i < types.length; i++) {
+    var type = types[i];
+    var ecardId = { report:'exp-report', ret:'exp-ret', hire:'exp-hire', ai:'exp-ai' }[type];
+    var ecard = document.getElementById(ecardId);
+    if (!ecard || ecard.style.display === 'none') continue; /* skip hidden use-case-specific docs */
+    /* Remove any existing gate first (handles recalculate) */
+    var existing = ecard.querySelector('.doc-paywall');
+    if (existing) existing.remove();
+    ecard.classList.remove('gated');
+    if (!_v2Unlocked[type]) {
+      ecard.classList.add('gated');
+      var dpre = ecard.querySelector('.dpre');
+      if (dpre) dpre.insertAdjacentHTML('afterend', _v2GateHTML(type));
+    }
+  }
+}
 
 var _DIRECT   = 'https://api.anthropic.com/v1/messages';
 
@@ -737,6 +872,7 @@ function genDocs(){
     var aiDoc=dt+'\n\nAI VS. HUMAN DECISION BRIEF\n'+biz+' | Function: '+fn+'\n'+'─'.repeat(42)+'\n\nHUMAN HIRE\n• Year 1: '+fmt((d.hYr||0)+(d.hRamp||0))+' | Ongoing: '+fmt(d.hYr||0)+' | 3yr: '+fmt((d.hYr||0)*3+(d.hRamp||0))+'\n\nAI IMPLEMENTATION\n• Year 1: '+fmt(d.aYr1||0)+' | Ongoing: '+fmt(d.aYr2||0)+' | 3yr: '+fmt((d.aYr1||0)+((d.aYr2||0)*2))+'\n• Coverage: '+cov2+'%\n\nCROSSOVER: '+(d.cross?'Month '+d.cross+' (~'+(d.cross/12).toFixed(1)+' years)':'No crossover within 3 years')+'\n\n3-YEAR SAVING IF AI: '+fmt(((d.hYr||0)*3+(d.hRamp||0))-((d.aYr1||0)+((d.aYr2||0)*2)))+'\n\nCAVEAT: AI coverage of '+cov2+'% means '+(100-cov2)+'% still requires human judgment.';
     var dai=document.getElementById('doc-ai');if(dai)dai.textContent=aiDoc;
   }
+  _setupV2Paywalls();
 }
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
@@ -904,6 +1040,11 @@ function emailExports(){
 }
 
 function destroyAll(){
+  _v2Unlocked = {};
+  ['exp-report','exp-ret','exp-hire','exp-ai'].forEach(function(id){
+    var e=document.getElementById(id);
+    if(e){e.classList.remove('gated');var g=e.querySelector('.doc-paywall');if(g)g.remove();}
+  });
   document.getElementById('val-list').innerHTML='';
   document.getElementById('coach-msgs').innerHTML='';
   document.getElementById('coach-session').style.display='none';
