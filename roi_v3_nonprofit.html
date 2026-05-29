@@ -456,6 +456,14 @@ button:hover{background:var(--surface2)}
           </div>
           <button class="ps-btn" onclick="unlockExport('impact')">Unlock Impact Report → $19</button>
         </div>
+        <div class="premium-strip" id="pcta-community">
+          <i class="ti ti-users ps-icon"></i>
+          <div class="ps-text">
+            <p class="ps-title">Create a community impact letter</p>
+            <p class="ps-sub">Personalized letter for donors, volunteers, partners, or funders — warm, data-grounded, and relationship-specific.</p>
+          </div>
+          <button class="ps-btn" onclick="unlockExport('community')">Unlock Community Letter → $19</button>
+        </div>
       </div>
       <div class="g3" style="margin-top:.875rem">
         <label for="t5" style="display:block"><span class="btn-teal" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">Find funding →</span></label>
@@ -680,10 +688,10 @@ button:hover{background:var(--surface2)}
       <div id="bundle-cta" class="premium-strip" style="margin-bottom:.875rem">
         <i class="ti ti-package ps-icon"></i>
         <div class="ps-text">
-          <p class="ps-title">All 3 premium docs + PDF downloads — save $32</p>
-          <p class="ps-sub">Grant Narrative + Board One-Pager + Community Letter, all unlocked. $25 bundle vs. $57 if purchased separately.</p>
+          <p class="ps-title">All 4 premium docs + PDF downloads — save $41</p>
+          <p class="ps-sub">Grant Narrative + Board One-Pager + Impact Report + Community Letter, all unlocked. $35 bundle vs. $76 if purchased separately.</p>
         </div>
-        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $25 (save $32) ↗</button>
+        <button class="ps-btn" onclick="unlockExport('bundle')">Bundle → $35 (save $41) ↗</button>
       </div>
       <div class="paywall-gate" id="gate-grant">
         <div class="ecard">
@@ -694,7 +702,7 @@ button:hover{background:var(--surface2)}
             <div class="dpre" id="doc-grant" style="display:none">—</div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('grant')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Grant Narrative → $19</button>
-              <span class="dpre-lock-price">One-time · or $8 in the $25 bundle</span>
+              <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
             </div>
           </div>
           <div class="brow" id="brow-grant" style="display:none"><button onclick="cpDoc('doc-grant')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('grant')">Refine ↗</button></div>
@@ -709,44 +717,46 @@ button:hover{background:var(--surface2)}
             <div class="dpre" id="doc-board" style="display:none">—</div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('board')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Board One-Pager → $19</button>
-              <span class="dpre-lock-price">One-time · or $8 in the $25 bundle</span>
+              <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
             </div>
           </div>
           <div class="brow" id="brow-board" style="display:none"><button onclick="cpDoc('doc-board')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('board')">Refine ↗</button></div>
         </div>
       </div>
-      <!-- ── FREE DOCS (below) ── -->
-      <div style="display:flex;align-items:center;gap:10px;margin:1.25rem 0 .875rem">
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-        <span style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap">Free documents</span>
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-      </div>
-      <div class="ecard">
-        <h3><i class="ti ti-users" style="font-size:14px;color:var(--teal)"></i> Community impact letter</h3>
-        <p>A personalized thank-you letter addressed to a specific donor, volunteer group, partner, or funder — personalizes to their name, contribution, and relationship type.</p>
-        <div style="background:var(--teal-dim);border:1px solid var(--teal-b);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:10px">
-          <p style="font-size:11px;font-weight:600;color:var(--teal);margin-bottom:8px"><i class="ti ti-pencil" style="font-size:12px;vertical-align:-1px"></i> Personalize — preview updates live as you type</p>
-          <div class="fr">
-            <div class="fg"><label>Recipient name</label><input id="comm-recipient" placeholder="e.g. Sarah &amp; the Rodriguez Foundation" oninput="refreshCommunity()"/></div>
-            <div class="fg"><label>Relationship type</label>
-              <select id="comm-rel" onchange="refreshCommunity()">
-                <option value="donor">Major donor</option>
-                <option value="volunteer">Volunteer group</option>
-                <option value="partner">Corporate / community partner</option>
-                <option value="board">Board member</option>
-                <option value="grant">Grant funder</option>
-                <option value="general">All supporters</option>
-              </select>
+      <div class="paywall-gate" id="gate-community">
+        <div class="ecard">
+          <h3><i class="ti ti-users" style="font-size:14px;color:var(--teal)"></i> Community impact letter</h3>
+          <p>A personalized letter addressed to a specific donor, volunteer group, partner, or funder — opens with their name and contribution, closes with language tailored to their relationship.</p>
+          <div style="background:var(--teal-dim);border:1px solid var(--teal-b);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:10px">
+            <p style="font-size:11px;font-weight:600;color:var(--teal);margin-bottom:8px"><i class="ti ti-pencil" style="font-size:12px;vertical-align:-1px"></i> Personalize — preview updates live as you type</p>
+            <div class="fr">
+              <div class="fg"><label>Recipient name</label><input id="comm-recipient" placeholder="e.g. Sarah &amp; the Rodriguez Foundation" oninput="refreshCommunity()"/></div>
+              <div class="fg"><label>Relationship type</label>
+                <select id="comm-rel" onchange="refreshCommunity()">
+                  <option value="donor">Major donor</option>
+                  <option value="volunteer">Volunteer group</option>
+                  <option value="partner">Corporate / community partner</option>
+                  <option value="board">Board member</option>
+                  <option value="grant">Grant funder</option>
+                  <option value="general">All supporters</option>
+                </select>
+              </div>
+            </div>
+            <div class="fr">
+              <div class="fg"><label>Their specific contribution</label><input id="comm-contribution" placeholder="e.g. $5,000 gift · 200 volunteer hours · in-kind software" oninput="refreshCommunity()"/></div>
+              <div class="fg"><label>Personal note <span style="font-weight:400;color:var(--text3)">(optional)</span></label><input id="comm-note" placeholder="e.g. Your support made our youth STEM lab possible." oninput="refreshCommunity()"/></div>
             </div>
           </div>
-          <div class="fr">
-            <div class="fg"><label>Their specific contribution</label><input id="comm-contribution" placeholder="e.g. $5,000 gift · 200 volunteer hours · in-kind software" oninput="refreshCommunity()"/></div>
-            <div class="fg"><label>Personal note <span style="font-weight:400;color:var(--text3)">(optional)</span></label><input id="comm-note" placeholder="e.g. Your support made our youth STEM lab possible." oninput="refreshCommunity()"/></div>
+          <div class="dpre-gate-wrap" id="dpre-gate-community" style="max-height:360px">
+            <div class="doc-preview placeholder" id="preview-community">Complete your impact ledger to see a preview</div>
+            <div class="dpre" id="doc-community" style="display:none">—</div>
+            <div class="dpre-gate-fade">
+              <button class="dpre-lock-pill" onclick="unlockExport('community')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Community Letter → $19</button>
+              <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
+            </div>
           </div>
+          <div class="brow" id="brow-community" style="display:none"><button onclick="cpDoc('doc-community')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('community')">Refine ↗</button></div>
         </div>
-        <div id="preview-community" class="doc-preview placeholder">Complete your impact ledger to see a preview</div>
-        <div class="dpre" id="doc-community" style="display:none">—</div>
-        <div class="brow" id="brow-community"><button onclick="cpDoc('doc-community')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('community')">Refine ↗</button></div>
       </div>
       <div class="paywall-gate" id="gate-impact">
         <div class="ecard">
@@ -756,11 +766,17 @@ button:hover{background:var(--surface2)}
             <div class="dpre" id="doc-impact">—</div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('impact')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Impact Report → $19</button>
-              <span class="dpre-lock-price">One-time · or $8 in the $25 bundle</span>
+              <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
             </div>
           </div>
           <div class="brow" id="brow-impact" style="display:none"><button onclick="cpDoc('doc-impact')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('impact')">Refine ↗</button></div>
         </div>
+      </div>
+      <!-- ── FREE DOCS (below) ── -->
+      <div style="display:flex;align-items:center;gap:10px;margin:1.25rem 0 .875rem">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <span style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap">Free documents</span>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
       </div>
       <div class="ecard">
         <h3><i class="ti ti-heart" style="font-size:14px;color:var(--gold)"></i> Donor stewardship letter</h3>
@@ -1390,6 +1406,7 @@ function genDocs(){
   var pg=document.getElementById('pcta-grant');if(pg&&!window._unlockedGrant)pg.style.display='flex';
   var pb=document.getElementById('pcta-board');if(pb&&!window._unlockedBoard)pb.style.display='flex';
   var pc=document.getElementById('pcta-impact');if(pc&&!_unlockedDocs['impact'])pc.style.display='flex';
+  var pco=document.getElementById('pcta-community');if(pco&&!_unlockedDocs['community'])pco.style.display='flex';
 }
 
 function genDocPreviews(){
@@ -1646,11 +1663,11 @@ async function _refineWithClaude(type, docId, prompt){
  *     - Name: "receipts. Nonprofit Export Pack"
  *     - Price: $19 one-time
  *  2. Create a Payment Link for that product
- *     - Set Success URL to: https://yourdomain.com/roi_v3_nonprofit.html?unlocked=grant,board,impact
+ *     - Set Success URL to: https://yourdomain.com/roi_v3_nonprofit.html?unlocked=grant,board,impact,community
  *     - (or per-doc links, see STRIPE_LINKS below)
  *  3. Paste your Payment Link URL(s) below
  *
- *  BUNDLE link (all 3 premium docs for $25):
+ *  BUNDLE link (all 4 premium docs for $35):
  *    https://buy.stripe.com/14A28s8Iag1Y8TZa0b7N605
  *    Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=bundle
  *
@@ -1659,14 +1676,17 @@ async function _refineWithClaude(type, docId, prompt){
  *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=grant
  *    board     → https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600
  *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=board
- *    impact    → https://buy.stripe.com/cNifZi7E6cPMdaffkv7N604
+ *    community → https://buy.stripe.com/cNifZi7E6cPMdaffkv7N604
+ *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=community
+ *    impact    → https://buy.stripe.com/cNi3cwcYq8zw0nt1tF7N606
  *               Success URL: https://receipts.aricciviclabs.org/roi_v3_nonprofit.html?unlocked=impact
  *
  * ─────────────────────────────────────────────────────────────────────────── */
 var STRIPE_LINKS = {
   grant:     'https://buy.stripe.com/00waEY9MedTQ5HN2xJ7N603',
   board:     'https://buy.stripe.com/9B600k0bE7vs8TZfkv7N600',
-  impact:    'https://buy.stripe.com/cNifZi7E6cPMdaffkv7N604',
+  community: 'https://buy.stripe.com/cNifZi7E6cPMdaffkv7N604',
+  impact:    'https://buy.stripe.com/cNi3cwcYq8zw0nt1tF7N606',
   bundle:    'https://buy.stripe.com/14A28s8Iag1Y8TZa0b7N605'
 };
 
@@ -1710,7 +1730,7 @@ var _unlockedDocs = {};
 
 function _applyUnlock(type, showBadge) {
   _unlockedDocs[type] = true;
-  var typesToUnlock = (type === 'bundle') ? ['grant','board','impact'] : [type];
+  var typesToUnlock = (type === 'bundle') ? ['grant','board','impact','community'] : [type];
   for (var ti = 0; ti < typesToUnlock.length; ti++) {
     var t = typesToUnlock[ti];
     _unlockedDocs[t] = true;
@@ -1747,8 +1767,8 @@ function _applyUnlock(type, showBadge) {
       }
     }
   }
-  /* Hide bundle CTA if all three are unlocked */
-  if (_unlockedDocs['grant'] && _unlockedDocs['board'] && _unlockedDocs['impact']) {
+  /* Hide bundle CTA if all four are unlocked */
+  if (_unlockedDocs['grant'] && _unlockedDocs['board'] && _unlockedDocs['impact'] && _unlockedDocs['community']) {
     var bc = document.getElementById('bundle-cta');
     if (bc) bc.style.display = 'none';
   }
@@ -1759,9 +1779,8 @@ function _applyUnlock(type, showBadge) {
   if (emailForm) emailForm.style.display = 'block';
   /* On first unlock: upgrade the free docs with PDF buttons too */
   var freeDocs = [
-    { brow: null, docType: 'community',       el: document.getElementById('doc-community') },
-    { brow: null, docType: 'donor',           el: document.getElementById('doc-donor') },
-    { brow: null, docType: 'expansion',       el: document.getElementById('doc-expansion-copy') }
+    { brow: null, docType: 'donor',     el: document.getElementById('doc-donor') },
+    { brow: null, docType: 'expansion', el: document.getElementById('doc-expansion-copy') }
   ];
   for (var fi = 0; fi < freeDocs.length; fi++) {
     var fd = freeDocs[fi];
@@ -1783,10 +1802,10 @@ function unlockExport(type) {
   if (_unlockedDocs[type]) { return; }
 
   /* Check if ledger has been calculated */
-  var docId = { grant: 'doc-grant', board: 'doc-board', impact: 'doc-impact' }[type];
+  var docId = { grant: 'doc-grant', board: 'doc-board', impact: 'doc-impact', community: 'doc-community' }[type];
   if (type === 'bundle') {
     /* For bundle, check that at least one doc exists */
-    var anyDoc = ['doc-grant','doc-board','doc-impact'].some(function(id) {
+    var anyDoc = ['doc-grant','doc-board','doc-impact','doc-community'].some(function(id) {
       var e = document.getElementById(id);
       return e && e.textContent && e.textContent !== '—';
     });
@@ -1811,19 +1830,22 @@ function unlockExport(type) {
     grant: 'Grant Outcomes Narrative',
     board: 'Board One-Pager',
     impact: 'Impact & Outcomes Report',
-    bundle: 'All 3 Premium Documents'
+    community: 'Community Impact Letter',
+    bundle: 'All 4 Premium Documents'
   };
   var descs = {
     grant: 'Funder-ready outcomes language, SROI methodology framing, and a program-by-program breakdown — ready to paste into any grant application.',
     board: 'Leadership-ready executive summary with your leverage ratio, program highlights, and a data-grounded strategic ask.',
     impact: 'Full program ledger with leverage ratio, cost-per-beneficiary, and mission ROI — grant-ready formatting with complete SROI methodology for annual reports and funder conversations.',
-    bundle: 'All three premium documents unlocked at once — $25 vs. $57 if purchased separately.'
+    community: 'Warm, data-grounded acknowledgment letter personalized to a specific donor, volunteer group, partner, or funder — relationship-specific language throughout.',
+    bundle: 'All four premium documents unlocked at once — $35 vs. $76 if purchased separately.'
   };
   var features = {
     grant: ['✓ Program-by-program outcome summary', '✓ SROI methodology statement', '✓ Aggregate impact + beneficiary reach', '✓ Copy · Refine with AI · Download PDF'],
     board: ['✓ ROI framing for business-minded boards', '✓ Program highlights + leverage ratio', '✓ Strategic ask with impact justification', '✓ Copy · Refine with AI · Download PDF'],
     impact: ['✓ Full program ledger with SROI methodology', '✓ Leverage ratio + cost-per-beneficiary', '✓ Grant-ready formatting for annual reports', '✓ Copy · Refine with AI · Download PDF'],
-    bundle: ['✓ Grant Outcomes Narrative', '✓ Board One-Pager', '✓ Impact & Outcomes Report', '✓ PDF downloads for all three — save $32 vs. buying separately']
+    community: ['✓ Named program accomplishments', '✓ Recipient-specific relationship language', '✓ Data-grounded, warm tone', '✓ Copy · Refine with AI · Download PDF'],
+    bundle: ['✓ Grant Outcomes Narrative', '✓ Board One-Pager', '✓ Impact & Outcomes Report', '✓ Community Impact Letter + PDF downloads for all four — save $41 vs. buying separately']
   };
   var sh2 = document.getElementById('cm-title');
   var sd2 = document.getElementById('cm-desc');
@@ -1835,9 +1857,9 @@ function unlockExport(type) {
   if (sh2) sh2.textContent = titles[type] || 'Premium Document';
   if (sd2) sd2.textContent = descs[type] || '';
   if (sf) sf.innerHTML = (features[type] || []).map(function(f){ return '<div>'+f+'</div>'; }).join('');
-  if (sp) sp.textContent = type === 'bundle' ? '$25' : '$19';
-  if (spl) spl.textContent = type === 'bundle' ? 'All 3 docs · saves $32' : 'One-time · no subscription';
-  if (scb) scb.textContent = type === 'bundle' ? 'Pay $25 → Unlock all 3 + PDF downloads' : 'Pay $19 → Unlock + Download PDF';
+  if (sp) sp.textContent = type === 'bundle' ? '$35' : '$19';
+  if (spl) spl.textContent = type === 'bundle' ? 'All 4 docs · saves $41' : 'One-time · no subscription';
+  if (scb) scb.textContent = type === 'bundle' ? 'Pay $35 → Unlock all 4 + PDF downloads' : 'Pay $19 → Unlock + Download PDF';
   if (sbb) sbb.style.display = type === 'bundle' ? 'none' : 'block';
   if (_checkoutEmail) {
     var emailInput = document.getElementById('cm-email');
@@ -1876,7 +1898,7 @@ function _buildCheckoutModal() {
     '    <p style="font-size:11px;color:var(--text3);margin-top:3px;line-height:1.4"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Used only for your receipt. Never stored or shared.</p>',
     '  </div>',
     '  <input type="hidden" id="cm-doc-type" value=""/>',
-    '  <button onclick="proceedBundle()" id="cm-bundle-btn" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px;transition:all .15s">Get all 3 docs for $25 (save $32) ↗</button>',
+    '  <button onclick="proceedBundle()" id="cm-bundle-btn" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px;transition:all .15s">Get all 4 docs for $35 (save $41) ↗</button>',
     '  <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">After payment you\'ll be returned here with your document unlocked.<br>Questions? <a href="mailto:hello@aricciviclabs.org" style="color:var(--teal)">hello@aricciviclabs.org</a></p>',
     '</div>'
   ].join('');
@@ -1919,6 +1941,7 @@ function proceedBundle() {
     _applyUnlock('grant', true);
     _applyUnlock('board', true);
     _applyUnlock('impact', true);
+    _applyUnlock('community', true);
     return;
   }
   window.location.href = url;
