@@ -4,7 +4,7 @@
 <meta name="grammarly-disable-extension" content="true">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>receipts. v2 — Small Business — Aric Civic Labs</title>
+<title>receipts. v2 · Small Business</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -127,13 +127,9 @@ button:hover{background:var(--surface2)}
 <body>
 <div class="app">
   <div class="topbar">
-    <div class="logo">
-      <i class="ti ti-building" style="font-size:16px;color:var(--teal)"></i>
-      receipts.
-      <span style="font-size:9px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:2px">Aric Civic Labs</span><span class="version-badge">v2 · Small Business</span>
-    </div>
+    <div class="logo"><img src="receipts_icon.png" alt="receipts." style="height:28px;width:28px;border-radius:7px;flex-shrink:0"><span style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.02em">receipts.</span><span class="version-badge">v2 · Small Business</span></div>
     <div style="display:flex;align-items:center;gap:8px">
-      <span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Private · saved in browser</span>
+      <span class="privacy-pill"><i class="ti ti-shield-lock" style="font-size:13px"></i>Memory-only</span>
       <button class="destroy-btn" onclick="destroyAll()"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all</button>
       <a href="https://receipts.aricciviclabs.org/index.html" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;color:var(--text2);text-decoration:none;white-space:nowrap"><i class="ti ti-home" style="font-size:12px"></i> receipts. home</a>
     </div>
@@ -927,78 +923,9 @@ function destroyAll(){
   ['r-ret-card','exp-ret','exp-hire','exp-ai'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('use-case').value='role';selectUC('role');
   document.getElementById('t1').checked=true;
-  if (typeof _lsClear === 'function') _lsClear();
 }
 
 selectUC('role');
-
-/* ── Browser session persistence ─────────────────────────────────────────── */
-var TOOL_KEY = 'rcpts_v2';
-var _saveTimer = null;
-
-function _lsSave() {
-  try {
-    var inp = {};
-    document.querySelectorAll('input:not([type=radio]):not([type=hidden]),select,textarea').forEach(function(el) {
-      if (el.id && el.id !== 'coach-input' && el.id !== 'export-email' && el.id !== 'cm-email') {
-        inp[el.id] = el.type === 'checkbox' ? el.checked : el.value;
-      }
-    });
-    localStorage.setItem(TOOL_KEY + '_inputs', JSON.stringify(inp));
-    localStorage.setItem(TOOL_KEY + '_ts', new Date().toISOString());
-    _lsBadge(true);
-  } catch(e) {}
-}
-function _lsSchedule() { clearTimeout(_saveTimer); _saveTimer = setTimeout(_lsSave, 700); }
-
-function _lsRestore() {
-  try {
-    var raw = localStorage.getItem(TOOL_KEY + '_inputs');
-    if (!raw) return;
-    var inp = JSON.parse(raw); var n = 0;
-    Object.keys(inp).forEach(function(id) {
-      var el = document.getElementById(id); if (!el) return;
-      if (el.type === 'checkbox') { el.checked = inp[id]; }
-      else if (el.tagName === 'SELECT') { for (var i=0;i<el.options.length;i++){if(el.options[i].value===inp[id]){el.selectedIndex=i;break;}} }
-      else { el.value = inp[id]; }
-      n++;
-    });
-    if (n > 0) {
-      var ts = localStorage.getItem(TOOL_KEY + '_ts');
-      _lsBanner(ts ? _lsAgo(new Date(ts)) : null);
-      _lsBadge(true);
-    }
-  } catch(e) {}
-}
-function _lsAgo(d) {
-  var m = Math.round((Date.now()-d.getTime())/60000);
-  if (m < 2) return 'just now';
-  if (m < 60) return m + ' min ago';
-  var h = Math.round(m/60); if (h < 24) return h + (h===1?' hr':' hrs') + ' ago';
-  var dy = Math.round(h/24); return dy + (dy===1?' day':' days') + ' ago';
-}
-function _lsBanner(ago) {
-  if (document.getElementById('ls-banner')) return;
-  var b = document.createElement('div'); b.id = 'ls-banner';
-  b.style.cssText = 'background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:var(--text2);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:.875rem;flex-wrap:wrap';
-  b.innerHTML = '<span><i class="ti ti-device-floppy" style="font-size:13px;vertical-align:-2px;margin-right:4px"></i>Session restored' + (ago ? ' from ' + ago : '') + ' — your inputs are back.</span><button onclick="document.getElementById(\'ls-banner\').remove()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1;padding:0 4px" aria-label="Dismiss">×</button>';
-  var p1 = document.getElementById('p1'); if (p1) p1.insertBefore(b, p1.firstChild);
-}
-function _lsBadge(on) {
-  var pill = document.querySelector('.privacy-pill'); if (!pill) return;
-  var bg = document.getElementById('ls-badge');
-  if (!bg) { bg = document.createElement('span'); bg.id = 'ls-badge'; bg.style.cssText = 'font-size:10px;opacity:.65;margin-left:3px'; pill.appendChild(bg); }
-  bg.textContent = on ? '· saved' : '';
-}
-function _lsClear() {
-  try { localStorage.removeItem(TOOL_KEY+'_inputs'); localStorage.removeItem(TOOL_KEY+'_ts'); } catch(e) {}
-  _lsBadge(false);
-  var b = document.getElementById('ls-banner'); if (b) b.remove();
-}
-
-document.addEventListener('input', _lsSchedule);
-document.addEventListener('change', _lsSchedule);
-setTimeout(_lsRestore, 80);
 </script>
 </body>
 </html>
