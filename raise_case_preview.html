@@ -119,21 +119,18 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
 .gate-badge{background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:9px 18px;border-radius:99px;display:flex;align-items:center;gap:6px;margin-bottom:6px}
 .gate-hint{font-family:'Syne',sans-serif;font-size:11px;color:#666}
 
-/* PRINT */
+/* PRINT — only renders when payment confirmed (body.unlocked class) */
 @media print{
-  body{background:#fff}
-  .shell{display:block}
-  .sidebar{display:none}
-  .preview-pane{background:none;padding:0;gap:0}
-  .preview-bar,.doc-type-lbl{display:none}
-  .doc-outer{max-width:none;display:block!important}
-  .doc{box-shadow:none;border-radius:0;page-break-after:always}
-  .doc:last-child{page-break-after:auto}
-  .gate-blur{filter:none!important}
-  .gate-overlay,.bottom-blur > div{display:none!important}
-  #m-gate{display:none!important}
-  .bottom-blur,#m-gate ~ *{max-height:none!important;overflow:visible!important}
-  [style*="max-height:90px"]{max-height:none!important;overflow:visible!important}
+  body:not(.unlocked) * { visibility: hidden !important; }
+  body.unlocked { background: #fff }
+  body.unlocked .shell { display: block }
+  body.unlocked .sidebar { display: none }
+  body.unlocked .preview-pane { background: none; padding: 0; gap: 0 }
+  body.unlocked .preview-bar, body.unlocked .doc-type-lbl { display: none }
+  body.unlocked #pay-gate, body.unlocked #pay-pending, body.unlocked #print-block { display: none }
+  body.unlocked .doc-outer { max-width: none; display: block !important }
+  body.unlocked .doc { box-shadow: none; border-radius: 0; page-break-after: always }
+  body.unlocked .doc:last-child { page-break-after: auto }
 }
 @media(max-width:860px){
   .shell{grid-template-columns:1fr}
@@ -154,7 +151,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
       <span class="wordmark">receipts.</span>
       <span class="sl-badge">Raise Case</span>
     </div>
-    <a href="index.html" class="back-link"><i class="ti ti-arrow-left" style="font-size:11px"></i> Home</a>
+    <a id="back-link" href="index.html" class="back-link"><i class="ti ti-arrow-left" style="font-size:11px"></i> Home</a>
   </div>
 
   <div class="divider"></div>
@@ -447,6 +444,7 @@ function doCheckout() {
 function doUnlock() {
   document.getElementById('pay-pending').style.display = 'none';
   document.getElementById('print-block').style.display = 'block';
+  document.body.classList.add('unlocked');
   var g = document.getElementById('gate-over'), b = document.getElementById('doc-s');
   if (g) g.style.display = 'none';
   if (b) b.classList.remove('gate-blur');
@@ -455,12 +453,13 @@ function doUnlock() {
   var mwrap = mg ? mg.parentNode : null;
   if (mwrap) { mwrap.style.maxHeight = 'none'; mwrap.style.overflow = 'visible'; }
   document.querySelectorAll('.bottom-blur').forEach(function(el){ el.style.maxHeight='none'; el.style.overflow='visible'; });
-  /* Also unlock the in-preview paywall if present */
   var pgb = document.getElementById('prev-paywall'), ppb = document.getElementById('prev-print-block');
   if (pgb) pgb.style.display = 'none';
   if (ppb) ppb.style.display = 'block';
   var pgo = document.getElementById('prev-gate-s');
   if (pgo) pgo.style.display = 'none';
+  /* Notify v1 that payment is confirmed — postMessage is reliable across same-origin tabs */
+  try { if (window.opener) window.opener.postMessage({ type: 'rcpUnlocked' }, '*'); } catch(e) {}
 }
 
 function resetGate() {
@@ -603,7 +602,67 @@ function refresh() {
 
 se('m-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
 se('s-date', new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}));
-refresh();
+
+/* ── Data handoff from v1 ── */
+function populateFromHandoff(d) {
+  if (!d) return;
+  function sv(id, v) {
+    var e = document.getElementById(id);
+    if (e && v !== undefined && v !== null && v !== 0) e.value = v;
+  }
+  sv('f-name', d.name); sv('f-title', d.title); sv('f-loc', d.loc); sv('f-co', d.co);
+  sv('f-mgr', d.mgr); sv('f-skip', d.skip);
+  sv('f-tc', d.tc); sv('f-be', d.be); sv('f-roi', d.roi);
+  sv('f-ask', d.ask); sv('f-mlo', d.mlo); sv('f-mhi', d.mhi);
+  var ps = document.getElementById('f-period');
+  if (ps && d.period) {
+    for (var i = 0; i < ps.options.length; i++) {
+      if (ps.options[i].value === d.period) { ps.selectedIndex = i; break; }
+    }
+  }
+  if (d.achs && d.achs.length > 0) {
+    achs = d.achs.map(function(a) {
+      return { t: a.t || '', d: a.d || '', c: a.c || 'Strategic / other', r: a.r || 0 };
+    });
+    renderAchs();
+  }
+  if (d.logo) {
+    logoSrc = d.logo;
+    document.getElementById('logo-txt').textContent = 'Logo from receipts. v1';
+    document.getElementById('logo-rm').style.display = 'block';
+    applyLogo();
+  }
+  /* Update back link to close tab and return to v1 */
+  var bl = document.getElementById('back-link');
+  if (bl) {
+    bl.innerHTML = '<i class="ti ti-arrow-left" style="font-size:11px"></i> Back to receipts. v1';
+    bl.href = '#';
+    bl.onclick = function(e) { e.preventDefault(); window.close(); };
+  }
+  refresh();
+}
+
+/* Listen for rcpHandoff data sent from v1 via postMessage */
+window.addEventListener('message', function(e) {
+  if (!e.data || typeof e.data !== 'object') return;
+  if (e.data.type === 'rcpHandoff' && e.data.data) {
+    populateFromHandoff(e.data.data);
+  }
+});
+
+/* Signal to v1 that we are ready to receive data */
+try {
+  if (window.opener) { window.opener.postMessage({ type: 'rcpReady' }, '*'); }
+} catch(ex) {}
+
+/* Also try direct property access as immediate fallback */
+try {
+  if (window.opener && window.opener.rcpHandoff) {
+    populateFromHandoff(window.opener.rcpHandoff);
+  } else {
+    refresh();
+  }
+} catch(ex) { refresh(); }
 
 /* Auto-unlock if returning from Stripe success URL */
 if (window.location.search.indexOf('unlocked=true') !== -1) {

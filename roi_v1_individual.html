@@ -498,22 +498,22 @@ button:hover{background:var(--surface2)}
         </div>
       </div>
 
-      <!-- Paywall gate -->
+      <!-- Paywall CTA — opens raise_case_preview with data handoff -->
       <div class="card card-info" id="prev-paywall">
-        <p class="sl sl-info"><i class="ti ti-lock-open"></i> Unlock your raise case PDF</p>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Download both letters as a polished, print-ready PDF — formatted to hand directly to your manager or paste into an email.</p>
-        <div style="display:flex;gap:8px;margin-bottom:10px">
-          <div class="pgopt sel" id="pg-one" onclick="selPg('one')"><div style="font-size:17px;font-weight:700;font-family:'DM Mono',monospace">$19</div><div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-top:2px">one report</div></div>
-          <div class="pgopt" id="pg-mo" onclick="selPg('mo')"><div style="font-size:17px;font-weight:700;font-family:'DM Mono',monospace">$19<span style="font-size:10px;font-weight:400">/mo</span></div><div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-top:2px">all tools</div></div>
-        </div>
-        <div class="fr" style="align-items:flex-end;gap:8px;margin-bottom:8px">
-          <div class="fg" style="flex:1"><label>Email — PDF delivered here</label><input id="pg-email" type="email" placeholder="you@email.com" style="width:100%"/></div>
-          <button id="pg-btn" onclick="handlePgCheckout()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end;background:var(--blue);border-color:var(--blue);color:#fff"><i class="ti ti-lock-open" style="font-size:12px;vertical-align:-1px"></i> Get PDF — $19</button>
-        </div>
-        <p style="font-size:10px;color:var(--text3);line-height:1.5">Stripe checkout. Your data never leaves your browser — only your email is sent. Refunds within 48 hours, no questions asked.</p>
+        <p class="sl sl-info"><i class="ti ti-file-export"></i> Get your raise case PDF</p>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.6">Opens a polished, print-ready version of both letters — formatted to hand directly to your manager. Your data comes with you. Pay $19, download as PDF.</p>
+        <button onclick="openRaiseCasePage()" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-external-link" style="font-size:13px"></i> Open raise case — $19</button>
+        <p style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px">Opens in a new tab. Your data here stays intact. Return here after payment.</p>
       </div>
 
-      <!-- Post-unlock print block -->
+      <!-- Pending state — shown after raise case tab opens; NO bypass button -->
+      <div id="prev-pending" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+        <p style="font-size:12px;font-weight:700;margin-bottom:.375rem;display:flex;align-items:center;gap:5px"><i class="ti ti-external-link" style="font-size:13px;color:var(--blue)"></i> Raise case open in another tab</p>
+        <p style="font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:.75rem">Complete payment there — this page will unlock automatically once your payment goes through. Your work here is safe.</p>
+        <button onclick="_v1ResetGate()" style="width:100%;padding:7px 14px;border-radius:var(--radius-sm);font-size:12px;font-family:inherit;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-arrow-left" style="font-size:11px"></i> Cancel</button>
+      </div>
+
+      <!-- Post-unlock print block — only shown after rcpUnlocked fires from raise_case_preview -->
       <div id="prev-print-block" style="display:none" class="card card-ok">
         <p class="sl sl-ok"><i class="ti ti-printer"></i> Ready to save as PDF</p>
         <p style="font-size:12px;color:#A0E8C8;margin-bottom:10px;line-height:1.6">In the print dialog, choose <strong>Save as PDF</strong> as the destination. Both letters will print on separate pages.</p>
@@ -546,7 +546,7 @@ button:hover{background:var(--surface2)}
         <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Send all three documents to your inbox — useful for saving to your files, sharing with a coach, or reviewing before a compensation conversation.</p>
         <div class="fr" style="align-items:flex-end;gap:8px"><div class="fg" style="flex:1"><label>Your email address</label><input id="export-email" type="email" placeholder="you@example.com" style="width:100%"/></div><button onclick="emailExports()" style="white-space:nowrap;flex-shrink:0;align-self:flex-end"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px"></i> Send documents</button></div>
         <p id="email-status" style="font-size:12px;color:var(--text3);margin-top:6px"></p>
-        <p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Your email is used only to deliver these documents and is not stored or shared. Full delivery coming soon with receipts. Pro.</p>
+        <p style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.6"><i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i> Opens your email client with documents ready to send. Included with your raise case purchase.</p>
       </div>
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="exportTXT()"><i class="ti ti-download" style="font-size:12px;vertical-align:-1px"></i> Download summary (.txt)</button>
@@ -693,7 +693,7 @@ var STYPES={
   ]}
 };
 
-var achN=0,streamN=0,S={},cMode=null,cHist=[],liveSal=null;
+var achN=0,streamN=0,S={},cMode=null,cHist=[],liveSal=null,_rcpUnlocked=false;
 
 function gv(id){var e=document.getElementById(id);return e?e.value||'':'';}
 function gn(id){return parseFloat(gv(id))||0;}
@@ -1296,30 +1296,68 @@ function selPg(p) {
   var btn = document.getElementById('pg-btn');
   if (btn) btn.innerHTML = '<i class="ti ti-lock-open" style="font-size:12px;vertical-align:-1px"></i> ' + (p==='one' ? 'Get PDF — $19' : 'Start Pro — $19/mo');
 }
-function handlePgCheckout() {
-  var em = (document.getElementById('pg-email').value || '').trim();
-  if (!em || em.indexOf('@') < 0) { alert('Please enter your email address — the PDF will be delivered there.'); document.getElementById('pg-email').focus(); return; }
-  var stripeUrl = _prevPgMode === 'one'
-    ? 'https://buy.stripe.com/4gMeVe8IabLIfin8W77N601'
-    : 'https://buy.stripe.com/28E9AUbUm9DAeejfkv7N602';
-  window.location = stripeUrl + '?prefilled_email=' + encodeURIComponent(em);
-  var paywall = document.getElementById('prev-paywall');
-  if (paywall) paywall.innerHTML = '<div class="card-info" style="border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--blue-border);background:var(--blue-dim);font-size:11px;color:var(--text2);line-height:1.5"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px;margin-right:4px;color:var(--blue)"></i><strong style="color:var(--text)">Preview mode — no email sent.</strong> In production, Stripe processes payment and the PDF arrives in your inbox. For now, use Print → Save as PDF below.</div>';
+function openRaiseCasePage() {
+  if (!S || !S.tc) { alert('Please complete your calculation first — click "Calculate my break-even" on the ledger tab.'); return; }
+  var monthsToLabel = { 6:'the last 6 months', 12:'this year', 18:'the last 18 months', 24:'the last 2 years' };
+  var handoff = {
+    name: gv('fname'), title: gv('jtitle'), loc: gv('loc'), co: gv('coname'),
+    mgr: gv('exp-mgr'), skip: gv('exp-skip'),
+    tc: S.tc ? Math.round(S.tc) : 0,
+    be: S.beTarget ? Math.round(S.beTarget) : 0,
+    roi: S.totalRoi ? Math.round(S.totalRoi) : 0,
+    ask: S.salTgt ? Math.round(S.salTgt) : 0,
+    mlo: S.salLo ? Math.round(S.salLo) : 0,
+    mhi: S.salHi ? Math.round(S.salHi) : 0,
+    period: monthsToLabel[S.months] || 'this year',
+    achs: (S.achs || []).map(function(a) {
+      var cat = (a.streams && a.streams.length > 0) ? a.streams[0].label : 'Strategic / other';
+      return { t: a.title, d: a.desc, c: cat, r: Math.round(a.totalRoi || 0) };
+    }),
+    logo: (typeof _expLogo !== 'undefined' && _expLogo ? _expLogo : null)
+  };
+  /* Store on window for direct access fallback */
+  window.rcpHandoff = handoff;
+  /* Open raise case in new tab */
+  var newTab = window.open('raise_case_preview.html', '_blank');
+  /* Send data via postMessage once the tab signals ready */
+  window._rcpNewTab = newTab;
+  window._rcpHandoffData = handoff;
+  /* Show pending state */
+  document.getElementById('prev-paywall').style.display = 'none';
+  document.getElementById('prev-pending').style.display = 'block';
+}
+function _v1DoUnlock() {
+  _rcpUnlocked = true;
+  document.getElementById('prev-pending').style.display = 'none';
+  document.getElementById('prev-paywall').style.display = 'none';
   document.getElementById('prev-print-block').style.display = 'block';
-  /* Unlock skip-level whole doc */
-  var gate = document.getElementById('prev-gate-s');
-  var blur = document.getElementById('prev-doc-s');
+  var gate = document.getElementById('prev-gate-s'), blur = document.getElementById('prev-doc-s');
   if (gate) gate.style.display = 'none';
   if (blur) blur.classList.remove('prev-doc-blur');
-  /* Unlock manager letter bottom */
   var mw = document.getElementById('pr-m-gate-wrap'), mg = document.getElementById('pr-m-gate');
   if (mw) { mw.style.maxHeight = 'none'; mw.style.overflow = 'visible'; }
   if (mg) mg.style.display = 'none';
-  /* Unlock skip-level bottom */
   var sw = document.getElementById('pr-s-gate-wrap'), sg = document.getElementById('pr-s-gate');
   if (sw) { sw.style.maxHeight = 'none'; sw.style.overflow = 'visible'; }
   if (sg) sg.style.display = 'none';
 }
+function _v1ResetGate() {
+  document.getElementById('prev-pending').style.display = 'none';
+  document.getElementById('prev-paywall').style.display = 'block';
+}
+function handlePgCheckout() { openRaiseCasePage(); }
+/* Listen for messages from raise_case_preview tab */
+window.addEventListener('message', function(e) {
+  if (!e.data || typeof e.data !== 'object') return;
+  /* raise_case_preview signals it is ready — send handoff data */
+  if (e.data.type === 'rcpReady' && window._rcpHandoffData) {
+    try { e.source.postMessage({ type: 'rcpHandoff', data: window._rcpHandoffData }, '*'); } catch(ex) {}
+  }
+  /* raise_case_preview signals payment confirmed — unlock v1 */
+  if (e.data.type === 'rcpUnlocked') {
+    _v1DoUnlock();
+  }
+});
 function _unlockPreview() {
   document.getElementById('prev-paywall').style.display = 'none';
   document.getElementById('prev-print-block').style.display = 'block';
@@ -1422,6 +1460,13 @@ function refine(type){
 }
 
 function emailExports(){
+  if (!_rcpUnlocked) {
+    var s=document.getElementById('email-status');
+    if(s){s.style.color='var(--amber)';s.textContent='Purchase your raise case first — email delivery is included with your $19 purchase.';}
+    var pw=document.getElementById('prev-paywall');
+    if(pw){pw.style.display='block';pw.scrollIntoView({behavior:'smooth',block:'center'});}
+    return;
+  }
   var emailEl=document.getElementById('export-email');
   var statusEl=document.getElementById('email-status');
   if(!emailEl||!statusEl)return;
@@ -1482,7 +1527,7 @@ function exportTXT(){
 }
 
 function destroyAll(){
-  S={};achN=0;streamN=0;cMode=null;cHist=[];liveSal=null;
+  S={};achN=0;streamN=0;cMode=null;cHist=[];liveSal=null;_rcpUnlocked=false;window.rcpHandoff=null;window._rcpHandoffData=null;
   document.getElementById('ach-list').innerHTML='';
   document.getElementById('coach-msgs').innerHTML='';
   document.getElementById('coach-session').style.display='none';
