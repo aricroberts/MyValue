@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Legal — receipts. by AricCivicLabs.Org</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+:root{
+  --ink:#1A1410;--paper:#F5F0E8;--paper2:#EDE8DC;--warm:#D4C9B0;
+  --accent:#2C6E49;--accent2:#4A9E71;--accent-light:#E8F5EE;
+  --gold:#C4860A;--gold-light:#FBF0DC;
+  --blue:#1B4F8A;--blue-light:#E8F0FA;
+  --red:#8A2020;--red-light:#FAE8E8;
+  --text:#2A2420;--text2:#5C5248;--text3:#8C8278;
+  --radius:12px;--radius-sm:6px;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+body{background:var(--paper);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--warm)}
+.nav-logo{font-family:'Lora',Georgia,serif;font-size:16px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.nav-logo span{font-style:italic;color:var(--accent)}
+.nav-back{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.nav-back::before{content:'←'}
+
+/* page */
+.page{max-width:720px;margin:0 auto;padding:6rem 2rem 5rem;position:relative;z-index:1}
+
+/* toc */
+.toc-wrap{background:var(--paper2);border:1px solid var(--warm);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:3rem}
+.toc-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem}
+.toc{list-style:none;display:flex;flex-direction:column;gap:.375rem}
+.toc li a{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;transition:color .2s}
+.toc li a:hover{color:var(--accent)}
+.toc-section{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-top:.75rem;margin-bottom:.25rem}
+
+/* header */
+.page-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.875rem}
+.page-title{font-family:'Lora',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:600;line-height:1.15;color:var(--ink);margin-bottom:.75rem;letter-spacing:-.02em}
+.page-meta{font-size:13px;color:var(--text3);margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--warm)}
+.page-meta span{margin-right:1.5rem}
+
+/* doc sections */
+.doc-section{margin-bottom:3.5rem;scroll-margin-top:5rem}
+.doc-section-title{font-family:'Lora',Georgia,serif;font-size:1.35rem;font-weight:600;color:var(--ink);margin-bottom:1.25rem;letter-spacing:-.01em;padding-bottom:.625rem;border-bottom:1px solid var(--warm)}
+.doc-section-subtitle{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;margin-top:1.5rem}
+p{font-size:15px;font-weight:300;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+p strong{font-weight:600;color:var(--text)}
+ul,ol{margin:0 0 1rem 1.25rem}
+li{font-size:15px;font-weight:300;color:var(--text2);line-height:1.75;margin-bottom:.25rem}
+li strong{font-weight:600;color:var(--text)}
+
+/* callout boxes */
+.callout{border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:1.25rem 0;font-size:14px;line-height:1.65}
+.callout-green{background:var(--accent-light);border-left:3px solid var(--accent);color:var(--text)}
+.callout-gold{background:var(--gold-light);border-left:3px solid var(--gold);color:var(--text)}
+.callout-blue{background:var(--blue-light);border-left:3px solid var(--blue);color:var(--text)}
+.callout strong{font-weight:600}
+
+/* key-value list */
+.kv-list{list-style:none;margin:0 0 1rem 0}
+.kv-list li{display:flex;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--warm);font-size:14px;line-height:1.5}
+.kv-list li:last-child{border-bottom:none}
+.kv-key{font-weight:600;color:var(--text);min-width:180px;flex-shrink:0}
+.kv-val{color:var(--text2);font-weight:300}
+
+/* section divider */
+.section-divider{border:none;border-top:1px solid var(--warm);margin:3.5rem 0}
+
+/* footer */
+footer{background:var(--paper2);border-top:1px solid var(--warm);padding:2rem;text-align:center;position:relative;z-index:1}
+footer p{font-size:12px;color:var(--text3);margin-bottom:.375rem}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media(max-width:600px){
+  nav{padding:.875rem 1rem}
+  .page{padding:5rem 1.25rem 4rem}
+  .kv-list li{flex-direction:column;gap:.25rem}
+  .kv-key{min-width:auto}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span>receipts.</span></a>
+  <a class="nav-back" href="index.html"> Home</a>
+</nav>
+
+<div class="page">
+
+  <p class="page-eyebrow">Legal documents</p>
+  <h1 class="page-title">Privacy &amp; Terms</h1>
+  <p class="page-meta">
+    <span>Effective date: June 1, 2025</span>
+    <span>Last updated: June 1, 2025</span>
+  </p>
+
+  <!-- TOC -->
+  <div class="toc-wrap">
+    <p class="toc-label">On this page</p>
+    <ul class="toc">
+      <li class="toc-section">Privacy Policy</li>
+      <li><a href="#what-we-collect">1. What we collect (and don't)</a></li>
+      <li><a href="#how-data-works">2. How your data works in our tools</a></li>
+      <li><a href="#stripe">3. Payments &amp; Stripe</a></li>
+      <li><a href="#cookies">4. Cookies &amp; analytics</a></li>
+      <li><a href="#third-parties">5. Third-party services</a></li>
+      <li><a href="#your-rights">6. Your rights</a></li>
+      <li><a href="#contact-privacy">7. Contact</a></li>
+      <li class="toc-section">Terms of Service</li>
+      <li><a href="#acceptance">8. Acceptance of terms</a></li>
+      <li><a href="#what-receipts-is">9. What receipts. is (and isn't)</a></li>
+      <li><a href="#use-of-tools">10. Acceptable use</a></li>
+      <li><a href="#purchases">11. Purchases &amp; refunds</a></li>
+      <li><a href="#intellectual-property">12. Intellectual property</a></li>
+      <li><a href="#disclaimers">13. Disclaimers &amp; limitations</a></li>
+      <li><a href="#changes">14. Changes to these terms</a></li>
+    </ul>
+  </div>
+
+  <!-- ── PRIVACY POLICY ── -->
+
+  <div class="doc-section" id="what-we-collect">
+    <h2 class="doc-section-title">1. What we collect (and don't)</h2>
+
+    <div class="callout callout-green">
+      <strong>The short version:</strong> The numbers, estimates, and personal details you enter into receipts. tools stay in your browser's memory only. We do not store, transmit, or log your calculation data.
+    </div>
+
+    <p>receipts. is operated by <strong>AricCivicLabs.Org</strong>. Our tools are designed around a strict privacy model: your inputs never leave your device unless you explicitly export or copy them yourself.</p>
+
+    <div class="doc-section-subtitle">What we do not collect</div>
+    <ul>
+      <li>Salary figures, ROI estimates, or any financial data you enter into our calculators</li>
+      <li>Employer names, job titles, or company information</li>
+      <li>Grant data, program metrics, or donor information entered into nonprofit tools</li>
+      <li>Team data, project values, or business financial data</li>
+      <li>Any calculation results or generated documents</li>
+    </ul>
+
+    <div class="doc-section-subtitle">What we may collect</div>
+    <ul>
+      <li><strong>Contact form submissions</strong> — if you reach out via our contact form, we receive your name, email, and message via Formspree</li>
+      <li><strong>Payment information</strong> — handled entirely by Stripe; see Section 3</li>
+      <li><strong>Basic analytics</strong> — aggregate, anonymized page visit data; see Section 4</li>
+    </ul>
+  </div>
+
+  <div class="doc-section" id="how-data-works">
+    <h2 class="doc-section-title">2. How your data works in our tools</h2>
+
+    <p>All receipts. calculators, coaches, and tools operate entirely in your browser using JavaScript. Here is exactly what that means:</p>
+
+    <ul class="kv-list">
+      <li><span class="kv-key">Storage</span><span class="kv-val">JavaScript memory (RAM) only. Data exists only while the page is open.</span></li>
+      <li><span class="kv-key">Persistence</span><span class="kv-val">None. Closing or refreshing the tab destroys all data permanently.</span></li>
+      <li><span class="kv-key">localStorage / sessionStorage</span><span class="kv-val">Not used. We do not write to browser storage.</span></li>
+      <li><span class="kv-key">Cookies (tool data)</span><span class="kv-val">Not used for tool data. See Section 4 for analytics cookies.</span></li>
+      <li><span class="kv-key">Server transmission</span><span class="kv-val">Your calculation data is never sent to any server.</span></li>
+      <li><span class="kv-key">Destroy function</span><span class="kv-val">Every tool includes a "Destroy session" button that clears all JS variables and resets the UI immediately.</span></li>
+      <li><span class="kv-key">AI coach calls</span><span class="kv-val">When you use the AI coach features, your inputs are sent to Anthropic's API to generate responses. No identifying information (name, employer, financial figures) is required for coaching. Anthropic's privacy policy applies to those interactions.</span></li>
+      <li><span class="kv-key">Exports</span><span class="kv-val">JSON and PDF exports are generated client-side only. Files are created in your browser and downloaded directly to your device. We never receive a copy.</span></li>
+    </ul>
+
+    <div class="callout callout-gold">
+      <strong>A note on AI features:</strong> When you use built-in coaching features, your conversation turns are sent to Anthropic's Claude API. We recommend not including highly sensitive personal identifiers (Social Security numbers, full legal names with employer details, etc.) in coaching prompts. The tools are designed so that anonymized or role-based inputs ("a software engineer in healthcare") work just as well as specific ones.
+    </div>
+  </div>
+
+  <div class="doc-section" id="stripe">
+    <h2 class="doc-section-title">3. Payments &amp; Stripe</h2>
+
+    <p>Purchases on receipts. are processed by <strong>Stripe, Inc.</strong> When you click a purchase button, you are redirected to Stripe's hosted checkout. We do not see, store, or handle your payment card details at any point.</p>
+
+    <p>Stripe may collect and process:</p>
+    <ul>
+      <li>Your name, email address, and billing address</li>
+      <li>Payment card details (stored and processed by Stripe, not by us)</li>
+      <li>Browser and device information for fraud prevention</li>
+    </ul>
+
+    <p>Stripe's processing is governed by the <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a>. We receive from Stripe only the confirmation that a payment was completed and the email address you provided, which we use to send your receipt.</p>
+
+    <div class="doc-section-subtitle">What you get after purchase</div>
+    <p>After a successful payment, your purchased documents are unlocked in your current browser session. Because our tools do not store data between sessions, you should download or copy your documents before closing the tab. We are not able to re-deliver unlocked document content after your session ends, though you may purchase again if needed. See Section 11 for the refund policy.</p>
+  </div>
+
+  <div class="doc-section" id="cookies">
+    <h2 class="doc-section-title">4. Cookies &amp; analytics</h2>
+
+    <p>receipts. may use lightweight, privacy-respecting analytics to understand how our tools are used in aggregate. This helps us improve the product.</p>
+
+    <ul>
+      <li>We do not use advertising cookies or sell data to advertisers</li>
+      <li>Any analytics we use are aggregate and anonymized — no individual profiles</li>
+      <li>We do not use tracking pixels or cross-site tracking</li>
+    </ul>
+
+    <p>You can block or clear cookies using your browser's built-in controls without any loss of tool functionality, since tool data is not stored in cookies.</p>
+  </div>
+
+  <div class="doc-section" id="third-parties">
+    <h2 class="doc-section-title">5. Third-party services</h2>
+
+    <ul class="kv-list">
+      <li><span class="kv-key">Stripe</span><span class="kv-val">Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a></span></li>
+      <li><span class="kv-key">Anthropic (Claude API)</span><span class="kv-val">AI coaching features. Inputs sent to Claude are governed by <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">anthropic.com/privacy</a></span></li>
+      <li><span class="kv-key">Formspree</span><span class="kv-val">Contact form submissions. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></span></li>
+      <li><span class="kv-key">Google Fonts</span><span class="kv-val">Typography delivery. Subject to Google's privacy policy.</span></li>
+    </ul>
+
+    <p>We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+  </div>
+
+  <div class="doc-section" id="your-rights">
+    <h2 class="doc-section-title">6. Your rights</h2>
+
+    <p>Because receipts. tools do not store your personal or financial data on our servers, most standard data deletion requests are satisfied automatically — the data was never collected. For any data we do hold (contact form submissions, Stripe transaction records), you may:</p>
+
+    <ul>
+      <li>Request to know what personal data we hold about you</li>
+      <li>Request deletion of contact form or transaction records</li>
+      <li>Withdraw consent for any communications</li>
+    </ul>
+
+    <p>To exercise any of these rights, email us at <a href="mailto:aricroberts@gmail.com">aricroberts@gmail.com</a>. We will respond within 30 days.</p>
+  </div>
+
+  <div class="doc-section" id="contact-privacy">
+    <h2 class="doc-section-title">7. Privacy contact</h2>
+
+    <p>Questions about this Privacy Policy or our data practices:</p>
+    <p><strong>AricCivicLabs.Org</strong><br/>
+    Email: <a href="mailto:aricroberts@gmail.com">aricroberts@gmail.com</a></p>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ── TERMS OF SERVICE ── -->
+
+  <div class="doc-section" id="acceptance">
+    <h2 class="doc-section-title">8. Acceptance of terms</h2>
+
+    <p>By accessing or using receipts. tools at this website, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the tools.</p>
+    <p>These Terms apply to all tools operated under the receipts. brand by AricCivicLabs.Org, including ROI calculators, career transition tools, coaching tools, and any associated documents and exports.</p>
+  </div>
+
+  <div class="doc-section" id="what-receipts-is">
+    <h2 class="doc-section-title">9. What receipts. is (and isn't)</h2>
+
+    <div class="callout callout-blue">
+      <strong>Important:</strong> receipts. is a self-assessment and communication tool. All outputs are based on self-reported estimates and publicly available benchmark data. They are not financial advice, legal advice, professional valuations, or audited calculations.
+    </div>
+
+    <p>receipts. provides tools to help you:</p>
+    <ul>
+      <li>Estimate and structure the value of your contributions to an employer, project, or organization</li>
+      <li>Prepare for compensation or funding conversations</li>
+      <li>Organize and communicate career and professional data</li>
+      <li>Practice communication and presentation skills</li>
+    </ul>
+
+    <p>receipts. does <strong>not</strong> provide:</p>
+    <ul>
+      <li>Guaranteed salary outcomes or compensation benchmarks</li>
+      <li>Legal, financial, tax, or employment advice</li>
+      <li>Audited or certified financial calculations</li>
+      <li>Any assurance that documents generated will achieve a particular outcome</li>
+    </ul>
+
+    <p>All ROI estimates, benchmarks, and figures are self-reported or drawn from publicly available data. Your employer, funder, or counterpart may assess value differently. Use receipts. outputs as a starting point for conversation, not as final or authoritative figures.</p>
+  </div>
+
+  <div class="doc-section" id="use-of-tools">
+    <h2 class="doc-section-title">10. Acceptable use</h2>
+
+    <p>You agree to use receipts. tools only for lawful purposes and in ways consistent with their intent. You agree not to:</p>
+
+    <ul>
+      <li>Use the tools to create fraudulent, misleading, or materially false documents</li>
+      <li>Misrepresent the source or authority of any generated document (e.g., representing an estimate as an audited figure)</li>
+      <li>Attempt to reverse-engineer, scrape, or reproduce the tools for commercial redistribution without permission</li>
+      <li>Use the tools in any way that violates applicable laws or regulations</li>
+    </ul>
+
+    <p>receipts. tools are intended for personal, professional, and organizational self-assessment. You are responsible for the accuracy of the information you input and for how you use or share the outputs.</p>
+  </div>
+
+  <div class="doc-section" id="purchases">
+    <h2 class="doc-section-title">11. Purchases &amp; refunds</h2>
+
+    <div class="doc-section-subtitle">What you're purchasing</div>
+    <p>Paid features on receipts. unlock premium document exports (PDFs, formatted reports, letters, grant narratives) generated from your inputs in the current session. These are digital deliverables. Because they are generated and delivered instantly upon payment, they are considered delivered at the moment of unlock.</p>
+
+    <div class="doc-section-subtitle">Refund policy</div>
+    <p>We offer refunds within <strong>48 hours of purchase</strong> if:</p>
+    <ul>
+      <li>The document unlock did not function correctly due to a technical error on our end</li>
+      <li>You were charged but did not receive access</li>
+    </ul>
+    <p>We do not offer refunds for:</p>
+    <ul>
+      <li>Documents successfully unlocked and accessible in your session</li>
+      <li>Outputs you feel did not meet expectations after reviewing them</li>
+      <li>Sessions you closed before downloading your documents</li>
+    </ul>
+    <p>To request a refund, email <a href="mailto:aricroberts@gmail.com">aricroberts@gmail.com</a> within 48 hours of your purchase with your Stripe receipt number.</p>
+
+    <div class="doc-section-subtitle">No subscription auto-renewal</div>
+    <p>All current receipts. purchases are one-time payments. There are no recurring subscriptions that auto-renew at this time. If subscription pricing is introduced in the future, it will be disclosed clearly before purchase.</p>
+  </div>
+
+  <div class="doc-section" id="intellectual-property">
+    <h2 class="doc-section-title">12. Intellectual property</h2>
+
+    <p>The receipts. tools, design, code, and brand are owned by AricCivicLabs.Org. You may not copy, redistribute, or create derivative works from the tools without written permission.</p>
+
+    <p>Documents you generate using the tools — including letters, reports, and narratives — are yours to use for your own personal and professional purposes. We claim no ownership over the content you create using our tools.</p>
+  </div>
+
+  <div class="doc-section" id="disclaimers">
+    <h2 class="doc-section-title">13. Disclaimers &amp; limitations of liability</h2>
+
+    <p>receipts. tools are provided <strong>"as is"</strong> without warranty of any kind. We do not warrant that:</p>
+    <ul>
+      <li>The tools will be error-free or uninterrupted</li>
+      <li>Benchmark data used in calculations reflects current market conditions</li>
+      <li>Any document generated will achieve a specific outcome for you</li>
+    </ul>
+
+    <p>To the fullest extent permitted by law, AricCivicLabs.Org shall not be liable for any indirect, incidental, or consequential damages arising from your use of receipts. tools or reliance on their outputs. Our total liability for any claim arising from a purchase shall not exceed the amount you paid for that transaction.</p>
+
+    <p>receipts. outputs contain only self-reported estimates and publicly available data. All generated documents include a disclaimer to this effect. You are responsible for verifying any figures you present to employers, funders, or other parties.</p>
+  </div>
+
+  <div class="doc-section" id="changes">
+    <h2 class="doc-section-title">14. Changes to these terms</h2>
+
+    <p>We may update these Terms and Privacy Policy from time to time. When we do, we will update the "Last updated" date at the top of this page. Continued use of receipts. tools after changes are posted constitutes acceptance of the revised terms.</p>
+
+    <p>For material changes, we will make reasonable efforts to provide notice (e.g., a notice on the main page). For questions about any changes, email <a href="mailto:aricroberts@gmail.com">aricroberts@gmail.com</a>.</p>
+  </div>
+
+</div><!-- /page -->
+
+<footer>
+  <p><strong>receipts.</strong> by <a href="https://aricciviclabs.org" target="_blank" rel="noopener">AricCivicLabs.Org</a></p>
+  <p style="margin-top:.375rem"><a href="index.html">Home</a> &nbsp;·&nbsp; <a href="mailto:aricroberts@gmail.com">aricroberts@gmail.com</a></p>
+  <p style="margin-top:.875rem;font-size:11px">© 2025 AricCivicLabs.Org. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
