@@ -1489,10 +1489,22 @@ function unlockExport(type) {
 
   /* Check if ledger has been calculated */
   var docId = { grant: 'doc-grant', board: 'doc-board', community: 'doc-community' }[type];
-  var docEl = docId ? document.getElementById(docId) : null;
-  if (!docEl || !docEl.textContent || docEl.textContent === '—') {
-    alert('Complete your impact ledger on tab 3 first — your documents are generated automatically when you calculate.');
-    return;
+  if (type === 'bundle') {
+    /* For bundle, check that at least one doc exists */
+    var anyDoc = ['doc-grant','doc-board','doc-community'].some(function(id) {
+      var e = document.getElementById(id);
+      return e && e.textContent && e.textContent !== '—';
+    });
+    if (!anyDoc) {
+      alert('Complete your impact ledger on tab 3 first — your documents are generated automatically when you calculate.');
+      return;
+    }
+  } else {
+    var docEl = docId ? document.getElementById(docId) : null;
+    if (!docEl || !docEl.textContent || docEl.textContent === '—') {
+      alert('Complete your impact ledger on tab 3 first — your documents are generated automatically when you calculate.');
+      return;
+    }
   }
 
   /* Show modal */
