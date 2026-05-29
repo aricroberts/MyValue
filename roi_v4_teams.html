@@ -284,7 +284,7 @@ button:hover{background:var(--surface2)}
     <div class="card">
       <p class="sl"><i class="ti ti-chart-bar"></i> Team financials</p>
       <div class="fr3">
-        <div class="fg"><label>Total team salary cost ($)</label><input type="number" id="team-salary-total" placeholder="650000" oninput="liveTeam()"/><span class="hint">Sum of all base salaries on the team.</span></div>
+        <div class="fg"><label>Total team salary cost ($)</label><input type="number" id="team-salary-total" placeholder="650000" oninput="liveTeam()"/><span class="hint">Sum of all base salaries. If you enter individual salaries on the Members tab, those are used automatically — no need to enter a total here too.</span></div>
         <div class="fg"><label>Benefits &amp; overhead rate</label>
           <select id="team-benefits" onchange="liveTeam()">
             <option value="0.20">20% — lean</option>
@@ -801,13 +801,33 @@ function fmt(n){if(!isFinite(n)||isNaN(n))return'—';var s=n<0?'-':'';var a=Mat
 function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
 function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h;}
 
+function getMemberSalarySum(){var t=0;for(var mid in members){t+=members[mid].salary||0;}return t;}
+function getEffectiveSalary(){
+  /* If individual member salaries are entered, use their sum — they ARE the team total.
+     Fall back to the manual team-salary-total only when no member salaries exist. */
+  var memberSum=getMemberSalarySum();
+  return memberSum>0?memberSum:gn('team-salary-total');
+}
+
 function liveTeam(){
-  var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
+  var sal=getEffectiveSalary(),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
   var total=sal*(1+ben)+ext;
   var months=parseInt(gv('team-period'))||12;
   var period=total*(months/12);
-  var size=document.querySelectorAll('.member-outer').length;
-  se('tc-total',fmt(total));se('tc-period',fmt(period));se('tc-size',size>0?size:getMemberCount());
+  var size=getMemberCount()||document.querySelectorAll('[id^="mo-"]').length;
+  se('tc-total',fmt(total));se('tc-period',fmt(period));se('tc-size',size>0?size:'—');
+  /* Show/hide auto-sum note on team salary field */
+  var memberSum=getMemberSalarySum();
+  var note=document.getElementById('ts-autosum-note');
+  var tsEl=document.getElementById('team-salary-total');
+  if(memberSum>0){
+    if(!note&&tsEl){note=document.createElement('span');note.id='ts-autosum-note';note.className='hint';note.style.color='var(--teal)';tsEl.parentNode.appendChild(note);}
+    if(note)note.textContent='Using sum of member salaries ('+fmt(memberSum)+') — "Total team salary" field ignored while individual salaries are entered.';
+    if(tsEl){tsEl.style.opacity='.45';tsEl.title='Individual member salaries are being used instead';}
+  } else {
+    if(note)note.textContent='';
+    if(tsEl){tsEl.style.opacity='';tsEl.title='';}
+  }
 }
 function getMemberCount(){return Object.keys(members).length;}
 
@@ -828,6 +848,7 @@ function updateMember(mid){
   var av=document.getElementById('mav-'+mid);
   if(av)av.textContent=name?(name.charAt(0).toUpperCase()):'?';
   rebuildMemberDropdowns();
+  liveTeam();
 }
 
 function deleteMember(mid){
@@ -884,7 +905,7 @@ function updateContribTotal(cid){
 function updateRunning(){
   var contribs=getAllContribs();
   var totalRoi=contribs.reduce(function(s,c){return s+c.totalVal;},0);
-  var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
+  var sal=getEffectiveSalary(),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
   var totalCost=sal*(1+ben)+ext;
   var months=parseInt(gv('team-period'))||12;
   var periodCost=totalCost*(months/12);
@@ -962,7 +983,7 @@ function buildMemberMap(contribs){
 /* ── Ledger ── */
 function calcLedger(){
   document.getElementById('t4').checked=true;
-  var sal=gn('team-salary-total'),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
+  var sal=getEffectiveSalary(),ben=parseFloat(gv('team-benefits'))||0.30,ext=gn('team-extras');
   var totalCost=sal*(1+ben)+ext;
   var months=parseInt(gv('team-period'))||12;
   var periodCost=totalCost*(months/12);
@@ -1396,6 +1417,7 @@ async function startCoach(mode){
   document.getElementById('coach-session').style.display='block';
   document.getElementById('coach-result').style.display='none';
   sh('coach-msgs','<div class="cmsg"><span class="spin"></span> Starting session…</div>');
+  if(!_v4ProUnlocked){var tn0=document.getElementById('coach-turn-notice');var tt0=document.getElementById('coach-turn-txt');if(tn0&&tt0){tn0.style.display='block';tt0.textContent='2 free coaching turns — upgrade for unlimited.';tn0.style.color='var(--text3)';}}
   var sys=CSYS[mode]+'\n\nCurrent team context:\n'+teamContext();
   var ok=false;
   try{
@@ -1420,7 +1442,7 @@ async function sendCoach(){
   if(!_v4ProUnlocked){
     var tn=document.getElementById('coach-turn-notice');
     var tt=document.getElementById('coach-turn-txt');
-    if(tn&&tt){if(_coachTurns===1){tn.style.display='block';tt.textContent='1 of 2 free coaching turns used.';} else{tn.style.display='none';}}
+    if(tn&&tt){if(_coachTurns===1){tn.style.display='block';tt.textContent='1 of 2 free coaching turns used.';tn.style.color='var(--text3)';}else if(_coachTurns>=2){tn.style.display='block';tt.textContent='2 of 2 free turns used — upgrade to continue coaching.';tn.style.color='var(--amber)';}}
   }
   var ok=false;
   try{
