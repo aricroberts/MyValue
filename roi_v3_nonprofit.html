@@ -1550,16 +1550,86 @@ function refreshCommunity(){
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
 function refine(type){
   var map={impact:'doc-impact',donor:'doc-donor',grant:'doc-grant',expansion:'doc-expansion','expansion-copy':'doc-expansion-copy',board:'doc-board',community:'doc-community'};
-  var el=map[type]?document.getElementById(map[type]):null;
+  var docId=map[type]||('doc-'+type);
+  var el=document.getElementById(docId);
+  var content=el?el.textContent:'';
+
   var prompts={
-    impact:'Here is my nonprofit impact report:\n\n'+(el?el.textContent:'')+'\n\nPlease strengthen the language, make the leverage ratio and cost-per-beneficiary more compelling, and suggest any missing impact areas.',
-    donor:'Here is my donor stewardship letter:\n\n'+(el?el.textContent:'')+'\n\nPlease refine — warm but data-confident. Improve the emotional resonance while keeping all the numbers accurate.',
-    grant:'Here is my grant outcomes narrative:\n\n'+(el?el.textContent:'')+'\n\nPlease improve the funder-facing language, strengthen the methodology section, and suggest how to frame the outcomes for a foundation audience.',
-    expansion:'Here is my expansion proposal brief:\n\n'+(el?el.textContent:'')+'\n\nPlease sharpen the investment case, improve the board-facing language, and suggest how to make this more compelling for a major funder conversation.',
-    board:'Here is my board one-pager:\n\n'+(el?el.textContent:'')+'\n\nPlease sharpen the executive summary, make the leverage ratio framing more compelling, and refine the strategic ask to be more specific and actionable for a board audience.',
-    community:'Here is my community impact letter:\n\n'+(el?el.textContent:'')+'\n\nPlease make this warmer and more personal while keeping all numbers accurate. Improve the acknowledgment language and the closing call to continued engagement.'
+    impact:'Here is my nonprofit impact report:\n\n'+content+'\n\nPlease strengthen the language, make the leverage ratio and cost-per-beneficiary more compelling, and suggest any missing impact areas. Return only the revised document text — no preamble, no commentary.',
+    donor:'Here is my donor stewardship letter:\n\n'+content+'\n\nPlease refine — warm but data-confident. Improve the emotional resonance while keeping all the numbers accurate. Return only the revised letter — no preamble, no commentary.',
+    grant:'Here is my grant outcomes narrative:\n\n'+content+'\n\nPlease improve the funder-facing language, strengthen the methodology section, and sharpen the outcomes framing for a foundation audience. Return only the revised document — no preamble, no commentary.',
+    expansion:'Here is my expansion proposal brief:\n\n'+content+'\n\nPlease sharpen the investment case, improve the board-facing language, and make this more compelling for a major funder conversation. Return only the revised document — no preamble, no commentary.',
+    board:'Here is my board one-pager:\n\n'+content+'\n\nPlease sharpen the executive summary, make the leverage ratio framing more compelling, and refine the strategic ask for a board audience. Return only the revised document — no preamble, no commentary.',
+    community:'Here is my community impact letter:\n\n'+content+'\n\nPlease make this warmer and more personal while keeping all numbers accurate. Improve the acknowledgment language and the closing call to continued engagement. Return only the revised letter — no preamble, no commentary.'
   };
-  alert('Copy this prompt and paste it into Claude.ai:\n\n'+(prompts[type]||'Please help me improve this document.'));
+  var prompt=prompts[type]||('Please improve this document:\n\n'+content+'\n\nReturn only the revised text.');
+
+  /* If any doc is unlocked → call Claude inline */
+  var anyUnlocked=Object.keys(_unlockedDocs).some(function(k){return _unlockedDocs[k];});
+  if(anyUnlocked){
+    _refineWithClaude(type, docId, prompt);
+  } else {
+    alert('Copy this prompt and paste it into Claude.ai:\n\n'+prompt);
+  }
+}
+
+async function _refineWithClaude(type, docId, prompt){
+  var el=document.getElementById(docId);
+  if(!el){alert('Document not found.');return;}
+
+  /* Find the brow for this doc and show a spinner on the Refine button */
+  var brow=document.getElementById('brow-'+type)||el.closest('.ecard')||el.parentElement;
+  var refineBtn=null;
+  if(brow&&brow.querySelectorAll){
+    var btns=brow.querySelectorAll('button');
+    for(var i=0;i<btns.length;i++){if(btns[i].textContent.indexOf('Refine')!==-1){refineBtn=btns[i];break;}}
+  }
+  var origLabel=refineBtn?refineBtn.innerHTML:'';
+  if(refineBtn){refineBtn.disabled=true;refineBtn.innerHTML='<i class="ti ti-loader-2" style="font-size:12px;vertical-align:-1px;animation:spin 1s linear infinite"></i> Refining…';}
+
+  /* Add spin keyframes once */
+  if(!document.getElementById('spin-style')){
+    var s=document.createElement('style');s.id='spin-style';
+    s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+    document.head.appendChild(s);
+  }
+
+  /* Show "refining…" state in the doc */
+  var origContent=el.textContent;
+  el.style.opacity='0.45';
+  el.style.borderColor='var(--teal)';
+
+  try {
+    var d=await apiCall({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1200,
+      system:'You are an expert nonprofit communications editor. When given a document to refine, return ONLY the revised document text. Do not include any preamble, explanation, or commentary before or after the document.',
+      messages:[{role:'user',content:prompt}]
+    });
+    var txt=(d.content||[]).map(function(b){return b.type==='text'?b.text:'';}).join('').trim();
+    if(!txt||txt.length<20){throw new Error('empty');}
+
+    /* Write refined content back into the doc element */
+    el.textContent=txt;
+    el.style.opacity='1';
+    el.style.borderColor='var(--green)';
+    setTimeout(function(){el.style.borderColor='';},2000);
+
+    /* Also sync to the tab-6 expansion element if needed */
+    if(type==='expansion'||type==='expansion-copy'){
+      var other=document.getElementById(type==='expansion'?'doc-expansion-copy':'doc-expansion');
+      if(other)other.textContent=txt;
+    }
+
+    if(refineBtn){refineBtn.disabled=false;refineBtn.innerHTML='<i class="ti ti-check" style="font-size:12px;vertical-align:-1px;color:var(--green)"></i> Refined ✓';setTimeout(function(){refineBtn.innerHTML=origLabel;},3000);}
+
+  } catch(e){
+    el.style.opacity='1';
+    el.style.borderColor='';
+    if(refineBtn){refineBtn.disabled=false;refineBtn.innerHTML=origLabel;}
+    /* Graceful fallback */
+    alert('API unavailable — copy this prompt and paste it into Claude.ai:\n\n'+prompt);
+  }
 }
 
 /* ── Paywall / unlock logic ── */
@@ -1676,6 +1746,24 @@ function _applyUnlock(type, showBadge) {
   if (_unlockedDocs['grant'] && _unlockedDocs['board'] && _unlockedDocs['community']) {
     var bc = document.getElementById('bundle-cta');
     if (bc) bc.style.display = 'none';
+  }
+  /* On first unlock: upgrade the free docs with PDF buttons too */
+  var freeDocs = [
+    { brow: null, docType: 'impact',          el: document.getElementById('doc-impact') },
+    { brow: null, docType: 'donor',           el: document.getElementById('doc-donor') },
+    { brow: null, docType: 'expansion',        el: document.getElementById('doc-expansion-copy') }
+  ];
+  for (var fi = 0; fi < freeDocs.length; fi++) {
+    var fd = freeDocs[fi];
+    if (!fd.el) continue;
+    var fdBrow = fd.el.parentElement ? fd.el.parentElement.querySelector('.brow') : null;
+    if (fdBrow && !fdBrow.querySelector('.btn-pdf')) {
+      var fdBtn = document.createElement('button');
+      fdBtn.className = 'btn-pdf';
+      fdBtn.setAttribute('onclick', 'generatePDF("' + fd.docType + '")');
+      fdBtn.innerHTML = '<i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF';
+      fdBrow.appendChild(fdBtn);
+    }
   }
 }
 
