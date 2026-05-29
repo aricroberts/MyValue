@@ -163,6 +163,35 @@ button:hover{background:var(--surface2)}
 .back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
 .back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
 .back-nav label:hover{background:var(--border);color:var(--text)}
+
+/* ── Paywall ── */
+.ecard.gated .dpre{max-height:88px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,black 30%,transparent 100%);mask-image:linear-gradient(to bottom,black 30%,transparent 100%);pointer-events:none;user-select:none}
+.ecard.gated .brow{display:none}
+.doc-paywall{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.875rem 1rem;margin-top:8px}
+.doc-paywall .pw-head{font-size:13px;font-weight:600;color:var(--text);margin:0 0 3px;display:flex;align-items:center;gap:6px}
+.doc-paywall .pw-sub{font-size:12px;color:var(--text2);line-height:1.55;margin:0 0 10px}
+.doc-paywall .pw-btns{display:flex;gap:7px;flex-wrap:wrap}
+.btn-unlock-doc{font-family:inherit;font-size:12px;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--purple);color:#fff}
+.btn-unlock-doc:hover{opacity:.88}
+.btn-unlock-bundle{background:var(--blue);color:#fff}
+.btn-unlock-bundle:hover{opacity:.88}
+.btn-pro{font-family:inherit;font-size:12px;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--purple),var(--teal));color:#fff}
+.btn-pro:hover{opacity:.88}
+.unlock-success{background:var(--green-dim);border:1px solid var(--green-b);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:#A0E8C8;margin-top:8px;display:flex;align-items:center;gap:6px}
+
+/* ── Coach gate ── */
+.coach-gate{background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:var(--radius);padding:1.25rem 1rem;text-align:center;margin-bottom:.875rem}
+.coach-gate .cg-icon{font-size:22px;color:var(--purple);display:block;margin-bottom:8px}
+.coach-gate .cg-title{font-size:14px;font-weight:600;color:var(--text);margin:0 0 4px}
+.coach-gate .cg-sub{font-size:12px;color:var(--text2);line-height:1.55;margin:0 0 12px}
+.coach-gate .cg-btns{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.input-disabled{opacity:.35;pointer-events:none;user-select:none}
+
+/* ── Ledger → exports CTA ── */
+.ledger-pro-banner{background:var(--purple-dim);border:1px solid var(--purple-b);border-radius:var(--radius);padding:1rem 1.125rem;margin-bottom:.875rem}
+.ledger-pro-banner .lpb-head{font-size:13px;font-weight:600;color:var(--purple);margin:0 0 4px;display:flex;align-items:center;gap:6px}
+.ledger-pro-banner .lpb-sub{font-size:12px;color:var(--text2);margin:0 0 10px;line-height:1.55}
+.ledger-pro-banner .lpb-btns{display:flex;gap:7px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -371,6 +400,7 @@ button:hover{background:var(--surface2)}
         <button onclick="sendCoach()" style="flex:1;background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600">Send ↗</button>
         <button onclick="endCoach()">End session</button>
       </div>
+      <p id="coach-turn-notice" style="font-size:11px;color:var(--text3);margin-top:5px;display:none"><i class="ti ti-info-circle" style="font-size:11px;vertical-align:-1px"></i> <span id="coach-turn-txt"></span></p>
       <div id="coach-result" style="display:none;margin-top:.875rem">
         <div class="card card-ok">
           <p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p>
@@ -389,31 +419,31 @@ button:hover{background:var(--surface2)}
         <p class="sl sl-ok"><i class="ti ti-check"></i> All documents generated</p>
         <p style="font-size:12px;color:#A0E8C8;margin:0">Copy any document below or click "Refine" to improve with Claude.</p>
       </div>
-      <div class="ecard">
+      <div class="ecard" id="exp-report">
         <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--purple)"></i> Team ROI report</h3>
         <p>Full team ledger with collective ROI, per-member breakdown, and leadership-facing analysis.</p>
         <div class="dpre" id="doc-report">—</div>
         <div class="brow"><button onclick="cpDoc('doc-report')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('report')">Refine ↗</button></div>
       </div>
-      <div class="ecard">
+      <div class="ecard" id="exp-recognition">
         <h3><i class="ti ti-sparkles" style="font-size:14px;color:var(--teal)"></i> Recognition &amp; spotlight memo</h3>
         <p>Surfaces underrecognized contributors with data-grounded cases for raises, promotions, or public recognition.</p>
         <div class="dpre" id="doc-recognition">—</div>
         <div class="brow"><button onclick="cpDoc('doc-recognition')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('recognition')">Refine ↗</button></div>
       </div>
-      <div class="ecard">
+      <div class="ecard" id="exp-brief">
         <h3><i class="ti ti-mail" style="font-size:14px;color:var(--blue)"></i> Leadership briefing</h3>
         <p>Executive-facing summary framed for the selected audience. ROI, headcount defense, and investment case.</p>
         <div class="dpre" id="doc-brief">—</div>
         <div class="brow"><button onclick="cpDoc('doc-brief')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('brief')">Refine ↗</button></div>
       </div>
-      <div class="ecard">
+      <div class="ecard" id="exp-budget">
         <h3><i class="ti ti-file-text" style="font-size:14px;color:var(--green)"></i> Budget justification memo</h3>
         <p>ROI-grounded memo making the financial case for team budget, headcount, or resource requests.</p>
         <div class="dpre" id="doc-budget">—</div>
         <div class="brow"><button onclick="cpDoc('doc-budget')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('budget')">Refine ↗</button></div>
       </div>
-      <div class="ecard">
+      <div class="ecard" id="exp-individual">
         <h3><i class="ti ti-id-badge" style="font-size:14px;color:var(--amber)"></i> Individual contributor summaries</h3>
         <p>One-page impact summary per team member — shareable with each contributor for their own records and performance conversations.</p>
         <div class="dpre" id="doc-individual">—</div>
@@ -454,6 +484,174 @@ button:hover{background:var(--surface2)}
  *
  * ─────────────────────────────────────────────────────────────────────────── */
 var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← your proxy URL here
+
+/* ── STRIPE CONFIGURATION v4 ─────────────────────────────────────────────────
+ *
+ *  Create products in Stripe Dashboard, then paste Payment Link URLs below.
+ *  Success URL pattern: https://receipts.aricciviclabs.org/roi_v4_teams.html?unlocked=report
+ *  (replace "report" with: recognition | brief | budget | individual | bundle | pro)
+ *
+ *  Suggested pricing:
+ *    report      — Team ROI report              — $19
+ *    recognition — Recognition & spotlight memo — $25
+ *    brief       — Leadership briefing          — $19
+ *    budget      — Budget justification memo    — $25
+ *    individual  — Individual contributor summaries — $29
+ *    bundle      — All 5 documents              — $59
+ *    pro         — Session Pro (all docs + coaching) — $79
+ *
+ * ─────────────────────────────────────────────────────────────────────────── */
+var STRIPE_V4 = {
+  report:      'https://buy.stripe.com/bJedRacYqaHE9Y38W77N60i',
+  recognition: 'https://buy.stripe.com/6oU14o4rU6ro8TZfkv7N60h',
+  brief:       'https://buy.stripe.com/6oUeVe1fI4jg5HNc8j7N60g',
+  budget:      'https://buy.stripe.com/aFabJ21fIaHE6LR8W77N60f',
+  individual:  'https://buy.stripe.com/3cI7sMe2u5nk4DJ6NZ7N60e',
+  bundle:      'https://buy.stripe.com/28EbJ29Me6ro8TZ4FR7N60d',
+  pro:         'https://buy.stripe.com/dRmcN61fI9DA3zF5JV7N60j'
+};
+
+var V4_DOCS = {
+  report:      { title: 'Team ROI report',                   price: '$19', bundleLabel: 'All documents — $59' },
+  recognition: { title: 'Recognition & spotlight memo',      price: '$25', bundleLabel: 'All documents — $59' },
+  brief:       { title: 'Leadership briefing',               price: '$19', bundleLabel: 'All documents — $59' },
+  budget:      { title: 'Budget justification memo',         price: '$25', bundleLabel: 'All documents — $59' },
+  individual:  { title: 'Individual contributor summaries',  price: '$29', bundleLabel: 'All documents — $59' }
+};
+
+/* Unlock state — JS memory only, cleared on destroy */
+var _v4Unlocked = {};
+var _v4ProUnlocked = false;
+var _coachTurns = 0;
+var _coachGateShown = false;
+
+/* ── Apply unlock from Stripe success URL ─────────────────────────────────── */
+(function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var unlocked = params.get('unlocked');
+    if (unlocked) {
+      var allTypes = ['report','recognition','brief','budget','individual'];
+      var types = (unlocked === 'bundle' || unlocked === 'pro') ? allTypes : unlocked.split(',');
+      if (unlocked === 'pro') { _v4ProUnlocked = true; _coachGateShown = false; }
+      for (var i = 0; i < types.length; i++) { var t = types[i].trim(); if (t) _v4Unlocked[t] = true; }
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+      setTimeout(function() {
+        for (var k in _v4Unlocked) { if (_v4Unlocked[k]) _applyV4Unlock(k, false); }
+        if (_v4ProUnlocked) { _removeCoachGate(); }
+      }, 200);
+    }
+  } catch(e) {}
+})();
+
+/* ── Unlock a document ────────────────────────────────────────────────────── */
+function _applyV4Unlock(type, showBanner) {
+  _v4Unlocked[type] = true;
+  var ecardMap = { report:'exp-report', recognition:'exp-recognition', brief:'exp-brief', budget:'exp-budget', individual:'exp-individual' };
+  var ecardId = ecardMap[type]; if (!ecardId) return;
+  var ecard = document.getElementById(ecardId); if (!ecard) return;
+  ecard.classList.remove('gated');
+  var gate = ecard.querySelector('.doc-paywall'); if (gate) gate.remove();
+  if (showBanner !== false) {
+    var banner = document.createElement('div');
+    banner.className = 'unlock-success';
+    banner.innerHTML = '<i class="ti ti-check" style="font-size:13px"></i> Document unlocked — copy or refine below.';
+    var brow = ecard.querySelector('.brow'); if (brow) brow.parentNode.insertBefore(banner, brow);
+    setTimeout(function() { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4000);
+  }
+}
+
+/* ── Build paywall gate HTML ──────────────────────────────────────────────── */
+function _v4GateHTML(type) {
+  var meta = V4_DOCS[type] || { title: 'document', price: '$19', bundleLabel: 'All documents — $59' };
+  var docLink = STRIPE_V4[type] || '';
+  var bundleLink = STRIPE_V4.bundle || '';
+  var proLink = STRIPE_V4.pro || '';
+  var isDoc = docLink.indexOf('YOUR_') !== -1;
+  var isBundle = bundleLink.indexOf('YOUR_') !== -1;
+  var isPro = proLink.indexOf('YOUR_') !== -1;
+  return '<div class="doc-paywall">' +
+    '<p class="pw-head"><i class="ti ti-lock" style="font-size:13px;color:var(--purple)"></i> Unlock to access full document</p>' +
+    '<p class="pw-sub">Get the complete ' + meta.title + ' — formatted, structured, and ready to share with leadership, HR, or your team.</p>' +
+    '<div class="pw-btns">' +
+    (isPro ? '' : '<a href="' + proLink + '" class="btn-pro"><i class="ti ti-crown" style="font-size:12px"></i> Session Pro — $79 · All docs + coaching</a>') +
+    (isDoc ? '<button class="btn-unlock-doc" disabled style="opacity:.45;cursor:not-allowed"><i class="ti ti-lock"></i> ' + meta.price + ' — link not configured</button>'
+           : '<a href="' + docLink + '" class="btn-unlock-doc" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2)"><i class="ti ti-lock-open" style="font-size:12px"></i> This doc — ' + meta.price + '</a>') +
+    (isBundle ? '' : '<a href="' + bundleLink + '" class="btn-unlock-bundle btn-unlock-doc"><i class="ti ti-stack" style="font-size:12px"></i> ' + meta.bundleLabel + '</a>') +
+    '</div></div>';
+}
+
+/* ── Apply paywalls to all visible docs ───────────────────────────────────── */
+function _setupV4Paywalls() {
+  var types = ['report','recognition','brief','budget','individual'];
+  var ecardMap = { report:'exp-report', recognition:'exp-recognition', brief:'exp-brief', budget:'exp-budget', individual:'exp-individual' };
+  for (var i = 0; i < types.length; i++) {
+    var type = types[i];
+    var ecard = document.getElementById(ecardMap[type]); if (!ecard) continue;
+    var existing = ecard.querySelector('.doc-paywall'); if (existing) existing.remove();
+    ecard.classList.remove('gated');
+    if (!_v4Unlocked[type] && !_v4ProUnlocked) {
+      ecard.classList.add('gated');
+      var dpre = ecard.querySelector('.dpre');
+      if (dpre) dpre.insertAdjacentHTML('afterend', _v4GateHTML(type));
+    }
+  }
+}
+
+/* ── Coach gate ───────────────────────────────────────────────────────────── */
+function _showCoachGate() {
+  if (_coachGateShown || _v4ProUnlocked) return;
+  _coachGateShown = true;
+  var proLink = STRIPE_V4.pro || '';
+  var bundleLink = STRIPE_V4.bundle || '';
+  var isPro = proLink.indexOf('YOUR_') !== -1;
+  var isBundle = bundleLink.indexOf('YOUR_') !== -1;
+  var gateHTML = '<div id="coach-gate" class="coach-gate">' +
+    '<i class="ti ti-lock cg-icon"></i>' +
+    '<p class="cg-title">You\'ve used your 2 free coaching turns</p>' +
+    '<p class="cg-sub">Unlock Session Pro to continue this conversation and get all 5 formatted documents for this session.</p>' +
+    '<div class="cg-btns">' +
+    (isPro ? '<span style="font-size:11px;color:var(--text3)">Session Pro link not yet configured.</span>'
+           : '<a href="' + proLink + '" class="btn-pro"><i class="ti ti-crown" style="font-size:12px"></i> Session Pro — $79 · All docs + coaching</a>') +
+    (isBundle ? '' : '<a href="' + bundleLink + '" class="btn-unlock-bundle btn-unlock-doc"><i class="ti ti-stack" style="font-size:12px"></i> All docs only — $59</a>') +
+    '</div></div>';
+  var session = document.getElementById('coach-session'); if (!session) return;
+  session.querySelectorAll('.fg, div[style*="display:flex"]').forEach(function(el) { el.classList.add('input-disabled'); });
+  var msgs = document.getElementById('coach-msgs');
+  if (msgs) msgs.insertAdjacentHTML('afterend', gateHTML);
+}
+
+function _removeCoachGate() {
+  _coachGateShown = false;
+  var gate = document.getElementById('coach-gate'); if (gate) gate.remove();
+  var session = document.getElementById('coach-session'); if (!session) return;
+  session.querySelectorAll('.input-disabled').forEach(function(el) { el.classList.remove('input-disabled'); });
+}
+
+/* ── Ledger → exports CTA banner ──────────────────────────────────────────── */
+function _v4LedgerBanner() {
+  var allUnlocked = _v4ProUnlocked || (Object.keys(_v4Unlocked).length >= 5);
+  var existing = document.getElementById('ledger-pro-banner'); if (existing) existing.remove();
+  if (allUnlocked) return;
+  var proLink = STRIPE_V4.pro || '';
+  var bundleLink = STRIPE_V4.bundle || '';
+  var isPro = proLink.indexOf('YOUR_') !== -1;
+  var isBundle = bundleLink.indexOf('YOUR_') !== -1;
+  var banner = document.createElement('div');
+  banner.id = 'ledger-pro-banner';
+  banner.className = 'ledger-pro-banner';
+  banner.innerHTML =
+    '<p class="lpb-head"><i class="ti ti-crown" style="font-size:13px"></i> Your team ledger is ready — turn it into boardroom-ready documents</p>' +
+    '<p class="lpb-sub">5 formatted reports: ROI report, recognition memo, leadership briefing, budget justification, and individual contributor summaries.</p>' +
+    '<div class="lpb-btns">' +
+    (isPro ? '' : '<a href="' + proLink + '" class="btn-pro"><i class="ti ti-crown" style="font-size:12px"></i> Session Pro — $79 · All docs + coaching</a>') +
+    (isBundle ? '' : '<a href="' + bundleLink + '" class="btn-unlock-bundle btn-unlock-doc"><i class="ti ti-stack" style="font-size:12px"></i> All documents — $59</a>') +
+    '<label for="t6" style="display:inline-flex"><span style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)"><i class="ti ti-eye" style="font-size:12px"></i> Preview docs →</span></label>' +
+    '</div>';
+  var ledgerBlock = document.getElementById('ledger-block'); if (!ledgerBlock) return;
+  var navRow = ledgerBlock.querySelector('.g2');
+  if (navRow) { ledgerBlock.insertBefore(banner, navRow); } else { ledgerBlock.appendChild(banner); }
+}
 
 var _DIRECT   = 'https://api.anthropic.com/v1/messages';
 
@@ -842,15 +1040,74 @@ function genDocs(){
   var dr=document.getElementById('doc-report');if(dr)dr.textContent=report;
   var drec=document.getElementById('doc-recognition');if(drec)drec.textContent=recog;
   var db=document.getElementById('doc-brief');if(db)db.textContent=brief;
+
+  /* ── Budget justification memo ── */
+  var riskLine = mult >= 2
+    ? 'Reducing team size or budget by 10% risks losing approximately '+fmt(S.totalRoi*0.15)+' in documented ROI — a net negative even before accounting for recruitment and ramp costs.'
+    : 'The team is building toward full ROI. Maintaining current investment while adding one or two higher-ROI roles would accelerate the return curve.';
+  var budgetDoc = dt+'\n\nBUDGET JUSTIFICATION MEMO\n'+teamName+' | '+org+'\nPrepared by: '+author+'\n'+'─'.repeat(48)+'\n\n'
+    +'TEAM OVERVIEW\n'+teamName+' is responsible for: '+(gv('team-function')||'[team function]')+'\nPeriod: '+pStr+' | Team size: '+getMemberCount()+' members\n\n'
+    +'FINANCIAL CASE\n• Total team cost this period: '+fmt(periodCost)+'\n• Documented ROI generated: '+fmt(totalRoi)+'\n• Net value created: '+(net>=0?'+':'')+fmt(net)+'\n• ROI multiplier: '+(mult>=1?mult.toFixed(2)+'×':'<1× (additional value streams not yet modeled)')+'\n\n'
+    +'CONTRIBUTION HIGHLIGHTS\n'+cShort+'\n\n'
+    +'INVESTMENT CASE\n'+(mult>=2?'The '+teamName+' returns '+mult.toFixed(1)+'× its cost. This is a strong financial performance that justifies current headcount and supports the case for incremental investment in tools, training, or additional capacity.':mult>=1?'The '+teamName+' is delivering positive returns. Targeted investment in higher-ROI activities or automation of lower-value tasks would improve the multiplier.':'Documented ROI is building. Key contribution streams not yet captured in this model would strengthen the case — the team is likely generating more value than is formally tracked here.')+'\n\n'
+    +'RISK OF UNDERINVESTMENT\n'+riskLine+'\n\n'
+    +'Data: Self-reported estimates and public benchmarks only. Not a substitute for formal financial analysis.';
+  var dbud=document.getElementById('doc-budget');if(dbud)dbud.textContent=budgetDoc;
+
+  /* ── Individual contributor summaries ── */
+  var memberList2 = getMemberList();
+  var indivLines = [dt+'\n\nINDIVIDUAL CONTRIBUTOR SUMMARIES\n'+teamName+' | '+org+'\nPrepared by: '+author+' | Period: '+pStr+'\n'+'─'.repeat(48)];
+  if(memberList2.length===0){
+    indivLines.push('\nNo individual member data entered. Add team members on tab 2 and attribute contributions to specific members to generate individual summaries.');
+  } else {
+    memberList2.forEach(function(m){
+      var mContribs=[];
+      document.querySelectorAll('.contrib-outer').forEach(function(co){
+        var cid=parseInt(co.id.replace('co-',''));
+        var assignedTo=document.getElementById('assigned-'+cid);
+        if(assignedTo&&(assignedTo.value===String(m.id)||assignedTo.value==='team')){
+          var cTitle=document.getElementById('ct-title-'+cid);
+          var cRoi=document.getElementById('cs-roi-total-'+cid);
+          if(cTitle)mContribs.push({title:cTitle.value||'Contribution '+cid,roi:cRoi&&cRoi.dataset.roi?parseFloat(cRoi.dataset.roi)||0:0});
+        }
+      });
+      var mTotal=mContribs.reduce(function(s,c){return s+c.roi;},0);
+      var mSal=m.salary>0?'\nAnnual salary: '+fmt(m.salary):'';
+      indivLines.push('\n──────────────────────────────────────────────────');
+      indivLines.push('MEMBER: '+(m.name||'Member '+m.id)+(m.role?' · '+m.role:'')+mSal);
+      indivLines.push('Documented ROI this period: '+fmt(mTotal));
+      if(mContribs.length>0){
+        indivLines.push('\nContributions:');
+        mContribs.forEach(function(c,i){indivLines.push('  '+(i+1)+'. '+c.title+(c.roi>0?' — '+fmt(c.roi):''));});
+      } else {
+        indivLines.push('No individual contributions attributed to this member yet.');
+      }
+      indivLines.push('\nNote: This summary reflects self-reported estimates. Use in performance conversations with appropriate context.');
+    });
+  }
+  indivLines.push('\n'+'─'.repeat(48)+'\nGenerated by receipts. · Self-reported estimates only.');
+  var dind=document.getElementById('doc-individual');if(dind)dind.textContent=indivLines.join('\n');
+
+  _setupV4Paywalls();
+  _v4LedgerBanner();
 }
 
 function cpDoc(id){var e=document.getElementById(id);if(!e)return;navigator.clipboard.writeText(e.textContent||'').catch(function(){});e.style.outline='1px solid var(--green)';setTimeout(function(){e.style.outline='';},1400);}
 function refine(type){
-  var ids={report:'doc-report',recognition:'doc-recognition',brief:'doc-brief'};
+  if (!_v4ProUnlocked && !_v4Unlocked[type]) {
+    document.getElementById('t6').checked=true;
+    var ecardMap={report:'exp-report',recognition:'exp-recognition',brief:'exp-brief',budget:'exp-budget',individual:'exp-individual'};
+    var ecard=document.getElementById(ecardMap[type]);
+    if(ecard){ecard.style.outline='2px solid var(--purple)';ecard.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){ecard.style.outline='';},2200);}
+    return;
+  }
+  var ids={report:'doc-report',recognition:'doc-recognition',brief:'doc-brief',budget:'doc-budget',individual:'doc-individual'};
   var prompts={
-    report:'Here is my team ROI report:\n\n'+document.getElementById('doc-report').textContent+'\n\nPlease strengthen the language, make the ROI case more compelling, and suggest any missing contribution categories.',
-    recognition:'Here is my team recognition memo:\n\n'+document.getElementById('doc-recognition').textContent+'\n\nPlease refine — make each case more compelling, add specificity, and suggest how to frame these conversations.',
-    brief:'Here is my leadership briefing:\n\n'+document.getElementById('doc-brief').textContent+'\n\nPlease refine for the stated audience. Make it more executive-facing, sharpen the bottom line, and suggest any missing strategic framing.'
+    report:'Here is my team ROI report:\n\n'+((document.getElementById('doc-report')||{}).textContent||'')+'\n\nPlease strengthen the language, make the ROI case more compelling, and suggest any missing contribution categories.',
+    recognition:'Here is my team recognition memo:\n\n'+((document.getElementById('doc-recognition')||{}).textContent||'')+'\n\nPlease refine — make each case more compelling, add specificity, and suggest how to frame these conversations.',
+    brief:'Here is my leadership briefing:\n\n'+((document.getElementById('doc-brief')||{}).textContent||'')+'\n\nPlease refine for the stated audience. Make it more executive-facing, sharpen the bottom line, and suggest any missing strategic framing.',
+    budget:'Here is my budget justification memo:\n\n'+((document.getElementById('doc-budget')||{}).textContent||'')+'\n\nPlease strengthen the financial case, make the ROI argument more persuasive, and suggest how to handle the most common objections.',
+    individual:'Here are my individual contributor summaries:\n\n'+((document.getElementById('doc-individual')||{}).textContent||'')+'\n\nPlease improve each summary — make the contribution narrative more specific and compelling for performance conversations.'
   };
   alert('Copy this prompt and paste it into Claude.ai:\n\n'+(prompts[type]||'Please help me improve this document.'));
 }
@@ -876,6 +1133,8 @@ var COPENERS={
 
 async function startCoach(mode){
   cMode=mode;cHist=[];
+  _coachTurns=0;_coachGateShown=false;
+  var existingGate=document.getElementById('coach-gate');if(existingGate)existingGate.remove();
   document.getElementById('coach-idle').style.display='none';
   document.getElementById('coach-session').style.display='block';
   document.getElementById('coach-result').style.display='none';
@@ -894,11 +1153,18 @@ async function startCoach(mode){
 
 async function sendCoach(){
   var input=document.getElementById('coach-input').value.trim();if(!input)return;
+  if(_coachGateShown && !_v4ProUnlocked){return;}
   document.getElementById('coach-input').value='';
   var msgs=document.getElementById('coach-msgs');
   msgs.innerHTML+='<div class="cmsg">'+input.replace(/\n/g,'<br>')+'</div>';
   msgs.innerHTML+='<div class="cmsg cmai" id="ctyping"><span class="spin"></span> Thinking…</div>';
   cHist.push({role:'user',content:input});
+  _coachTurns++;
+  if(!_v4ProUnlocked){
+    var tn=document.getElementById('coach-turn-notice');
+    var tt=document.getElementById('coach-turn-txt');
+    if(tn&&tt){if(_coachTurns===1){tn.style.display='block';tt.textContent='1 of 2 free coaching turns used.';} else{tn.style.display='none';}}
+  }
   var ok=false;
   try{
     var sys=CSYS[cMode]+'\n\nCurrent team context:\n'+teamContext();
@@ -964,6 +1230,7 @@ async function sendCoach(){
     alert('API unavailable. Copy this and paste it into Claude.ai:\n\nI am in a '+names[cMode]+' coaching session.\n\nTeam context:\n'+teamContext()+'\n\nConversation:\n'+hist+'\n\nPlease continue as the coach.');
     msgs.innerHTML+='<div class="cmsg cmai" style="background:var(--amber-dim);border-color:var(--amber-b);color:#F5D79E">API unavailable — copy the prompt from the alert and continue in Claude.ai.</div>';
   }
+  if(_coachTurns>=2&&!_v4ProUnlocked){_showCoachGate();}
 }
 
 
@@ -1045,6 +1312,9 @@ function exportTXT(){
 
 function destroyAll(){
   S={};memberN=0;contribN=0;streamN=0;cMode=null;cHist=[];members={};
+  _v4Unlocked={};_v4ProUnlocked=false;_coachTurns=0;_coachGateShown=false;
+  var gate=document.getElementById('coach-gate');if(gate)gate.remove();
+  var banner=document.getElementById('ledger-pro-banner');if(banner)banner.remove();
   document.getElementById('member-list').innerHTML='';
   document.getElementById('contrib-list').innerHTML='';
   document.getElementById('coach-msgs').innerHTML='';
