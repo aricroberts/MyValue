@@ -693,6 +693,17 @@ var STYPES={
 };
 
 var achN=0,streamN=0,S={},cMode=null,cHist=[],liveSal=null,_rcpUnlocked=false;
+var _V1_SS_KEY = 'rcpts_v1_unlocked';
+/* Restore unlock state from sessionStorage on load */
+(function() {
+  try {
+    if (sessionStorage.getItem(_V1_SS_KEY) === '1') {
+      _rcpUnlocked = true;
+      /* DOM not ready yet — defer visual unlock */
+      window.addEventListener('DOMContentLoaded', function() { _v1DoUnlock(); });
+    }
+  } catch(e) {}
+})();
 
 function gv(id){var e=document.getElementById(id);return e?e.value||'':'';}
 function gn(id){return parseFloat(gv(id))||0;}
@@ -1319,6 +1330,7 @@ function openRaiseCasePage() {
 }
 function _v1DoUnlock() {
   _rcpUnlocked = true;
+  try { sessionStorage.setItem(_V1_SS_KEY, '1'); } catch(e) {}
   document.getElementById('prev-pending').style.display = 'none';
   document.getElementById('prev-paywall').style.display = 'none';
   document.getElementById('prev-print-block').style.display = 'block';
@@ -1518,7 +1530,7 @@ function exportTXT(){
 }
 
 function destroyAll(){
-  S={};achN=0;streamN=0;cMode=null;cHist=[];liveSal=null;_rcpUnlocked=false;window.rcpHandoff=null;window._rcpHandoffData=null;
+  S={};achN=0;streamN=0;cMode=null;cHist=[];liveSal=null;_rcpUnlocked=false;try{sessionStorage.removeItem(_V1_SS_KEY);}catch(e){}window.rcpHandoff=null;window._rcpHandoffData=null;
   document.getElementById('ach-list').innerHTML='';
   document.getElementById('coach-msgs').innerHTML='';
   document.getElementById('coach-session').style.display='none';

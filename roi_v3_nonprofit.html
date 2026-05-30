@@ -1693,35 +1693,49 @@ var STRIPE_LINKS = {
 /* Prefill Stripe email if we have it */
 var _checkoutEmail = '';
 
-var _unlockedDocs = {};
+var _unlockedDocs = {};try{sessionStorage.removeItem(_V3_SS_KEY);}catch(e){}
+var _V3_SS_KEY = 'rcpts_v3_unlocked';
 
-/* ── Apply unlock from URL params (return from Stripe success) ── */
+/* ── Apply unlock from URL params + sessionStorage (Stripe success) ── */
 (function() {
   try {
     var params = new URLSearchParams(window.location.search);
     var unlocked = params.get('unlocked');
     var email = params.get('email');
     if (email) _checkoutEmail = decodeURIComponent(email);
+
+    /* Merge URL params into sessionStorage */
+    var stored = [];
+    try { stored = JSON.parse(sessionStorage.getItem(_V3_SS_KEY) || '[]'); } catch(e) { stored = []; }
     if (unlocked) {
-      var types = unlocked.split(',');
-      for (var i = 0; i < types.length; i++) {
-        var t = types[i].trim();
+      var fromUrl = unlocked.split(',');
+      for (var j = 0; j < fromUrl.length; j++) {
+        var u = fromUrl[j].trim();
+        if (u && stored.indexOf(u) === -1) stored.push(u);
+      }
+      try { sessionStorage.setItem(_V3_SS_KEY, JSON.stringify(stored)); } catch(e) {}
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+    }
+
+    /* Apply everything in sessionStorage */
+    if (stored.length) {
+      var freshReturn = !!unlocked;
+      for (var i = 0; i < stored.length; i++) {
+        var t = stored[i].trim();
         if (t) _applyUnlock(t, false);
       }
-      /* Clean URL */
-      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
-      /* Show the exports tab after a beat so DOM is ready */
       setTimeout(function() {
         var t8 = document.getElementById('t8');
         if (t8) t8.checked = true;
-        /* Show success banner */
-        var eb = document.getElementById('exp-block');
-        if (eb) {
-          var banner = document.createElement('div');
-          banner.className = 'card card-ok';
-          banner.style.cssText = 'margin-bottom:.875rem';
-          banner.innerHTML = '<p class="sl sl-ok"><i class="ti ti-check"></i> Documents unlocked</p><p style="font-size:13px;color:#A0E8C8;margin:0;line-height:1.6">Thank you! Your premium documents are ready below. Copy them, refine with AI, or use the <strong>Download PDF</strong> button to save a branded, print-ready PDF.</p>';
-          eb.insertBefore(banner, eb.firstChild);
+        if (freshReturn) {
+          var eb = document.getElementById('exp-block');
+          if (eb) {
+            var banner = document.createElement('div');
+            banner.className = 'card card-ok';
+            banner.style.cssText = 'margin-bottom:.875rem';
+            banner.innerHTML = '<p class=\"sl sl-ok\"><i class=\"ti ti-check\"></i> Documents unlocked</p><p style=\"font-size:13px;color:#A0E8C8;margin:0;line-height:1.6\">Thank you! Your premium documents are ready below. Copy them, refine with AI, or use the <strong>Download PDF</strong> button to save a branded, print-ready PDF.</p>';
+            eb.insertBefore(banner, eb.firstChild);
+          }
         }
       }, 200);
     }

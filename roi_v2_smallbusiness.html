@@ -522,23 +522,34 @@ var V2_DOCS = {
 };
 
 /* Unlock state — persists in JS memory for the session */
-var _v2Unlocked = {};
+var _v2Unlocked = {};try{sessionStorage.removeItem(_V2_SS_KEY);}catch(e){}
+var _V2_SS_KEY = 'rcpts_v2_unlocked';
 
-/* ── Apply unlock from Stripe success URL ─────────────────────────────────── */
+/* ── Apply unlock from URL params + sessionStorage (Stripe success) ── */
 (function() {
   try {
     var params = new URLSearchParams(window.location.search);
     var unlocked = params.get('unlocked');
+
+    /* Merge URL params into sessionStorage */
+    var stored = [];
+    try { stored = JSON.parse(sessionStorage.getItem(_V2_SS_KEY) || '[]'); } catch(e) { stored = []; }
     if (unlocked) {
-      var types = unlocked === 'bundle'
-        ? ['report','ret','hire','ai']
-        : unlocked.split(',');
-      for (var i = 0; i < types.length; i++) {
-        var t = types[i].trim();
+      var fromUrl = (unlocked === 'bundle') ? ['report','ret','hire','ai'] : unlocked.split(',');
+      for (var j = 0; j < fromUrl.length; j++) {
+        var u = fromUrl[j].trim();
+        if (u && stored.indexOf(u) === -1) stored.push(u);
+      }
+      try { sessionStorage.setItem(_V2_SS_KEY, JSON.stringify(stored)); } catch(e) {}
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+    }
+
+    /* Apply everything in sessionStorage */
+    if (stored.length) {
+      for (var i = 0; i < stored.length; i++) {
+        var t = stored[i].trim();
         if (t) _v2Unlocked[t] = true;
       }
-      try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
-      /* If docs are already generated, apply unlock visuals now */
       setTimeout(function() {
         for (var k in _v2Unlocked) { if (_v2Unlocked[k]) _applyV2Unlock(k, false); }
       }, 200);

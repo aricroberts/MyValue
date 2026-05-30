@@ -575,22 +575,39 @@ var V4_DOCS = {
 };
 
 /* Unlock state — JS memory only, cleared on destroy */
-var _v4Unlocked = {};
+var _v4Unlocked = {};try{sessionStorage.removeItem(_V4_SS_KEY);}catch(e){}
 var _v4ProUnlocked = false;
 var _coachTurns = 0;
 var _coachGateShown = false;
+var _V4_SS_KEY = 'rcpts_v4_unlocked';
 
-/* ── Apply unlock from Stripe success URL ─────────────────────────────────── */
+/* ── Apply unlock from URL params + sessionStorage (Stripe success) ── */
 (function() {
   try {
     var params = new URLSearchParams(window.location.search);
     var unlocked = params.get('unlocked');
+    var allTypes = ['report','recognition','brief','budget','individual'];
+
+    /* Merge URL params into sessionStorage */
+    var stored = [];
+    try { stored = JSON.parse(sessionStorage.getItem(_V4_SS_KEY) || '[]'); } catch(e) { stored = []; }
     if (unlocked) {
-      var allTypes = ['report','recognition','brief','budget','individual'];
-      var types = (unlocked === 'bundle' || unlocked === 'pro') ? allTypes : unlocked.split(',');
-      if (unlocked === 'pro') { _v4ProUnlocked = true; _coachGateShown = false; }
-      for (var i = 0; i < types.length; i++) { var t = types[i].trim(); if (t) _v4Unlocked[t] = true; }
+      var fromUrl = (unlocked === 'bundle' || unlocked === 'pro') ? allTypes.concat(['pro']) : unlocked.split(',');
+      for (var j = 0; j < fromUrl.length; j++) {
+        var u = fromUrl[j].trim();
+        if (u && stored.indexOf(u) === -1) stored.push(u);
+      }
+      try { sessionStorage.setItem(_V4_SS_KEY, JSON.stringify(stored)); } catch(e) {}
       try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+    }
+
+    /* Apply everything in sessionStorage */
+    if (stored.length) {
+      for (var i = 0; i < stored.length; i++) {
+        var t = stored[i].trim();
+        if (t === 'pro') { _v4ProUnlocked = true; _coachGateShown = false; }
+        else if (t) { _v4Unlocked[t] = true; }
+      }
       setTimeout(function() {
         for (var k in _v4Unlocked) { if (_v4Unlocked[k]) _applyV4Unlock(k, false); }
         if (_v4ProUnlocked) { _removeCoachGate(); }
