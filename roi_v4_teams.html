@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <meta name="grammarly-disable-extension" content="true">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -163,6 +165,8 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .dprev-callout{background:#F0EDE6;border-left:3px solid #C8C4BE;border-radius:0 4px 4px 0;padding:8px 12px;font-size:11px;color:#555;line-height:1.6;margin-bottom:10px}
 .dprev-footer{padding:8px 20px;background:#EBE8E1;border-top:1px solid #E5E1DB;font-size:10px;color:#999;font-family:'DM Sans',sans-serif}
 .brow{display:flex;gap:7px;flex-wrap:wrap}
+.btn-pdf{background:var(--teal-dim);border:1px solid var(--teal-b);color:var(--teal);font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:500;font-family:inherit}
+.btn-pdf:hover{background:var(--teal);color:#08100F;border-color:var(--teal)}
 .step-banner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;margin-bottom:.875rem}
 
 button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
@@ -624,10 +628,19 @@ function _applyV4Unlock(type, showBanner) {
   var ecard = document.getElementById(ecardId); if (!ecard) return;
   ecard.classList.remove('gated');
   var gate = ecard.querySelector('.doc-paywall'); if (gate) gate.remove();
+  /* Add PDF download button to brow */
+  var brow2 = ecard.querySelector('.brow');
+  if (brow2 && !brow2.querySelector('.btn-pdf')) {
+    var pdfBtn = document.createElement('button');
+    pdfBtn.className = 'btn-pdf';
+    pdfBtn.setAttribute('onclick', 'generatePDF("' + type + '")');
+    pdfBtn.innerHTML = '<i class="ti ti-file-type-pdf" style="font-size:12px;vertical-align:-1px"></i> Download PDF';
+    brow2.appendChild(pdfBtn);
+  }
   if (showBanner !== false) {
     var banner = document.createElement('div');
     banner.className = 'unlock-success';
-    banner.innerHTML = '<i class="ti ti-check" style="font-size:13px"></i> Document unlocked — copy or refine below.';
+    banner.innerHTML = '<i class="ti ti-check" style="font-size:13px"></i> Document unlocked — copy, refine, or download PDF below.';
     var brow = ecard.querySelector('.brow'); if (brow) brow.parentNode.insertBefore(banner, brow);
     setTimeout(function() { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4000);
   }
@@ -1605,6 +1618,104 @@ function exportTXT(){
     var blob=new Blob([lines.join('\n')],{type:'text/plain'});
     var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='receipts-v4-'+new Date().toISOString().slice(0,10)+'.txt';a.click();URL.revokeObjectURL(url);
   }catch(e){alert('Download not supported in this browser.');}
+}
+
+
+function generatePDF(docType) {
+  if (!window.jspdf) { alert('PDF library not loaded. Please refresh and try again.'); return; }
+  var jsPDF = window.jspdf.jsPDF;
+
+  var docIdMap = {
+    report: 'doc-report', recognition: 'doc-recognition',
+    brief: 'doc-brief', budget: 'doc-budget', individual: 'doc-individual'
+  };
+  var docTitles = {
+    report:      'Team Impact Report',
+    recognition: 'Recognition & Spotlight Memo',
+    brief:       'Leadership Briefing',
+    budget:      'Budget Justification Memo',
+    individual:  'Individual Contributor Summaries'
+  };
+  var docEl = document.getElementById(docIdMap[docType] || docType);
+  var rawText = docEl ? (docEl.textContent || docEl.innerText || '') : '';
+  if (!rawText || rawText.indexOf('Complete your team') !== -1) {
+    alert('Document not generated yet — complete your team ledger on tab 4 first.');
+    return;
+  }
+
+  var content = rawText;
+  var teamName = gv('team-name') || 'Team';
+  var author = gv('team-author') || '';
+  var docTitle = docTitles[docType] || 'Team Document';
+
+  var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  var pageW = 210, pageH = 297, margin = 18, contentW = pageW - margin * 2;
+
+  function addHeader() {
+    doc.setFillColor(10, 9, 26);
+    doc.rect(0, 0, pageW, 26, 'F');
+    doc.setTextColor(155, 139, 248);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('receipts.', margin, 11);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(110, 100, 160);
+    doc.text('v4 · Teams', margin, 17);
+    doc.setTextColor(223, 220, 255);
+    doc.setFontSize(8.5);
+    doc.setFont('helvetica', 'bold');
+    doc.text(teamName, pageW - margin, 10, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(110, 100, 160);
+    doc.text(new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }), pageW - margin, 16.5, { align: 'right' });
+    doc.setDrawColor(155, 139, 248);
+    doc.setLineWidth(0.6);
+    doc.line(0, 26, pageW, 26);
+  }
+
+  function addFooter(pageNum, totalPages) {
+    doc.setFillColor(242, 238, 228);
+    doc.rect(0, pageH - 12, pageW, 12, 'F');
+    doc.setDrawColor(212, 201, 176);
+    doc.setLineWidth(0.3);
+    doc.line(0, pageH - 12, pageW, pageH - 12);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(140, 130, 120);
+    doc.text('receipts. by AricCivicLabs.Org · Self-reported estimates only · Not professional financial or legal advice', margin, pageH - 5);
+    doc.text('Page ' + pageNum + ' of ' + totalPages, pageW - margin, pageH - 5, { align: 'right' });
+  }
+
+  addHeader();
+  var y = 34;
+  var lines = content.split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (y > pageH - 18) { doc.addPage(); addHeader(); y = 34; }
+    if (/^[─═\-]{4,}/.test(line.trim())) {
+      doc.setDrawColor(200, 200, 190); doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y); y += 4; continue;
+    }
+    if (!line.trim()) { y += 3; continue; }
+    var isHeader = (line === line.toUpperCase() && line.trim().length > 4 && !/^\$|^\u2022|^\d\./.test(line.trim()));
+    if (isHeader) {
+      if (y > 38) y += 1.5;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(155, 139, 248);
+    } else {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(40, 40, 40);
+    }
+    var wrapped = doc.splitTextToSize(line, contentW);
+    for (var wi = 0; wi < wrapped.length; wi++) {
+      if (y > pageH - 18) { doc.addPage(); addHeader(); y = 34; }
+      doc.text(wrapped[wi], margin, y); y += 5;
+    }
+  }
+  var totalPages = doc.internal.getNumberOfPages();
+  for (var p = 1; p <= totalPages; p++) { doc.setPage(p); addFooter(p, totalPages); }
+  var safeTeam = teamName.replace(/[^a-z0-9]/gi, '-').toLowerCase().slice(0, 30);
+  doc.save('receipts-v4-' + docType + '-' + safeTeam + '-' + new Date().toISOString().slice(0, 10) + '.pdf');
 }
 
 function destroyAll(){
