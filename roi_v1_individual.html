@@ -215,6 +215,21 @@ button:hover{background:var(--surface2)}
 </style>
 </head>
 <body>
+<!-- ── Legal notice bar ── -->
+<style>
+#rcp-notice{position:sticky;top:0;z-index:9999;background:#1A1F2E;border-bottom:1px solid #2A3050;padding:.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:'DM Sans',system-ui,sans-serif;font-size:12px;color:#8A90A8;line-height:1.4}
+#rcp-notice a{color:#4A9EFF;text-decoration:none}
+#rcp-notice a:hover{text-decoration:underline}
+#rcp-notice-close{background:none;border:none;color:#4A5070;cursor:pointer;font-size:16px;line-height:1;padding:0 0 0 .5rem;flex-shrink:0}
+#rcp-notice-close:hover{color:#8A90A8}
+</style>
+<div id="rcp-notice">
+  <span>By using this tool you agree to our <a href="legal.html" target="_blank">Privacy &amp; Terms</a>. All outputs are self-reported estimates only &mdash; not professional, legal, or financial advice.</span>
+  <button id="rcp-notice-close" aria-label="Dismiss" onclick="this.parentElement.style.display='none';try{sessionStorage.setItem('rcpNotice','1')}catch(e){}">&#x2715;</button>
+</div>
+<script>try{if(sessionStorage.getItem('rcpNotice')==='1'){var n=document.getElementById('rcp-notice');if(n)n.style.display='none';}}catch(e){}</script>
+<!-- ── /Legal notice bar ── -->
+
 <!-- ── Auth bar ── -->
 <div id="rcp-auth-bar">
   <span id="rcp-auth-status">Not signed in.</span>
@@ -1901,5 +1916,15 @@ document.addEventListener('change', _lsSchedule);
 /* Restore after DOM is ready — short delay lets liveB() run first */
 setTimeout(_lsRestore, 80);
 </script>
+
+<footer style="background:#13161F;border-top:1px solid #22263A;padding:1.25rem 2rem;text-align:center;font-family:'DM Sans',system-ui,sans-serif">
+  <p style="font-size:12px;color:#4A5070;margin:0">
+    <strong style="color:#6A7090">receipts.</strong> by <a href="https://aricciviclabs.org" target="_blank" rel="noopener" style="color:#4A9EFF;text-decoration:none">AricCivicLabs.Org</a>
+    &nbsp;&middot;&nbsp; <a href="index.html" style="color:#4A5070;text-decoration:none">Home</a>
+    &nbsp;&middot;&nbsp; <a href="legal.html" style="color:#4A5070;text-decoration:none">Privacy &amp; Terms</a>
+    &nbsp;&middot;&nbsp; <a href="mailto:aricroberts@gmail.com" style="color:#4A5070;text-decoration:none">Contact</a>
+  </p>
+  <p style="font-size:11px;color:#343650;margin:.375rem 0 0">&copy; 2026 AricCivicLabs.Org &middot; All outputs are self-reported estimates only. Not professional advice.</p>
+</footer>
 </body>
 </html>
