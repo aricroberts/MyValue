@@ -206,6 +206,36 @@ button:hover{background:var(--surface2)}
 /* Styled doc preview shell */
 .doc-preview{background:#fff;border-radius:var(--radius-sm);overflow:hidden;border:1px solid #E4DFD8;font-family:'DM Sans',system-ui,sans-serif}
 .doc-preview.placeholder{display:flex;align-items:center;justify-content:center;min-height:100px;font-size:12px;color:#AAA;font-style:italic}
+
+/* Full unlocked document styles */
+.doc-full{background:#fff;border-radius:var(--radius-sm);overflow:hidden;border:1px solid #E4DFD8;font-family:'DM Sans',system-ui,sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.doc-full .dp-hdr{background:#162820;padding:18px 20px}
+.doc-full .dp-type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.doc-full .dp-org{font-size:16px;font-weight:600;color:#fff;line-height:1.2;margin:0}
+.doc-full .dp-sub{font-size:11px;color:rgba(255,255,255,.45);margin:3px 0 0}
+.doc-full .dp-stats{display:grid;grid-template-columns:repeat(3,1fr);background:#FAFAF8;border-bottom:1px solid #ECEAE6}
+.doc-full .dp-stat{padding:10px 14px;border-right:1px solid #ECEAE6}
+.doc-full .dp-stat:last-child{border-right:none}
+.doc-full .dp-stat-lbl{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#AAA;margin-bottom:2px}
+.doc-full .dp-stat-val{font-size:14px;font-weight:600;color:#1C2822;font-family:'DM Mono',monospace}
+.doc-full .dp-body{padding:18px 20px;color:#2A2A2A;font-size:13px;line-height:1.75}
+.doc-full .dp-body p{margin-bottom:10px}
+.doc-full .dp-section{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#AAA;margin:14px 0 6px;padding-top:10px;border-top:1px solid #ECEAE6}
+.doc-full .dp-section:first-child{margin-top:0;padding-top:0;border-top:none}
+.doc-full .dp-prog{margin-bottom:10px;padding:8px 10px;background:#F9F7F3;border-radius:4px;border-left:2px solid #1A7A55}
+.doc-full .dp-prog-title{font-weight:600;color:#1A1A1A;font-size:12px;margin-bottom:2px}
+.doc-full .dp-prog-desc{color:#555;font-size:11.5px;line-height:1.5;margin-bottom:3px}
+.doc-full .dp-prog-val{font-size:11px;color:#1A7A55;font-weight:600}
+.doc-full .dp-prog-streams{font-size:11px;color:#777;margin-top:4px;line-height:1.6}
+.doc-full .dp-total-row{display:flex;justify-content:space-between;align-items:center;background:#F0FAF5;border:1px solid #B8E8D0;border-radius:4px;padding:8px 12px;margin:10px 0}
+.doc-full .dp-total-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1A7A55}
+.doc-full .dp-total-val{font-size:15px;font-weight:700;color:#1A7A55;font-family:'DM Mono',monospace}
+.doc-full .dp-method{background:#F5F2EC;border-radius:4px;padding:10px 12px;font-size:11px;color:#666;line-height:1.6;margin-top:8px}
+.doc-full .dp-method strong{color:#444}
+.doc-full .dp-sig{margin-top:14px;padding-top:12px;border-top:1px solid #ECEAE6;font-size:12px;color:#666;line-height:1.7}
+.doc-full .dp-sig strong{color:#1A1A1A;font-size:14px}
+.doc-full .dp-disclaimer{padding:10px 20px;background:#F9F7F3;border-top:1px solid #ECEAE6;font-size:10px;color:#AAA;line-height:1.5}
+.doc-full .dp-footer-bar{padding:8px 20px;background:#F0FAF5;border-top:1px solid #B8E8D0;display:flex;justify-content:space-between;font-size:9px;color:#A0C8B8;font-weight:600;letter-spacing:.04em}
 .dp-hdr{background:#162820;padding:14px 16px}
 .dp-type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
 .dp-org{font-size:14px;font-weight:600;color:#fff;line-height:1.2;margin:0}
@@ -715,6 +745,7 @@ button:hover{background:var(--surface2)}
           <div class="dpre-gate-wrap" id="dpre-gate-grant">
             <div class="doc-preview placeholder" id="preview-grant">Complete your impact ledger to see a preview</div>
             <div class="dpre" id="doc-grant" style="display:none">—</div>
+            <div id="doc-grant-styled" style="display:none"></div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('grant')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Grant Narrative → $19</button>
               <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
@@ -730,6 +761,7 @@ button:hover{background:var(--surface2)}
           <div class="dpre-gate-wrap" id="dpre-gate-board">
             <div class="doc-preview placeholder" id="preview-board">Complete your impact ledger to see a preview</div>
             <div class="dpre" id="doc-board" style="display:none">—</div>
+            <div id="doc-board-styled" style="display:none"></div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('board')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Board One-Pager → $19</button>
               <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
@@ -765,6 +797,7 @@ button:hover{background:var(--surface2)}
           <div class="dpre-gate-wrap" id="dpre-gate-community" style="max-height:360px">
             <div class="doc-preview placeholder" id="preview-community">Complete your impact ledger to see a preview</div>
             <div class="dpre" id="doc-community" style="display:none">—</div>
+            <div id="doc-community-styled" style="display:none"></div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('community')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Community Letter → $19</button>
               <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
@@ -777,8 +810,10 @@ button:hover{background:var(--surface2)}
         <div class="ecard">
           <h3><i class="ti ti-file-analytics" style="font-size:14px;color:var(--green)"></i> Impact &amp; outcomes report</h3>
           <p>Full program ledger, leverage ratio, cost-per-beneficiary, and mission ROI — grant-ready formatting with complete SROI methodology. Suitable for grant reports, annual reviews, and funder conversations.</p>
-          <div class="dpre-gate-wrap" id="dpre-gate-impact" style="max-height:1440px">
-            <div class="dpre" id="doc-impact">—</div>
+          <div class="dpre-gate-wrap" id="dpre-gate-impact" style="max-height:480px">
+            <div class="doc-preview placeholder" id="preview-impact">Complete your impact ledger to see a preview</div>
+            <div class="dpre" id="doc-impact" style="display:none">—</div>
+            <div id="doc-impact-styled" style="display:none"></div>
             <div class="dpre-gate-fade">
               <button class="dpre-lock-pill" onclick="unlockExport('impact')"><i class="ti ti-lock" style="font-size:12px"></i> Unlock Impact Report → $19</button>
               <span class="dpre-lock-price">One-time · or $9 in the $35 bundle</span>
@@ -1482,10 +1517,238 @@ function genDocPreviews(){
 
   /* ── Community Impact Letter ── handled by refreshCommunity() */
 
+
+/* ── Render full styled document after unlock ────────────────────────────── */
+function renderUnlockedDoc(type) {
+  var org=gv('org-name')||'[Organization]';
+  var contact=gv('org-contact')||'[Contact]';
+  var loc=gv('org-loc')||'';
+  var mission=gv('org-mission')||'[mission]';
+  var ein=gv('org-ein')||'';
+  var statusLabel={'yes':'501(c)(3)','pending':'Pending 501(c)(3)','fiscal':'Fiscally sponsored','no':'Other nonprofit'}[gv('org-501')]||'Nonprofit';
+  var budget=S.budget||0,totalImpact=S.totalImpact||0,lev=S.lev||0,cpb=S.cpb||0;
+  var direct=S.direct||0,indirect=S.indirect||0,progs=S.progs||[];
+  var months=S.months||12;
+  var yr=new Date().getFullYear();
+  var pStr=months===12?String(yr):months<12?'Last '+months+' months':'Last '+(months/12).toFixed(1)+' years';
+  var levStr=lev>=1?lev.toFixed(2)+'x':'<1x';
+  var dt=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function fmt2(n){return n?'$'+Math.round(n).toLocaleString():'--';}
+
+  var DISCLAIMER = 'This document was generated using receipts. self-assessment tools at receipts.aricciviclabs.org. All figures are self-reported estimates based on the user\'s own recollection and publicly available benchmark data. This document has not been verified, audited, or endorsed by any employer, organization, or third party. Recipients should treat all figures as estimates and verify independently before relying on them for funding, employment, financial, or legal decisions.';
+
+  var docFooter =
+    '<div class="dp-disclaimer">'+esc(DISCLAIMER)+'</div>'+
+    '<div class="dp-footer-bar"><span>receipts. - receipts.aricciviclabs.org</span><span>'+esc(org)+' - '+pStr+'</span></div>';
+
+  function progRows(maxN, showStreams) {
+    var html = '';
+    var limit = maxN || progs.length;
+    for (var i = 0; i < Math.min(progs.length, limit); i++) {
+      var p = progs[i];
+      var streamsHtml = '';
+      if (showStreams && p.streams && p.streams.length) {
+        streamsHtml = '<div class="dp-prog-streams">';
+        for (var si = 0; si < p.streams.length; si++) {
+          streamsHtml += '&rsaquo; ' + esc(p.streams[si].label) + ': ' + fmt2(p.streams[si].val) + '<br/>';
+        }
+        streamsHtml += '</div>';
+      }
+      html +=
+        '<div class="dp-prog">'+
+          '<div class="dp-prog-title">'+(i+1)+'. '+esc(p.title)+'</div>'+
+          (p.desc?'<div class="dp-prog-desc">'+esc(p.desc)+'</div>':'')+
+          streamsHtml+
+          '<div class="dp-prog-val">Documented impact: '+fmt2(p.totalVal)+
+            (p.progBudget>0?' &nbsp;&middot;&nbsp; Leverage: '+(p.totalVal/p.progBudget).toFixed(2)+'x':'')+
+          '</div>'+
+        '</div>';
+    }
+    return html;
+  }
+
+  function statBar(l1,v1,l2,v2,l3,v3) {
+    return '<div class="dp-stats">'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">'+l1+'</div><div class="dp-stat-val">'+v1+'</div></div>'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">'+l2+'</div><div class="dp-stat-val">'+v2+'</div></div>'+
+      '<div class="dp-stat"><div class="dp-stat-lbl">'+l3+'</div><div class="dp-stat-val">'+v3+'</div></div>'+
+      '</div>';
+  }
+
+  var html = '';
+
+  if (type === 'grant') {
+    html =
+      '<div class="doc-full">'+
+      '<div class="dp-hdr">'+
+        '<div class="dp-type">Grant Outcomes Narrative</div>'+
+        '<div class="dp-org">'+esc(org)+'</div>'+
+        '<div class="dp-sub">'+esc(statusLabel)+(ein?' &middot; EIN: '+esc(ein):'')+' &middot; Reporting period: '+pStr+(loc?' &middot; '+esc(loc):'')+' &middot; SROI Methodology</div>'+
+      '</div>'+
+      statBar('Total SROI Value',fmt2(totalImpact),'Mission Leverage',levStr,'Direct Beneficiaries',direct>0?direct.toLocaleString():'--')+
+      '<div class="dp-body">'+
+        '<div class="dp-section">Organization Summary</div>'+
+        '<p>'+esc(org)+' is a '+esc(statusLabel)+' organization advancing '+esc(mission)+(loc?' in '+esc(loc):'')+'. During '+pStr.toLowerCase()+', '+esc(org)+' invested '+fmt2(budget)+' across '+(progs.length||'--')+' program'+(progs.length!==1?'s':'')+', generating approximately '+fmt2(totalImpact)+' in documented mission value -- a leverage ratio of '+levStr+'.</p>'+
+        (direct>0?'<p>The organization directly served <strong>'+direct.toLocaleString()+'</strong> people'+(indirect>0?', with an estimated <strong>'+indirect.toLocaleString()+'</strong> additional indirect beneficiaries':'')+' during this period.'+(cpb>0?' Cost per direct beneficiary: <strong>'+fmt2(cpb)+'</strong>.':'')+' </p>':'')+
+        '<div class="dp-section">Section: Program Outcomes and Impact</div>'+
+        progRows(null, true)+
+        '<div class="dp-total-row">'+
+          '<span class="dp-total-lbl">Total Documented Mission Value</span>'+
+          '<span class="dp-total-val">'+fmt2(totalImpact)+'</span>'+
+        '</div>'+
+        '<div class="dp-section">Methodology</div>'+
+        '<div class="dp-method"><strong>SROI Methodology:</strong> Impact values are estimated using Social Return on Investment (SROI) methodology. Each figure is confidence-weighted based on the strength of causal evidence. Valuations draw from EPA Benefit-Cost Analysis guidelines, BLS wage data, and published SROI benchmarks for comparable interventions. All figures represent conservative, confidence-weighted estimates.</div>'+
+        '<div class="dp-sig">Prepared: <strong>'+dt+'</strong><br/>Contact: <strong>'+esc(contact)+'</strong><br/>Organization: <strong>'+esc(org)+'</strong></div>'+
+      '</div>'+
+      docFooter+
+      '</div>';
+
+  } else if (type === 'board') {
+    var strategicAsk = budget>0 ? 'a budget investment of '+fmt2(Math.round(budget*1.2)) : fmt2(Math.round(totalImpact*0.1))+' in unrestricted capacity funding';
+    html =
+      '<div class="doc-full">'+
+      '<div class="dp-hdr">'+
+        '<div class="dp-type">Board Impact One-Pager</div>'+
+        '<div class="dp-org">'+esc(org)+'</div>'+
+        '<div class="dp-sub">Prepared by: '+esc(contact)+(loc?' &middot; '+esc(loc):'')+' &middot; '+pStr+'</div>'+
+      '</div>'+
+      statBar('Mission Leverage',levStr,'Total Investment',fmt2(budget),'Lives Touched',direct>0?direct.toLocaleString():'--')+
+      '<div class="dp-body">'+
+        '<div class="dp-section">Our Mission in Numbers</div>'+
+        '<p style="font-size:14px;font-weight:600;color:#1A1A1A;line-height:1.5">For every $1 invested in '+esc(org)+', we generate <span style="color:#1A7A55">$'+lev.toFixed(2)+'</span> in documented mission value.</p>'+
+        '<p>Total investment: <strong>'+fmt2(budget)+'</strong> &middot; Total documented impact: <strong style="color:#1A7A55">'+fmt2(totalImpact)+'</strong>'+(cpb>0?' &middot; Cost per beneficiary: <strong>'+fmt2(cpb)+'</strong>':'')+' </p>'+
+        (direct>0?'<p>Direct lives touched: <strong>'+direct.toLocaleString()+'</strong>'+(indirect>0?' &middot; Community reach: <strong>'+indirect.toLocaleString()+'</strong>':'')+' </p>':'')+
+        '<div class="dp-section">Program Highlights</div>'+
+        progRows(3, false)+
+        '<div class="dp-section">Strategic Ask</div>'+
+        '<p>To sustain and grow this impact, we are requesting board support for '+strategicAsk+'. This investment is projected to maintain our leverage ratio of <strong>'+levStr+'</strong> and expand services to an additional '+(direct>0?Math.round(direct*0.25).toLocaleString():'[N]')+' beneficiaries.</p>'+
+        '<div class="dp-section">Why Now</div>'+
+        '<p>'+esc(mission)+' is a growing need'+(loc?' in '+esc(loc):'')+'. Our track record demonstrates that we can convert investment into documented, measurable change. The data above represents conservative, confidence-weighted estimates -- the real impact is broader.</p>'+
+        '<div class="dp-sig">Prepared: <strong>'+dt+'</strong><br/>'+esc(contact)+' &middot; '+esc(org)+'</div>'+
+      '</div>'+
+      docFooter+
+      '</div>';
+
+  } else if (type === 'impact') {
+    html =
+      '<div class="doc-full">'+
+      '<div class="dp-hdr">'+
+        '<div class="dp-type">Impact &amp; Outcomes Report &mdash; '+pStr+'</div>'+
+        '<div class="dp-org">'+esc(org)+'</div>'+
+        '<div class="dp-sub">'+esc(statusLabel)+(ein?' &middot; EIN: '+esc(ein):'')+' &middot; '+esc(loc)+' &middot; Prepared by: '+esc(contact)+'</div>'+
+      '</div>'+
+      statBar('Mission Leverage',levStr,'Total Impact Value',fmt2(totalImpact),'Cost / Beneficiary',cpb>0?fmt2(cpb):'--')+
+      '<div class="dp-body">'+
+        '<div class="dp-section">Organization Summary</div>'+
+        '<p><strong>Mission focus:</strong> '+esc(mission)+'<br/>'+
+        '<strong>Annual budget:</strong> '+fmt2(budget)+' &middot; <strong>Direct beneficiaries:</strong> '+(direct>0?direct.toLocaleString():'--')+(indirect>0?' &middot; <strong>Indirect beneficiaries:</strong> '+indirect.toLocaleString():'')+' </p>'+
+        '<div class="dp-section">Mission Math</div>'+
+        '<div class="dp-total-row">'+
+          '<span class="dp-total-lbl">Mission Leverage Ratio</span>'+
+          '<span class="dp-total-val">'+levStr+'</span>'+
+        '</div>'+
+        '<p>Total program investment: <strong>'+fmt2(budget)+'</strong><br/>Total documented impact value: <strong style="color:#1A7A55">'+fmt2(totalImpact)+'</strong>'+(cpb>0?'<br/>Cost per direct beneficiary: <strong>'+fmt2(cpb)+'</strong>':'')+' </p>'+
+        '<div class="dp-section">Program Impact Ledger</div>'+
+        progRows(null, true)+
+        '<div class="dp-total-row">'+
+          '<span class="dp-total-lbl">Total Documented Impact Value</span>'+
+          '<span class="dp-total-val">'+fmt2(totalImpact)+'</span>'+
+        '</div>'+
+        '<div class="dp-section">Methodology Note</div>'+
+        '<div class="dp-method">All impact values are confidence-weighted estimates using SROI methodology, EPA BCA tables, and publicly available social return data. Figures represent the best available approximation of mission value and are not financial returns. Each stream is independently valued and weighted by causal evidence strength before aggregation.</div>'+
+        '<div class="dp-sig">Prepared: <strong>'+dt+'</strong> &middot; '+esc(org)+(ein?' &middot; EIN: '+esc(ein):'')+' <br/>'+esc(contact)+'</div>'+
+      '</div>'+
+      docFooter+
+      '</div>';
+
+  } else if (type === 'community') {
+    var recipient2 = gv('comm-recipient')||'Friend, Partner, and Volunteer';
+    var rel2 = gv('comm-rel')||'general';
+    var contribution2 = gv('comm-contribution')||'';
+    var note2 = gv('comm-note')||'';
+    var pShortHtml = '';
+    for (var ci=0;ci<progs.length;ci++) { pShortHtml += '<div class="dp-prog"><div class="dp-prog-title">&rsaquo; '+esc(progs[ci].title)+'</div><div class="dp-prog-val">'+fmt2(progs[ci].totalVal)+' in documented community value</div></div>'; }
+    var relLabels2={donor:'Major Donor Letter',volunteer:'Volunteer Appreciation Letter',partner:'Partner Acknowledgment',board:'Board Member Letter',grant:'Grant Funder Report',general:'Community Impact Letter'};
+    var contribDisplays2={
+      donor:'Your generous gift -- <strong>'+esc(contribution2)+'</strong> -- made it possible for us to advance',
+      volunteer:'The time you dedicated -- <strong>'+esc(contribution2)+'</strong> -- drives',
+      partner:'Your partnership and <strong>'+esc(contribution2)+'</strong> extend our reach in advancing',
+      board:'Your leadership and <strong>'+esc(contribution2)+'</strong> shaped our work advancing',
+      grant:'The <strong>'+esc(contribution2)+'</strong> directly funded our mission to advance',
+      general:'Your support -- <strong>'+esc(contribution2)+'</strong> -- advances'
+    };
+    var closings3={
+      donor:'Your investment is what makes this work financially possible. We are honored by your trust and committed to earning it every day.',
+      volunteer:'Your time is the most generous gift of all. Every hour you gave created ripple effects we can see in the numbers above -- and many we cannot measure.',
+      partner:'Partnerships like ours multiply what either of us could do alone. We are proud to work alongside you and grateful for every way you have shown up for this mission.',
+      board:'Thank you for your governance, your counsel, and your belief in this work. The numbers above are a direct reflection of the strategy you helped shape.',
+      grant:'Grant support like yours allows us to plan with confidence and serve more people. We look forward to continuing to demonstrate impact worthy of your investment.',
+      general:'None of this is possible without the people who show up -- to give, to volunteer, to partner, and to believe that '+esc(mission)+' is work worth doing.'
+    };
+    var levDisp3=lev>=1?lev.toFixed(2)+'x':'<1x';
+    html =
+      '<div class="doc-full">'+
+      '<div class="dp-hdr">'+
+        '<div class="dp-type">'+(relLabels2[rel2]||'Community Impact Letter')+'</div>'+
+        '<div class="dp-org">'+esc(org)+'</div>'+
+        '<div class="dp-sub">'+(loc?esc(loc)+' &middot; ':'')+pStr+'</div>'+
+      '</div>'+
+      '<div class="dp-stats">'+
+        '<div class="dp-stat"><div class="dp-stat-lbl">Community Impact</div><div class="dp-stat-val">'+fmt2(totalImpact)+'</div></div>'+
+        '<div class="dp-stat"><div class="dp-stat-lbl">People Reached</div><div class="dp-stat-val">'+(direct>0?direct.toLocaleString():'--')+'</div></div>'+
+        '<div class="dp-stat"><div class="dp-stat-lbl">Mission Leverage</div><div class="dp-stat-val">'+levDisp3+'</div></div>'+
+      '</div>'+
+      '<div class="dp-body">'+
+        '<p>Dear <strong>'+esc(recipient2)+'</strong>,</p>'+
+        (contribution2?'<p>'+(contribDisplays2[rel2]||contribDisplays2.general)+' '+esc(mission)+(loc?' in '+esc(loc):'')+'. </p>':'')+
+        '<p>Because of you, '+esc(org)+(loc?'\'s work in '+esc(loc)+' ':' ')+'made a measurable difference in '+pStr.toLowerCase()+'.</p>'+
+        '<div class="dp-section">What We Accomplished Together</div>'+
+        pShortHtml+
+        '<p>Combined, our programs created approximately <strong style="color:#1A7A55">'+fmt2(totalImpact)+'</strong> in documented community value -- a leverage ratio of <strong>'+levDisp3+'</strong>.'+(direct>0?' We reached <strong>'+direct.toLocaleString()+'</strong> people directly'+(indirect>0?', with ripple effects touching an estimated <strong>'+indirect.toLocaleString()+'</strong> more':'')+'.':'')+' </p>'+
+        (note2?'<p style="font-style:italic;color:#444">'+esc(note2)+'</p>':'')+
+        '<p>'+(closings3[rel2]||closings3.general)+'</p>'+
+        '<div class="dp-sig">With gratitude,<br/><strong>'+esc(contact)+'</strong><br/>'+esc(org)+'</div>'+
+      '</div>'+
+      docFooter+
+      '</div>';
+  }
+
+  if (html) {
+    var el = document.getElementById('doc-'+type+'-styled');
+    if (el) { el.innerHTML = html; el.style.display = 'block'; }
+    var prev = document.getElementById('preview-'+type);
+    if (prev) prev.style.display = 'none';
+    var dpre = document.getElementById('doc-'+type);
+    if (dpre) dpre.style.display = 'none';
+  }
+}
+
   var gp=document.getElementById('preview-grant');
   if(gp){gp.className='doc-preview';gp.innerHTML=grantHTML;}
   var bp=document.getElementById('preview-board');
   if(bp){bp.className='doc-preview';bp.innerHTML=boardHTML;}
+
+  /* ── Impact report preview (blurred teaser) ── */
+  var impactPreviewHTML=
+    '<div class="dp-hdr">'+
+      '<div class="dp-type">Impact &amp; Outcomes Report</div>'+
+      '<div class="dp-org">'+e2(org)+'</div>'+
+      '<div class="dp-sub">'+e2(statusLabel)+(ein?' &middot; EIN: '+e2(ein):'')+' &middot; '+pStr+(loc?' &middot; '+e2(loc):'')+' &middot; SROI Methodology</div>'+
+    '</div>'+
+    stats('Mission Leverage',levStr,'Total Impact',fmt(totalImpact),'Cost / Beneficiary',cpb>0?fmt(cpb):'—')+
+    '<div class="dp-body">'+
+      '<div class="dp-section">Organization Summary</div>'+
+      '<p><strong>Mission:</strong> '+e2(mission)+'<br/><strong>Budget:</strong> '+fmt(budget)+' &middot; <strong>Beneficiaries:</strong> '+(direct>0?direct.toLocaleString():'—')+'</p>'+
+      '<div class="dp-section">Program Impact Ledger</div>'+
+      (progs.length>0?'<div class="dp-prog"><div class="dp-prog-title">1. '+e2(progs[0].title)+'</div><div class="dp-prog-desc">'+e2(progs[0].desc)+'</div><div class="dp-prog-val">Documented impact: '+fmt(progs[0].totalVal)+'</div></div>':'')+
+      (progs.length>1?'<div class="dp-prog"><div class="dp-prog-title">2. '+e2(progs[1].title)+'</div><div class="dp-prog-val">Documented impact: '+fmt(progs[1].totalVal)+'</div></div>':'')+
+      '<div class="dp-section">Methodology Note</div>'+
+      '<p style="font-size:11px;color:#666">All impact values are confidence-weighted SROI estimates...</p>'+
+    '</div>';
+  var ip=document.getElementById('preview-impact');
+  if(ip){ip.className='doc-preview';ip.innerHTML=impactPreviewHTML;}
 }
 
 function refreshCommunity(){
@@ -1772,6 +2035,8 @@ function _applyUnlock(type, showBadge) {
       var fade = dpg.querySelector('.dpre-gate-fade');
       if (fade) fade.style.display = 'none';
     }
+    /* Render the full styled document in place of the preview thumbnail */
+    renderUnlockedDoc(t);
     var strip = document.getElementById('pcta-' + t);
     if (strip) strip.style.display = 'none';
     if (showBadge !== false) {
@@ -2177,7 +2442,7 @@ function emailExports(){
     if(el&&el.textContent&&el.textContent!=='—'){body+='══ '+labels[i]+' ══\n\n'+el.textContent+'\n\n';hasDoc=true;}
   });
   if(!hasDoc){statusEl.style.color='var(--gold)';statusEl.textContent='No documents generated yet — complete your impact ledger first.';return;}
-  body+='──────────────────────────────────\nGenerated by receipts. (receipts.aricciviclabs.org)\nSelf-reported estimates only. Not professional advice.';
+  body+='──────────────────────────────────\nGenerated by receipts. (receipts.aricciviclabs.org)\nDISCLAIMER: This document was generated using receipts. self-assessment tools at receipts.aricciviclabs.org. All figures are self-reported estimates based on the user's own recollection and publicly available benchmark data. This document has not been verified, audited, or endorsed by any employer, organization, or third party. Any company names, logos, or branding included were added by the user and do not represent official communications from those organizations. Recipients should treat all figures as estimates and verify independently before relying on them for employment, financial, funding, or legal decisions.';
   statusEl.style.color='var(--text3)';statusEl.textContent='Sending…';
   if(btnEl){btnEl.disabled=true;btnEl.textContent='Sending…';}
   var formData=new FormData();
@@ -2336,7 +2601,7 @@ function exportTXT(){
     var lines=[];
     lines.push('receipts. — Nonprofit Impact Summary');
     lines.push('Generated: '+new Date().toLocaleString());
-    lines.push('DISCLAIMER: Self-reported estimates and publicly available data only. Not professional advice.');
+    lines.push('DISCLAIMER: DISCLAIMER: This document was generated using receipts. self-assessment tools at receipts.aricciviclabs.org. All figures are self-reported estimates based on the user's own recollection and publicly available benchmark data. This document has not been verified, audited, or endorsed by any employer, organization, or third party. Any company names, logos, or branding included were added by the user and do not represent official communications from those organizations. Recipients should treat all figures as estimates and verify independently before relying on them for employment, financial, funding, or legal decisions.');
     lines.push('');
     lines.push('── ORGANIZATION ──');
     lines.push('Name: '+gv('org-name'));
@@ -2356,7 +2621,7 @@ function exportTXT(){
     });
     lines.push('──────────────────────────────────');
     lines.push('Generated by receipts. (receipts.pro)');
-    lines.push('Self-reported estimates only. Not professional advice.');
+    lines.push('DISCLAIMER: This document was generated using receipts. self-assessment tools at receipts.aricciviclabs.org. All figures are self-reported estimates based on the user's own recollection and publicly available benchmark data. This document has not been verified, audited, or endorsed by any employer, organization, or third party. Any company names, logos, or branding included were added by the user and do not represent official communications from those organizations. Recipients should treat all figures as estimates and verify independently before relying on them for employment, financial, funding, or legal decisions.');
     var blob=new Blob([lines.join('\n')],{type:'text/plain'});
     var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='receipts-v3-'+new Date().toISOString().slice(0,10)+'.txt';a.click();URL.revokeObjectURL(url);
   }catch(e){alert('Download not supported in this browser. Your data is still in memory.');}
