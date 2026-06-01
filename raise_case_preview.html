@@ -249,12 +249,30 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-se
 
   <div class="pay-gate" id="pay-gate">
     <h3>Unlock your raise case</h3>
-    <p>Download both letters as a polished, print-ready PDF — formatted to hand directly to your manager.</p>
-    <div class="price-row">
-      <div class="popt sel" id="po-one"><div class="amt">$19</div><div class="desc">One report</div></div>
+    <p>Download both letters as a polished, print-ready PDF — formatted to hand directly to your manager and their manager.</p>
+
+    <!-- Comparison panel -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.75rem;margin:.25rem 0 .75rem">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem">Why this letter is different</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px">
+        <div style="padding:6px 8px;border-radius:5px;background:var(--blue-dim);border:1px solid var(--blue-border);font-size:10px;line-height:1.45">
+          <div style="font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:2px">This — $19</div>
+          <div style="color:var(--text2)">Two letters (manager + skip-level) built from documented ROI, break-even analysis, and salary benchmarks.</div>
+        </div>
+        <div style="padding:6px 8px;border-radius:5px;background:var(--surface);border:1px solid var(--border);font-size:10px;line-height:1.45">
+          <div style="font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:2px">Basic letter — $9</div>
+          <div style="color:var(--text3)">One letter, contribution narrative only. Good for straightforward asks without documented data.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <div style="padding:5px 8px;border-radius:5px;background:var(--blue-dim);border:1px solid var(--blue-border);font-size:9px;color:var(--text3);line-height:1.6">✓ ROI calculation<br/>✓ Break-even data<br/>✓ Market benchmarks<br/>✓ Skip-level letter<br/>✓ Achievement ledger</div>
+        <div style="padding:5px 8px;border-radius:5px;background:var(--surface);border:1px solid var(--border);font-size:9px;color:var(--text3);line-height:1.6">✓ Contribution narrative<br/>✗ ROI calculation<br/>✗ Break-even data<br/>✗ Market benchmarks<br/>✗ Skip-level letter</div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);text-align:center;padding-top:.375rem;border-top:1px solid var(--border);margin-top:.375rem">Just need the basic letter? <a href="raise_case_standalone.html" style="color:var(--accent);text-decoration:none;font-weight:700">Get it for $9 →</a></div>
     </div>
+
     <input class="email-inp" type="email" id="pay-email" placeholder="your@email.com — receipt sent here"/>
-    <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i> Get raise case PDF — $19</button>
+    <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i> Get ROI-Backed raise case — $19</button>
     <p style="font-size:9px;color:var(--text3);line-height:1.4;margin-top:.375rem">Stripe checkout opens in a new tab. Your data never leaves your browser. Refunds within 48 hours.</p>
   </div>
 

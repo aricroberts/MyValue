@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Raise Case Letter — receipts.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090B;--surface:#111113;--surface2:#18181B;--border:#27272A;
+  --text:#FAFAFA;--text2:#A1A1AA;--text3:#52525B;
+  --accent:#E4FF3D;--accent-dim:#1A1E07;--accent-border:#E4FF3D33;
+  --green:#4ADE80;--green-dim:#0D2318;--amber:#FBBF24;--red:#F87171;
+  --blue:#4A9EFF;--blue-dim:#162040;--blue-border:#4A9EFF44;
+  --radius:12px;--radius-sm:7px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-serif;min-height:100vh}
+
+/* ── Legal notice bar ── */
+#rcp-notice{position:sticky;top:0;z-index:9999;background:#1A1F2E;border-bottom:1px solid #2A3050;padding:.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:'DM Sans',system-ui,sans-serif;font-size:12px;color:#8A90A8;line-height:1.4}
+#rcp-notice a{color:#4A9EFF;text-decoration:none}
+#rcp-notice a:hover{text-decoration:underline}
+#rcp-notice-close{background:none;border:none;color:#4A5070;cursor:pointer;font-size:16px;line-height:1;padding:0 0 0 .5rem;flex-shrink:0}
+#rcp-notice-close:hover{color:#8A90A8}
+
+.shell{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 41px)}
+
+/* SIDEBAR */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 1.125rem;display:flex;flex-direction:column;gap:1rem;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+.sl-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:99px;padding:2px 8px}
+.sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.375rem}
+.divider{height:1px;background:var(--border)}
+.fg{display:flex;flex-direction:column;gap:3px;margin-bottom:.5rem}
+.fg label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3)}
+.fg input,.fg select,.fg textarea{width:100%;font-size:12px;font-family:'Syne',sans-serif;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 9px;color:var(--text);transition:border-color .15s;resize:vertical}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent)}
+.fg textarea{min-height:70px;line-height:1.5}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.logo-zone{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:8px 10px;display:flex;align-items:center;gap:7px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.logo-zone:hover{border-color:var(--accent);background:var(--accent-dim)}
+.logo-inner{display:flex;align-items:center;gap:7px;pointer-events:none;font-size:11px;color:var(--text3)}
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);transition:all .15s}
+.back-link:hover{color:var(--text);background:var(--border)}
+.btn{width:100%;padding:9px 14px;border-radius:var(--radius-sm);font-size:12px;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:.3rem}
+.btn-accent{background:var(--accent);color:#09090B}
+.btn-accent:hover{opacity:.88}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--border)}
+
+/* Pay gate */
+.pay-gate{background:linear-gradient(145deg,var(--accent-dim),var(--surface2));border:1px solid var(--accent-border);border-radius:var(--radius);padding:1rem}
+.pay-gate h3{font-size:13px;font-weight:800;margin-bottom:.25rem}
+.pay-gate p{font-size:11px;color:var(--text2);margin-bottom:.75rem;line-height:1.5}
+.email-inp{width:100%;font-size:12px;font-family:'Syne',sans-serif;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;color:var(--text);margin-bottom:.5rem}
+.email-inp:focus{outline:none;border-color:var(--accent)}
+
+/* Comparison table */
+.compare-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.75rem;margin:.625rem 0}
+.compare-title{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:3px}
+.cc{padding:6px 8px;border-radius:5px;font-size:10px;line-height:1.45}
+.cc-this{background:var(--accent-dim);border:1px solid var(--accent-border)}
+.cc-v1{background:var(--blue-dim);border:1px solid var(--blue-border)}
+.cc-lbl{font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.cc-lbl-this{color:var(--accent)}
+.cc-lbl-v1{color:var(--blue)}
+.cc-text{color:var(--text2)}
+.compare-cta{font-size:10px;color:var(--text3);text-align:center;padding-top:.375rem;border-top:1px solid var(--border);margin-top:.375rem}
+.compare-cta a{color:var(--blue);text-decoration:none;font-weight:700}
+.compare-cta a:hover{text-decoration:underline}
+
+/* PREVIEW PANE */
+.preview-pane{background:#E9E5DC;padding:2.5rem 2rem;display:flex;flex-direction:column;align-items:center;gap:2rem;min-height:calc(100vh - 41px)}
+.preview-bar{width:100%;max-width:660px;display:flex;align-items:center;justify-content:space-between}
+.preview-lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888}
+.doc-outer{width:100%;max-width:660px;position:relative}
+.doc-type-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:8px}
+
+/* DOCUMENT */
+.doc{background:#fff;border-radius:3px;box-shadow:0 4px 24px rgba(0,0,0,.1),0 1px 4px rgba(0,0,0,.07);overflow:hidden}
+.doc-body{padding:48px 52px 54px;font-family:'EB Garamond',Georgia,serif;color:#1C1C1C;font-size:14px;line-height:1.8}
+.doc-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px}
+.doc-name{font-size:26px;font-weight:400;letter-spacing:-.015em;line-height:1.15;color:#1A1A1A;margin-bottom:3px}
+.doc-meta{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:4px}
+.doc-role{font-family:'Syne',sans-serif;font-size:11px;font-weight:500;color:#888}
+.doc-logo{max-height:60px;max-width:180px;object-fit:contain;flex-shrink:0;display:none}
+.doc-logo.show{display:block}
+.doc-rule{height:1.5px;background:#1A1A1A;margin:0 0 24px}
+.doc-addr{font-family:'Syne',sans-serif;font-size:11px;font-weight:500;color:#666;line-height:1.9;margin-bottom:20px}
+.doc-addr strong{color:#1A1A1A}
+.doc-subj{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:800;color:#1A1A1A;padding:10px 14px;background:#F5F2EC;border-left:3px solid #1A1A1A;border-radius:0 3px 3px 0;margin-bottom:22px}
+.doc-body p{margin-bottom:16px;color:#2A2A2A}
+.doc-body p:last-of-type{margin-bottom:0}
+.doc-body ul{margin:0 0 16px 1.25rem}
+.doc-body li{margin-bottom:6px;color:#2A2A2A;font-size:14px;line-height:1.75}
+.doc-sig{margin-top:28px;padding-top:16px;border-top:1px solid #E5E3DF}
+.sig-name{font-size:22px;font-style:italic;color:#1A1A1A;font-family:'EB Garamond',Georgia,serif;margin-bottom:3px}
+.sig-role{font-family:'Syne',sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.04em}
+.doc-footer-bar{padding:10px 52px;border-top:1px solid #ECEAE6;background:#F9F7F3;display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-size:9px;color:#C0BCBA}
+
+/* Paywall overlay */
+.gate-wrap{position:relative}
+.gate-blur{filter:blur(4px);pointer-events:none;user-select:none}
+.gate-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(233,229,220,.72);backdrop-filter:blur(2px);border-radius:3px}
+.gate-badge{background:#1A1A1A;color:#E4FF3D;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:9px 18px;border-radius:99px;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.gate-hint{font-family:'Syne',sans-serif;font-size:11px;color:#666}
+
+/* Strength bar */
+.strength-bar{background:var(--surface2);border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:.5rem}
+.sb-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.sb-track{height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.sb-fill{height:100%;border-radius:99px;transition:width .3s,background .3s;background:var(--accent)}
+
+@media print{
+  body:not(.unlocked) * { visibility: hidden !important; }
+  body.unlocked { background: #fff }
+  body.unlocked .shell { display: block }
+  body.unlocked .sidebar { display: none }
+  body.unlocked #rcp-notice { display: none }
+  body.unlocked .preview-pane { background: none; padding: 0; gap: 0 }
+  body.unlocked .preview-bar, body.unlocked .doc-type-lbl { display: none }
+  body.unlocked #pay-gate, body.unlocked #pay-pending, body.unlocked #print-block { display: none }
+  body.unlocked .doc-outer { max-width: none; display: block !important }
+  body.unlocked .doc { box-shadow: none; border-radius: 0 }
+}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{height:auto;position:static;top:0}
+  .preview-pane{padding:1.5rem 1rem}
+  .doc-body{padding:28px 24px 36px}
+  .doc-footer-bar{padding:8px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Legal notice bar -->
+<div id="rcp-notice">
+  <span>By using this tool you agree to our <a href="legal.html" target="_blank">Privacy &amp; Terms</a>. All outputs are self-reported estimates only &mdash; not professional, legal, or financial advice.</span>
+  <button id="rcp-notice-close" aria-label="Dismiss" onclick="this.parentElement.style.display='none';try{sessionStorage.setItem('rcpNotice','1')}catch(e){}">&#x2715;</button>
+</div>
+<script>try{if(sessionStorage.getItem('rcpNotice')==='1'){var n=document.getElementById('rcp-notice');if(n)n.style.display='none';}}catch(e){}</script>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <img src="receipts_wordmark.png" alt="receipts." style="height:26px;display:block">
+      <span class="sl-badge">Raise Letter</span>
+    </div>
+    <a href="index.html" class="back-link"><i class="ti ti-arrow-left" style="font-size:11px"></i> Home</a>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Company logo <span style="color:var(--text3);font-size:9px;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></p>
+    <div class="logo-zone" onclick="document.getElementById('logo-file').click()">
+      <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="onLogoUpload(event)"/>
+      <div class="logo-inner"><i class="ti ti-upload" style="font-size:14px"></i><span id="logo-txt">Upload your company logo</span></div>
+    </div>
+    <div id="logo-rm" style="display:none;margin-top:4px">
+      <button class="btn btn-ghost" style="padding:5px 10px;font-size:10px;margin:0" onclick="removeLogo()"><i class="ti ti-x" style="font-size:11px"></i> Remove</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Your profile</p>
+    <div class="fg"><label>Full name</label><input id="f-name" placeholder="e.g. Jordan Lee" oninput="refresh()"/></div>
+    <div class="fr2">
+      <div class="fg"><label>Job title</label><input id="f-title" placeholder="Senior PM" oninput="refresh()"/></div>
+      <div class="fg"><label>Location</label><input id="f-loc" placeholder="Austin, TX" oninput="refresh()"/></div>
+    </div>
+    <div class="fg"><label>Company</label><input id="f-co" placeholder="Acme Corp" oninput="refresh()"/></div>
+    <div class="fg"><label>Manager name</label><input id="f-mgr" placeholder="e.g. Sarah" oninput="refresh()"/></div>
+    <div class="fg"><label>Review period</label>
+      <select id="f-period" onchange="refresh()">
+        <option value="this year">This year</option>
+        <option value="the last 12 months">The last 12 months</option>
+        <option value="the last 6 months">The last 6 months</option>
+        <option value="the last 18 months">The last 18 months</option>
+        <option value="the last 2 years">The last 2 years</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Your ask</p>
+    <div class="fr2">
+      <div class="fg"><label>Current salary ($)</label><input type="number" id="f-current" placeholder="85000" oninput="refresh()"/></div>
+      <div class="fg"><label>Salary ask ($)</label><input type="number" id="f-ask" placeholder="95000" oninput="refresh()"/></div>
+    </div>
+    <div class="fg"><label>Years in role</label>
+      <select id="f-years" onchange="refresh()">
+        <option value="less than a year">Less than a year</option>
+        <option value="about a year" selected>About a year</option>
+        <option value="1–2 years">1–2 years</option>
+        <option value="2–3 years">2–3 years</option>
+        <option value="3–5 years">3–5 years</option>
+        <option value="more than 5 years">More than 5 years</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <p class="sec">Your contributions</p>
+    <p style="font-size:10px;color:var(--text3);line-height:1.5;margin-bottom:.5rem">List 2–4 specific things you accomplished this period. Be concrete — numbers, names, outcomes.</p>
+    <div class="fg"><label>Contribution 1</label><textarea id="c1" placeholder="e.g. Led migration to new CRM that cut onboarding time by 30%" oninput="refresh()"></textarea></div>
+    <div class="fg"><label>Contribution 2</label><textarea id="c2" placeholder="e.g. Closed 3 enterprise accounts worth $420K combined" oninput="refresh()"></textarea></div>
+    <div class="fg"><label>Contribution 3 <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea id="c3" placeholder="e.g. Mentored 2 junior teammates now promoted to mid-level" oninput="refresh()"></textarea></div>
+    <div class="fg"><label>Contribution 4 <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea id="c4" placeholder="e.g. Maintained 98% client retention through contract renewals" oninput="refresh()"></textarea></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Letter strength indicator -->
+  <div class="strength-bar">
+    <div class="sb-label">Letter strength</div>
+    <div class="sb-track"><div class="sb-fill" id="strength-fill" style="width:0%"></div></div>
+    <div id="strength-hint" style="font-size:9px;color:var(--text3);margin-top:4px">Fill in your details above</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PAY GATE -->
+  <div class="pay-gate" id="pay-gate">
+    <h3>Unlock your raise letter</h3>
+    <p>Download a polished, print-ready letter formatted to hand directly to your manager.</p>
+
+    <!-- Comparison -->
+    <div class="compare-wrap">
+      <div class="compare-title">Choosing the right letter</div>
+      <div class="compare-row">
+        <div class="cc cc-this">
+          <div class="cc-lbl cc-lbl-this">This letter — $9</div>
+          <div class="cc-text">One polished letter to your manager. Based on your contributions as you describe them. Great for straightforward ask conversations.</div>
+        </div>
+        <div class="cc cc-v1">
+          <div class="cc-lbl cc-lbl-v1">ROI-Backed — $19</div>
+          <div class="cc-text">Two letters (manager + skip-level) built from documented ROI data, break-even analysis, and live salary benchmarks. Built for high-stakes reviews.</div>
+        </div>
+      </div>
+      <div class="compare-row" style="margin-bottom:0">
+        <div class="cc cc-this" style="font-size:9px;color:var(--text3)">✓ Contribution narrative<br/>✓ Specific ask<br/>✗ ROI calculation<br/>✗ Break-even data<br/>✗ Market benchmarks<br/>✗ Skip-level letter</div>
+        <div class="cc cc-v1" style="font-size:9px;color:var(--text3)">✓ Contribution narrative<br/>✓ Specific ask<br/>✓ ROI calculation<br/>✓ Break-even data<br/>✓ Market benchmarks<br/>✓ Skip-level letter</div>
+      </div>
+      <div class="compare-cta">Need the full case? <a href="roi_v1_individual.html">Build it in receipts. v1 →</a></div>
+    </div>
+
+    <input class="email-inp" type="email" id="pay-email" placeholder="your@email.com — receipt sent here"/>
+    <button class="btn btn-accent" onclick="doCheckout()"><i class="ti ti-lock-open" style="font-size:12px"></i> Get raise letter — $9</button>
+    <p style="font-size:9px;color:var(--text3);line-height:1.4;margin-top:.375rem">Stripe checkout opens in a new tab. Your data never leaves your browser. Refunds within 48 hours.</p>
+  </div>
+
+  <!-- PENDING STATE -->
+  <div id="pay-pending" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+    <p style="font-size:12px;font-weight:700;margin-bottom:.375rem;display:flex;align-items:center;gap:5px"><i class="ti ti-external-link" style="font-size:13px;color:var(--accent)"></i> Stripe checkout opened</p>
+    <p style="font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:.75rem">Complete payment in the new tab. Your letter is waiting here. Come back and click below once you're done.</p>
+    <button class="btn btn-accent" onclick="doUnlock()"><i class="ti ti-check" style="font-size:12px"></i> I've paid — unlock my letter</button>
+    <button class="btn btn-ghost" onclick="resetGate()" style="margin-top:3px"><i class="ti ti-arrow-left" style="font-size:11px"></i> Cancel</button>
+  </div>
+
+  <!-- UNLOCKED STATE -->
+  <div id="print-block" style="display:none">
+    <div style="background:var(--green-dim);border:1px solid #1A4A2A;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#A0E8C8;line-height:1.5;margin-bottom:.625rem"><i class="ti ti-check" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i><strong style="color:#fff">Unlocked.</strong> Click below, then choose <strong>Save as PDF</strong> in the print dialog.</div>
+    <button class="btn btn-accent" onclick="window.print()"><i class="ti ti-download" style="font-size:13px"></i> Download raise letter PDF</button>
+    <button class="btn btn-ghost" onclick="resetGate()"><i class="ti ti-arrow-left" style="font-size:11px"></i> Back to preview</button>
+  </div>
+
+</aside>
+
+<!-- PREVIEW PANE -->
+<main class="preview-pane">
+
+  <div class="preview-bar">
+    <span class="preview-lbl">Live preview</span>
+    <span style="font-family:'Syne',sans-serif;font-size:10px;color:#888">Raise Case Letter — Manager</span>
+  </div>
+
+  <div class="doc-outer">
+    <div class="doc-type-lbl">Letter to Manager</div>
+    <div id="gate-wrap" class="gate-wrap">
+      <div id="doc-inner">
+        <div class="doc">
+          <div class="doc-body">
+            <div class="doc-hdr">
+              <div>
+                <div class="doc-meta" id="d-meta">COMPENSATION REVIEW</div>
+                <div class="doc-name" id="d-name">[Your Name]</div>
+                <div class="doc-role" id="d-role"></div>
+              </div>
+              <img class="doc-logo" id="d-logo" src="" alt=""/>
+            </div>
+            <div class="doc-rule"></div>
+            <div class="doc-addr">
+              <strong id="d-date"></strong><br/>
+              To: <strong id="d-to">[Manager]</strong><br/>
+              From: <strong id="d-from">[Your Name]</strong>, <span id="d-ft"></span>
+            </div>
+            <div class="doc-subj" id="d-subj">Re: Compensation review — raise request</div>
+            <p id="d-p1"></p>
+            <p id="d-p2"></p>
+            <ul id="d-contribs"></ul>
+            <p id="d-p3"></p>
+            <p id="d-p4"></p>
+            <div class="doc-sig">
+              <div class="sig-name" id="d-signame">[Your Name]</div>
+              <div class="sig-role" id="d-sigrole"></div>
+            </div>
+          </div>
+          <div class="doc-footer-bar">
+            <span>receipts. · receipts.aricciviclabs.org</span>
+            <span>Self-reported estimates only. Not professional advice.</span>
+          </div>
+        </div>
+      </div>
+      <!-- Paywall overlay (shown when not unlocked) -->
+      <div class="gate-overlay" id="gate-overlay" style="display:none">
+        <div class="gate-badge"><i class="ti ti-lock" style="font-size:13px"></i> Unlock to download</div>
+        <div class="gate-hint">$9 · Instant PDF · Stripe checkout</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<footer style="background:#13161F;border-top:1px solid #22263A;padding:1.25rem 2rem;text-align:center;font-family:'DM Sans',system-ui,sans-serif">
+  <p style="font-size:12px;color:#4A5070;margin:0">
+    <strong style="color:#6A7090">receipts.</strong> by <a href="https://aricciviclabs.org" target="_blank" rel="noopener" style="color:#4A9EFF;text-decoration:none">AricCivicLabs.Org</a>
+    &nbsp;&middot;&nbsp; <a href="index.html" style="color:#4A5070;text-decoration:none">Home</a>
+    &nbsp;&middot;&nbsp; <a href="legal.html" style="color:#4A5070;text-decoration:none">Privacy &amp; Terms</a>
+    &nbsp;&middot;&nbsp; <a href="mailto:aricroberts@gmail.com" style="color:#4A5070;text-decoration:none">Contact</a>
+  </p>
+  <p style="font-size:11px;color:#343650;margin:.375rem 0 0">&copy; 2026 AricCivicLabs.Org &middot; All outputs are self-reported estimates only. Not professional advice.</p>
+</footer>
+
+<script>
+/* ── CONFIG ─────────────────────────────────────────────── */
+// Replace with your actual Stripe Payment Link for $9 raise letter
+var STRIPE_URL = 'https://receipts.aricciviclabs.org/raise_case_standalone.html?unlocked=true';
+var logoSrc = null;
+
+/* ── HELPERS ─────────────────────────────────────────────── */
+function g(id) { return document.getElementById(id); }
+function v(id) { var e = g(id); return e ? e.value.trim() : ''; }
+function se(id, txt) { var e = g(id); if (e) e.textContent = txt; }
+function fmt(n) { return n ? '$' + Math.round(n).toLocaleString() : ''; }
+function today() { return new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}); }
+
+/* ── LOGO ─────────────────────────────────────────────────── */
+function onLogoUpload(evt) {
+  var file = evt.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    logoSrc = e.target.result;
+    g('logo-txt').textContent = file.name;
+    g('logo-rm').style.display = 'block';
+    applyLogo();
+  };
+  reader.readAsDataURL(file);
+}
+function applyLogo() {
+  var logos = document.querySelectorAll('.doc-logo');
+  logos.forEach(function(el) {
+    if (logoSrc) { el.src = logoSrc; el.classList.add('show'); }
+    else { el.src = ''; el.classList.remove('show'); }
+  });
+}
+function removeLogo() {
+  logoSrc = null;
+  g('logo-txt').textContent = 'Upload your company logo';
+  g('logo-rm').style.display = 'none';
+  document.getElementById('logo-file').value = '';
+  applyLogo();
+}
+
+/* ── LETTER STRENGTH ─────────────────────────────────────── */
+function updateStrength() {
+  var score = 0;
+  var total = 7;
+  if (v('f-name')) score++;
+  if (v('f-title')) score++;
+  if (v('f-co')) score++;
+  if (v('f-mgr')) score++;
+  if (v('f-ask') && v('f-current')) score++;
+  if (v('c1')) score++;
+  if (v('c2')) score++;
+  var pct = Math.round((score / total) * 100);
+  var fill = g('strength-fill');
+  var hint = g('strength-hint');
+  if (fill) fill.style.width = pct + '%';
+  if (fill) {
+    if (pct < 40) fill.style.background = 'var(--red)';
+    else if (pct < 70) fill.style.background = 'var(--amber)';
+    else fill.style.background = 'var(--accent)';
+  }
+  var msgs = ['Fill in your details above', 'Keep going — add more details', 'Looking good — add contributions', 'Strong — ready to unlock', 'Excellent letter strength'];
+  var idx = Math.min(Math.floor(pct / 25), 4);
+  if (hint) hint.textContent = msgs[idx];
+}
+
+/* ── REFRESH / RENDER ────────────────────────────────────── */
+function refresh() {
+  var name   = v('f-name') || '[Your Name]';
+  var title  = v('f-title') || '[Your Title]';
+  var loc    = v('f-loc');
+  var co     = v('f-co') || 'the company';
+  var mgr    = v('f-mgr') || '[Manager]';
+  var period = v('f-period') || 'this year';
+  var years  = v('f-years') || 'about a year';
+  var cur    = parseFloat(v('f-current')) || 0;
+  var ask    = parseFloat(v('f-ask')) || 0;
+  var pct    = (cur && ask && ask > cur) ? Math.round(((ask - cur) / cur) * 100) : 0;
+
+  var contribs = [v('c1'), v('c2'), v('c3'), v('c4')].filter(function(s) { return s.length > 0; });
+
+  // Header
+  se('d-meta', 'COMPENSATION REVIEW — ' + period.toUpperCase());
+  se('d-name', name);
+  se('d-role', title + (co !== 'the company' ? ' · ' + co : ''));
+  g('d-date').textContent = today();
+  se('d-to', mgr);
+  se('d-from', name);
+  se('d-ft', title);
+  se('d-subj', 'Re: Compensation review' + (ask ? ' — requesting ' + fmt(ask) : ''));
+  se('d-signame', name);
+  se('d-sigrole', title + (co !== 'the company' ? ' · ' + co : ''));
+
+  // Opening
+  se('d-p1', 'I am writing to request a review of my compensation ahead of the upcoming review period. I have been with ' + co + ' for ' + years + ', and I am proud of what I have contributed during ' + period + '. I wanted to put my case in writing so you have it clearly in front of you.');
+
+  // Transition into contributions
+  se('d-p2', contribs.length > 0
+    ? 'Here are the specific contributions I am most proud of from ' + period + ':'
+    : 'I have made a number of meaningful contributions during ' + period + ' that I believe support this request.');
+
+  // Contributions list
+  var ul = g('d-contribs');
+  if (ul) {
+    ul.innerHTML = '';
+    contribs.forEach(function(c) {
+      var li = document.createElement('li');
+      li.textContent = c;
+      ul.appendChild(li);
+    });
+  }
+
+  // Ask paragraph
+  if (ask && cur) {
+    se('d-p3', 'Based on these contributions and my tenure, I am respectfully requesting a base salary adjustment from ' + fmt(cur) + ' to ' + fmt(ask) + (pct ? ' — an increase of ' + pct + '%' : '') + '. I believe this reflects the value I bring and is consistent with fair market compensation for this role' + (loc ? ' in ' + loc : '') + '.');
+  } else if (ask) {
+    se('d-p3', 'Based on these contributions, I am respectfully requesting a base salary adjustment to ' + fmt(ask) + '. I believe this reflects the value I bring and is consistent with fair market compensation for this role' + (loc ? ' in ' + loc : '') + '.');
+  } else {
+    se('d-p3', 'I would welcome a conversation about what a compensation adjustment might look like given these contributions. I am confident this discussion will reflect the value I have added to the team.');
+  }
+
+  se('d-p4', 'Thank you for your time and for your continued investment in my growth here. I look forward to discussing this with you.');
+
+  applyLogo();
+  updateStrength();
+}
+
+/* ── PAYMENT FLOW ────────────────────────────────────────── */
+function doCheckout() {
+  var email = v('pay-email');
+  var url = STRIPE_URL;
+  if (email) url += (url.indexOf('?') > -1 ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(email);
+  // Append success_url so Stripe redirects back with unlock param
+  // (For Stripe Payment Links, set the success URL in your Stripe dashboard)
+  window.open(url, '_blank');
+  g('pay-gate').style.display = 'none';
+  g('pay-pending').style.display = 'block';
+}
+
+function doUnlock() {
+  document.body.classList.add('unlocked');
+  g('pay-gate').style.display = 'none';
+  g('pay-pending').style.display = 'none';
+  g('print-block').style.display = 'block';
+  var overlay = g('gate-overlay');
+  if (overlay) overlay.style.display = 'none';
+  var inner = g('doc-inner');
+  if (inner) inner.classList.remove('gate-blur');
+}
+
+function resetGate() {
+  g('pay-gate').style.display = 'block';
+  g('pay-pending').style.display = 'none';
+  g('print-block').style.display = 'none';
+}
+
+/* Auto-unlock if returning from Stripe success URL */
+if (window.location.search.indexOf('unlocked=true') !== -1) {
+  doUnlock();
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
+/* ── INIT ─────────────────────────────────────────────────── */
+refresh();
+</script>
+</body>
+</html>
