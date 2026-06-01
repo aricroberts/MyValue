@@ -557,9 +557,29 @@ button:hover{background:var(--surface2)}
       <!-- Paywall CTA — opens raise_case_preview with data handoff -->
       <div class="card card-info" id="prev-paywall">
         <p class="sl sl-info"><i class="ti ti-file-export"></i> Get your raise case PDF</p>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.6">Opens a polished, print-ready version of both letters — formatted to hand directly to your manager. Your data comes with you. Pay $19, download as PDF.</p>
-        <button onclick="handlePgCheckout()" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-external-link" style="font-size:13px"></i> Open raise case — $19</button>
-        <p style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px">Opens in a new tab. Your data here stays intact. Return here after payment.</p>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Your ROI data, break-even analysis, and salary benchmarks are already built in. The letters come with receipts.</p>
+
+        <!-- Comparison mini-panel -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.625rem;margin-bottom:10px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem">Two options — choose your level</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.5rem">
+            <div style="padding:7px 9px;border-radius:5px;background:var(--blue-dim);border:1.5px solid var(--blue);font-size:10px;line-height:1.5">
+              <div style="font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin-bottom:3px">ROI-Backed — $19</div>
+              <div style="color:var(--text2);margin-bottom:4px">Built from your data above. Two letters: manager + skip-level.</div>
+              <div style="font-size:9px;color:var(--text3);line-height:1.6">✓ Your ROI numbers<br/>✓ Break-even context<br/>✓ Market benchmarks<br/>✓ Skip-level letter<br/>✓ Achievement ledger</div>
+            </div>
+            <div style="padding:7px 9px;border-radius:5px;background:var(--surface2);border:1px solid var(--border);font-size:10px;line-height:1.5">
+              <div style="font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:3px">Basic Letter — $9</div>
+              <div style="color:var(--text3);margin-bottom:4px">One letter, contribution narrative only. Good for straightforward asks.</div>
+              <div style="font-size:9px;color:var(--text3);line-height:1.6">✓ Contribution narrative<br/>✗ ROI calculation<br/>✗ Break-even data<br/>✗ Market benchmarks<br/>✗ Skip-level letter</div>
+            </div>
+          </div>
+          <p style="font-size:10px;color:var(--text3);line-height:1.5">You've already done the hard work. The ROI-Backed letter puts everything you built here into a document your manager can hand to their manager.</p>
+        </div>
+
+        <button onclick="handlePgCheckout()" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px"><i class="ti ti-external-link" style="font-size:13px"></i> Get ROI-Backed raise case — $19</button>
+        <a href="raise_case_standalone.html" target="_blank" style="width:100%;padding:8px 14px;border-radius:var(--radius-sm);font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none">Just the basic letter — $9</a>
+        <p style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px">ROI-Backed opens in a new tab with your data pre-filled. Your work here stays intact.</p>
       </div>
 
       <!-- Pending state — shown after raise case tab opens; NO bypass button -->
