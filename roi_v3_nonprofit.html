@@ -866,43 +866,16 @@ button:hover{background:var(--surface2)}
 
 <script>
 
-/* ── API routing ─────────────────────────────────────────────────────────────
- *
- *  HOW THIS WORKS:
- *  - Inside claude.ai  → direct Anthropic call, key auto-injected, works fine
- *  - On your deployed site → goes through PROXY_URL (your own proxy-server.js)
- *
- *  TO FIX 401/CORS ON YOUR DEPLOYED SITE:
- *  1. Deploy proxy-server.js on Render.com with your ANTHROPIC_API_KEY set
- *  2. Change PROXY_URL below to your Render URL, e.g.:
- *       https://receipts-proxy.onrender.com/api/messages
- *  3. Re-upload this file. Done.
- *
- * ─────────────────────────────────────────────────────────────────────────── */
-var PROXY_URL = 'https://myvalue.onrender.com/api/messages'; // ← your proxy URL here
-
-var _DIRECT   = 'https://api.anthropic.com/v1/messages';
-
-var _isWidget = (function() {
-  try {
-    var h = window.location.hostname || '';
-    return h === 'claude.ai' || h.indexOf('.claude.ai') !== -1;
-  } catch(e) { return false; }
-})();
+var _DIRECT = 'https://api.anthropic.com/v1/messages';
 
 async function apiCall(payload, useSearch) {
-  /* Pick endpoint */
-  var url = _isWidget ? _DIRECT : PROXY_URL;
-
-  /* Headers — only needed for direct calls (proxy adds its own) */
-  var headers = { 'Content-Type': 'application/json' };
-  if (_isWidget) {
-    headers['anthropic-version'] = '2023-06-01';
-    headers['anthropic-dangerous-direct-browser-access'] = 'true';
-    if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
-  }
-
-  var r = await fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+  var headers = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
+  if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
+  var r = await fetch(_DIRECT, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
 
   if (!r.ok) {
     var eb = await r.json().catch(function(){ return {}; });
