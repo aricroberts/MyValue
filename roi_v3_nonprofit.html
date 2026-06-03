@@ -2193,7 +2193,7 @@ function _buildCheckoutModal() {
     '  </div>',
     '  <input type="hidden" id="cm-doc-type" value=""/>',
     '  <button onclick="proceedBundle()" id="cm-bundle-btn" style="width:100%;background:transparent;border:1px solid var(--gold-b);border-radius:99px;color:var(--gold);font-size:12px;padding:8px;cursor:pointer;margin-bottom:12px;transition:all .15s">Get all 4 docs for $35 (save $41) ↗</button>',
-    '  <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">After payment you\'ll be returned here with your document unlocked.<br>Questions? <a href="mailto:hello@aricciviclabs.org" style="color:var(--teal)">hello@aricciviclabs.org</a></p>',
+    '  <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">After payment you\'ll be returned here with your document unlocked.<br>Questions? <a href="mailto:aricroberts@gmail.com" style="color:var(--teal)">aricroberts@gmail.com</a></p>',
     '</div>'
   ].join('');
   document.body.appendChild(el);
@@ -2451,7 +2451,7 @@ function emailExports(){
   formData.append('subject','receipts. — Your Nonprofit Impact Documents · '+new Date().toLocaleDateString());
   formData.append('message',body);
   formData.append('_subject','receipts. document delivery → '+email);
-  fetch('https://formspree.io/f/mlgvovlo',{method:'POST',body:formData,headers:{'Accept':'application/json'}})
+  fetch('https://formspree.io/f/mbdbkznw',{method:'POST',body:formData,headers:{'Accept':'application/json'}})
     .then(function(r){return r.json();})
     .then(function(d){
       if(d.ok){
