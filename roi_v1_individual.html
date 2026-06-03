@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <meta name="grammarly-disable-extension" content="true">
 <meta charset="UTF-8"/>
@@ -136,24 +135,7 @@ button:hover{background:var(--surface2)}
 .alive{background:var(--green)!important}.aload{background:var(--amber)!important}
 @media(max-width:600px){.fr{grid-template-columns:1fr}.fr3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}}
 
-/* ── Auth modal ──────────────────────────────────────────── */
-#rcp-auth-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;align-items:center;justify-content:center}
-#rcp-auth-modal.open{display:flex}
-#rcp-auth-box{background:#1A1D27;border:1px solid #22263A;border-radius:12px;padding:2rem;width:100%;max-width:380px;position:relative}
-#rcp-auth-box h3{margin:0 0 .25rem;font-size:1.1rem;color:#fff}
-#rcp-auth-box p{margin:0 0 1.25rem;font-size:.85rem;color:#8892A4}
-.rcp-auth-input{width:100%;padding:.6rem .75rem;background:#0F1117;border:1px solid #22263A;border-radius:8px;color:#fff;font-size:.9rem;margin-bottom:.75rem;box-sizing:border-box;font-family:inherit}
-.rcp-auth-input:focus{outline:none;border-color:#4A9EFF}
-.rcp-auth-btn{width:100%;padding:.65rem;background:#4A9EFF;color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;margin-bottom:.5rem;font-family:inherit}
-.rcp-auth-btn:hover{background:#3a8ee8}
-#rcp-auth-msg{font-size:.8rem;color:#2ECC8A;min-height:1.2em;text-align:center;margin-top:.5rem}
-#rcp-auth-msg.err{color:#F0514F}
-#rcp-auth-close{position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:#8892A4;font-size:1.1rem;cursor:pointer;line-height:1}
-/* ── Auth status bar ─────────────────────────────────────── */
-#rcp-auth-bar{display:flex;align-items:center;gap:.6rem;font-size:11px;color:#8892A4;padding:5px 10px;background:#0A0C14;border-bottom:1px solid #22263A;flex-wrap:wrap}
-#rcp-auth-bar a{color:#4A9EFF;cursor:pointer;text-decoration:none}
-#rcp-auth-bar a:hover{text-decoration:underline}
-#rcp-user-email{color:#fff;font-weight:500}
+
 
 .back-nav{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
 .back-nav label{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:12px;cursor:pointer;color:var(--text2)}
@@ -230,24 +212,7 @@ button:hover{background:var(--surface2)}
 <script>try{if(sessionStorage.getItem('rcpNotice')==='1'){var n=document.getElementById('rcp-notice');if(n)n.style.display='none';}}catch(e){}</script>
 <!-- ── /Legal notice bar ── -->
 
-<!-- ── Auth bar ── -->
-<div id="rcp-auth-bar">
-  <span id="rcp-auth-status">Not signed in.</span>
-  <a id="rcp-signin-link" onclick="rcpSignIn()">Sign in / create account</a>
-  <a id="rcp-signout-link" onclick="rcpSignOut()" style="display:none">Sign out</a>
-  <span style="margin-left:auto;opacity:.5">receipts. · your data stays in your browser</span>
-</div>
-<!-- ── Auth modal ── -->
-<div id="rcp-auth-modal">
-  <div id="rcp-auth-box">
-    <button id="rcp-auth-close" onclick="rcpCloseAuth()">✕</button>
-    <h3>Sign in to receipts.</h3>
-    <p>Enter your email — we'll send a magic link. No password needed.</p>
-    <input id="rcp-email-input" class="rcp-auth-input" type="email" placeholder="you@email.com"/>
-    <button class="rcp-auth-btn" onclick="rcpSendMagicLink()">Send magic link</button>
-    <div id="rcp-auth-msg"></div>
-  </div>
-</div>
+
 <div class="app">
   <div class="topbar">
     <div class="topbar-left">
@@ -557,29 +522,9 @@ button:hover{background:var(--surface2)}
       <!-- Paywall CTA — opens raise_case_preview with data handoff -->
       <div class="card card-info" id="prev-paywall">
         <p class="sl sl-info"><i class="ti ti-file-export"></i> Get your raise case PDF</p>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">Your ROI data, break-even analysis, and salary benchmarks are already built in. The letters come with receipts.</p>
-
-        <!-- Comparison mini-panel -->
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.625rem;margin-bottom:10px">
-          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem">Two options — choose your level</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.5rem">
-            <div style="padding:7px 9px;border-radius:5px;background:var(--blue-dim);border:1.5px solid var(--blue);font-size:10px;line-height:1.5">
-              <div style="font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin-bottom:3px">ROI-Backed — $19</div>
-              <div style="color:var(--text2);margin-bottom:4px">Built from your data above. Two letters: manager + skip-level.</div>
-              <div style="font-size:9px;color:var(--text3);line-height:1.6">✓ Your ROI numbers<br/>✓ Break-even context<br/>✓ Market benchmarks<br/>✓ Skip-level letter<br/>✓ Achievement ledger</div>
-            </div>
-            <div style="padding:7px 9px;border-radius:5px;background:var(--surface2);border:1px solid var(--border);font-size:10px;line-height:1.5">
-              <div style="font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:3px">Basic Letter — $9</div>
-              <div style="color:var(--text3);margin-bottom:4px">One letter, contribution narrative only. Good for straightforward asks.</div>
-              <div style="font-size:9px;color:var(--text3);line-height:1.6">✓ Contribution narrative<br/>✗ ROI calculation<br/>✗ Break-even data<br/>✗ Market benchmarks<br/>✗ Skip-level letter</div>
-            </div>
-          </div>
-          <p style="font-size:10px;color:var(--text3);line-height:1.5">You've already done the hard work. The ROI-Backed letter puts everything you built here into a document your manager can hand to their manager.</p>
-        </div>
-
-        <button onclick="handlePgCheckout()" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px"><i class="ti ti-external-link" style="font-size:13px"></i> Get ROI-Backed raise case — $19</button>
-        <a href="raise_case_standalone.html" target="_blank" style="width:100%;padding:8px 14px;border-radius:var(--radius-sm);font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none">Just the basic letter — $9</a>
-        <p style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px">ROI-Backed opens in a new tab with your data pre-filled. Your work here stays intact.</p>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.6">Opens a polished, print-ready version of both letters — formatted to hand directly to your manager. Your data comes with you. Pay $19, download as PDF.</p>
+        <button onclick="handlePgCheckout()" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;border:none;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-external-link" style="font-size:13px"></i> Open raise case — $19</button>
+        <p style="font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px">Opens in a new tab. Your data here stays intact. Return here after payment.</p>
       </div>
 
       <!-- Pending state — shown after raise case tab opens; NO bypass button -->
@@ -650,159 +595,86 @@ button:hover{background:var(--surface2)}
 <script>
 
 
-/* ── API routing ─────────────────────────────────────────────────────────────
- *
- *  HOW THIS WORKS:
- *  - Inside claude.ai  → direct Anthropic call, key auto-injected, works fine
- *  - On deployed site  → goes through Supabase Edge Function (auth-gated)
- *
- * ─────────────────────────────────────────────────────────────────────────── */
+/* ── Stripe configuration ─────────────────────────────────────────────────── */
+var STRIPE_V1 = {
+  'export_individual': 'https://buy.stripe.com/PLACEHOLDER_V1_INDIVIDUAL'
+};
 
-// ── Supabase config ───────────────────────────────────────────────────────
-var RCP_SUPABASE_URL = 'https://epntzskzmdlfqyosscbc.supabase.co';
-var RCP_SUPABASE_KEY = 'sb_publishable_i5pUA7v3H5UOPifMLTcLtA_zJO12EnK';
-var RCP_PROXY_URL    = RCP_SUPABASE_URL + '/functions/v1/claude-proxy';
-
-var _DIRECT   = 'https://api.anthropic.com/v1/messages';
-
-var _isWidget = (function() {
+/* ── Stripe success detection ─────────────────────────────────────────────── */
+(function() {
   try {
-    var h = window.location.hostname || '';
-    return h === 'claude.ai' || h.indexOf('.claude.ai') !== -1;
-  } catch(e) { return false; }
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('success') === '1') {
+      var product = params.get('product') || '';
+      history.replaceState(null, '', window.location.pathname);
+      window.addEventListener('DOMContentLoaded', function() {
+        doUnlockV1(product);
+        showSuccessBannerV1(product);
+      });
+    }
+  } catch(e) {}
 })();
 
-// ── Supabase client ───────────────────────────────────────────────────────
-var _rcpSB   = null;
-var _rcpUser = null;
-var _rcpEntitlements = {};
-
-if (!_isWidget && typeof supabase !== 'undefined') {
-  _rcpSB = supabase.createClient(RCP_SUPABASE_URL, RCP_SUPABASE_KEY);
-  _rcpSB.auth.onAuthStateChange(function(event, session) {
-    _rcpUser = session ? session.user : null;
-    _rcpUpdateAuthBar();
-    if (_rcpUser) { _rcpLoadEntitlements(); rcpCloseAuth(); }
-  });
-  _rcpSB.auth.getSession().then(function(res) {
-    if (res.data && res.data.session) {
-      _rcpUser = res.data.session.user;
-      _rcpUpdateAuthBar();
-      _rcpLoadEntitlements();
+function doUnlockV1(product) {
+  try {
+    var unlocked = JSON.parse(sessionStorage.getItem('rcpts_v1_items') || '[]');
+    if (unlocked.indexOf(product) < 0) unlocked.push(product);
+    if (product === 'export_individual') {
+      // Also store the original key for backward compat
+      sessionStorage.setItem(_V1_SS_KEY, '1');
     }
-  });
+    sessionStorage.setItem('rcpts_v1_items', JSON.stringify(unlocked));
+  } catch(e) {}
+  _v1DoUnlock();
 }
 
-function _rcpUpdateAuthBar() {
-  var bar  = document.getElementById('rcp-auth-status');
-  var lin  = document.getElementById('rcp-signin-link');
-  var lout = document.getElementById('rcp-signout-link');
-  if (!bar) return;
-  if (_rcpUser && _rcpUser.email) {
-    bar.innerHTML = 'Signed in as <span id="rcp-user-email">' + _rcpUser.email + '</span>';
-    if (lin)  lin.style.display  = 'none';
-    if (lout) lout.style.display = 'inline';
-  } else {
-    bar.textContent = 'Not signed in.';
-    if (lin)  lin.style.display  = 'inline';
-    if (lout) lout.style.display = 'none';
+function isUnlockedV1(itemId) {
+  try {
+    if (sessionStorage.getItem(_V1_SS_KEY) === '1') return true;
+    var unlocked = JSON.parse(sessionStorage.getItem('rcpts_v1_items') || '[]');
+    return unlocked.indexOf(itemId) >= 0;
+  } catch(e) { return false; }
+}
+
+function handleCheckoutV1(itemId) {
+  var url = STRIPE_V1[itemId];
+  if (!url || url.indexOf('PLACEHOLDER') >= 0) {
+    alert('Payment link coming soon. Check back shortly.');
+    return;
   }
+  var successUrl = window.location.href.split('?')[0] + '?success=1&product=' + itemId;
+  window.location.href = url + '?success_url=' + encodeURIComponent(successUrl);
 }
 
-function _rcpLoadEntitlements() {
-  if (!_rcpSB || !_rcpUser) return;
-  _rcpSB.from('entitlements').select('feature_key,expires_at')
-    .eq('user_id', _rcpUser.id).is('revoked_at', null)
-    .then(function(res) {
-      if (res.error || !res.data) return;
-      _rcpEntitlements = {};
-      var now = new Date();
-      res.data.forEach(function(e) {
-        if (!e.expires_at || new Date(e.expires_at) > now) _rcpEntitlements[e.feature_key] = true;
-      });
-      // Re-check unlock after entitlements load
-      if (_rcpHasEntitlement('export_individual') && !_rcpUnlocked) _v1DoUnlock();
-    });
+function showSuccessBannerV1(product) {
+  var app = document.getElementById('app') || document.querySelector('.app');
+  if (!app || document.getElementById('v1-success-banner')) return;
+  var banner = document.createElement('div');
+  banner.id = 'v1-success-banner';
+  banner.style.cssText = 'background:#081C14;border:1px solid #2ECC8A44;border-radius:10px;padding:12px 16px;margin-bottom:.875rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap';
+  banner.innerHTML = '<span style="font-size:13px;color:#2ECC8A;display:flex;align-items:center;gap:7px"><i class="ti ti-circle-check" style="font-size:15px"></i><strong>Payment confirmed — your exports are unlocked.</strong></span>'
+    + '<button onclick="document.getElementById(\'v1-success-banner\').remove()" style="background:none;border:none;color:#4A5070;font-size:18px;cursor:pointer;padding:0;line-height:1">&times;</button>';
+  app.insertBefore(banner, app.firstChild);
 }
 
-function _rcpHasEntitlement(key) {
-  return !!(_rcpEntitlements[key] || _rcpEntitlements['pro'] || _rcpEntitlements['pro_monthly'] || _rcpEntitlements['pro_annual']);
-}
+/* ── Direct Anthropic API call ───────────────────────────────────────────── */
+var _DIRECT = 'https://api.anthropic.com/v1/messages';
 
-function rcpSignIn() {
-  var m = document.getElementById('rcp-auth-modal'); if (m) m.classList.add('open');
-  setTimeout(function(){ var i = document.getElementById('rcp-email-input'); if(i) i.focus(); }, 100);
-}
-function rcpCloseAuth() {
-  var m = document.getElementById('rcp-auth-modal'); if (m) m.classList.remove('open');
-  var msg = document.getElementById('rcp-auth-msg'); if (msg) { msg.textContent=''; msg.className=''; }
-}
-function rcpSignOut() {
-  if (_rcpSB) _rcpSB.auth.signOut().then(function() { _rcpUser=null; _rcpEntitlements={}; _rcpUpdateAuthBar(); });
-}
-function rcpSendMagicLink() {
-  if (!_rcpSB) return;
-  var email = (document.getElementById('rcp-email-input').value||'').trim();
-  var msg   = document.getElementById('rcp-auth-msg');
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.textContent='Please enter a valid email address.'; msg.className='err'; return; }
-  msg.textContent='Sending…'; msg.className='';
-  _rcpSB.auth.signInWithOtp({ email: email, options: { emailRedirectTo: window.location.href } })
-    .then(function(res) {
-      if (res.error) { msg.textContent='Error: '+res.error.message; msg.className='err'; }
-      else { msg.textContent='✓ Check your email for a sign-in link.'; msg.className=''; }
-    });
-}
-
-// ── Main API call — widget uses direct, deployed uses proxy ───────────────
 async function apiCall(payload, useSearch) {
-  if (_isWidget) {
-    // Direct call — Claude.ai injects the key
-    var headers = {
-      'Content-Type': 'application/json',
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    };
-    if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
-    var r = await fetch(_DIRECT, { method:'POST', headers:headers, body:JSON.stringify(payload) });
-    if (!r.ok) { var eb=await r.json().catch(function(){return{};}); var e=new Error('http '+r.status); e.status=r.status; e.apiErr=eb.error||eb; throw e; }
-    var d = await r.json();
-    if (d.error) { var e2=new Error('api'); e2.apiErr=d.error; throw e2; }
-    return d;
+  var headers = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
+  if (useSearch) headers['anthropic-beta'] = 'web-search-2025-03-05';
+  var r = await fetch(_DIRECT, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+  if (!r.ok) {
+    var eb = await r.json().catch(function() { return {}; });
+    var e = new Error('http ' + r.status); e.status = r.status; e.apiErr = eb.error || eb; throw e;
   }
-
-  // Deployed — route through Supabase proxy
-  if (!_rcpUser) { rcpSignIn(); throw new Error('auth_required'); }
-  var sessionRes = await _rcpSB.auth.getSession();
-  var token = sessionRes.data && sessionRes.data.session ? sessionRes.data.session.access_token : null;
-  if (!token) { rcpSignIn(); throw new Error('auth_required'); }
-
-  var r2 = await fetch(RCP_PROXY_URL, {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
-    body: JSON.stringify({
-      tool:           payload._tool || 'unknown',
-      messages:       payload.messages,
-      system:         payload.system,
-      max_tokens:     payload.max_tokens,
-      use_web_search: !!useSearch
-    })
-  });
-  if (!r2.ok) {
-    var eb2 = await r2.json().catch(function(){return{};});
-    if (r2.status === 402) { rcpShowPaywall('export_individual'); throw new Error('payment_required'); }
-    if (r2.status === 429) { alert('Daily limit reached. Upgrade to Pro for more AI calls.'); throw new Error('rate_limited'); }
-    var e3 = new Error('http '+r2.status); e3.apiErr = eb2; throw e3;
-  }
-  var d2 = await r2.json();
-  if (d2.error) { var e4=new Error('api'); e4.apiErr=d2.error; throw e4; }
-  return d2;
-}
-
-function rcpShowPaywall(feature) {
-  var pw = document.getElementById('prev-paywall');
-  if (pw) { pw.style.display='block'; pw.scrollIntoView({behavior:'smooth',block:'center'}); }
-  // Switch to exports tab
-  var t6 = document.getElementById('t6'); if (t6) t6.checked = true;
+  var d = await r.json();
+  if (d.error) { var e2 = new Error('api'); e2.apiErr = d.error; throw e2; }
+  return d;
 }
 
 var INDD={
@@ -884,10 +756,6 @@ var _V1_SS_KEY = 'rcpts_v1_unlocked';
       window.addEventListener('DOMContentLoaded', function() { _v1DoUnlock(); });
     }
   } catch(e) {}
-  /* Also check Supabase entitlement after a short delay (client may still be initializing) */
-  setTimeout(function() {
-    if (!_rcpUnlocked && _rcpHasEntitlement('export_individual')) _v1DoUnlock();
-  }, 1500);
 })();
 
 function gv(id){var e=document.getElementById(id);return e?e.value||'':'';}
@@ -1556,14 +1424,11 @@ function _v1ResetGate() {
   document.getElementById('prev-paywall').style.display = 'block';
 }
 function handlePgCheckout() {
-  // On deployed site, require sign-in before payment so we can link the purchase to a user
-  if (!_isWidget && !_rcpUser) {
-    rcpSignIn();
-    var msg = document.getElementById('rcp-auth-msg');
-    if (msg) { msg.textContent = 'Sign in first — we need your email to deliver your purchase.'; msg.className = ''; }
-    return;
+  if (!isUnlockedV1('export_individual')) {
+    handleCheckoutV1('export_individual');
+  } else {
+    openRaiseCasePage();
   }
-  openRaiseCasePage();
 }
 /* Listen for messages from raise_case_preview tab */
 window.addEventListener('message', function(e) {
@@ -1840,7 +1705,9 @@ function generatePDF(docType) {
 }
 
 function destroyAll(){
-  S={};achN=0;streamN=0;cMode=null;cHist=[];liveSal=null;_rcpUnlocked=false;try{sessionStorage.removeItem(_V1_SS_KEY);}catch(e){}window.rcpHandoff=null;window._rcpHandoffData=null;
+  S={};achN=0;streamN=0;cMode=null;cHist=[];liveSal=null;_rcpUnlocked=false;
+  try{sessionStorage.removeItem(_V1_SS_KEY);sessionStorage.removeItem('rcpts_v1_items');}catch(e){}
+  window.rcpHandoff=null;window._rcpHandoffData=null;
   document.getElementById('ach-list').innerHTML='';
   document.getElementById('coach-msgs').innerHTML='';
   document.getElementById('coach-session').style.display='none';
