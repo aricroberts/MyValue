@@ -849,7 +849,7 @@ footer{background:var(--ink);color:rgba(245,240,232,.5);padding:2.5rem 2rem;text
       <a href="legal.html" style="color:rgba(245,240,232,.7)">Privacy &amp; Terms</a>
     </nav>
     <p class="footer-copy" style="margin-bottom:.5rem">Free · Private · No account required · All data stays in your browser</p>
-    <p class="footer-copy">© 2026 AricCivicLabs.Org · <a href="mailto:aricroberts@gmail.com" style="color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(245,240,232,.25)">aricroberts@gmail.com</a></p>
+    <p class="footer-copy">© 2026 AricCivicLabs.Org · <a href="mailto:hello@aricciviclabs.org" style="color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(245,240,232,.25)">hello@aricciviclabs.org</a></p>
   </div>
 </footer>
 
@@ -868,13 +868,13 @@ function submitContact(e){
         document.getElementById('contact-form').reset();
       }else{
         status.style.color='var(--red)';
-        status.textContent='Something went wrong — email us directly at aricroberts@gmail.com';
+        status.textContent='Something went wrong — email us directly at hello@aricciviclabs.org';
       }
       btn.textContent='Send message →';btn.disabled=false;
     })
     .catch(function(){
       status.style.color='var(--red)';
-      status.textContent='Could not send — email aricroberts@gmail.com directly.';
+      status.textContent='Could not send — email hello@aricciviclabs.org directly.';
       btn.textContent='Send message →';btn.disabled=false;
     });
 }
