@@ -194,6 +194,20 @@ button:hover{background:var(--surface2)}
   .prev-doc-wrap{margin:0}
   .prev-doc{box-shadow:none;border:none;padding:0;page-break-after:always}
 }
+
+/* ── Email capture ── */
+.email-capture-block{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.875rem 1rem;margin-top:.875rem}
+.email-capture-block .ec-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin:0 0 6px;display:flex;align-items:center;gap:5px}
+.email-capture-block .ec-row{display:flex;gap:7px;align-items:stretch;margin-bottom:7px;flex-wrap:wrap}
+.email-capture-block .ec-input{flex:1;min-width:180px;font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit}
+.email-capture-block .ec-input:focus{outline:none;border-color:var(--purple)}
+.email-capture-block .ec-btn{font-size:12px;font-weight:600;padding:7px 14px;background:var(--purple);border:none;border-radius:var(--radius-sm);color:#fff;cursor:pointer;font-family:inherit;white-space:nowrap}
+.email-capture-block .ec-btn:hover{opacity:.88}
+.email-capture-block .ec-consent{display:flex;align-items:flex-start;gap:7px;cursor:pointer;user-select:none;border:1px solid var(--green-b);border-radius:var(--radius-sm);padding:7px 9px;background:var(--green-dim);transition:border-color .15s}
+.email-capture-block .ec-consent:hover{border-color:var(--green)}
+.email-capture-block .ec-consent input[type=checkbox]{margin-top:2px;flex-shrink:0;accent-color:var(--green);cursor:pointer}
+.email-capture-block .ec-consent span{font-size:11px;color:#A0E8C8;line-height:1.5}
+.email-capture-block .ec-status{font-size:11px;margin-top:5px;min-height:14px}
 </style>
 </head>
 <body>
@@ -210,6 +224,55 @@ button:hover{background:var(--surface2)}
   <button id="rcp-notice-close" aria-label="Dismiss" onclick="this.parentElement.style.display='none';try{sessionStorage.setItem('rcpNotice','1')}catch(e){}">&#x2715;</button>
 </div>
 <script>try{if(sessionStorage.getItem('rcpNotice')==='1'){var n=document.getElementById('rcp-notice');if(n)n.style.display='none';}}catch(e){}</script>
+
+/* ── Email capture ──────────────────────────────────────────────────────────
+ *  captureEmail(email, optedIn, source)
+ *  - Always stores transactional email in sessionStorage for same-session use
+ *  - If opted in: POSTs to Supabase subscribe Edge Function (fire-and-forget)
+ * ─────────────────────────────────────────────────────────────────────────── */
+function captureEmail(email, optedIn, source) {
+  if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) return false;
+  email = email.trim().toLowerCase();
+  try {
+    sessionStorage.setItem('rcpts_user_email', email);
+    sessionStorage.setItem('rcpts_email_source', source);
+  } catch(e) {}
+  if (optedIn) {
+    try {
+      fetch('https://epntzskzmdlfqyosscbc.supabase.co/functions/v1/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: source })
+      });
+    } catch(e) {}
+  }
+  return true;
+}
+
+function handleEmailSubmit(inputId, checkId, statusId, source) {
+  var emailEl = document.getElementById(inputId);
+  var checkEl = document.getElementById(checkId);
+  var statusEl = document.getElementById(statusId);
+  if (!emailEl || !statusEl) return;
+  var email = (emailEl.value || '').trim();
+  var optedIn = checkEl ? checkEl.checked : false;
+  if (!email || email.indexOf('@') === -1) {
+    statusEl.style.color = 'var(--amber)';
+    statusEl.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  var ok = captureEmail(email, optedIn, source);
+  if (!ok) {
+    statusEl.style.color = 'var(--amber)';
+    statusEl.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  statusEl.style.color = 'var(--green)';
+  statusEl.textContent = optedIn ? 'Saved — unsubscribe anytime.' : 'Got it.';
+  emailEl.value = '';
+  if (checkEl) checkEl.checked = false;
+}
+
 <!-- ── /Legal notice bar ── -->
 
 
@@ -1728,6 +1791,9 @@ function destroyAll(){
   document.getElementById('dept-mapped').value='ops';
   document.getElementById('t1').checked=true;
   if (typeof _lsClear === 'function') _lsClear();
+  /* Clear transactional email from session — Supabase subscriber record is permanent */
+  try { sessionStorage.removeItem('rcpts_user_email'); } catch(e) {}
+  try { sessionStorage.removeItem('rcpts_email_source'); } catch(e) {}
 }
 
 liveB();
