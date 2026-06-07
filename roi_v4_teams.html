@@ -226,6 +226,19 @@ button:hover{background:var(--surface2)}
 .ledger-pro-banner .lpb-head{font-size:13px;font-weight:600;color:var(--purple);margin:0 0 4px;display:flex;align-items:center;gap:6px}
 .ledger-pro-banner .lpb-sub{font-size:12px;color:var(--text2);margin:0 0 10px;line-height:1.55}
 .ledger-pro-banner .lpb-btns{display:flex;gap:7px;flex-wrap:wrap}
+
+/* ── Email capture ── */
+.email-capture-block{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.875rem 1rem;margin-top:.875rem}
+.email-capture-block .ec-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin:0 0 6px;display:flex;align-items:center;gap:5px}
+.email-capture-block .ec-row{display:flex;gap:7px;align-items:stretch;margin-bottom:7px;flex-wrap:wrap}
+.email-capture-block .ec-input{flex:1;min-width:180px;font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;color:var(--text);font-family:inherit}
+.email-capture-block .ec-input:focus{outline:none;border-color:var(--purple)}
+.email-capture-block .ec-btn{font-size:12px;font-weight:600;padding:7px 14px;background:var(--purple);border:none;border-radius:var(--radius-sm);color:#fff;cursor:pointer;font-family:inherit;white-space:nowrap}
+.email-capture-block .ec-btn:hover{opacity:.88}
+.email-capture-block .ec-consent{display:flex;align-items:flex-start;gap:7px;cursor:pointer;user-select:none}
+.email-capture-block .ec-consent input[type=checkbox]{margin-top:2px;flex-shrink:0;accent-color:var(--purple);cursor:pointer}
+.email-capture-block .ec-consent span{font-size:11px;color:var(--text3);line-height:1.5}
+.email-capture-block .ec-status{font-size:11px;margin-top:5px;min-height:14px}
 </style>
 </head>
 <body>
@@ -420,6 +433,20 @@ button:hover{background:var(--surface2)}
       <!-- Verdict -->
       <div class="card"><p class="sl">Team assessment</p><div id="team-verdict" style="font-size:13px;color:var(--text2);line-height:1.8"></div></div>
 
+      <!-- Email capture — ledger results -->
+      <div class="email-capture-block">
+        <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Save your results</p>
+        <div class="ec-row">
+          <input type="email" id="ec-ledger-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+          <button class="ec-btn" onclick="handleEmailSubmit('ec-ledger-email','ec-ledger-check','ec-ledger-status','roi-v4-ledger')">Save</button>
+        </div>
+        <label class="ec-consent">
+          <input type="checkbox" id="ec-ledger-check">
+          <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+        </label>
+        <div class="ec-status" id="ec-ledger-status"></div>
+      </div>
+
       <div class="g2" style="margin-top:.5rem">
         <label for="t6" style="display:block"><span class="btn-primary" style="display:block;text-align:center;padding:8px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px">View exports →</span></label>
         <label for="t5" style="display:block"><span style="display:block;text-align:center;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface2);font-size:13px">Team coach →</span></label>
@@ -455,6 +482,18 @@ button:hover{background:var(--surface2)}
           <p class="sl sl-ok"><i class="ti ti-check"></i> Coach output</p>
           <div id="coach-out" style="font-size:13px;line-height:1.7;color:#A0E8C8"></div>
           <div style="margin-top:8px"><button onclick="cpCoach()"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="useCoachInExports()" style="background:var(--green-dim);border:1px solid var(--green-b);color:var(--green);font-weight:600"><i class="ti ti-transfer-in" style="font-size:12px;vertical-align:-1px"></i> Use in exports →</button></div>
+          <div class="email-capture-block" style="margin-top:.75rem">
+            <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Save this coaching output</p>
+            <div class="ec-row">
+              <input type="email" id="ec-coach-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+              <button class="ec-btn" onclick="handleEmailSubmit('ec-coach-email','ec-coach-check','ec-coach-status','roi-v4-coach-output')">Save</button>
+            </div>
+            <label class="ec-consent">
+              <input type="checkbox" id="ec-coach-check">
+              <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+            </label>
+            <div class="ec-status" id="ec-coach-status"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -507,30 +546,90 @@ button:hover{background:var(--surface2)}
         <p>Full team ledger with collective ROI, per-member breakdown, and leadership-facing analysis.</p>
         <div class="doc-preview" id="doc-report"><div class="doc-empty-state">Complete your team ledger on tab 4 to generate this document.</div></div>
         <div class="brow"><button onclick="cpDoc('doc-report')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('report')">Refine ↗</button></div>
+        <div class="email-capture-block">
+          <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Email this report to yourself</p>
+          <div class="ec-row">
+            <input type="email" id="ec-report-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+            <button class="ec-btn" onclick="handleEmailSubmit('ec-report-email','ec-report-check','ec-report-status','roi-v4-report')">Save</button>
+          </div>
+          <label class="ec-consent">
+            <input type="checkbox" id="ec-report-check">
+            <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+          </label>
+          <div class="ec-status" id="ec-report-status"></div>
+        </div>
       </div>
       <div class="ecard" id="exp-recognition">
         <h3><i class="ti ti-sparkles" style="font-size:14px;color:var(--teal)"></i> Recognition &amp; spotlight memo</h3>
         <p>Surfaces underrecognized contributors with data-grounded cases for raises, promotions, or public recognition.</p>
         <div class="doc-preview" id="doc-recognition"><div class="doc-empty-state">Complete your team ledger on tab 4 to generate this document.</div></div>
         <div class="brow"><button onclick="cpDoc('doc-recognition')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('recognition')">Refine ↗</button></div>
+        <div class="email-capture-block">
+          <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Email this memo to yourself</p>
+          <div class="ec-row">
+            <input type="email" id="ec-recog-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+            <button class="ec-btn" onclick="handleEmailSubmit('ec-recog-email','ec-recog-check','ec-recog-status','roi-v4-recognition')">Save</button>
+          </div>
+          <label class="ec-consent">
+            <input type="checkbox" id="ec-recog-check">
+            <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+          </label>
+          <div class="ec-status" id="ec-recog-status"></div>
+        </div>
       </div>
       <div class="ecard" id="exp-brief">
         <h3><i class="ti ti-mail" style="font-size:14px;color:var(--blue)"></i> Leadership briefing</h3>
         <p>Executive-facing summary framed for the selected audience. ROI, headcount defense, and investment case.</p>
         <div class="doc-preview" id="doc-brief"><div class="doc-empty-state">Complete your team ledger on tab 4 to generate this document.</div></div>
         <div class="brow"><button onclick="cpDoc('doc-brief')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('brief')">Refine ↗</button></div>
+        <div class="email-capture-block">
+          <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Email this briefing to yourself</p>
+          <div class="ec-row">
+            <input type="email" id="ec-brief-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+            <button class="ec-btn" onclick="handleEmailSubmit('ec-brief-email','ec-brief-check','ec-brief-status','roi-v4-brief')">Save</button>
+          </div>
+          <label class="ec-consent">
+            <input type="checkbox" id="ec-brief-check">
+            <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+          </label>
+          <div class="ec-status" id="ec-brief-status"></div>
+        </div>
       </div>
       <div class="ecard" id="exp-budget">
         <h3><i class="ti ti-file-text" style="font-size:14px;color:var(--green)"></i> Budget justification memo</h3>
         <p>ROI-grounded memo making the financial case for team budget, headcount, or resource requests.</p>
         <div class="doc-preview" id="doc-budget"><div class="doc-empty-state">Complete your team ledger on tab 4 to generate this document.</div></div>
         <div class="brow"><button onclick="cpDoc('doc-budget')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('budget')">Refine ↗</button></div>
+        <div class="email-capture-block">
+          <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Email this memo to yourself</p>
+          <div class="ec-row">
+            <input type="email" id="ec-budget-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+            <button class="ec-btn" onclick="handleEmailSubmit('ec-budget-email','ec-budget-check','ec-budget-status','roi-v4-budget')">Save</button>
+          </div>
+          <label class="ec-consent">
+            <input type="checkbox" id="ec-budget-check">
+            <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+          </label>
+          <div class="ec-status" id="ec-budget-status"></div>
+        </div>
       </div>
       <div class="ecard" id="exp-individual">
         <h3><i class="ti ti-id-badge" style="font-size:14px;color:var(--amber)"></i> Individual contributor summaries</h3>
         <p>One-page impact summary per team member — shareable with each contributor for their own records and performance conversations.</p>
         <div class="doc-preview" id="doc-individual"><div class="doc-empty-state">Complete your team ledger on tab 4 to generate this document.</div></div>
         <div class="brow"><button onclick="cpDoc('doc-individual')"><i class="ti ti-copy" style="font-size:12px;vertical-align:-1px"></i> Copy</button><button onclick="refine('individual')">Refine ↗</button></div>
+        <div class="email-capture-block">
+          <p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> Email these summaries to yourself</p>
+          <div class="ec-row">
+            <input type="email" id="ec-indiv-email" class="ec-input" placeholder="you@example.com" autocomplete="email"/>
+            <button class="ec-btn" onclick="handleEmailSubmit('ec-indiv-email','ec-indiv-check','ec-indiv-status','roi-v4-individual')">Save</button>
+          </div>
+          <label class="ec-consent">
+            <input type="checkbox" id="ec-indiv-check">
+            <span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>
+          </label>
+          <div class="ec-status" id="ec-indiv-status"></div>
+        </div>
       </div>
       <div style="display:flex;gap:7px;margin-top:.875rem;flex-wrap:wrap">
         <button onclick="destroyAll()" class="btn-danger"><i class="ti ti-trash" style="font-size:12px;vertical-align:-1px"></i> Destroy all data</button>
@@ -739,6 +838,85 @@ function _v4LedgerBanner() {
 }
 
 var _DIRECT = 'https://api.anthropic.com/v1/messages';
+
+/* ── Email capture ──────────────────────────────────────────────────────────
+ *  captureEmail(email, optedIn, source)
+ *  - Always stores transactional email in sessionStorage for same-session use
+ *  - If opted in: appends a consent record to rcpts_marketing_list in localStorage
+ *  - rcpts_marketing_list is intentionally NOT cleared by destroyAll()
+ *  - ESP integration: replace the localStorage block below with a fetch() POST
+ * ─────────────────────────────────────────────────────────────────────────── */
+function captureEmail(email, optedIn, source) {
+  if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) return false;
+  email = email.trim().toLowerCase();
+  try {
+    sessionStorage.setItem('rcpts_user_email', email);
+    sessionStorage.setItem('rcpts_email_source', source);
+  } catch(e) {}
+  if (optedIn) {
+    try {
+      var existing = [];
+      try { existing = JSON.parse(localStorage.getItem('rcpts_marketing_list') || '[]'); } catch(e) {}
+      var alreadyIn = false;
+      for (var i = 0; i < existing.length; i++) {
+        if (existing[i].email === email) { alreadyIn = true; break; }
+      }
+      if (!alreadyIn) {
+        existing.push({ email: email, source: source, opted_in: true, timestamp: new Date().toISOString() });
+        localStorage.setItem('rcpts_marketing_list', JSON.stringify(existing));
+      }
+      /* ── ESP integration point ──────────────────────────────────────────
+       * Replace the localStorage block above with:
+       * fetch('https://[esp-endpoint]', {
+       *   method: 'POST',
+       *   headers: { 'Content-Type': 'application/json' },
+       *   body: JSON.stringify({ email: email, tags: [source], status: 'subscribed' })
+       * });
+       * ─────────────────────────────────────────────────────────────────── */
+    } catch(e) {}
+  }
+  return true;
+}
+
+function handleEmailSubmit(inputId, checkId, statusId, source) {
+  var emailEl = document.getElementById(inputId);
+  var checkEl = document.getElementById(checkId);
+  var statusEl = document.getElementById(statusId);
+  if (!emailEl || !statusEl) return;
+  var email = (emailEl.value || '').trim();
+  var optedIn = checkEl ? checkEl.checked : false;
+  if (!email || email.indexOf('@') === -1) {
+    statusEl.style.color = 'var(--amber)';
+    statusEl.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  var ok = captureEmail(email, optedIn, source);
+  if (!ok) {
+    statusEl.style.color = 'var(--amber)';
+    statusEl.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  statusEl.style.color = 'var(--green)';
+  statusEl.textContent = optedIn ? 'Saved — unsubscribe anytime.' : 'Got it.';
+  emailEl.value = '';
+  if (checkEl) checkEl.checked = false;
+}
+
+function _emailCaptureHTML(inputId, checkId, statusId, source, label) {
+  label = label || 'Save a copy to your email';
+  return '<div class="email-capture-block">' +
+    '<p class="ec-label"><i class="ti ti-mail" style="font-size:12px"></i> ' + label + '</p>' +
+    '<div class="ec-row">' +
+    '<input type="email" id="' + inputId + '" class="ec-input" placeholder="you@example.com" autocomplete="email"/>' +
+    '<button class="ec-btn" onclick="handleEmailSubmit(\'' + inputId + '\',\'' + checkId + '\',\'' + statusId + '\',\'' + source + '\')">Save</button>' +
+    '</div>' +
+    '<label class="ec-consent">' +
+    '<input type="checkbox" id="' + checkId + '">' +
+    '<span>Send me occasional updates from receipts. / AricCivicLabs. Unsubscribe anytime. We never sell your data.</span>' +
+    '</label>' +
+    '<div class="ec-status" id="' + statusId + '"></div>' +
+    '</div>';
+}
 
 async function apiCall(payload, useSearch) {
   var headers = {
@@ -1737,6 +1915,9 @@ function destroyAll(){
   document.getElementById('t1').checked=true;
   liveTeam();
   if (typeof _lsClear === 'function') _lsClear();
+  /* Clear transactional email from session — consent record in rcpts_marketing_list is preserved */
+  try { sessionStorage.removeItem('rcpts_user_email'); } catch(e) {}
+  try { sessionStorage.removeItem('rcpts_email_source'); } catch(e) {}
 }
 
 /* ── AVATAR colors on prog-num ── */
@@ -1753,7 +1934,8 @@ function _lsSave() {
   try {
     var inp = {};
     document.querySelectorAll('input:not([type=radio]):not([type=hidden]),select,textarea').forEach(function(el) {
-      if (el.id && el.id !== 'coach-input' && el.id !== 'export-email' && el.id !== 'cm-email') {
+      if (el.id && el.id !== 'coach-input' && el.id !== 'export-email' && el.id !== 'cm-email'
+          && el.id.indexOf('ec-') !== 0) {
         inp[el.id] = el.type === 'checkbox' ? el.checked : el.value;
       }
     });
