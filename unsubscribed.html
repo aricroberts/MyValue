@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Unsubscribed · receipts.</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#F5F0E8;color:#1A1410;font-family:'DM Sans',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem}
+.card{background:#fff;border:1px solid #DDD8CE;border-radius:12px;padding:2.5rem 2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.icon{font-size:2.5rem;color:#2C6E49;margin-bottom:1rem}
+.icon-err{color:#C4860A}
+h1{font-family:'Lora',Georgia,serif;font-size:1.5rem;font-weight:600;color:#1A1410;margin-bottom:.625rem;line-height:1.25}
+p{font-size:14px;color:#5A5040;line-height:1.65;margin-bottom:1.25rem}
+.home-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#2C6E49;text-decoration:none;border:1px solid #2C6E4944;border-radius:6px;padding:8px 16px;background:#F0F7F2}
+.home-link:hover{background:#E0F0E8}
+.footer{margin-top:2rem;font-size:11px;color:#9A9080;text-align:center}
+.footer a{color:#9A9080;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="card" id="main-card">
+  <!-- State set by JS below based on ?error=1 param -->
+</div>
+<div class="footer">
+  <a href="https://receipts.aricciviclabs.org/legal.html" target="_blank">Privacy &amp; Terms</a>
+  &nbsp;&middot;&nbsp;
+  <a href="mailto:hello@aricciviclabs.org">hello@aricciviclabs.org</a>
+  &nbsp;&middot;&nbsp;
+  &copy; 2026 AricCivicLabs.Org
+</div>
+
+<script>
+(function() {
+  var isError = window.location.search.indexOf('error=1') !== -1;
+  var card = document.getElementById('main-card');
+
+  if (isError) {
+    card.innerHTML =
+      '<div class="icon icon-err"><i class="ti ti-alert-circle"></i></div>' +
+      '<h1>Something went wrong</h1>' +
+      '<p>We weren\'t able to process your unsubscribe request. The link may be expired or invalid.</p>' +
+      '<p>To unsubscribe manually, email us at <strong>hello@aricciviclabs.org</strong> and we\'ll remove you immediately.</p>' +
+      '<a href="https://receipts.aricciviclabs.org" class="home-link"><i class="ti ti-home" style="font-size:14px"></i> Back to receipts.</a>';
+  } else {
+    card.innerHTML =
+      '<div class="icon"><i class="ti ti-circle-check"></i></div>' +
+      '<h1>You\'re unsubscribed</h1>' +
+      '<p>You\'ve been removed from our mailing list. You won\'t receive any more emails from receipts. or AricCivicLabs.</p>' +
+      '<p style="font-size:12px;color:#9A9080">Changed your mind? Email us at hello@aricciviclabs.org and we\'ll add you back.</p>' +
+      '<a href="https://receipts.aricciviclabs.org" class="home-link"><i class="ti ti-home" style="font-size:14px"></i> Back to receipts.</a>';
+  }
+})();
+</script>
+</body>
+</html>
