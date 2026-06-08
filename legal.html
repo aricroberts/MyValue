@@ -102,7 +102,7 @@ footer a:hover{text-decoration:underline}
   <h1 class="page-title">Privacy &amp; Terms</h1>
   <p class="page-meta">
     <span>Effective date: June 1, 2025</span>
-    <span>Last updated: May 31, 2026</span>
+    <span>Last updated: June 7, 2026</span>
   </p>
 
   <!-- TOC -->
@@ -163,20 +163,24 @@ footer a:hover{text-decoration:underline}
     <p>All receipts. calculators, coaches, and tools operate entirely in your browser using JavaScript. Here is exactly what that means:</p>
 
     <ul class="kv-list">
-      <li><span class="kv-key">Storage</span><span class="kv-val">JavaScript memory (RAM) only. Data exists only while the page is open.</span></li>
-      <li><span class="kv-key">Persistence</span><span class="kv-val">None. Closing or refreshing the tab destroys all data permanently.</span></li>
-      <li><span class="kv-key">localStorage / sessionStorage</span><span class="kv-val">Not used. We do not write to browser storage.</span></li>
-      <li><span class="kv-key">Cookies (tool data)</span><span class="kv-val">Not used for tool data. See Section 4 for analytics cookies.</span></li>
-      <li><span class="kv-key">Server transmission</span><span class="kv-val">Your calculation data is never sent to any server.</span></li>
-      <li><span class="kv-key">Destroy function</span><span class="kv-val">Every tool includes a "Destroy session" button that clears all JS variables and resets the UI immediately.</span></li>
-      <li><span class="kv-key">AI coach calls</span><span class="kv-val">When you use the AI coach features, your inputs are sent to Anthropic's API to generate responses. No identifying information (name, employer, financial figures) is required for coaching. Anthropic's privacy policy applies to those interactions.</span></li>
+      <li><span class="kv-key">Calculation data</span><span class="kv-val">JavaScript memory (RAM) only. Your salary figures, ROI estimates, and financial inputs exist only while the page is open. Closing or refreshing the tab destroys them permanently.</span></li>
+      <li><span class="kv-key">sessionStorage</span><span class="kv-val">Used only to remember your unlock state (whether you've paid to access premium features) within the current browser tab. Cleared automatically when you close the tab. Never contains your calculation data.</span></li>
+      <li><span class="kv-key">localStorage</span><span class="kv-val">Used in two limited cases: (1) to restore form field values you entered in a previous visit, as a convenience feature, and (2) by InAble to persist your subscription unlock state across sessions. The Destroy button clears all localStorage entries for the tool.</span></li>
+      <li><span class="kv-key">Cookies (tool data)</span><span class="kv-val">Not used for tool data. See Section 4 for analytics.</span></li>
+      <li><span class="kv-key">Server transmission</span><span class="kv-val">Your calculation data is never sent to our servers. The exception is AI coach inputs — see below.</span></li>
+      <li><span class="kv-key">Destroy function</span><span class="kv-val">Every tool includes a "Destroy session" button that clears all JavaScript variables, sessionStorage, and localStorage for that tool and resets the UI immediately.</span></li>
+      <li><span class="kv-key">AI coach calls</span><span class="kv-val">When you use AI coaching features, the text you type is sent to Anthropic's Claude API to generate a response. This is a live transmission to a third-party service. Anthropic's privacy policy governs how they handle that data. See Section 5 for details.</span></li>
       <li><span class="kv-key">Exports</span><span class="kv-val">JSON and PDF exports are generated client-side only. Files are created in your browser and downloaded directly to your device. We never receive a copy.</span></li>
     </ul>
 
     <div class="callout callout-gold">
-      <strong>A note on AI features and confidential data:</strong> When you use built-in coaching features, your conversation turns are sent to Anthropic's Claude API. We recommend not including highly sensitive personal identifiers (Social Security numbers, full legal names with employer details, etc.) in coaching prompts. The tools are designed so that anonymized or role-based inputs ("a software engineer in healthcare") work just as well as specific ones.
+      <strong>Important: AI coaching features transmit your inputs to Anthropic.</strong> When you use built-in coaching or AI analysis features in any receipts. or AricCivicLabs tool, the text you type is sent over the internet to Anthropic's Claude API. This is a live transmission to a third-party service — not local computation.
       <br/><br/>
-      If your role involves access to confidential, proprietary, or trade-secret information belonging to an employer or third party, <strong>you are solely responsible for ensuring you have authorization to share any such information with third-party AI services</strong> before entering it into coaching or calculation prompts. receipts. tools are designed for self-assessment using your own estimates — not for processing proprietary employer data. When in doubt, use approximations or role-based descriptions rather than specific figures.
+      <strong>What this means:</strong> Anthropic receives the content of your coaching prompts. Anthropic's current API usage policies prohibit using those inputs to train AI models, but their data retention and processing practices are governed by their own privacy policy, not ours. We do not control what Anthropic does with data once transmitted.
+      <br/><br/>
+      <strong>Our recommendation:</strong> Avoid including highly sensitive personal identifiers (Social Security numbers, full legal names combined with employer details, specific financial account information) in coaching prompts. The tools are designed so that role-based or approximated inputs ("a software engineer in healthcare saving 3 hours per week") work just as well as specific ones.
+      <br/><br/>
+      If your role involves access to <strong>confidential, proprietary, or trade-secret information</strong> belonging to an employer or third party, you are solely responsible for ensuring you have authorization to share that information with third-party AI services before entering it into any coaching prompt. When in doubt, use approximations.
     </div>
   </div>
 
@@ -216,13 +220,18 @@ footer a:hover{text-decoration:underline}
     <h2 class="doc-section-title">5. Third-party services</h2>
 
     <ul class="kv-list">
-      <li><span class="kv-key">Stripe</span><span class="kv-val">Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a></span></li>
-      <li><span class="kv-key">Anthropic (Claude API)</span><span class="kv-val">AI coaching features. Inputs sent to Claude are governed by <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">anthropic.com/privacy</a></span></li>
-      <li><span class="kv-key">Formspree</span><span class="kv-val">Contact form submissions. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></span></li>
-      <li><span class="kv-key">Google Fonts</span><span class="kv-val">Typography delivery. Subject to Google's privacy policy.</span></li>
+      <li><span class="kv-key">Stripe</span><span class="kv-val">Payment processing. Receives your name, email, billing address, and payment card details at checkout. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a></span></li>
+      <li><span class="kv-key">Anthropic (Claude API)</span><span class="kv-val">AI coaching and analysis features. The text you type into coaching prompts is transmitted to Anthropic's servers to generate responses. Anthropic's data practices govern those inputs. <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">anthropic.com/privacy</a></span></li>
+      <li><span class="kv-key">Vercel</span><span class="kv-val">Hosting and deployment infrastructure for all AricCivicLabs products. Standard request logs (IP, timestamp, URL) are retained per Vercel's data retention policies. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com/legal/privacy-policy</a></span></li>
+      <li><span class="kv-key">Formspree</span><span class="kv-val">Contact form submissions. When you submit a contact form, your name, email, and message are stored by Formspree and delivered to us. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></span></li>
+      <li><span class="kv-key">Google Fonts</span><span class="kv-val">Typography delivery via CDN. A connection to Google's servers is made when pages load. Subject to Google's privacy policy.</span></li>
     </ul>
 
-    <p>We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+    <p>We do not sell, rent, or share your personal information with third parties for marketing purposes. We do not use advertising networks, social tracking pixels, or data brokers.</p>
+
+    <div class="callout callout-blue">
+      <strong>California residents (CCPA/CPRA):</strong> AricCivicLabs.Org is based in Escondido, California. California residents have the right to know what personal information we collect, how it is used, and with whom it is shared; the right to delete personal information we hold; the right to opt out of the sale of personal information (we do not sell personal information); and the right to non-discrimination for exercising these rights. To exercise any of these rights, email <a href="mailto:support@aricciviclabs.org">support@aricciviclabs.org</a>.
+    </div>
   </div>
 
   <div class="doc-section" id="your-rights">
@@ -324,8 +333,8 @@ footer a:hover{text-decoration:underline}
     </ul>
     <p>To request a refund, email <a href="mailto:support@aricciviclabs.org">support@aricciviclabs.org</a> within 48 hours of your purchase with your Stripe receipt number.</p>
 
-    <div class="doc-section-subtitle">No subscription auto-renewal</div>
-    <p>All current receipts. purchases are one-time payments. There are no recurring subscriptions that auto-renew at this time. If subscription pricing is introduced in the future, it will be disclosed clearly before purchase.</p>
+    <div class="doc-section-subtitle">No auto-renewal on one-time purchases</div>
+    <p>All receipts. tool purchases (document unlocks, coaching sessions) are one-time payments and do not auto-renew. InAble subscriptions (monthly and annual plans) are recurring and will auto-renew until cancelled. Subscription pricing, billing cadence, and cancellation terms are disclosed clearly on the InAble purchase page before you complete payment.</p>
   </div>
 
   <div class="doc-section" id="intellectual-property">
