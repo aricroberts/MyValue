@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thank you — Transitions by receipts.</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F1117;--surface:#1A1D27;--surface2:#22263A;--border:#2A2F45;
+  --text:#E8EAF0;--text2:#8A90A8;--text3:#4A5070;
+  --blue:#4A9EFF;--blue-dim:#0A1830;--blue-b:#4A9EFF44;
+  --green:#2ECC8A;--green-dim:#081C14;--green-b:#2ECC8A44;
+  --amber:#F59E0B;--amber-dim:#1C1200;--amber-b:#F59E0B44;
+  --teal:#22D4C8;--teal-dim:#061C1A;--teal-b:#22D4C844;
+  --purple:#9B8BF8;--purple-dim:#12102A;--purple-b:#9B8BF844;
+  --radius:10px;--radius-sm:6px;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* Subtle animated background */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(46,204,138,.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 80%, rgba(155,139,248,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 60% 10%, rgba(34,212,200,.03) 0%, transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+.page{max-width:640px;margin:0 auto;padding:2rem 1.5rem;position:relative;z-index:1;flex:1;display:flex;flex-direction:column}
+
+/* Top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.logo{font-size:15px;font-weight:700;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);transition:all .15s}
+.back-link:hover{color:var(--text);background:var(--border)}
+
+/* Hero */
+.hero{text-align:center;padding:2rem 0 2.5rem}
+.check-ring{width:72px;height:72px;border-radius:50%;background:var(--green-dim);border:1px solid var(--green-b);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;position:relative}
+.check-ring::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(46,204,138,.2);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.05)}}
+.check-ring i{font-size:32px;color:var(--green)}
+.hero-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:.75rem}
+.hero-title{font-size:2rem;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.875rem}
+.hero-title em{font-style:normal;color:var(--green)}
+.hero-sub{font-size:14px;color:var(--text2);line-height:1.7;max-width:480px;margin:0 auto}
+
+/* What's unlocked */
+.unlocked-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.unlocked-card.is-pro{background:var(--purple-dim);border-color:var(--purple-b)}
+.section-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.section-label.green{color:var(--green)}
+.section-label.purple{color:var(--purple)}
+
+.tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.tool-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);transition:all .15s}
+.tool-item:hover{border-color:var(--green-b);background:var(--green-dim)}
+.tool-item-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.tool-item-body{min-width:0}
+.tool-item-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tool-item-price{font-size:10px;color:var(--green);font-weight:600;font-family:'DM Mono',monospace}
+
+/* Single-purchase unlock */
+.single-unlock{display:flex;align-items:flex-start;gap:12px;padding:1rem 1.125rem;background:var(--green-dim);border:1px solid var(--green-b);border-radius:var(--radius);margin-bottom:1rem}
+.single-unlock-icon{width:36px;height:36px;border-radius:var(--radius-sm);background:rgba(46,204,138,.15);border:1px solid var(--green-b);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.single-unlock-icon i{font-size:18px;color:var(--green)}
+.single-unlock-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.single-unlock-desc{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* Instructions */
+.instructions{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.instruction-row{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)}
+.instruction-row:last-child{border-bottom:none;padding-bottom:0}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text3);flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:var(--text2);line-height:1.6}
+.step-text strong{color:var(--text);font-weight:600}
+
+/* CTA row */
+.cta-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;background:var(--green);border:none;border-radius:var(--radius-sm);color:#061C14;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s}
+.btn-primary:hover{background:#28b87c}
+.btn-secondary{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;transition:all .15s}
+.btn-secondary:hover{background:var(--border);color:var(--text)}
+
+/* Privacy note */
+.privacy-note{font-size:11px;color:var(--text3);line-height:1.7;text-align:center;padding:1rem 0 .5rem;border-top:1px solid var(--border);margin-top:.5rem}
+.privacy-note a{color:var(--text3);text-decoration:underline}
+
+/* Footer */
+footer{padding:1.5rem;text-align:center;font-size:11px;color:var(--text3);position:relative;z-index:1}
+footer a{color:var(--text3);text-decoration:underline}
+
+@media(max-width:560px){
+  .tool-grid{grid-template-columns:1fr}
+  .hero-title{font-size:1.5rem}
+  .cta-row{flex-direction:column}
+  .btn-primary,.btn-secondary{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      receipts. <span style="color:var(--text3);font-weight:400;font-size:13px">· Transitions</span>
+    </div>
+    <a href="transitions_index.html" class="back-link">
+      <i class="ti ti-arrow-left" style="font-size:12px"></i> All tools
+    </a>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="check-ring"><i class="ti ti-circle-check"></i></div>
+    <div class="hero-label">Payment confirmed</div>
+    <h1 class="hero-title">Your export is <em>ready.</em></h1>
+    <p class="hero-sub" id="hero-sub">Head back to the tool, open the Export tab, and download your PDF. Everything is unlocked for this browser session.</p>
+  </div>
+
+  <!-- Dynamic unlock section — populated by JS -->
+  <div id="unlock-section"></div>
+
+  <!-- How to get your download -->
+  <div class="instructions">
+    <div class="section-label green"><i class="ti ti-info-circle" style="font-size:14px"></i>How to download your export</div>
+    <div class="instruction-row">
+      <div class="step-num">1</div>
+      <div class="step-text">Click <strong>Go to your tool</strong> below — it reopens with your purchase already unlocked.</div>
+    </div>
+    <div class="instruction-row">
+      <div class="step-num">2</div>
+      <div class="step-text">Open the <strong>Export tab</strong> — the lock icon will be replaced with a green Download PDF button.</div>
+    </div>
+    <div class="instruction-row">
+      <div class="step-num">3</div>
+      <div class="step-text">Click <strong>Download PDF</strong> — the file saves to your device instantly. Open it in any browser and print to PDF if needed.</div>
+    </div>
+    <div class="instruction-row">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Session note:</strong> Your unlock is active until you close this browser tab. If you need to return later, use the link in your Stripe receipt email.</div>
+    </div>
+  </div>
+
+  <!-- CTAs — populated by JS -->
+  <div id="cta-section" class="cta-row"></div>
+
+  <div class="privacy-note">
+    <i class="ti ti-shield-lock" style="font-size:11px;vertical-align:-1px"></i>
+    All exports are generated in your browser. No data is stored on our servers.<br>
+    Questions? <a href="mailto:support@aricciviclabs.org">support@aricciviclabs.org</a> ·
+    <a href="https://aricciviclabs.org/legal.html">Privacy & Terms</a>
+  </div>
+</div>
+
+<footer>
+  receipts. is a product of <a href="https://aricciviclabs.org" target="_blank">ARIC Civic Labs</a> ·
+  Payments processed by Stripe · <a href="https://aricciviclabs.org/legal.html">Legal</a>
+</footer>
+
+<script>
+// ── Product map ───────────────────────────────────────────────────────────────
+var PRODUCTS = {
+  'entry-launchpad':  {title:'Launchpad Pack',       tool:'entry_tool.html',   icon:'ti-rocket',        color:'var(--blue)',   price:'$5'},
+  'reentry-pack':     {title:'Return Ready Pack',    tool:'reentry_tool.html', icon:'ti-door-enter',    color:'var(--teal)',   price:'$9'},
+  'reentry-resume':   {title:'Resume Language',      tool:'reentry_tool.html', icon:'ti-id',            color:'var(--teal)',   price:'$9'},
+  'change-pivot':     {title:'Pivot Pack',           tool:'change_tool.html',  icon:'ti-map-2',         color:'var(--amber)',  price:'$15'},
+  'change-coach':     {title:'Coach-Ready Brief',    tool:'change_tool.html',  icon:'ti-user-star',     color:'var(--amber)',  price:'$15'},
+  'compare-decision': {title:'Decision Brief',       tool:'compare_tool.html', icon:'ti-scale',         color:'var(--green)',  price:'$19'},
+  'compare-partner':  {title:'Partner Summary',      tool:'compare_tool.html', icon:'ti-user-heart',    color:'var(--green)',  price:'$19'},
+  'equity-action':    {title:'Equity Action Brief',  tool:'equity_tool.html',  icon:'ti-chart-arcs',    color:'var(--blue)',   price:'$29'},
+  'equity-scenarios': {title:'Scenario Comparison',  tool:'equity_tool.html',  icon:'ti-trending-up',   color:'var(--blue)',   price:'$29'},
+  'exit-readiness':   {title:'Exit Readiness Report',tool:'exit_tool.html',    icon:'ti-file-certificate',color:'var(--amber)', price:'$49'},
+  'exit-advisor':     {title:'Advisor Brief',        tool:'exit_tool.html',    icon:'ti-users',         color:'var(--amber)',  price:'$49'},
+  'exit-scenarios':   {title:'Scenario Comparison',  tool:'exit_tool.html',    icon:'ti-chart-line',    color:'var(--amber)',  price:'$49'},
+  'pro_yr':           {title:'Transitions Pro',      tool:'transitions_index.html', icon:'ti-crown',    color:'var(--purple)', price:'$149/yr'}
+};
+
+var ALL_TOOL_ITEMS = [
+  {id:'entry-launchpad',  tool:'entry_tool.html',   name:'Entry',   icon:'ti-rocket',          color:'var(--blue)'},
+  {id:'reentry-pack',     tool:'reentry_tool.html', name:'Re-entry',icon:'ti-door-enter',       color:'var(--teal)'},
+  {id:'change-pivot',     tool:'change_tool.html',  name:'Change',  icon:'ti-map-2',            color:'var(--amber)'},
+  {id:'compare-decision', tool:'compare_tool.html', name:'Compare', icon:'ti-scale',            color:'var(--green)'},
+  {id:'equity-action',    tool:'equity_tool.html',  name:'Equity',  icon:'ti-chart-arcs',       color:'var(--blue)'},
+  {id:'exit-readiness',   tool:'exit_tool.html',    name:'Exit',    icon:'ti-file-certificate', color:'var(--amber)'}
+];
+
+var PRO_ALL = ['entry-launchpad','reentry-pack','reentry-resume','change-pivot','change-coach',
+  'compare-decision','compare-partner','equity-action','equity-scenarios',
+  'exit-readiness','exit-advisor','exit-scenarios'];
+
+// ── Read product from URL ─────────────────────────────────────────────────────
+var params = new URLSearchParams(window.location.search);
+var product = params.get('product') || '';
+var isPro   = (product === 'pro_yr' || product === 'pro_mo');
+
+// ── Store unlock in sessionStorage ───────────────────────────────────────────
+(function(){
+  try {
+    var unlocked = JSON.parse(sessionStorage.getItem('rcpts_unlocked') || '[]');
+    if (product && unlocked.indexOf(product) === -1) unlocked.push(product);
+    if (isPro) {
+      PRO_ALL.forEach(function(id){ if(unlocked.indexOf(id)===-1) unlocked.push(id); });
+    }
+    sessionStorage.setItem('rcpts_unlocked', JSON.stringify(unlocked));
+  } catch(e){}
+})();
+
+// ── Build unlock section ──────────────────────────────────────────────────────
+var unlockEl = document.getElementById('unlock-section');
+var ctaEl    = document.getElementById('cta-section');
+var heroSub  = document.getElementById('hero-sub');
+
+if (isPro) {
+  // Pro — show all 6 tools
+  heroSub.textContent = 'Transitions Pro is active for this browser session. Every premium export across all six tools is unlocked. Open any tool, go to the Export tab, and download.';
+
+  var proHtml =
+    '<div class="unlocked-card is-pro" style="margin-bottom:1rem">'+
+      '<div class="section-label purple"><i class="ti ti-crown" style="font-size:14px"></i>Transitions Pro — all tools unlocked</div>'+
+      '<div class="tool-grid">';
+
+  ALL_TOOL_ITEMS.forEach(function(t){
+    proHtml +=
+      '<a href="'+t.tool+'?success=1&product='+t.id+'" class="tool-item">'+
+        '<div class="tool-item-icon" style="background:rgba(46,204,138,.1);border:1px solid var(--green-b)">'+
+          '<i class="ti '+t.icon+'" style="color:var(--green)"></i>'+
+        '</div>'+
+        '<div class="tool-item-body">'+
+          '<div class="tool-item-name">'+t.name+'</div>'+
+          '<div class="tool-item-price">Unlocked ✓</div>'+
+        '</div>'+
+      '</a>';
+  });
+
+  proHtml += '</div></div>';
+  unlockEl.innerHTML = proHtml;
+
+  ctaEl.innerHTML =
+    '<a href="transitions_index.html" class="btn-primary">'+
+      '<i class="ti ti-grid-dots" style="font-size:14px"></i> Browse all tools'+
+    '</a>'+
+    '<a href="mailto:support@aricciviclabs.org" class="btn-secondary">'+
+      '<i class="ti ti-mail" style="font-size:13px"></i> Questions? Email us'+
+    '</a>';
+
+} else if (product && PRODUCTS[product]) {
+  // Single purchase
+  var p = PRODUCTS[product];
+
+  unlockEl.innerHTML =
+    '<div class="single-unlock">'+
+      '<div class="single-unlock-icon">'+
+        '<i class="ti '+p.icon+'" style="color:'+p.color+'"></i>'+
+      '</div>'+
+      '<div>'+
+        '<div class="single-unlock-title">'+p.title+' — unlocked</div>'+
+        '<div class="single-unlock-desc">Open the Export tab in your tool and click Download PDF. Your file generates instantly from your inputs.</div>'+
+      '</div>'+
+    '</div>';
+
+  heroSub.textContent = 'Head back to the tool, open the Export tab, and download your PDF — it\'s ready.';
+
+  ctaEl.innerHTML =
+    '<a href="'+p.tool+'?success=1&product='+product+'" class="btn-primary">'+
+      '<i class="ti ti-arrow-right" style="font-size:14px"></i> Go to your tool — download PDF'+
+    '</a>'+
+    '<a href="transitions_index.html" class="btn-secondary">'+
+      '<i class="ti ti-grid-dots" style="font-size:13px"></i> All tools'+
+    '</a>';
+
+} else {
+  // Fallback — no product param
+  heroSub.textContent = 'Head back to your tool, open the Export tab, and your download will be ready.';
+  unlockEl.innerHTML =
+    '<div class="unlocked-card" style="margin-bottom:1rem">'+
+      '<div class="section-label green"><i class="ti ti-sparkles" style="font-size:14px"></i>Your purchase is confirmed</div>'+
+      '<p style="font-size:13px;color:var(--text2);line-height:1.7">Return to the tool you purchased from, open the <strong style="color:var(--text)">Export tab</strong>, and your download will be unlocked.</p>'+
+    '</div>';
+
+  ctaEl.innerHTML =
+    '<a href="transitions_index.html" class="btn-primary">'+
+      '<i class="ti ti-grid-dots" style="font-size:14px"></i> Browse all tools'+
+    '</a>';
+}
+</script>
+</body>
+</html>
